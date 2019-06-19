@@ -1,0 +1,16 @@
+﻿## Interface: 80000
+## Title: QuakeAssist
+## Version: 1.10
+## Author: Abin
+## X-Category: Combat
+## SavedVariables: QuakeAssistDB
+
+Includes\LibAddonManager.lua
+Includes\InterfaceOptionPage-1.0.lua
+Includes\Pre80API.lua
+
+Localization.lua
+Core.lua
+MainFrame.lua
+OptionFrame.lua
+## AU_Info:{"sv":false,"time":"1541092890","name":"quakeassist","loctm":1541246801,"wt":null}

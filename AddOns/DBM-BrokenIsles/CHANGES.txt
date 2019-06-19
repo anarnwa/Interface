@@ -1,0 +1,16 @@
+lightweight tag 6039224594a48e08ded734646db9fcc6cb64fa33 r11
+Author:	MysticalOS <mysticalosx@gmail.com>
+Date:	Tue Apr 16 21:32:09 2019 -0400
+
+commit 6039224594a48e08ded734646db9fcc6cb64fa33
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Tue Apr 16 21:32:09 2019 -0400
+
+    Another pkgmeta fix, stan you forgot a few DBM-'s
+
+commit 73fac5430ce73f9f487fa681a97ee7e52eb46457
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Tue Apr 16 21:24:46 2019 -0400
+
+    fix pkgmeta
+

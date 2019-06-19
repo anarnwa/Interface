@@ -1,0 +1,30 @@
+## Interface: 80100
+## Title: Pa'ku Totems
+## Author: jaxdahl
+## Version: 1.62
+## Notes: Show Pa'ku totem positions on the map and destinations in the tooltip on mouseover.
+## OptionalDeps: Ace3
+
+## SavedVariables: Paku_Totems_DB
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+
+Libs\HereBeDragons-2.0\HereBeDragons-2.0.lua
+Libs\HereBeDragons-2.0\HereBeDragons-Pins-2.0.lua
+
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceLocale-3.0\AceLocale-3.0.xml
+
+Locales\enUS.lua
+Locales\zhCN.lua
+Locales\zhTW.lua
+Locales\koKR.lua
+Locales\ruRU.lua
+
+Paku_Totems.lua

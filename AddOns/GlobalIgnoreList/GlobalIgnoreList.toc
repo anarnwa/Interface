@@ -1,0 +1,13 @@
+## Interface: 80100
+## Title: Global Ignore List
+## Notes: Maintain ignore list across all characters, filter chat spam and more
+## Author: IceyPop
+## Version: 8.1.4
+## SavedVariables: GlobalIgnoreDB
+## SavedVariablesPerCharacter: GlobalIgnoreImported
+
+GIL_Localization.lua
+GIL_Globals.lua
+GIL_UI.lua
+GIL_BlizzardUI.lua
+GlobalIgnoreList.lua

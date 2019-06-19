@@ -1,0 +1,15 @@
+﻿## Interface: 80100
+## Title:|cFFBF00FF[H]|r Show My Level
+## Notes:Show My Level
+## Title-zhCN: |cFFBF00FF[H]|r 显示人物等级
+## Notes-zhCN: 显示人物等级
+## Author: NGA
+## Author-zhCN: NGA - 等你病要你命 - 整理
+
+## X-Date: 2018-07-19
+## Version: 1.0
+
+## SavedVariables: HPetSaves
+
+petStatusFrame.lua
+

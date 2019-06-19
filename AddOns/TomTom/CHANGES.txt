@@ -1,0 +1,52 @@
+lightweight tag 2ab52a8fcf7a6b9a0cc37f4f2bd182b05966956a v80105-1.0.0
+Author:	Ludovicus <ludovicus.maior@gmail.com>
+Date:	Mon Mar 18 18:34:33 2019 -0400
+
+commit 2ab52a8fcf7a6b9a0cc37f4f2bd182b05966956a
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Mon Mar 18 18:34:33 2019 -0400
+
+    Add code to allow TomTom specific overrides of HDB data.
+
+commit efe0c78584a7ef2122d25375ca1c16ca916e406d
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Mon Mar 18 17:17:15 2019 -0400
+
+    Protect against orphan maps, which the latest HBD now discovers.
+
+commit c309c7989512bde8867d32d3ae8c60f40ad7dbc5
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Mon Mar 18 17:14:59 2019 -0400
+
+    Add a backup zone name of #mapID
+
+commit 89fdc357df4d7a64f3db6e39f16803d4e39b64fa
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Mon Mar 18 17:13:09 2019 -0400
+
+    Assume that the lowest numbered mapId is the primary.  Blizzard, yiu drive me crazy.
+
+commit 6f914fd6fdc20e0c6f1c6c1de6f677be4d118f72
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Mon Mar 18 17:09:46 2019 -0400
+
+    Restrict mapTypes to Zone and Micro.
+
+commit f43c6babd28e4e09d5cbcfde1846f2b7ab6657e8
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Thu Mar 14 16:23:57 2019 -0400
+
+    Update CrazyArrow on ZONE_CHANGED as well.
+
+commit f7b779000f00a5240c2ea3aae053b20dd300e29f
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Thu Mar 14 16:22:04 2019 -0400
+
+    Add missing argument to SetClampedToScreen().
+
+commit 6e1fb08b42897764f1456057f048ac5fcc771a0a
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Thu Mar 14 16:19:26 2019 -0400
+
+    Add /tway arrow to print arrow status.
+

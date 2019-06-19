@@ -1,0 +1,16 @@
+lightweight tag ad406f439117e69c7a5559d742eec22c40b5c0c1 2.9.30
+Author:	Benjamin Staneck <staneck@gmail.com>
+Date:	Wed Jul 18 18:55:17 2018 +0200
+
+commit ad406f439117e69c7a5559d742eec22c40b5c0c1
+Author: Benjamin Staneck <staneck@gmail.com>
+Date:   Wed Jul 18 18:55:17 2018 +0200
+
+    update toc for patch 8.0
+
+commit d38635c20caa438ace300f81c1d12d98d7c2f46a
+Author: Benjamin Staneck <staneck@gmail.com>
+Date:   Wed Jul 18 18:52:10 2018 +0200
+
+    disable zone filtering for now
+

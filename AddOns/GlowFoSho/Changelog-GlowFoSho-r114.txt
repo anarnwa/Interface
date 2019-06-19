@@ -1,0 +1,29 @@
+------------------------------------------------------------------------
+r114 | boneschaman | 2015-08-11 20:04:01 +0000 (Tue, 11 Aug 2015) | 2 lines
+Changed paths:
+   M /trunk/GlowFoSho.lua
+
+GlowFoSho:
+- code cleanup
+------------------------------------------------------------------------
+r113 | boneschaman | 2015-07-21 20:24:37 +0000 (Tue, 21 Jul 2015) | 2 lines
+Changed paths:
+   M /trunk/locales/Locale-enUS.lua
+
+GlowFoSho:
+- fixed some enUS menu names
+------------------------------------------------------------------------
+r112 | boneschaman | 2015-07-12 19:45:54 +0000 (Sun, 12 Jul 2015) | 2 lines
+Changed paths:
+   M /trunk/GlowFoSho.toc
+
+GlowFoSho:
+- bump toc version
+------------------------------------------------------------------------
+r111 | boneschaman | 2015-03-22 16:56:09 +0000 (Sun, 22 Mar 2015) | 2 lines
+Changed paths:
+   M /trunk/GlowFoSho.lua
+
+GlowFoSho:
+- disabled tooltips to prevent ui bugs
+------------------------------------------------------------------------

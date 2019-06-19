@@ -1,0 +1,18 @@
+tag cd2b941dbace7ca7aec47dff322997fb2e8668d6 v1.6.1
+Author:	Hendrik Leppkes <h.leppkes@gmail.com>
+Date:	Thu Jan 24 14:26:40 2019 +0100
+
+Tag as v1.6.1
+
+commit d4090ec0815ae0b8abfd439cf24448e918fec014
+Author: Hendrik Leppkes <h.leppkes@gmail.com>
+Date:   Thu Jan 24 14:26:27 2019 +0100
+
+    Update TOC for 8.1
+
+commit 1c3143a04229e239db8cadf8c3331213e5af6223
+Author: Hendrik Leppkes <h.leppkes@gmail.com>
+Date:   Thu Jan 24 14:25:39 2019 +0100
+
+    Fix minimap jittering of the drawn lines
+

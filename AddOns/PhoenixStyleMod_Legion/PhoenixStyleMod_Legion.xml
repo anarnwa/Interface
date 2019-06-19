@@ -1,0 +1,13 @@
+﻿<Ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.blizzard.com/wow/ui/">
+<Frame name="PhoenixStyleMod_patchlegion3">
+	<Scripts>
+	<OnLoad>psloadpatchlegion3()</OnLoad>
+	<OnEvent>if thisaddonwork and pstemporarystop==nil then psoneventpatchlegion3(self,event,...) end</OnEvent>
+	<OnUpdate>if thisaddonwork and pstemporarystop==nil then psonupdatepatchlegion3(GetTime()) end</OnUpdate>
+	</Scripts>
+</Frame>
+
+
+
+
+</Ui>

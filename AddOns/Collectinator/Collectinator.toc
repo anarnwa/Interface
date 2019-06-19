@@ -1,0 +1,68 @@
+#@non-debug@
+## Title: Collectinator
+## Title-frFR: Collectinator
+## Title-deDE: Collectinator
+## Title-itIT: Collectinator
+## Title-ruRU: Collectinator
+#@end-non-debug@
+#@debug@
+# ## Title: Collectinator - Development Version
+#@end-debug@
+
+#@non-debug@
+## Notes: Collectinator is an addon which will scan your pets and mounts and provide information on how to obtain them.
+## Notes-frFR: Collectinator est un addon qui analyse vos mascottes et vos montures et vous fournit des informations sur comment en obtenir d'autres.
+## Notes-deDE: Collectinator ist ein Addon, welches Haustiere und Reittiere abfragt und Informationen bietet, wie man sie bekommt.
+## Notes-itIT: Collectinator è un addon che scansiona i tuoi famigli e le cavalcature e mostra le informazioni su come ottenerle.
+## Notes-ruRU: Описание
+#@end-non-debug@
+#@debug@
+# ## Notes: Latest alpha version of Collectinator
+#@end-debug@
+
+## Author: Ackis, Torhal, Pompy, Ressy
+## X-Donate: http://www.wowace.com/addons/collectinator/
+
+## Interface: 80000
+## Version: 8.1.5.1
+## X-Revision: 65649dd
+## X-Date: 2018-09-26T1:16:29Z
+
+## X-Category: Tradeskill
+## X-Localizations: enUS, frFR, zhCN, zhTW, deDE, itIT, koKR, esES, esMX, ruRU, ptBR
+## X-Website: http://wow.curse.com/downloads/wow-addons/details/collectinator.aspx
+## X-Feedback: http://www.wowace.com/addons/collectinator/collectinator/
+
+## LoadOnDemand: 1
+## LoadWith: Blizzard_Collections
+
+## OptionalDeps: Ace3, LibAboutPanel, LibPetJournal-2.0, LibBabble-Boss-3.0, LibSharedMedia-3.0, LibQTip-1.0, LibTextDump-1.0, LibToast-1.0, LibDialog-1.0, tekDebug
+## DefaultState: Enabled
+
+## X-WoWI-ID: 15154
+## SavedVariables: COLLECTINATORDB2
+
+#@no-lib-strip@
+# Libraries
+Embeds.xml
+#@end-no-lib-strip@
+
+# Localization files
+Locale.xml
+
+# Constants should be loaded first - many files use them in their main chunk.
+Constants.lua
+
+Core.lua
+Collectable.lua
+Config.lua
+# Waypoint.lua
+Player.lua
+Utilities.lua
+Scanner.lua
+
+# User Interface files
+Interface.xml
+
+# Database files
+Database.xml

@@ -1,0 +1,165 @@
+12/29/2018 version 3.0.6
+- Added Pet Battle Challenge: Gnomeregan.
+- Fix for lua error when mousing over Beasts of Fable-related paws.
+
+12/24/2018 version 3.0.5
+- Fix for lua error when mousing over inactive tamers in sub-zone maps of Kul Tiras and Zandalar.
+- toc update for 8.1 patch
+
+09/01/2018 version 3.0.4
+- Added pets to the tooltips of Michael Skarn, Leana Darkwind and Ellie Vern.
+
+08/26/2018 version 3.0.3
+- Added world quests for Kul Tiras and Zandalar.
+- Note: The tamers Michael Skarn, Ellie Vern and Leana Darkwind do not have pet types in their tooltip yet. I can't find any info on those.
+
+08/10/2018 version 3.0.2
+- Fix for the position of paws for Wildlife Conservationist and Aszuna Specimens.
+
+08/01/2018 version 3.0.1
+- Added new option: "On Azeroth Map" to display the paws of active dailies on the Azeroth world map. This is off by default.
+- Inactive dailies do NOT show on the Azeroth world map while the above option is enabled. (Otherwise the Broken Isles becomes a clumpy mass of grey paws.)
+- Fix for tooltips of inactive world quests not appearing at the zone level.
+- Fix for some world quests stuck on "Retrieving Data" in their tooltip.
+
+07/29/2018 version 3.0.0
+- Addon entirely rewritten for the Battle for Azeroth client and its new map system.
+- Some files were added and some are no longer used. (If you're comfortable with it, I recommend deleting this addon's folder before install to get a clean install. But it's okay to let old files remain.)
+- More tooltip text should now be localized to the user's client (such as "Celestial Tournament").
+- If a tamer has a quest named differently than the tamer, the tooltip will include the quest name.
+- Added a new paw category 'World Quests' to toggle on/off world quests. (This does not remove active world quests at the lowest map level.)
+- The option to show tamers on the flight maps is temporarily missing. This is something I intend to add back in a future update.
+- Paws shown on the Azeroth world map were removed. (I'm unsure whether to add this back. Let me know if you have strong feelings about it.)
+- The option to show stable masters was removed. (I'm also unsure whether to add this back. Let me know if you have strong feelings about this too.)
+
+08/26/2017 version 2.1.7
+- toc update for 7.3 patch
+
+08/25/2017 version 2.1.6
+- Added Environeer Bert to the Eastern Kingdom map for 7.3 clients.
+- Added the 18 Family Fighter pets to the Argus maps for 7.3 clients.
+
+06/18/2017 version 2.1.5
+- Added Pet Battle Challenge: Deadmines to the Eastern Kingdom map.
+
+04/01/2017 version 2.1.4
+- Added Sissix, Madam Viciosa and Nameless Mystic to Broken Isle map.
+- Added Pet Battle Challenge: Wailing Caverns to Kalimdor map.
+
+03/28/2017 version 2.1.3
+- toc update for 7.2 patch
+
+11/06/2016 version 2.1.2
+- Added Crysa in Kalimdor; a new daily tamer added in patch 7.1
+
+10/24/2016 version 2.1.1
+- toc update for 7.1 patch
+
+08/11/2016 version 2.1.0
+- All traces of hooks/interaction with default dropdown menus are removed.
+- When you mouseover the default tracking button, a button with a green paw will slide out.
+- Clicking this new button will open an independent menu to turn on/off all or individual paws.
+- All workarounds with PetTracker removed since they are no longer needed.
+- Added Lil'idan coordinates.
+
+07/20/2016 version 2.0.2
+- Fix for potential lua error: attempt to index local 'region'
+
+07/16/2016 version 2.0.1
+- Fix for paws erroneously showing up in dungeon levels that happen to overlap outdoor areas with a tamer.
+
+07/13/2016 version 2.0.0
+- This version is for the Legion client only.
+- Special thanks to Flohsakk from warcraftpets.com for gathering coordinates for Legion world quests!
+- Rewritten to work better with Legion and its world quests.
+- NPC names are now localized to the language of the player's client.
+- World quest names will be localized for dailies in the Broken Isles.
+- When multiple paws overlap, the tooltip will list all tamers under the mouse.
+- The paws no longer intercept clicks. Left/right-click of a paw will go through to the underlying map.
+- Paws will less aggressively try to be the top-most icon when other icons share the same space.
+- The "Completed Dailies" option was renamed to "Inactive Dailies" and shows greyed-out paws for quests that are either completed and unavailable.
+- Inactive Dailies do not show on the Azeroth world map. (Otherwise the Broken Isle is a near-solid cluster of grey paws.)
+- Turning on/off the Pet Battles world map tracking option will now use the default's cvar instead of an independant savedvariable.
+- The "Pet Reward Dailies" option is renamed to "Reward Dailies" but otherwise behaves the same.
+- If PetTracker is enabled (which replaces the default map tracking menu and kicks out all addon involvement in that menu), a separate tracking button will appear beneath the main tracking button to change this addon's settings.
+
+05/29/2016 version 1.6.0
+- This version supports both WoD(live) and Legion(beta) clients.
+- toc update for 7.0 patch.
+- Adjusted azeroth world map coordinates for Legion clients.
+- Removed minor code to check if 6.2 was live.
+
+03/23/2016 version 1.5.3
+- Added "Completed Dailies" option to show greyed-out paws for completed dailies.
+
+10/23/2015 version 1.5.2
+- Added some stables for Draenor.
+
+06/22/2015 version 1.5.1
+- toc update for 6.2 patch.
+
+05/21/2015 version 1.5.0
+- "Beasts of Fable" group is renamed "Legendary"
+- Added Fel-Corrupted pets to Tanaan Jungle for 6.2/PTR clients
+
+04/07/2015 version 1.4.8
+- Fix for detecting Darkmoon Faire on cold logins.
+- Fix for setting up initial settings.
+
+02/24/2015 version 1.4.7
+- toc update for 6.1 patch
+
+02/07/2015 version 1.4.6
+- More reliable check for whether Darkmoon Faire in town.
+
+01/17/2015 version 1.4.5
+- Fixed waypoint creation (ctrl+right click with TomTom) for Nagrand and Shadowmoon Valley.
+
+11/09/2014 version 1.4.4
+- Multi-map coordinate system reduced to single continent coordinates.
+- Faction-specific data added when needed, instead of removed when not needed.
+- Reminder on interface options panel that you can ctrl+right-click a paw with TomTom to set a waypoint.
+
+10/14/2014 version 1.4.3
+- 6.0 release
+
+10/05/2014 version 1.4.2
+- Fix for Darkmoon Faire being recognized on a cold login.
+- Fix for TomTom ctrl-right click support.
+
+10/04/2014 version 1.4.1
+- Updated for 6.0/WoD.
+- Addon/tables trimmed and tidied.
+- "Satchel Dailies" is renamed "Pet Reward Dailies".
+- "Non-Satchel Dailies" is renamed "Normal Dailies".
+- Draenor dailies added.
+- Celestial Tournament added.
+
+09/24/2014 1.4.0 update for WoD, fix for stable master tooltips
+04/04/2014 1.3.0 added interface options panel as an alternate way to change settings, non-satchel and fable dailies enabled by default for new users
+12/02/2013 1.2.10 added option to view stable masters
+09/25/2013 1.2.9 fixed a couple pet types in tooltips for 5.4 changes
+09/23/2013 1.2.8 adjusted Aki the Chosen and Courageous Yon coordinates
+09/21/2013 1.2.7 adjusted Pandaria taxi coordinates
+09/16/2013 1.2.6 moved Aki the Chosen to Mistfall Village
+09/11/2013 1.2.5 added Little Tommy Newcomer pet daily in Timeless Isle
+07/24/2013 1.2.4 added option to show paws on flight maps, paw resource pool
+05/21/2013 1.2.3 tooltips display which book a beast of fable is for
+05/21/2013 1.2.2 release version for 5.3
+05/03/2013 1.2.1 added coordinates for book 2/book 3 paws on world map
+05/01/2013 1.2.0 toggle window removed and default's "Show Pet Tamers" option commandeered. beasts of fable split into three different quests
+03/14/2013 1.1.8 fix for fabled paws in all localizations (numbered quest objectives instead of by name)
+03/08/2013 1.1.7 added paws for the 10 fabled beasts (while quest is active) and option to display them
+03/06/2013 1.1.6 added Sara Finkleswitch and Gentle San (Beasts of Fable daily)
+02/16/2013 1.1.5 added limited TomTom support (ctrl+right click paw to /way there)
+01/06/2013 1.1.4 added Jeremy Feasel (Darkmoon Faire) daily
+01/01/2013 1.1.3 changed Merda Stronghoof's quest id from 31817 to 31872
+12/29/2012 1.1.2 removed pre-requisite system, added expansion to tooltip
+12/29/2012 1.1.1 removed NR paws from EK map, MP paws from KL map, manually added Bordin Steadyfist to Maelstrom maps
+12/28/2012 1.1.0 astrolabe replaced with static data, paws created on demand
+12/22/2012 1.0.5 added toggle window onto worldmap for turning paws on/off, removed panel option
+12/21/2012 1.0.4 code cleanup
+12/20/2012 1.0.3 overhauled pre-req system to work with both factions
+12/18/2012 1.0.2 added non-satchel dailies (default off), fix for tooltip on full-screen map, temporary option to ignore pre-req dailies until horde dailies confirmed, right-clicking paw will zoom map out
+12/16/2012 1.0.1 temporary fix for alliance/horde pre-req wierdness for taming EK/kalimdor, pet type icons on tamer tooltips
+12/15/2012 1.0.0 initial release

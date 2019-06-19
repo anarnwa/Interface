@@ -1,0 +1,4 @@
+## Interface: 70100
+## Title: SUFPlus
+## Dependencies: ShadowedUnitFrames
+SUFPlus.lua

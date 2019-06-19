@@ -1,0 +1,23 @@
+lightweight tag 13bc8465b4474a0c24f65dac51b088c74604b7ad v2.5.6
+Author:	Nnogga <27819512+nnogga@users.noreply.github.com>
+Date:	Fri Apr 5 02:15:27 2019 +0200
+
+commit 13bc8465b4474a0c24f65dac51b088c74604b7ad
+Author: Nnogga <27819512+nnogga@users.noreply.github.com>
+Date:   Fri Apr 5 02:15:27 2019 +0200
+
+    version update
+
+commit 1ad9845dd897f86ae9052febc06703e5d71c885f
+Author: Nnogga <27819512+nnogga@users.noreply.github.com>
+Date:   Fri Apr 5 02:15:17 2019 +0200
+
+    motherlode mech jockey inside peacekeepers give 4 count when tagged correctly
+
+commit 32a6bc0ba295cbf13435cce9f94c0ef47e1f9419
+Author: Nnogga <27819512+nnogga@users.noreply.github.com>
+Date:   Tue Apr 2 14:53:38 2019 +0200
+
+    - fixed some alliance teeming enemies showing for horde
+    - all alliance gutters give 1 count
+

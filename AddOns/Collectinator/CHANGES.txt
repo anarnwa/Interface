@@ -1,0 +1,60 @@
+tag 23a2f93a081800b55cd81f15ca5e9adef8f1c28d 8.1.5.1
+Author:	Ressy <resa1983@hotmail.com>
+Date:	Tue May 14 21:38:02 2019 -0400
+
+8.1.5 update
+
+commit 65649dd172fee3271d0a16d3aaa0e0eb3a8a8600
+Author: Ressy <resa1983@hotmail.com>
+Date:   Tue May 14 21:34:53 2019 -0400
+
+    To add Twitching Eyeball
+
+commit b190d41900de2ce593fc8b34371c62600aff7636
+Author: Ressy <resa1983@hotmail.com>
+Date:   Sun Apr 7 23:01:56 2019 -0400
+
+    Big update for 8.1.5
+
+commit 52d0c7dbaa283d4915566dac3b6d455cd5e8b1fe
+Author: Ressy <resa1983@hotmail.com>
+Date:   Thu Feb 14 20:05:18 2019 -0500
+
+    Remove scan button on Collections. Not even close to ready.
+
+commit 501ec4d45aff216032fc4fcad908c1870cd99a6c
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 11 22:16:26 2019 -0500
+
+    Fix expansion icon size
+
+commit 82d0e189d7799126ef1f711a0e3bf14b4becf0f3
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 11 22:15:56 2019 -0500
+
+    Add Hogrus
+
+commit 64fdc92b424ede24b3c7b18e41908bbee049203e
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 11 22:15:47 2019 -0500
+
+    Add Trainers
+
+commit e3d1175385c7af1784007b58bf2ea96995a6b6f5
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 11 22:15:31 2019 -0500
+
+    drop locations
+
+commit 65e866473171e6694aabe3171ffd79d2560541bb
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 11 22:14:18 2019 -0500
+
+    Fix drop locations
+
+commit 65fadfacbfad69f30b94a508abf4c5ffbed59801
+Author: Ressy <resa1983@hotmail.com>
+Date:   Mon Feb 11 22:14:03 2019 -0500
+
+    Fix image
+

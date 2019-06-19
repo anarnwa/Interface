@@ -1,0 +1,10 @@
+lightweight tag 12509631b8098b96bcdf87d9106f3f4b2010cc19 8.1.26
+Author:	MysticalOS <mysticalosx@gmail.com>
+Date:	Thu May 23 14:19:42 2019 -0400
+
+commit 12509631b8098b96bcdf87d9106f3f4b2010cc19
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu May 23 14:19:42 2019 -0400
+
+    Fix a pretty critical regression from last release
+

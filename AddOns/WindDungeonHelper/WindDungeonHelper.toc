@@ -1,0 +1,26 @@
+## Interface: 80100
+## Author: houshuu
+## Version: 1.3.8
+## Title: |cff0288d1W|r|cff039be5i|r|cff03a9f4n|r|cff29b6f6d|r Dungeon Helper
+## Title-zhCN: |cff039be5W|r|cff03a9f4i|r|cff29b6f6n|r|cff4fc3f7d|r 地下城助手
+## Title-zhTW: |cff039be5W|r|cff03a9f4i|r|cff29b6f6n|r|cff4fc3f7d|r 地城助手
+## Notes: Help you fight in dungeon easier.
+## Notes-zhCN: 帮助你在地下城中的战斗更加简单。
+## Notes-zhTW: 幫助你在地城中的戰鬥更加簡單。
+## DefaultState: enabled
+## SavedVariables: WindDungeonHelperDB
+
+## X-Website: https://wow.curseforge.com/projects/wind-dungeon-helper
+## X-Feedback: https://github.com/fang2hou/WindDungeonHelper/issues
+
+# Library
+Libs\Load_Libs.xml
+
+# Localization
+Locales\Load_Locales.xml
+
+# Initialize
+Init.lua
+
+# Module
+Modules\Load_Modules.xml

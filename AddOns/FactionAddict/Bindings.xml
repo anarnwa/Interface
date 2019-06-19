@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="FACTIONADDICT_TOGGLE" header="FACTIONADDICT" category="ADDONS">
+		FactionAddictLauncher_OnClick(self);
+	</Binding>
+</Bindings>

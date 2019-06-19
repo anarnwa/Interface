@@ -1,0 +1,16 @@
+﻿## Interface: 70000
+## Title: HandyNotes_PandariaTreasures
+## Version: 1.06
+## Notes: Shows location of treasures, rares and helps filling some Achievements in Pandaria
+## Author: Tunafishcan (EU-Aggra), based on HandyNotes_DraenorTreasures by Katjes (Coronet - Dun Morogh(EU))
+## OptionalDeps: Ace3
+## RequiredDeps: HandyNotes
+## X-Embeds: Ace3
+## SavedVariables: PandariaTreasuresDB
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+HandyNotes_PandariaTreasures.lua
+## AU_Info:{"sv":false,"time":"1472248405","name":"handy-notes-pandaria-treasures","loctm":1543236064,"wt":"3wc"}

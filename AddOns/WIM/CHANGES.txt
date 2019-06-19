@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r606 | humfras | 2019-06-01 23:26:28 +0000 (Sat, 01 Jun 2019) | 1 line
+Changed paths:
+   M /trunk/Sources/WindowHandler.lua
+
+* updated C_Friendlist API
+------------------------------------------------------------------------
+r605 | humfras | 2019-05-31 07:58:42 +0000 (Fri, 31 May 2019) | 1 line
+Changed paths:
+   M /trunk/Sources/WindowHandler.lua
+
+* updated C_Friendlist API
+------------------------------------------------------------------------
+r604 | humfras | 2019-05-27 18:11:58 +0000 (Mon, 27 May 2019) | 2 lines
+Changed paths:
+   M /trunk/Modules/WhisperEngine.lua
+   M /trunk/WIM.lua
+
+* updated whisper handling to fix various bugs like sticky chat and chain/tail calls
+- removed unused code
+------------------------------------------------------------------------
+

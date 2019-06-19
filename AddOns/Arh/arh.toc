@@ -1,0 +1,25 @@
+## Interface: 80000
+## Title: Archaeology Helper
+## Author: Community Update
+## Notes: Helps you to find archaeology fragments easily
+## Version: 2.0
+## X-Build: 109
+## X-ReleaseDate: 2018-08-05T12:00:00Z
+## X-Revision: $Revision: 112 $
+## DefaultState: Enabled
+## OptionalDeps: GatherMate2, LibDataBroker-1.1, LibDBIcon-1.0
+## X-Embeds: Ace3, LibDataBroker-1.1, LibDBIcon-1.0
+## SavedVariables: Arh_Config
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+## X-Curse-Packaged-Version: 1.6.4
+## X-Curse-Project-Name: Archaeology Helper
+## X-Curse-Project-ID: arh
+## X-Curse-Repository-ID: wow/arh/mainline
+
+embeds.xml
+
+locale.lua
+
+arh.lua
+arh.xml

@@ -1,0 +1,28 @@
+lightweight tag 2b7ab8667c26b6f676b02a9b23cb83255a6915fe 1.27
+Author:	Bernhard Saumweber <b.saumweber@gmail.com>
+Date:	Wed Mar 20 20:10:45 2019 +0000
+
+commit 2b7ab8667c26b6f676b02a9b23cb83255a6915fe
+Author: Bernhard Saumweber <b.saumweber@gmail.com>
+Date:   Wed Mar 20 21:01:05 2019 +0100
+
+    Increased timeout for declined groups to 30 minutes
+
+commit c9a3e219ae815951c81a9388807b4d95df3f6fb5
+Author: Bernhard Saumweber <b.saumweber@gmail.com>
+Date:   Tue Mar 19 15:28:34 2019 +0100
+
+    Refactored code and added a new keyword 'declined' for filtering groups that have declined you in the last 10 minutes
+
+commit bf72eebe2e61a135e77ed8b2227f9fbc6ef2005b
+Author: Bernhard Saumweber <b.saumweber@gmail.com>
+Date:   Tue Mar 19 15:22:01 2019 +0100
+
+    Show names of groups that declined you in a dark red color using code from cheshire (Nephthis-Durotan-EU)
+
+commit d0c554826edc8164d9fa27d6eca1f26b3a1e6a2c
+Author: Bernhard Saumweber <b.saumweber@gmail.com>
+Date:   Tue Feb 26 21:31:01 2019 +0100
+
+    Set version to next release version: 1.27
+

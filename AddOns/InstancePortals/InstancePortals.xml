@@ -1,0 +1,19 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ http://wowprogramming.com/FrameXML/UI.xsd">
+
+<Frame name="InstancePortalUI" toplevel="true" parent="UIParent" enableMouse="false" movable="true">
+    <Size x ="0" y ="0"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent"/>
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        tinsert(UISpecialFrames, "InstancePortalUI")
+        InstancePortalUI_OnLoad(self)
+      </OnLoad>
+      <OnEvent>
+        InstancePortalUI_OnEvent(event, arg1)
+      </OnEvent>
+    </Scripts>
+  </Frame>
+
+  </Ui>

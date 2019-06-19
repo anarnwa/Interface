@@ -1,0 +1,12 @@
+## Interface: 80100
+## Title: |cff0088eeParagon|r Reputation
+## Author: |cffabd473Mat|r |cffbd87e7US-Quel'Thalas|r
+## Version: 1.22
+## Notes: Switch Exalted Bars for Paragon Bars.
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: ParagonReputationDB
+
+core.lua
+options.lua
+localization.lua

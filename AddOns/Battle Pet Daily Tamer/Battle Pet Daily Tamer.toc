@@ -1,0 +1,12 @@
+## Interface: 80100
+## Title: Battle Pet Daily Tamer
+## Notes: This addon marks the world map with battle pet dailies you've not completed for the day
+## Author: Gello
+## Version: 3.0.6
+## SavedVariables: BattlePetDailyTamerSettings
+Frames.xml
+Map.lua
+Main.lua
+Data.lua
+Tooltip.lua
+Options.lua

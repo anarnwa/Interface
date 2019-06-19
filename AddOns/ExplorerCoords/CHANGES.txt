@@ -1,0 +1,10 @@
+lightweight tag 2d0a5adac9228906e10aef78617cadcc1f808119 v1.7.11
+Author:	Dorwido <darkz@gmx.de>
+Date:	Mon Aug 27 22:50:02 2018 +0200
+
+commit 2d0a5adac9228906e10aef78617cadcc1f808119
+Author: Dorwido <darkz@gmx.de>
+Date:   Mon Aug 27 22:50:02 2018 +0200
+
+    database update
+

@@ -1,0 +1,32 @@
+lightweight tag e3c854203c1a4c43afad9ab22ec53ea9c61003da v8.1.5.7129d.139-Classic
+Author:	Tercioo <terciob19@hotmail.com>
+Date:	Sat Jun 8 15:31:28 2019 -0300
+
+commit e3c854203c1a4c43afad9ab22ec53ea9c61003da
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Sat Jun 8 15:31:28 2019 -0300
+
+    Classic WoW changes
+    
+    I don't have access to classic wow at the moment, so thise changes are what players are telling me it's bugged.
+
+commit b3ab1938567ef0f9f277cfb3670ec98689ac68a0
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Tue May 28 15:41:53 2019 -0300
+
+    Two other files from the commit remake
+
+commit 6069094af7c8b9c08e6b712e1b5e4011af48d5d1
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Tue May 28 13:25:48 2019 -0300
+
+    Re-making the commit for reported issues on classic wow
+
+commit 7c9a3957b4dba6e1b22dca2b4009d0a72c80a047
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Tue May 28 13:05:35 2019 -0300
+
+    Revert "More fixes for Classic WoW"
+    
+    This reverts commit e21d70e46eefe4e89d059c3297c5e15811bab004.
+

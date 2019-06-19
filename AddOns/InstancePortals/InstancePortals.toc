@@ -1,0 +1,12 @@
+## Interface: 81000
+## X-Min-Interface: 80000
+## Version: 22
+## Title: Instance Portals
+## Notes: Displays dungeon & raid portals on the world map
+## SavedVariablesPerCharacter: IPUITrackInstancePortals IPUITrackInstancePortalsOnContinents 
+
+IPPinDB.lua
+IPInstanceDB.lua
+IPInstancePortalPinTemplate.xml
+IPCore.lua
+InstancePortals.xml

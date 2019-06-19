@@ -1,0 +1,11 @@
+## Interface: 80100
+## Title: Scrap Cleaner
+## Notes: Deletes junk items as your bags get full, keeping them free for more loot.
+## Author: Jaliborc (João Cardoso)
+
+## X-Category: Inventory
+## X-License: GNU General Public License Version 3
+## Dependencies: Scrap
+## Version: 8.1.0
+
+Scrap_Cleaner.lua

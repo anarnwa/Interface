@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AddOnList version="1.0" url="http://wowui.178.com/" purl="http://wowui.178.com/">
+    <AddOn displayName="GatherMate2采集助手数据库" img="/data/wow/221/ui_logo.jpg" info="ui/221" name="GatherMate2采集助手数据库" package="down/221/12623/GatherMate2_Data-v31.0_.zip" update="2018-07-22" version="v31.0" />
+</AddOnList>

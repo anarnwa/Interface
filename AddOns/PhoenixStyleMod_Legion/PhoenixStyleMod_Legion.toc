@@ -1,0 +1,50 @@
+﻿## Interface: 80100
+## Title: Phoenix|cff7fff7fStyle|r - Legion module, tier 1
+## Title-ruRU: Phoenix|cff7fff7fStyle|r - модуль Legion, тир 1
+## Author: Shurshik
+## Notes: PhoenixStyle`s module
+## Notes-ruRU: Модуль для аддона Феникс Стайл
+## Dependencies: PhoenixStyle
+## LoadOnDemand: 1
+## SavedVariablesPerCharacter: psraidoptionsonLegion1,psraidoptionschatLegion1
+Localization\localization-enEN.lua
+Localization\localization-ruRU.lua
+Localization\localization-deDE.lua
+Localization\localization-frFR.lua
+Localization\localization-esES.lua
+Localization\localization-esMX.lua
+Localization\localization-koKR.lua
+Localization\localization-zhTW.lua
+Localization\localization-zhCN.lua
+PhoenixStyleMod_Legion.lua
+PhoenixStyleMod_Legion.xml
+Damage_show.lua
+Boss11.lua
+Boss12.lua
+Boss13.lua
+Boss14.lua
+Boss15.lua
+Boss16.lua
+Boss17.lua
+Boss21.lua
+Boss22.lua
+Boss23.lua
+Boss24.lua
+Boss25.lua
+Boss26.lua
+Boss27.lua
+Boss28.lua
+Boss29.lua
+Boss210.lua
+Boss31.lua
+Boss32.lua
+Boss33.lua
+Boss41.lua
+Boss42.lua
+Boss43.lua
+Boss44.lua
+Boss45.lua
+Boss46.lua
+Boss47.lua
+Boss48.lua
+Boss49.lua

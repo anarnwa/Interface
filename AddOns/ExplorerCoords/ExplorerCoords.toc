@@ -1,0 +1,15 @@
+﻿## Interface: 80000
+## Title: Wido's Explorer Coords
+## Author: Dorwido
+## Version: 1.7.11
+## Notes: Shows all coords left to explore for the achievement
+## SavedVariables: ExplorerCoords_Config, ExplorerCoord, ExplorerCoordTracker,ExplorerCoordsGather_Config
+libs\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\HereBeDragons\HereBeDragons-2.0.lua
+libs\HereBeDragons\HereBeDragons-Pins-2.0.lua
+ExplorerCoords.xml
+ExplorerCoords_lang.lua
+explorer_data.lua
+ExplorerCoordsConfig.lua
+## AU_Info:{"sv":false,"time":"1535403094","name":"explorercoords","loctm":1536045586}

@@ -1,0 +1,9 @@
+﻿## Interface: 70100
+## Title: Battle Pet Current Stats
+## Notes: Displays the stats of battle pets in play during a pet battle.
+## Title-zhCN: |cffffffff[其他]|c0066FFFFBattle Pet Current Stats宠物对战界面增强|r
+## Notes-zhCN: |cFF34A2F7在默认的对战界面上显示双方当前激活宠物的攻击、速度和血量，以便做好预判。|r
+## Author: Gello
+## Version: 1.0.2 - 2016.8.13
+
+Battle Pet Current Stats.lua

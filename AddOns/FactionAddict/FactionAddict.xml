@@ -1,0 +1,1576 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\FrameXML\UI.xsd">
+
+	<Button name="FactionAddictEntryTemplate" virtual="true">
+		<Size x="270" y="44"/>
+		<NormalFont style="SystemFont_Shadow_Small"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentExpansionIcon" parentKey="ExpansionIcon" file="Interface\Addons\FactionAddict\Textures\UI-FactionAddictLogos" hidden="true">
+					<Size x="70" y="15"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-4" y="-7"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="$parentFactionIcon" parentKey="FactionIcon" file="Interface\ICONS\achievement_reputation_01" textureSubLevel="7">
+					<Size x="36" y="36"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="2" y="-2"/>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_FactionNameTxt" parentKey="FactionNameTxt" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x ="157" y ="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentFactionIcon" relativePoint="TOPRIGHT" x="6" y="0"/>
+					</Anchors>
+					<Color r="1" g="1" b="0"/>
+				</FontString>
+				<FontString name="$parent_FactionPctTxt" parentKey="FactionPctTxt" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+					<Size x ="55" y ="16"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-60" y="5"/>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\ClassTrainerFrame\TrainerTextures" hidden="true" alphaMode="ADD" textureSubLevel="0">
+					<TexCoords left="0.00195313" right="0.57421875" top="0.84960938" bottom="0.94140625"/>
+				</Texture>
+				<Texture file="Interface\TalentFrame\TalentFrame-Parts" parentKey="FactionIconOverlay" hidden="true" textureSubLevel="5">
+					<Size>
+						<AbsDimension x="42" y="42"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parentFactionIcon">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<TexCoords left="0.73046875" right="0.96093750" top="0.13671875" bottom="0.25195313"/>	
+				</Texture>
+				<Texture parentKey="SideFactionIcon" hidden="true" textureSubLevel="7">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parentFactionIcon">
+							<Offset>
+								<AbsDimension x="17" y="-11"/>
+							</Offset>
+						</Anchor>
+					</Anchors>	
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<StatusBar name="$parentFAReputationBar" parentKey="FAReputationBar" drawLayer="BACKGROUND" minValue="0" maxValue="1" defaultValue="1">
+				<Size>
+					<AbsDimension x="150" y="13"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_FactionNameTxt" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="2" y="-6"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentText" inherits="GameFontHighlightSmall" text="Neutral" justifyV="TOP" parentKey="text" hidden="true">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset x="0" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>	
+						<FontString name="$parentText" inherits="GameFontHighlightSmall" text="700 / 700" justifyV="TOP" parentKey="text2" hidden="true">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset x="0" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>							
+					</Layer>
+					<Layer level="ARTWORK">
+						<Texture name="$parentBorderLeft" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+							<Size x="16" y="0"/>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="-6" y="5"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="-6" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.0625" top="0" bottom="0.75"/>
+						</Texture>
+						<Texture name="$parentBorderRight" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+							<Size x="16" y="0"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="6" y="5"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="6" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.812" right="0.8745" top="0" bottom="0.75"/>
+						</Texture>
+						<Texture name="$parentBorderCenter" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+							<Size x="16"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentBorderLeft" relativePoint="TOPRIGHT"/>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentBorderRight" relativePoint="BOTTOMLEFT"/>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.812" top="0" bottom="0.75"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						self:SetStatusBarColor(0, .6, 0, 1);
+						self:SetMinMaxValues(0, 100);
+						self:SetValue(0);
+						self:GetStatusBarTexture():SetDrawLayer("BORDER");
+					</OnLoad>
+					<OnEnter>
+						self:GetParent():LockHighlight();
+						FactionAddict_StatusBar_OnEnter(self);
+					</OnEnter>
+					<OnLeave>
+						self:GetParent():UnlockHighlight();
+						FactionAddict_StatusBar_OnLeave(self);
+					</OnLeave>
+					<OnMouseUp>
+						FactionAddict_FactionEntrySB_OnClick(self);
+					</OnMouseUp>
+				</Scripts>
+				<BarTexture urgency="5" file="Interface\TargetingFrame\UI-StatusBar"/>
+				<Frames>
+					<Frame parentKey="FABonusIcon" hidden="true">
+						<Size x="16" y="16"/>
+						<Anchors>
+							<Anchor point="CENTER" relativeKey="$parent" relativePoint="LEFT" x="4" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<Texture parentKey="Texture" file="Interface\Common\ReputationStar" setAllPoints="true">
+									<TexCoords left="0.5" right="1" top="0.5" bottom="1"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+								GameTooltip:SetText(BONUS_REPUTATION_TITLE, 1, 1, 1);
+								GameTooltip:AddLine(BONUS_REPUTATION_TOOLTIP, nil, nil, nil, true);
+								GameTooltip:Show();
+								self:GetParent():GetParent():LockHighlight();
+								FactionAddict_StatusBar_OnEnter(self:GetParent());
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide();
+								self:GetParent():GetParent():UnlockHighlight();
+								FactionAddict_StatusBar_OnLeave(self:GetParent());
+							</OnLeave>
+							<OnMouseUp>
+								FactionAddict_FactionEntrySB_OnClick(self:GetParent());
+							</OnMouseUp>
+						</Scripts>
+					</Frame>
+					<Frame parentKey="FAParagonIcon" hidden="true">
+						<Anchors>
+							<Anchor point="CENTER" relativeKey="$parent" relativePoint="RIGHT" x="3" y="0"/>
+						</Anchors>
+						<Size x="20" y="20"/>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture parentKey="Glow" atlas="ParagonReputation_Glow" useAtlasSize="true">
+									<Anchors>
+										<Anchor point="CENTER" x="-1" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="ARTWORK">
+								<Texture parentKey="Icon" atlas="ParagonReputation_Bag" useAtlasSize="true">
+									<Anchors>
+										<Anchor point="CENTER"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="OVERLAY">
+								<Texture parentKey="Check" atlas="ParagonReputation_Checkmark" useAtlasSize="true">
+									<Anchors>
+										<Anchor point="CENTER" x="5" y="-2"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="HIGHLIGHT">
+								<Texture parentKey="Highlight" atlas="ParagonReputation_Bag" useAtlasSize="true" alphaMode="ADD">
+									<Anchors>
+										<Anchor point="CENTER"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Frame>
+				</Frames>
+			</StatusBar>
+			<CheckButton parentKey="FALFGBonusRepButton" motionScriptsWhileDisabled="true">
+				<Size x="16" y="16"/>
+ 				<Anchors>
+ 					<Anchor point="TOPLEFT" relativeTo="$parentFAReputationBar" relativePoint="TOPRIGHT" x="3" y="2"/>
+ 				</Anchors>
+ 				<Layers>
+ 					<Layer level="OVERLAY">
+ 						<Texture parentKey="Glow" file="Interface\Common\ReputationStar-Glow" alphaMode="ADD">
+ 							<Size x="32" y="32"/>
+ 							<Anchors>
+ 								<Anchor point="CENTER"/>
+ 							</Anchors>
+ 						</Texture>
+ 					</Layer>
+ 				</Layers>
+ 				<NormalTexture file="Interface\Common\ReputationStar">
+ 					<TexCoords left="0.5" right="1" top="0" bottom="0.5"/>
+ 				</NormalTexture>
+ 				<HighlightTexture file="Interface\Common\ReputationStar">
+ 					<TexCoords left="0" right="0.5" top="0.5" bottom="1"/>
+ 				</HighlightTexture>
+ 				<CheckedTexture file="Interface\Common\ReputationStar">
+ 					<TexCoords left="0" right="0.5" top="0" bottom="0.5"/>
+ 				</CheckedTexture>
+ 				<Animations>
+ 					<AnimationGroup parentKey="GlowAnim" looping="BOUNCE">
+						<Alpha childKey="Glow" change="-0.75" duration="1.0" smoothing="IN_OUT" order="1"/>
+ 						<Scripts>
+ 							<OnPlay>
+ 								self.loopsRemaining = 5;
+ 							</OnPlay>
+ 							<OnLoop>
+ 								self.loopsRemaining = self.loopsRemaining - 1;
+ 								if ( self.loopsRemaining == 0 ) then
+ 									self:Stop();
+ 									self:GetParent().Glow:Hide();
+ 								end
+ 							</OnLoop>
+ 						</Scripts>
+ 					</AnimationGroup>
+ 				</Animations>
+ 				<Scripts>
+ 					<OnClick>
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						SetLFGBonusFactionID(self.factionID);
+					</OnClick>
+ 					<OnEnter>
+ 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+ 						GameTooltip:SetText(LFG_BONUS_REPUTATION_TOOLTIP, nil, nil, nil, nil, true);
+ 						GameTooltip:Show();
+ 					</OnEnter>
+ 					<OnLeave function="GameTooltip_Hide"/>
+ 				</Scripts>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnClick>
+				FactionAddict_FactionEntry_OnClick(self);
+			</OnClick>
+		</Scripts>
+		<NormalTexture parentKey="FactionAddictButtonBack" file="Interface\Addons\FactionAddict\Textures\UI-FactionAddict-EntryBG">
+			<TexCoords left="0.00195313" right="0.57421875" top="0.0078125" bottom="0.3671875"/>
+		</NormalTexture>
+		<HighlightTexture name="$parentFactionAddictButtonHighlight" parentKey="FactionAddictButtonHighlight" file="Interface\ClassTrainerFrame\TrainerTextures" alphaMode="ADD">
+			<TexCoords left="0.00195313" right="0.57421875" top="0.75390625" bottom="0.84570313"/>
+		</HighlightTexture>
+	</Button>
+	
+	<Button name="FactionAddictLogEntryTemplate" virtual="true">
+		<Size x="270" y="17"/>
+		<NormalFont style="SystemFont_Shadow_Small"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentNewsIcon" parentKey="LogEntryIcon" file="Interface\GuildFrame\GuildFrame">
+					<Size x="13" y="11"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="2" y="-2"/>
+					</Anchors>
+					<TexCoords left="0.41406250" right="0.42675781" top="0.96875000" bottom="0.99023438"/>
+				</Texture>
+				<FontString name="$parent_LogEntryTxt" parentKey="LogEntryTxt" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Size x ="258" y ="17"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="17" y="0" />
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+			</Layer>
+			<Layer level="BACKGROUND" textureSubLevel="1">
+				<Texture name="$parentLogEntryHeader" parentKey="LogEntryHdr" file="Interface\GuildFrame\GuildFrame" alpha="0.65">
+					<Size x="276" y="17"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.00097656" right="0.31445313" top="0.93164063" bottom="0.97460938"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+				FactionAddict_LogEntry_OnClick(self)
+			</OnClick>
+		</Scripts>
+	</Button>
+	
+
+
+	<Frame name="frameFactionAddict" toplevel="true" parent="UIParent" enableMouse="true" movable="true" hidden="true">
+		<Size>
+			<AbsDimension x="350" y="467"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parent_FactionAddictFramePortrait" parentKey="FactionAddictFramePortrait">
+					<Size>
+						<AbsDimension x="60" y="60"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="7" y="-6"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture file="Interface\Addons\FactionAddict\Textures\UI-FactionAddictFrame">
+					<Size>
+						<AbsDimension x="350" y="512"/>
+					</Size>
+					<TexCoords left="0" right="0.681640625" top="0" bottom="1"/>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="$parent_faTitleText" parentKey="faTitleText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOP" x ="0" y ="-19"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+<!-- ScrollFrame - Factions -->	
+			<ScrollFrame name="FactionAddictScrollBar" inherits="FauxScrollFrameTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="32" y="-90"/>	
+				</Anchors>
+				<Size x="273" y="310" />
+				<Scripts>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, offset, 44, FactionAddict_ScrollBar_Update)
+					</OnVerticalScroll>
+					<OnShow>
+					<!-- not needed?	FactionAddict_ScrollBar_Update() -->
+					</OnShow>
+				</Scripts>
+			</ScrollFrame>
+<!-- END ScrollFrame - Factions -->	
+<!-- ScrollFrame - Logging -->	
+			<ScrollFrame name="FactionAddictLoggingScrollBar" inherits="FauxScrollFrameTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="32" y="-112"/>	
+				</Anchors>
+				<Size x="273" y="288" />
+				<Scripts>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, offset, 16, FactionAddict_LoggingScrollBar_Update)
+					</OnVerticalScroll>
+					<OnShow>
+						FactionAddict_LoggingScrollBar_Update()
+					</OnShow>
+				</Scripts>
+			</ScrollFrame>
+<!-- END ScrollFrame - Logging -->	
+<!-- Entries - Factions -->	
+			<Button name="FactionAddictEntry1" inherits="FactionAddictEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictScrollBar" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="2" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+				</Scripts>
+			</Button>
+			<Button name="FactionAddictEntry2" inherits="FactionAddictEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictEntry1" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+				</Scripts>
+			</Button>
+			<Button name="FactionAddictEntry3" inherits="FactionAddictEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictEntry2" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+				</Scripts>
+			</Button>
+			<Button name="FactionAddictEntry4" inherits="FactionAddictEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictEntry3" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+				</Scripts>
+			</Button>
+			<Button name="FactionAddictEntry5" inherits="FactionAddictEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictEntry4" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+				</Scripts>
+			</Button>
+			<Button name="FactionAddictEntry6" inherits="FactionAddictEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictEntry5" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+				</Scripts>
+			</Button>
+			<Button name="FactionAddictEntry7" inherits="FactionAddictEntryTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictEntry6" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+				</Scripts>
+			</Button>
+<!-- END Entries - Factions -->
+<!-- Log Entries -->	
+			<Button name="FactionAddictLogEntry1" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLoggingScrollBar" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="2" y="1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry2" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry1" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry3" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry2" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry4" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry3" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry5" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry4" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry6" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry5" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry7" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry6" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry8" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry7" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry9" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry8" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry10" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry9" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry11" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry10" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry12" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry11" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry13" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry12" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry14" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry13" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry15" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry14" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry16" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry15" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="FactionAddictLogEntry17" inherits="FactionAddictLogEntryTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="FactionAddictLogEntry16" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+<!-- END Log Entries -->	
+<!-- Main Tab - Factions -->	
+			<Frame name="FactionAddictTab1" hidden="false">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="20" y="-38"/>	
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture>
+							<Color r=".5" g="0.694" b="0.941" a="0.0"/>
+						</Texture>
+					</Layer>
+					<Layer level="ARTWORK">
+						<Texture name="$parentFactionAddictScrollBar" file="Interface\Addons\FactionAddict\Textures\UI-FactionAddictFrame">
+							<Size>
+								<AbsDimension x="30" y="314"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPRIGHT" relativeto="frameFactionAddict" relativePoint="TOPRIGHT" >
+									<Offset>
+										<AbsDimension x="-18" y="-87"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.68359375" right="0.7421875" top="0" bottom="0.61328125"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="$parent_faFactionsText1" parentKey="faFactionsText1" inherits="GameFontNormalSmall" justifyH="LEFT">
+							<Size x="150" y="14"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeto="frameFactionAddict" x ="35" y ="36" />
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_faFactionsText2" parentKey="faFactionsText2" inherits="GameFontNormalSmall" justifyH="CENTER">
+							<Size x="148" y="14"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeto="frameFactionAddict" x ="190" y ="36" />
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_faDescText" parentKey="faDescText" inherits="GameFontHighlight" justifyH="CENTER">
+							<Size x="260" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="25" y="-7" relativeTo="$parent"/>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_faErrorText1" parentKey="faErrorText1" inherits="GameFontHighlight" justifyH="CENTER">
+							<Size x="250"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="25" y="-70" relativeTo="$parent"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame name="FactionAddict_ConfigMenu" inherits="UIDropDownMenuTemplate" id="1">
+					   <Scripts>
+						   <OnLoad>
+							   UIDropDownMenu_Initialize(self, FactionAddict_ConfigMenu_OnLoad, "MENU");
+						   </OnLoad>
+					   </Scripts>
+				    </Frame>
+					<Button name="FactionAddict_ConfigMenuButton">
+						<Size x="22" y="22"/>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="-13" y="24"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<NormalTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up"/> 
+						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+						<DisabledTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled"/>
+						<PushedTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down"/>
+						<Scripts>
+							<OnClick>
+								FactionAddict_ConfigMenuButton_OnClick(self);
+							</OnClick>
+							<OnEnter>
+								FactionAddict_DisplayTooltip(self);
+							</OnEnter>
+							<OnLeave function="GameTooltip_Hide"/>
+						</Scripts>
+					</Button>
+					<Button name="FactionAddict_SearchButton">
+						<Size x="22" y="22"/>
+						<Anchors>
+							<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="-30" y="24"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<NormalTexture file="Interface\Addons\FactionAddict\Textures\UI-FactionAddict-Search-Up"/> 
+						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+						<DisabledTexture file="Interface\Addons\FactionAddict\Textures\UI-FactionAddict-Search-Disabled"/>
+						<PushedTexture file="Interface\Addons\FactionAddict\Textures\UI-FactionAddict-Search-Down"/>
+						<Scripts>
+							<OnClick>
+								FactionAddict_SearchToggle_OnClick(self);
+							</OnClick>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+								GameTooltip:SetText(FactionAddictLocalization["SEARCH_TOGGLE"], 1.0,1.0,1.0 );
+							</OnEnter>
+							<OnLeave function="GameTooltip_Hide"/>
+						</Scripts>
+					</Button>
+					<!-- Search Box -->	
+					<EditBox parentKey="SearchBox" autoFocus="false" letters="25" hidden="true">
+						<Size>
+							<AbsDimension x="138" y="22"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parent" x="104" y="-7"/>
+						</Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture name="$parentLeft" urgency="5" file="Interface\Common\Common-Input-Border">
+									<Size>
+										<AbsDimension x="8" y="22"/>
+									</Size>
+									<Anchors>
+										<Anchor point="TOPLEFT">
+											<Offset x="-5" y="0"/>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+								</Texture>
+								<Texture name="$parentRight" urgency="5" file="Interface\Common\Common-Input-Border">
+									<Size>
+										<AbsDimension x="8" y="22"/>
+									</Size>
+									<Anchors>
+										<Anchor point="RIGHT">
+											<Offset x="0" y="0"/>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+								</Texture>
+								<Texture name="$parentMiddle" urgency="5" file="Interface\Common\Common-Input-Border">
+									<Size>
+										<AbsDimension x="0" y="22"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+										<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+									</Anchors>
+									<TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+								</Texture>
+							</Layer>
+							<Layer level="OVERLAY">
+								<Texture name="$parentSearchIcon" file="Interface\Common\UI-Searchbox-Icon" parentKey="searchIcon">
+									<Color r="0.6" g="0.6" b="0.6" />
+									<Size>
+										<AbsDimension x="14" y="14"/>
+									</Size>
+									<Anchors>
+										<Anchor point="LEFT" y="-2"/>
+									</Anchors>
+								</Texture>
+								<FontString parentKey="label" inherits="GameFontNormal">
+										<Anchors>
+											<Anchor point="LEFT" relativeTo="$parentSearchIcon" relativePoint="LEFT" x="15" y="2" />
+										</Anchors>
+										<Color r="0.6" g="0.6" b="0.6" />
+								</FontString>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnShow>
+								self:SetFontObject("GameFontDisable");
+								self.searchIcon:SetVertexColor(0.6, 0.6, 0.6);
+								self:SetTextInsets(16, 0, 0, 0);
+							</OnShow>
+							<OnEditFocusLost>
+								if ( self:GetText() == "" ) then
+									self:SetFontObject("GameFontDisable");
+									self.searchIcon:SetVertexColor(0.6, 0.6, 0.6);
+								end
+								self.clearButton:Hide();
+							</OnEditFocusLost>
+							<OnEditFocusGained>
+								self:SetFontObject("ChatFontNormal");
+								self.searchIcon:SetVertexColor(0.95, 0.95, 0.95);
+								self.clearButton:Show();
+							</OnEditFocusGained>
+							<OnEnterPressed function="EditBox_ClearFocus"/>
+							<OnEscapePressed function="EditBox_ClearFocus"/>
+							<OnTextChanged> 
+								FactionAddict_OnTextChanged(self, userInput);
+							</OnTextChanged>
+						</Scripts>
+						<Frames>
+							<Button name="$parentExitButton" parentKey="clearButton" hidden="true">
+								<Size x="17" y="17"/>
+								<Anchors>
+									<Anchor point="RIGHT" x="-3" y="0"/>
+								</Anchors>
+								<Layers>
+									<Layer level="ARTWORK">
+										<Texture file="Interface\FriendsFrame\ClearBroadcastIcon" alpha="0.5" parentKey="texture">
+											<Size>
+												<AbsDimension x="17" y="17"/>
+											</Size>
+											<Anchors>
+												<Anchor point="TOPLEFT" x="0" y="0"/>
+											</Anchors>
+										</Texture>
+									</Layer>
+								</Layers>
+								<Scripts>
+									<OnEnter>
+										self.texture:SetAlpha(1.0);
+									</OnEnter>
+									<OnLeave>
+										self.texture:SetAlpha(0.5);
+									</OnLeave>
+									<OnMouseDown>
+										if self:IsEnabled() then
+										self.texture:SetPoint("TOPLEFT", 1, -1);
+										end
+									</OnMouseDown>
+									<OnMouseUp>
+										self.texture:SetPoint("TOPLEFT", 0, 0);
+									</OnMouseUp>
+									<OnClick>
+										PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+										local editBox = self:GetParent();
+										FactionAddict_SearchClear_OnClick(editBox);
+									</OnClick>
+								</Scripts>
+							</Button>
+						</Frames>
+						<FontString inherits="ChatFontNormal"/>
+					</EditBox>
+				</Frames>
+				<Size x="320" y="397" />
+			</Frame>
+			<Button parent="FactionAddictTab1">
+				<Size x="310" y="18"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeto="frameFactionAddict" x ="25" y ="35" />
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture>
+							<Color r=".5" g="0.694" b="0.941" a="0.0"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						FactionAddict_AchText_OnEnter(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</Button>
+<!-- END Main Tab - Factions -->
+<!-- Second Tab - Log -->
+			<Frame name="FactionAddictTab2" hidden="true">
+				<Size x="320" y="397" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="20" y="-38"/>	
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture>
+							<Color r=".5" g="0.694" b="0.941" a="0.0"/>
+						</Texture>
+					</Layer>
+					<Layer level="BACKGROUND" textureSubLevel="1">
+						<Texture name="$parentHeader1" file="Interface\GuildFrame\GuildFrame" alpha="0.75">
+							<Size x="295" y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="frameFactionAddict" relativePoint="TOPLEFT" x="32" y="-89"/>
+							</Anchors>
+							<TexCoords left="0.00097656" right="0.31445313" top="0.93164063" bottom="0.97460938"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<Texture>
+							<Size x="17" y="288"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="21" y="2" relativeTo="FactionAddictLoggingScrollBar" />
+							</Anchors>
+							<Color r="0" g="0" b="0" a="0.25"/>
+						</Texture>
+						<FontString name="$parent_faDescText" parentKey="faDescText" inherits="GameFontHighlight" justifyH="CENTER">
+							<Size x="260" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="25" y="-7" relativeTo="$parent"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="hdr1" inherits="GameFontNormal">
+							<Size>
+								<AbsDimension x="0" y="0"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentHeader1" x="10" y="0"/>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_faFactionsText2" parentKey="faFactionsText2" inherits="GameFontNormalSmall" justifyH="CENTER">
+							<Size y="14"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" relativeto="frameFactionAddict" x ="-14" y ="36" />
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+<!-- END Second Tab - Log -->
+<!-- Third Tab - Config -->
+			<Frame name="FactionAddictTab3" hidden="true">
+				<Size x="320" y="397" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="20" y="-38"/>	
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture>
+							<Color r=".5" g="0.694" b="0.941" a="0.0"/>
+						</Texture>
+					</Layer>
+					<Layer level="BACKGROUND" textureSubLevel="1">
+						<Texture name="$parentCfgHeader1" file="Interface\GuildFrame\GuildFrame" alpha="0.75">
+							<Size x="295" y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="frameFactionAddict" relativePoint="TOPLEFT" x="32" y="-89"/>
+							</Anchors>
+							<TexCoords left="0.00097656" right="0.31445313" top="0.93164063" bottom="0.97460938"/>
+						</Texture>
+						<Texture name="$parentCfgHeader2" file="Interface\GuildFrame\GuildFrame" alpha="0.75">
+							<Size x="295" y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="frameFactionAddict" relativePoint="TOPLEFT" x="32" y="-247"/>
+							</Anchors>
+							<TexCoords left="0.00097656" right="0.31445313" top="0.93164063" bottom="0.97460938"/>
+						</Texture>
+						<Texture name="$parentCfgHeader3" file="Interface\GuildFrame\GuildFrame" alpha="0.75">
+							<Size x="295" y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="frameFactionAddict" relativePoint="TOPLEFT" x="32" y="-284"/>
+							</Anchors>
+							<TexCoords left="0.00097656" right="0.31445313" top="0.93164063" bottom="0.97460938"/>
+						</Texture>
+						<Texture name="$parentCfgHeader4" file="Interface\GuildFrame\GuildFrame" alpha="0.75">
+							<Size x="295" y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="frameFactionAddict" relativePoint="TOPLEFT" x="32" y="-343"/>
+							</Anchors>
+							<TexCoords left="0.00097656" right="0.31445313" top="0.93164063" bottom="0.97460938"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="$parent_faDescText" parentKey="faDescText" inherits="GameFontHighlight" justifyH="CENTER">
+							<Size x="260" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="25" y="-7" relativeTo="$parent"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="hdr1" inherits="GameFontNormal">
+							<Size>
+								<AbsDimension x="0" y="0"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentCfgHeader1" x="10" y="0"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="hdr2" inherits="GameFontNormal">
+							<Size>
+								<AbsDimension x="0" y="0"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentCfgHeader2" x="10" y="0"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="hdr3" inherits="GameFontNormal">
+							<Size>
+								<AbsDimension x="0" y="0"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentCfgHeader3" x="10" y="0"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="hdr4" inherits="GameFontNormal">
+							<Size>
+								<AbsDimension x="0" y="0"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentCfgHeader4" x="10" y="0"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+<!-- END Third Tab - Config -->
+<!-- Config Checkboxes -->
+			<CheckButton name="CheckButton_CF" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="$parentCfgHeader1" relativePoint="TOPLEFT" x="17" y="-18" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_CF" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_BC" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_CF" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_BC" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_WOTLK" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_BC" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_WOTLK" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_CATA" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_WOTLK" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_CATA" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_MOP" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_CATA" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_MOP" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_WOD" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_MOP" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_WOD" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_LG" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_WOD" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_LG" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+
+			<CheckButton name="CheckButton_BFA" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_LG" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_BFA" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+
+			<CheckButton name="CheckButton_OrderPct" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="14" y="14"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="$parentCfgHeader2" relativePoint="TOPLEFT" x="40" y="-21" />
+				</Anchors>  
+				<HitRectInsets>
+					<AbsInset left="0" right="0" top="0" bottom="0"/>
+				</HitRectInsets>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_OrderPct" relativePoint="TOPRIGHT" x="0" y="0"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-RadioButton">
+                    <TexCoords left="0" right="0.25" top="0" bottom="1"/>
+                </NormalTexture>
+                <HighlightTexture file="Interface\Buttons\UI-RadioButton" alphaMode="ADD">
+                    <TexCoords left="0.5" right="0.75" top="0" bottom="1"/>
+                </HighlightTexture>
+                <CheckedTexture file="Interface\Buttons\UI-RadioButton">
+                    <TexCoords left="0.25" right="0.5" top="0" bottom="1"/>
+                </CheckedTexture>
+			</CheckButton>
+			<CheckButton name="CheckButton_OrderName" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="14" y="14"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_OrderPct" relativePoint="TOPRIGHT" x="75" y="0" />
+				</Anchors>  
+				<HitRectInsets>
+					<AbsInset left="0" right="0" top="0" bottom="0"/>
+				</HitRectInsets>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_OrderName" relativePoint="TOPRIGHT" x="0" y="0"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-RadioButton">
+                    <TexCoords left="0" right="0.25" top="0" bottom="1"/>
+                </NormalTexture>
+                <HighlightTexture file="Interface\Buttons\UI-RadioButton" alphaMode="ADD">
+                    <TexCoords left="0.5" right="0.75" top="0" bottom="1"/>
+                </HighlightTexture>
+                <CheckedTexture file="Interface\Buttons\UI-RadioButton">
+                    <TexCoords left="0.25" right="0.5" top="0" bottom="1"/>
+                </CheckedTexture>
+			</CheckButton>
+			<CheckButton name="CheckButton_AO" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="$parentCfgHeader3" relativePoint="TOPLEFT" x="17" y="-18" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_AO" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_HO" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_AO" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_HO" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_AUTOBAR" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="$parentCfgHeader4" relativePoint="TOPLEFT" x="17" y="-18" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_AUTOBAR" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="CheckButton_HIDEINACTIVE" inherits="InterfaceOptionsCheckButtonTemplate" parent="FactionAddictTab3">
+				<Size x="24" y="24"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="CheckButton_AUTOBAR" relativePoint="TOPLEFT" x="0" y="-17" />
+				</Anchors>  
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="CheckButton_HIDEINACTIVE" relativePoint="TOPRIGHT" x="0" y="-6"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+<!-- END Config Checkboxes -->			
+<!-- Fourth Tab - About -->
+			<Frame name="FactionAddictTab4" hidden="true">
+				<Size x="320" y="397" />
+				<Anchors>
+					<Anchor point="TOPLEFT" x="20" y="-38"/>	
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture>
+							<Color r=".5" g="0.694" b="0.941" a="0.0"/>
+						</Texture>
+					</Layer>
+					<Layer level="BACKGROUND" textureSubLevel="1">
+						<Texture name="$parentHeader1" file="Interface\GuildFrame\GuildFrame" alpha="0.75">
+							<Size x="295" y="22"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="frameFactionAddict" relativePoint="TOPLEFT" x="32" y="-89"/>
+							</Anchors>
+							<TexCoords left="0.00097656" right="0.31445313" top="0.93164063" bottom="0.97460938"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString parentKey="hdr1" inherits="GameFontNormal">
+							<Size>
+								<AbsDimension x="0" y="0"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentHeader1" x="10" y="0"/>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_faDescText" parentKey="faDescText" inherits="GameFontHighlight" justifyH="CENTER">
+							<Size x="260" y="20"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="25" y="-7" relativeTo="$parent"/>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_faVersionText" parentKey="faVersionText" inherits="GameFontWhiteTiny">
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-50" y="6"/>
+							</Anchors>
+						</FontString>
+						<FontString name="FactionAddictAboutInfo" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP" spacing="2">
+							<Size>
+								<AbsDimension x="270" y="300"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentHeader1" relativePoint="BOTTOMLEFT" x="14" y="-5"/>
+							</Anchors>
+							<Color r="1" g="1" b="1"/>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+<!-- END Fourth Tab - About -->
+<!-- Close Button -->
+			<Button name="FactionAddictCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="4" y="-9"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+<!-- END Close Button -->
+<!-- Bottom Tabs -->
+			<Button name="$parentTab1" parentKey="Tab1Label" inherits="FriendsFrameTabTemplate" id="1">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="10" y="-1" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						FactionAddict_Tab_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab2" parentKey="Tab2Label" inherits="FriendsFrameTabTemplate" id="2">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-18" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						FactionAddict_Tab_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab3" parentKey="Tab3Label" inherits="FriendsFrameTabTemplate" id="3">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-18" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						FactionAddict_Tab_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab4" parentKey="Tab4Label" inherits="FriendsFrameTabTemplate" id="4">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab3" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="-18" y="0" />
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						FactionAddict_Tab_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</Button>
+<!-- END Bottom Tabs -->
+		</Frames>
+		<Scripts>
+			<OnLoad>FactionAddict_OnLoad(self)</OnLoad>
+			<OnDragStart>self:StartMoving()</OnDragStart>
+			<OnDragStop>self:StopMovingOrSizing()</OnDragStop>
+			<OnShow>FactionAddict_OnShow(self)</OnShow>
+			<OnHide>FactionAddict_OnHide(self)</OnHide>
+			<OnEvent>FactionAddict_OnEvent(self, event, ...)</OnEvent>
+		</Scripts>
+	</Frame>
+		
+</Ui>

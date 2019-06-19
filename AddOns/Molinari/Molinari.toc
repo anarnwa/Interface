@@ -1,0 +1,29 @@
+## Interface: 80000
+## Author: p3lim
+## Version: 80000.58-Release
+## Title: Molinari
+## Notes: One-click Milling, Prospecting, Disenchanting and Lockpicking!
+## OptionalDeps: LibProcessable, Wasabi
+## SavedVariables: MolinariBlacklistDB, MolinariDB
+
+## X-Curse-Project-ID: 20338
+## X-WoWI-ID: 13188
+
+libs\LibStub\LibStub.lua
+libs\LibProcessable\embed.xml
+libs\Wasabi\embed.xml
+
+locale\initialize.lua
+locale\deDE.lua
+locale\esES.lua
+locale\esMX.lua
+locale\frFR.lua
+locale\itIT.lua
+locale\koKR.lua
+locale\ptBR.lua
+locale\ruRU.lua
+locale\zhCN.lua
+locale\zhTW.lua
+
+Config.lua
+Molinari.lua

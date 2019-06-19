@@ -1,0 +1,24 @@
+## Interface: 80100
+## Title: Quest-o-matic
+## Notes: Auto accepting nor turning in quests
+## Title-zhCN: |c0066ffffQuestomatic自动交接任务|r
+## Notes-zhCN: |cFF34A2F7自动交接任务,按住Ctrl不动作.|r
+## Author: RiskyNet
+## Version: 2.6 for 8.1v7
+## https://github.com/jofner/Questomatic
+## https://www.curseforge.com/wow/addons/questomatic
+## https://wow.curseforge.com/projects/questomatic
+## https://www.wowinterface.com/downloads/info14119-Quest-o-matic.html#info
+## SavedVariables: QOMDB
+## OptionalDeps: Ace3
+
+## X-Embeds: Ace3
+## X-Category: Quests
+## X-Curse-Packaged-Version: 2.6
+## X-Curse-Project-Name: Questomatic
+## X-Curse-Project-ID: questomatic
+
+embeds.xml
+locales.xml
+Core.lua
+ziDong.lua

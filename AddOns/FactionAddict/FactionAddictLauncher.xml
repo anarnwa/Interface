@@ -1,0 +1,54 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\FrameXML\UI.xsd">
+
+	<Frame name="frameFactionAddictLauncher" hidden="false" parent="ReputationFrame" setAllPoints="true">
+		<Size>
+			<AbsDimension x="43" y="22"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPRIGHT">
+				<Offset>
+					<AbsDimension x="-10" y="-34"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>
+			<Button name="FactionAddictLauncher" parent="frameFactionAddictLauncher">
+				<Size>
+					<AbsDimension x="43" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						FactionAddictLauncher_OnClick(self);
+					</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+						GameTooltip:SetText(FactionAddictLocalization["LAUNCHER_TT"], 1.0,1.0,1.0 );
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+				<NormalTexture urgency="5" file="Interface\Addons\FactionAddict\Textures\UI-FactionAddictLauncher">
+					<TexCoords left=".25" right="0.921875" top="0.078125" bottom="0.421875"/>
+				</NormalTexture>
+				<PushedTexture file="Interface\Addons\FactionAddict\Textures\UI-FactionAddictLauncher">
+					<TexCoords left=".25" right="0.921875" top="0.578125" bottom="0.921875"/>
+				</PushedTexture>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
+					<Size>
+						<AbsDimension x="43" y="22"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOM">
+							<Offset>
+								<AbsDimension x="4" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</HighlightTexture>
+			</Button>
+		</Frames>
+	</Frame>
+	
+</Ui>

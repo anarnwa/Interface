@@ -1,0 +1,8 @@
+------------------------------------------------------------------------
+r313 | nevcairiel | 2019-03-13 14:26:53 +0000 (Wed, 13 Mar 2019) | 1 line
+Changed paths:
+   M /trunk/HandyNotes_HandyNotes.lua
+
+Remove usage of WorldMapTooltip, it has been removed
+------------------------------------------------------------------------
+

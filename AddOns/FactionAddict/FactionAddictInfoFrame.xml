@@ -1,0 +1,471 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\FrameXML\UI.xsd">
+
+	<Frame name="frameFactionAddictInfoFrame" enableMouse="true" hidden="true" parent="frameFactionAddict">
+		<Size>
+			<AbsDimension x="270" y="205"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT" relativeTo="frameFactionAddict" relativePoint="TOPRIGHT">
+				<Offset>
+					<AbsDimension x="4" y="-30"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop tile="true">
+			<BackgroundInsets>
+				<AbsInset left="4" right="4" top="4" bottom="4"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentFactionIconInfoWin" parentKey="FactionIconInfoWin" file="Interface\ICONS\achievement_reputation_01">
+					<Size x="40" y="40"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="10" y="-10"/>
+					</Anchors>
+				</Texture>
+				<FontString name="$parent_FactionNameTxtInfoWin" parentKey="FactionNameTxt" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x ="185" y ="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentFactionIconInfoWin" relativePoint="TOPRIGHT" x="8" y="0"/>
+					</Anchors>
+					<Color r="1" g="1" b="0"/>
+				</FontString>
+				<FontString name="$parent_FactionCategoryTxtInfoWin" parentKey="CategoryTxt" inherits="GameFontHighlightSmall" justifyH="LEFT">
+					<Size x ="200" y ="14"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentFactionIconInfoWin" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="2" y="-30"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+				<FontString name="$parent_FactionPctTxtInfoWin" parentKey="PctTxt" inherits="GameFontHighlightSmall" justifyH="LEFT">
+					<Size x ="150" y ="14"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_FactionCategoryTxtInfoWin" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+
+				<FontString name="FactionAddictRewardTxt" parentKey="RewardTxt" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" spacing="2">
+					<Size>
+						<AbsDimension x="250" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_FactionPctTxtInfoWin" relativePoint="BOTTOMLEFT" x="0" y="-17"/>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+				<Texture name="FactionAddictRewardIcon" parentKey="RewardIcon">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="FactionAddictRewardTxt" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+					</Anchors>
+				</Texture>
+				<FontString name="FactionAddictRewardName" parentKey="RewardName" inherits="GameFontNormalMed2" justifyH="LEFT" justifyV="TOP" spacing="2">
+					<Size>
+						<AbsDimension x="250" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="FactionAddictRewardIcon" relativePoint="TOPRIGHT" x="8" y="0"/>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+
+				<FontString name="FactionAddictFactionDescTxt" parentKey="DescTxt" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP" spacing="2">
+					<Size>
+						<AbsDimension x="250" y="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="FactionAddictRewardIcon" relativePoint="BOTTOMLEFT" x="0" y="0"/>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentFactionInfoOverlay" parentKey="FactionInfoOverlay" file="Interface\AchievementFrame\UI-Achievement-IconFrame">
+					<Size x="52" y="52"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parentFactionIconInfoWin" relativePoint="CENTER" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.0" right="0.5625" top="0" bottom="0.5625"/>
+				</Texture>
+				<Texture parentKey="SideFactionIcon" hidden="true" textureSubLevel="7">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="$parentFactionIconInfoWin">
+							<Offset>
+								<AbsDimension x="19" y="-15"/>
+							</Offset>
+						</Anchor>
+					</Anchors>	
+				</Texture>
+				<Texture parentKey="RewardIconBorder" file="Interface\Common\WhiteIconFrame" hidden="true">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="CENTER" relativeTo="FactionAddictRewardIcon" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="FactionAddictInfoCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="3" y="3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<PostClick>
+						PlaySound(SOUNDKIT.IG_INVENTORY_ROTATE_CHARACTER);
+					</PostClick>
+				</Scripts>
+			</Button>
+
+			<StatusBar name="$parentFAReputationBarInfoWin" parentKey="StatusBar" drawLayer="BACKGROUND" minValue="0" maxValue="1" defaultValue="1">
+				<Size>
+					<AbsDimension x="175" y="13"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_FactionNameTxtInfoWin" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="2" y="-5"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentText" inherits="GameFontHighlightSmall" justifyV="TOP" parentKey="text" hidden="true">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset x="0" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>	
+						<FontString name="$parentText" inherits="GameFontHighlightSmall" justifyV="TOP" parentKey="text2" hidden="true">
+							<Size x="0" y="0"/>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset x="0" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer level="ARTWORK">
+						<Texture name="$parentBorderLeft" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+							<Size x="16" y="0"/>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="-6" y="5"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMLEFT">
+									<Offset>
+										<AbsDimension x="-6" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.0625" top="0" bottom="0.75"/>
+						</Texture>
+						<Texture name="$parentBorderRight" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+							<Size x="16" y="0"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="6" y="5"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="6" y="-5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.812" right="0.8745" top="0" bottom="0.75"/>
+						</Texture>
+						<Texture name="$parentBorderCenter" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+							<Size x="16"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentBorderLeft" relativePoint="TOPRIGHT"/>
+								<Anchor point="BOTTOMRIGHT" relativeTo="$parentBorderRight" relativePoint="BOTTOMLEFT"/>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.812" top="0" bottom="0.75"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						self:SetStatusBarColor(0, .6, 0, 1);
+						self:SetMinMaxValues(0, 100);
+						self:SetValue(0);
+						self:GetStatusBarTexture():SetDrawLayer("BORDER");
+					</OnLoad>
+					<OnEnter>
+						FactionAddict_StatusBar_OnEnter(self);
+					</OnEnter>
+					<OnLeave>
+						FactionAddict_StatusBar_OnLeave(self);
+					</OnLeave>
+				</Scripts>
+				<BarTexture urgency="5" file="Interface\TargetingFrame\UI-StatusBar"/>
+
+				<Frames>
+					<Frame parentKey="FABonusIcon" hidden="true">
+						<Size x="16" y="16"/>
+						<Anchors>
+							<Anchor point="CENTER" relativeKey="$parent" relativePoint="LEFT" x="4" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<Texture parentKey="Texture" file="Interface\Common\ReputationStar" setAllPoints="true">
+									<TexCoords left="0.5" right="1" top="0.5" bottom="1"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+								GameTooltip:SetText(BONUS_REPUTATION_TITLE, 1, 1, 1);
+								GameTooltip:AddLine(BONUS_REPUTATION_TOOLTIP, nil, nil, nil, true);
+								GameTooltip:Show();
+								FactionAddict_StatusBar_OnEnter(self:GetParent());
+							</OnEnter>
+							<OnLeave>
+								GameTooltip:Hide();
+								FactionAddict_StatusBar_OnLeave(self:GetParent());
+							</OnLeave>
+						</Scripts>
+					</Frame>
+					<Frame parentKey="FAParagonIcon" hidden="true">
+						<Anchors>
+							<Anchor point="CENTER" relativeKey="$parent" relativePoint="RIGHT" x="3" y="0"/>
+						</Anchors>
+						<Size x="20" y="20"/>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture parentKey="Glow" atlas="ParagonReputation_Glow" useAtlasSize="true">
+									<Anchors>
+										<Anchor point="CENTER" x="-1" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="ARTWORK">
+								<Texture parentKey="Icon" atlas="ParagonReputation_Bag" useAtlasSize="true">
+									<Anchors>
+										<Anchor point="CENTER"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="OVERLAY">
+								<Texture parentKey="Check" atlas="ParagonReputation_Checkmark" useAtlasSize="true">
+									<Anchors>
+										<Anchor point="CENTER" x="5" y="-2"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="HIGHLIGHT">
+								<Texture parentKey="Highlight" atlas="ParagonReputation_Bag" useAtlasSize="true" alphaMode="ADD">
+									<Anchors>
+										<Anchor point="CENTER"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Frame>
+				</Frames>
+			</StatusBar>
+
+			<CheckButton parentKey="FALFGBonusRepButton" motionScriptsWhileDisabled="true">
+				<Size x="16" y="16"/>
+ 				<Anchors>
+ 					<Anchor point="TOPLEFT" relativeTo="$parentFAReputationBarInfoWin" relativePoint="TOPRIGHT" x="3" y="2"/>
+ 				</Anchors>
+ 				<Layers>
+ 					<Layer level="OVERLAY">
+ 						<Texture parentKey="Glow" file="Interface\Common\ReputationStar-Glow" alphaMode="ADD">
+ 							<Size x="32" y="32"/>
+ 							<Anchors>
+ 								<Anchor point="CENTER"/>
+ 							</Anchors>
+ 						</Texture>
+ 					</Layer>
+ 				</Layers>
+ 				<NormalTexture file="Interface\Common\ReputationStar">
+ 					<TexCoords left="0.5" right="1" top="0" bottom="0.5"/>
+ 				</NormalTexture>
+ 				<HighlightTexture file="Interface\Common\ReputationStar">
+ 					<TexCoords left="0" right="0.5" top="0.5" bottom="1"/>
+ 				</HighlightTexture>
+ 				<CheckedTexture file="Interface\Common\ReputationStar">
+ 					<TexCoords left="0" right="0.5" top="0" bottom="0.5"/>
+ 				</CheckedTexture>
+ 				<Animations>
+ 					<AnimationGroup parentKey="GlowAnim" looping="BOUNCE">
+						<Alpha childKey="Glow" change="-0.75" duration="1.0" smoothing="IN_OUT" order="1"/>
+ 						<Scripts>
+ 							<OnPlay>
+ 								self.loopsRemaining = 5;
+ 							</OnPlay>
+ 							<OnLoop>
+ 								self.loopsRemaining = self.loopsRemaining - 1;
+ 								if ( self.loopsRemaining == 0 ) then
+ 									self:Stop();
+ 									self:GetParent().Glow:Hide();
+ 								end
+ 							</OnLoop>
+ 						</Scripts>
+ 					</AnimationGroup>
+ 				</Animations>
+ 				<Scripts>
+ 					<OnClick>
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						SetLFGBonusFactionID(self.factionID);
+					</OnClick>
+ 					<OnEnter>
+ 						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+ 						GameTooltip:SetText(LFG_BONUS_REPUTATION_TOOLTIP, nil, nil, nil, nil, true);
+ 						GameTooltip:Show();
+ 					</OnEnter>
+ 					<OnLeave function="GameTooltip_Hide"/>
+ 				</Scripts>
+			</CheckButton>
+
+			<EditBox name="$parentEditBox" parentKey="EditBox" letters="40" autofocus="false">
+				<Size>
+					<AbsDimension x="230" y="20"></AbsDimension>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentFactionIconInfoWin" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="11" y="-5"></AbsDimension>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentLeft" urgency="5" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="8" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT">
+									<Offset x="-5" y="0"/>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentRight" urgency="5" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="8" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="RIGHT">
+									<Offset x="5" y="0"/>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentMiddle" urgency="5" file="Interface\Common\Common-Input-Border">
+							<Size>
+								<AbsDimension x="0" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+								<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad></OnLoad>
+					<OnEnter>
+						self:SetFocus();
+					</OnEnter>
+					<OnLeave>
+						self:HighlightText(0,0);
+						self:ClearFocus();
+					</OnLeave>
+					<OnEnterPressed function="EditBox_ClearFocus"/>
+					<OnEscapePressed function="EditBox_ClearFocus"/>
+					<OnEditFocusGained>
+						self:HighlightText();
+						self:SetCursorPosition(self:GetNumLetters());
+					</OnEditFocusGained>
+				</Scripts>
+				<FontString inherits="ChatFontNormal"></FontString>
+			</EditBox>
+
+			<CheckButton name="FactionInfo_CheckButton_MoveInactive" parentKey="CBMoveInactive" inherits="InterfaceOptionsCheckButtonTemplate">
+				<Size x="18" y="18"/>
+				<Anchors> 
+					<Anchor point="TOPLEFT" relativeTo="$parent_FactionPctTxtInfoWin" relativePoint="BOTTOMLEFT" x="-2" y="0" />
+				</Anchors>  
+				<HitRectInsets>
+					<AbsInset left="0" right="0" top="0" bottom="0"/>
+				</HitRectInsets>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="CheckButton_ShowFaction_font" parentKey="fs" inherits="SystemFont_Shadow_Small" justifyH="LEFT">
+							<Size x="0" y="12"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="FactionInfo_CheckButton_MoveInactive" relativePoint="TOPRIGHT" x="0" y="-2"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						FactionAddict_SetConfigVariables(self);
+					</OnClick>
+					<OnEnter>
+						FactionAddict_DisplayTooltip(self);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</CheckButton>
+
+
+	<!-- Watch Panel - Coming SOON -->
+			<Button name="FactionAddictLaunchWatchPanel" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size>
+					<AbsDimension x="150" y="21"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentEditBox" relativePoint="BOTTOMLEFT">
+						<Offset x="35" y="-5"/>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						FactionAddict_InfoWindow_Btn1_OnClick(self);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnShow>FactionAddict_InfoWindow_OnShow(self)</OnShow>
+		</Scripts>
+	</Frame>
+
+</Ui>

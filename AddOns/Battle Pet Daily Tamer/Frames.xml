@@ -1,0 +1,211 @@
+<Ui>
+	<!--
+		BattlePetDailyTamer is the "parent" frame that serves as a namespace and event
+		handler for the rest of the addon.
+
+		It has four child frames:
+
+			Frame       MapTooltip      the visible tooltip when you mouesover a paw on the world map
+			GameTooltip ScanTooltip     used for lifting npc and quest names off GameTooltips
+			Button      TrackingButton  the button that slides out from the world map's tracking button to open options
+			Frame       MenuFrame       the menu that opens when the above TrackingButton is clicked
+
+		The parent frame should never be hidden since it occasionally runs an OnUpdate.
+		It should also not be parented to UIParent so the tooltip remains independent.
+		TrackingButton and MenuFrame both get reparented to WorldMapFrame.
+	-->
+	<Frame name="BattlePetDailyTamer">
+		<Frames>
+			<!-- this frame is a custom tooltip that shows during the mouseover of paws on the map. -->
+			<Frame parentKey="MapTooltip" frameStrata="TOOLTIP" clampedToScreen="true" hidden="true">
+				<Backdrop bgFile="Interface\ChatFrame\ChatFrameBackground" edgeFile="Interface\ChatFrame\ChatFrameBackground">
+					<EdgeSize val="2"/>
+					<TileSize val="32"/>
+				</Backdrop>
+				<Size x="50" y="50"/>
+				<Frames>
+					<!-- this is for tooltips to display a tamer's pets: the level and type icon of up to three pets -->
+					<Frame parentKey="Pets"/>
+				</Frames>
+				<Scripts>
+					<OnLoad>
+						self:SetBackdropBorderColor(0,0,0)
+						self:SetBackdropColor(0.125,0.125,0.125)
+					</OnLoad>
+					<OnShow>
+						self:OnShow()
+					</OnShow>
+					<OnUpdate>
+						self:OnUpdate(elapsed)
+					</OnUpdate>
+				</Scripts>
+			</Frame>
+			<!-- this tooltip is never shown, it's used for creating tooltips of NPCs and quests to get their localized names -->
+			<GameTooltip parentKey="ScanTooltip" name="BattlePetDailyTamerScanTooltip" inherits="GameTooltipTemplate"/>
+			<!-- this is the button that slides out from the world frame tracking button, to toggle options;
+				it has no parent initially. when WorldMapFrame loads it's attached to it -->
+			<Button parentKey="TrackingButton" flattenRenderLayers="true" hidden="true">
+				<Size x="32" y="32"/>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\Minimap\UI-Minimap-Background">
+							<Size x="25" y="25"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="2" y="-4"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<Texture file="Interface\Minimap\Minimap-TrackingBorder">
+							<Size x="54" y="54"/>
+							<Anchors>
+								<Anchor point="TOPLEFT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<NormalTexture file="Interface\Icons\Tracking_WildPet">
+					<Size x="18" y="18"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="7" y="-7"/>
+					</Anchors>
+					<Color r="0.75" g="0.75" b="0.75"/>
+				</NormalTexture>
+				<PushedTexture file="Interface\Icons\Tracking_WildPet">
+					<Size x="18" y="18"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="9" y="-9"/>
+					</Anchors>
+					<Color r="0.45" g="0.45" b="0.45"/>
+				</PushedTexture>
+				<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD"/>
+				<!-- animations to slide out (down) and slide in (up) from underneath the default tracking button -->
+				<Animations>
+					<AnimationGroup parentKey="SlideOut">
+						<Translation duration="0.15" order="1" offsetX="0" offsetY="-32"/>
+						<Scripts>
+							<OnPlay>
+								BattlePetDailyTamer:AnchorTrackingButton("TOP")
+							</OnPlay>
+							<OnFinished>
+								BattlePetDailyTamer:AnchorTrackingButton("BOTTOM")
+							</OnFinished>
+						</Scripts>
+					</AnimationGroup>
+					<AnimationGroup parentKey="SlideIn">
+						<Translation duration="0.15" order="1" offsetX="0" offsetY="32"/>
+						<Scripts>
+							<OnPlay>
+								BattlePetDailyTamer:AnchorTrackingButton("BOTTOM")
+							</OnPlay>
+							<OnFinished>
+								BattlePetDailyTamer:AnchorTrackingButton("TOP")
+								self:GetParent():Hide()
+							</OnFinished>
+						</Scripts>
+					</AnimationGroup>
+				</Animations>
+				<Scripts>
+					<OnClick>
+						self:OnClick(button)
+					</OnClick>
+					<OnHide>
+						self:OnHide()
+					</OnHide>
+					<OnUpdate>
+						self:OnUpdate(elapsed)
+					</OnUpdate>
+				</Scripts>
+			</Button>
+			<!-- this is the menu that appears when the slide-out tracking button is clicked -->
+			<Frame parentKey="MenuFrame" frameStrat="FULLSCREEN_DIALOG" clampedToScreen="true" flattenRenderLayers="true" hidden="true">
+				<Size x="200" y="128"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.TrackingButton" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+				<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize val="16"/>
+					<TileSize val="16"/>
+					<BackgroundInsets>
+						<AbsInset left="3" right="3" top="3" bottom="3"/>
+					</BackgroundInsets>
+					<Color r="0" g="0" b="0"/>
+				</Backdrop>
+				<Scripts>
+					<OnKeyDown>
+						self:OnKeyDown(key)
+					</OnKeyDown>
+					<OnUpdate>
+						self:OnUpdate(elapsed)
+					</OnUpdate>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self:RegisterEvent("PLAYER_LOGIN")
+			</OnLoad>
+			<OnEvent>
+				self:OnEvent(event,...)
+			</OnEvent>
+		</Scripts>
+	</Frame>
+
+	<!-- template for paw pin -->
+	<Frame name="BattlePetDailyTamerPinTemplate" mixin="BattlePetDailyTamerPinMixin" virtual="true">
+		<Size x="16" y="16"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Texture" file="Interface\AddOns\Battle Pet Daily Tamer\Paw.tga"/>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<!-- template for the menu buttons -->
+	<Button name="BattlePetDailyTamerMenuItemTemplate" virtual="true">
+		<Size x="180" y="16"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<!-- this isn't in HIGHLIGHT layer so the highlight appears behind the checkbox/icon/text -->
+				<Texture parentKey="Highlight" file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" setAllPoints="true" hidden="true"/>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Check" file="Interface\Common\UI-DropDownRadioChecks">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="LEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="Icon">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+			</Layer>
+		</Layers>
+		<ButtonText parentKey="Text">
+			<Anchors>
+				<Anchor point="LEFT" x="20" y="0"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontHighlightSmallLeft"/>
+		<HighlightFont style="GameFontHighlightSmallLeft"/>
+		<DisabledFont style="GameFontDisableSmallLeft"/>
+		<Scripts>
+			<OnEnter>
+				self.Highlight:Show()
+			</OnEnter>
+			<OnLeave>
+				self.Highlight:Hide()
+			</OnLeave>
+			<OnClick>
+				BattlePetDailyTamer.MenuButtonOnClick(self)
+			</OnClick>
+		</Scripts>
+	</Button>
+
+
+</Ui>

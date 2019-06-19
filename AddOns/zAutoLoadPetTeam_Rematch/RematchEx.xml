@@ -1,0 +1,113 @@
+<Ui>
+	<EditBox name="ALPTInputBoxTemplate" autoFocus="true" inherits="RematchInputBoxTemplate,RematchTooltipScripts" virtual="true">
+		<Size x="80" y="24"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString parentKey="Label" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="-2" y="0"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEscapePressed>
+				Rematch:HideDialog()
+			</OnEscapePressed>
+			<OnChar>
+				ALPTRematch.PreferencesOnChar(self)
+			</OnChar>
+			<OnTextChanged>
+				ALPTRematch.PreferencesOnTextChanged(self)
+			</OnTextChanged>
+		</Scripts>
+	</EditBox>
+	<Frame parentKey="ALPTCConfigs" parent="RematchDialog" hidden="true">
+		<Size x="212" y="210"/>
+		<Frames>
+			<Frame parentKey="Top">
+				<Size x="280" y="20"/>
+				<Anchors>
+					<Anchor point="TOP"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture hidden="true">
+							<Color r="0" g="1" b="0" a="0.15"/>
+						</Texture>
+					</Layer>
+					<Layer level="ARTWORK">
+						<FontString parentKey="PrefKey" inherits="GameFontNormal">
+							<Size x="260" y="0"/>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-10"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame> <!-- Top -->
+		</Frames>
+		<Frames>
+			<CheckButton parentKey="Disable1" inherits="UICheckButtonTemplate,RematchTooltipScripts" id="1">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.Top" relativePoint="BOTTOMLEFT" x="30" y="-20"/>
+				</Anchors>
+			</CheckButton>
+
+			<CheckButton parentKey="Disable2" inherits="UICheckButtonTemplate,RematchTooltipScripts" id="2">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.Disable1" relativePoint="RIGHT" x="90" y="0"/>
+				</Anchors>
+			</CheckButton>
+
+			<EditBox parentKey="HP1" inherits="ALPTInputBoxTemplate" id="11">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.Disable1" relativePoint="BOTTOMLEFT" x="120" y="-10"/>
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="var" value="healthCheck1"/>
+				</KeyValues>
+			</EditBox>
+			<EditBox parentKey="HP2" inherits="ALPTInputBoxTemplate" id="12">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.HP1" relativePoint="BOTTOM" x="0" y="-10"/>
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="var" value="healthCheck2"/>
+				</KeyValues>
+			</EditBox>
+			<EditBox parentKey="HP3" inherits="ALPTInputBoxTemplate" id="13">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.HP2" relativePoint="BOTTOM" x="0" y="-10"/>
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="var" value="healthCheck3"/>
+				</KeyValues>
+			</EditBox>
+
+			<CheckButton parentKey="Breed1" inherits="UICheckButtonTemplate,RematchTooltipScripts" id="14">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.HP3.Label" relativePoint="BOTTOMLEFT" x="-5" y="-15"/>
+				</Anchors>
+			</CheckButton>
+
+			<CheckButton parentKey="Breed2" inherits="UICheckButtonTemplate,RematchTooltipScripts" id="15">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Breed1" relativePoint="BOTTOM" x="0" y="-5"/>
+				</Anchors>
+			</CheckButton>
+
+			<CheckButton parentKey="Breed3" inherits="UICheckButtonTemplate,RematchTooltipScripts" id="16">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Breed2" relativePoint="BOTTOM" x="0" y="-5"/>
+				</Anchors>
+			</CheckButton>
+		</Frames>
+	</Frame>
+
+</Ui>
