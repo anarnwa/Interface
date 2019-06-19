@@ -1,0 +1,18 @@
+{
+	"version": "5.09",
+	"search": 0,
+	"searchList": [
+		{
+			"img": "https://media.forgecdn.net/avatars/thumbnails/59/789/62/62/636141477814390677.jpg",
+			"name": "CompactRaid",
+			"fileName": "compactraid",
+			"description": "Blizzard raid frames enhancement"
+		},
+		{
+			"img": "https://media.forgecdn.net/avatars/thumbnails/168/700/62/62/636710790459360468.png",
+			"name": "LucyRaidFrames",
+			"fileName": "lucyraidframes",
+			"description": "Adjusts Blizzards CompactRaidFrames to my own preferences"
+		}
+	]
+}
