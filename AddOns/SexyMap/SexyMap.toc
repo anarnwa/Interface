@@ -1,5 +1,5 @@
 ## Interface: 80100
-## Version: v8.1.1
+## Version: v8.1.2
 ## Title: SexyMap
 ## Notes: Spice up your minimap with some sexy options.
 ## Notes-deDE: Spice up your minimap with some sexy options.
@@ -14,7 +14,7 @@
 ## Notes-ptBR: Dê uma apimentada no seu minimapa com algumas opções sexy.
 ## Author: Funkydude
 ## X-Credits: Antiarc (Former Author)
-## SavedVariables: SexyMap2DB
+## SavedVariables: SexyMap2DB, SexyMap82
 
 ## X-License: All Rights Reserved: You are free to fork and modify on GitHub, please ask us about anything else.
 ## X-Curse-Project-ID: 15936
