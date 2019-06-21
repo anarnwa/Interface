@@ -1,12 +1,82 @@
-tag 6db54f95901ade16176013490e243b7a64afdc86 v1.5
+tag c0f375d5af5a72ca2b230794b645b87a75361ba7 v1.6-beta1
 Author:	Ethan Centaurai <ethancentaurai@outlook.com>
-Date:	Sun Jul 22 12:27:13 2018 +0100
+Date:	Thu Jun 20 20:17:19 2019 +0100
 
-Tagging as v1.5.
+Tagging as v1.6-beta1.
 
-commit 3731495ff8273a0d850214b796aa8d378112448c
+commit 4dd9f8d52ae4d391c737f0d81c7017316597d37e
 Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Sun Jul 22 12:19:17 2018 +0100
+Date:   Thu Jun 20 20:07:09 2019 +0100
 
-    Updated for Patch 8.0.
+    Added notes to tooltips.
+
+commit b0fd47955ca2fc67851f6016918b0c08d145417a
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Thu Jun 20 20:06:34 2019 +0100
+
+    Tweak.
+
+commit cc0dd9890d1a1022dd1a1234ba6fd665d277378c
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Thu Jun 20 19:19:19 2019 +0100
+
+    Whoops.
+
+commit 306fbdca3d16b7c0b5090f9ff1178cdbed9b1f0c
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Thu Jun 20 19:00:55 2019 +0100
+
+    Removed Zidormi
+    
+    Markers for her locations are on the in-game world map by default now.
+
+commit 148c5ac5769a9ff4e0870f7722e8fe1d226951f3
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Sat Jun 15 18:47:38 2019 +0100
+
+    Set theme jekyll-theme-slate
+
+commit d93d0b14ef3947ff37e713c1b22d74f6fdd3a11c
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Sat Jun 15 18:22:39 2019 +0100
+
+    Create FUNDING.yml
+
+commit cd03c47d1d9d6a0ed32e4d862748b525fe2afcc4
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Sat Jun 15 17:59:10 2019 +0100
+
+    Fixed TomTom waypoints.
+
+commit 11224bfc3f3505e2fb5c1b311818f95614f3ca82
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Sat Jun 15 17:48:23 2019 +0100
+
+    Update README.md
+
+commit a4b8074e6181e56e9a7325ac1bd501d9deefb777
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Sat Jun 15 17:48:05 2019 +0100
+
+    Bump Interface number to 80100.
+
+commit 1b71bdfa2fdbdef83ab326c8ff0fe00400442487
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Sat Jun 15 17:47:49 2019 +0100
+
+    Updated engine for Patch 8.1.
+
+commit c53c85fbc452320317f6e357523866d0a303d2f9
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Mon Feb 11 19:34:44 2019 +0000
+
+    Use server time instead of local time.
+    
+    Local time causes more problems than it solves.
+
+commit a5d88e7563638abda600ea7b701dc55b33ac8d28
+Author: Ethan Centaurai <ethancentaurai@outlook.com>
+Date:   Thu Nov 1 18:26:55 2018 +0000
+
+    Use local time instead of server time.
 
