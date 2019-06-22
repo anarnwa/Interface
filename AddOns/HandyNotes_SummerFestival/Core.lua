@@ -56,6 +56,7 @@ local notes = {
 	["11862"] = "Speak to Zidormi in Tirisfal to gain access to Brill.",
 }
 
+
 -- upvalues
 local _G = getfenv(0)
 
@@ -70,8 +71,6 @@ local IsControlKeyDown = _G.IsControlKeyDown
 local LibStub = _G.LibStub
 local next = _G.next
 local UIParent = _G.UIParent
-local WorldMapButton = _G.WorldMapButton
-local WorldMapTooltip = _G.WorldMapTooltip
 
 local HandyNotes = _G.HandyNotes
 local TomTom = _G.TomTom
@@ -82,48 +81,41 @@ local points = SummerFestival.points
 
 -- plugin handler for HandyNotes
 function SummerFestival:OnEnter(mapFile, coord)
-	local tooltip = self:GetParent() == WorldMapButton and WorldMapTooltip or GameTooltip
-
 	if self:GetCenter() > UIParent:GetCenter() then -- compare X coordinate
-		tooltip:SetOwner(self, "ANCHOR_LEFT")
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 	else
-		tooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 	end
 
 	local point = points[mapFile] and points[mapFile][coord]
-
 	local text
-		local questID, mode = point:match("(%d+):(.*)")
+	local questID, mode = point:match("(%d+):(.*)")
 
-		if mode == "H" then -- honour the flame
-			text = "Honour the Flame"
-		elseif mode == "D" then -- desecrate this fire
-			text = "Desecrate this Fire"
-		elseif mode == "C" then -- stealing the enemy's flame
-			text = "Capture the City's Flame"
-		end
+	if mode == "H" then -- honour the flame
+		text = "Honour the Flame"
+	elseif mode == "D" then -- desecrate this fire
+		text = "Desecrate this Fire"
+	elseif mode == "C" then -- stealing the enemy's flame
+		text = "Capture the City's Flame"
+	end
 
-	tooltip:SetText(text)
+	GameTooltip:SetText(text)
 
 	if notes[questID] then
-		tooltip:AddLine(notes[questID])
-		tooltip:AddLine(" ")
+		GameTooltip:AddLine(notes[questID])
+		GameTooltip:AddLine(" ")
 	end
 
 	if TomTom then
-		tooltip:AddLine("Right-click to set a waypoint.", 1, 1, 1)
-		tooltip:AddLine("Control-Right-click to set waypoints to every bonfire.", 1, 1, 1)
+		GameTooltip:AddLine("Right-click to set a waypoint.", 1, 1, 1)
+		GameTooltip:AddLine("Control-Right-click to set waypoints to every bonfire.", 1, 1, 1)
 	end
 
-	tooltip:Show()
+	GameTooltip:Show()
 end
 
 function SummerFestival:OnLeave()
-	if self:GetParent() == WorldMapButton then
-		WorldMapTooltip:Hide()
-	else
-		GameTooltip:Hide()
-	end
+	GameTooltip:Hide()
 end
 
 
