@@ -1,12 +1,13 @@
 ------------------------------------------------------------------------
-r454 | Zensunim | 2019-05-25 18:26:44 +0000 (Sat, 25 May 2019) | 2 lines
+r456 | Zensunim | 2019-06-21 06:15:57 +0000 (Fri, 21 Jun 2019) | 2 lines
 Changed paths:
    M /trunk/GTFO.lua
    M /trunk/GTFO.toc
+   M /trunk/GTFO_Fail_BFA.lua
    M /trunk/GTFO_Spells_BFA.lua
    M /trunk/ReadMe.txt
 
-4.48.1
-* Added BFA spells for Battle of Dazar'alor
+4.48.2
+* Added Battle for Azeroth spells (world)
 ------------------------------------------------------------------------
 
