@@ -68,7 +68,7 @@ function core._1205:Oregorger()
 	--When ore is dropped wait 5 seconds for another player to get orb else faile
 	if core.type == "SPELL_AURA_REMOVED" and core.spellId == 163454 and core.achievementsCompleted[1] == false then
 		oreFound = false
-		timer = C_Timer.After(5, function() 
+		timer = C_Timer.NewTimer(5, function() 
 			if oreFound == false then
 				if core.achievementsCompleted[1] == false then
 					core:getAchievementFailed()
@@ -267,5 +267,8 @@ function core._1205:ClearVariables()
 	------------------------------------------------------
 	---- Oregorger
 	------------------------------------------------------
-	local timer = nil
+	if timer ~= nil then
+		timer:Cancel()
+	end
+	timer = nil
 end
