@@ -225,6 +225,10 @@ function NarciAPI_GetPrimaryStatusName()
 	return ps;
 end
 
+--------------------
+----Tooltip Scan----
+--------------------
+
 local TP = CreateFrame("GameTooltip", "NarciVirtualTooltip", nil, "GameTooltipTemplate")
 TP:SetScript("OnLoad", GameTooltip_OnLoad);
 TP:SetOwner(UIParent, 'ANCHOR_NONE');
@@ -278,6 +282,34 @@ local rightBrace = "%)";
 if (GetLocale() == "zhCN") or (GetLocale() == "zhTW") then
     leftBrace = "（"
     rightBrace = "）"
+end
+
+
+local SOURCE_KNOWN = TRANSMOGRIFY_TOOLTIP_APPEARANCE_KNOWN;
+local APPEARANCE_KNOWN = TRANSMOGRIFY_TOOLTIP_ITEM_UNKNOWN_APPEARANCE_KNOWN;
+local APPEARANCE_UNKNOWN = TRANSMOGRIFY_TOOLTIP_APPEARANCE_UNKNOWN;
+
+function NarciAPI_IsAppearanceKnown(itemLink)
+    --Need to correspond with C_TransmogCollection.PlayerHasTransmog
+    if not itemLink then    return; end
+    TP:SetHyperlink(itemLink);
+    local str;
+    local num = TP:NumLines();
+    for i = num, num - 2, -1 do
+        str = nil;
+        str = _G["NarciVirtualTooltip".."TextLeft"..i]
+        if not str then
+            return false;
+        else
+            str = str:GetText();
+        end
+        if str == SOURCE_KNOWN or str == APPEARANCE_KNOWN then
+            return true;
+        elseif str == APPEARANCE_UNKNOWN then
+            return false;
+        end
+    end
+    return false;
 end
 
 local function trimComma(text)
@@ -430,8 +462,9 @@ function NarciAPI_OptimizeBorderThickness(self)
     self:SetPoint(point, relativeTo, relativePoint, math.floor(xOfs + 0.5), math.floor(yOfs + 0.5))
 
     local scale = string.match(GetCVar( "gxWindowedResolution" ), "%d+x(%d+)" );
-    local uiScale = self:GetEffectiveScale();
+    local uiScale = self:GetEffectiveScale(); 
     local rate = 768/scale/uiScale;
+    --print(rate)
     local borderWeight = 2;
     local weight = borderWeight * rate;
     local weight2 = weight * math.sqrt(2);
@@ -527,6 +560,10 @@ function NarciAPI_SmoothScroll_Initialization(self, updatedList, updateFunc, del
     local SmoothScrollContainer = CreateFrame("Frame", frameName, self);
     SmoothScrollContainer:Hide();
     
+    local scale = string.match(GetCVar( "gxWindowedResolution" ), "%d+x(%d+)" );
+    local uiScale = self:GetEffectiveScale(); 
+    local pixel = 768/scale/uiScale;
+    
     SmoothScrollContainer.stepSize = 0;
     SmoothScrollContainer.delta = 0;
     SmoothScrollContainer.animationDuration = 0;
@@ -534,7 +571,7 @@ function NarciAPI_SmoothScroll_Initialization(self, updatedList, updateFunc, del
 	SmoothScrollContainer.maxVal = 0;
     SmoothScrollContainer.deltaRatio = deltaRatio or 1;
     SmoothScrollContainer.timeRatio = timeRatio or 1;
-    SmoothScrollContainer.minOffset = minOffset or 2;
+    SmoothScrollContainer.minOffset = pixel or minOffset or 2;
     SmoothScrollContainer:SetScript("OnUpdate", SmoothScrollContainer_OnUpdate);
     SmoothScrollContainer:SetScript("OnShow", function(self)
         self.EndValue = self:GetParent().scrollBar:GetValue();

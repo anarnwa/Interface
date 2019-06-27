@@ -4,7 +4,7 @@
 -- Desc: Addon for World of Warcraft
 --
 -- Author: gmz323(Greg)
--- current version: v1.55
+-- current version: v1.56
 -- (c) 2011-2019
 --
 =============================================================================
@@ -68,6 +68,13 @@ My Other Addons:
 
 Changelog:
 ==========
+
+v1.56 (2019-06-26)
+------------------
+* Update for 8.2 client.
+* Added faction: Rustbolt Resistance (alliance and horde)
+* Added faction: The Unshackled (horde)
+* Added faction: Waveblade Ankoan (alliance)
 
 v1.55 (2019-03-23)
 ------------------

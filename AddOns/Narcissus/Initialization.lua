@@ -82,4 +82,5 @@ initialize:SetScript("OnEvent",function(self,event,...)
     if event == "VARIABLES_LOADED" then
         Initialize_NarcissusDB();
     end
+    self:UnregisterEvent("VARIABLES_LOADED")
 end)

@@ -219,6 +219,7 @@ Widget.CROWD_CONTROL_SPELLS = {
   --[204242] = PC_SNARE,        -- Consecrated Ground - same aura as Consecration
   -- Retribution
   -- [205273] = PC_SNARE,       -- Wake of Ashes - from Artefact weapon
+  [255937] = PC_SNARE,          -- Wake of Ashes - Talent
   [183218] = PC_SNARE,          -- Hand of Hindrance
 
   -- Priest
@@ -574,7 +575,7 @@ function Widget:UpdateUnitAuras(frame, unit, enabled_auras, enabled_cc, SpellFil
 
   local aura, show_aura
   local aura_count = 1
-  local rank, isCastByPlayer
+  local isCastByPlayer
   for i = 1, 40 do
     show_aura = false
 
@@ -700,9 +701,10 @@ function Widget:UpdateUnitAuras(frame, unit, enabled_auras, enabled_cc, SpellFil
   end
   aura_count_cc = aura_count_cc - 1
 
-  frame.ActiveAuras = max_auras_no - aura_count_cc
+  aura_count = max_auras_no - aura_count_cc
+  frame.ActiveAuras = aura_count
   -- Clear extra slots
-  for i = max_auras_no + 1, self.MaxAurasPerGrid do
+  for i = aura_count + 1, self.MaxAurasPerGrid do
     aura_frames[i]:Hide()
     AuraHighlightStop(aura_frames[i].Highlight)
   end
@@ -716,6 +718,7 @@ function Widget:UpdateUnitAuras(frame, unit, enabled_auras, enabled_cc, SpellFil
       aura_frame_list_cc[i]:Hide()
     end
   end
+
 end
 
 function Widget:UpdatePositionAuraGrid(frame, y_offset)

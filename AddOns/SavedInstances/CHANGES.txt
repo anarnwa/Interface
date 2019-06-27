@@ -1,37 +1,31 @@
-tag 910cf74a4c9c7f49a27b79317609b1e3b78e9c5d 8.1.4
+tag d54f8b6683a236500c565c0836767a3ca41e64c3 8.2.0
 Author:	Benjamin Staneck <staneck@gmail.com>
-Date:	Fri Jun 14 01:50:11 2019 +0200
+Date:	Wed Jun 26 06:42:57 2019 +0200
 
-commit ddfc7c656e3d54d168ade4e87eb3281d7a8a1bdb
+Tagging as 8.2.0
+
+commit 6225925772e18c06162fd0518742323a1dd2113f
+Author: Benjamin Staneck <staneck@gmail.com>
+Date:   Wed Jun 26 06:42:00 2019 +0200
+
+    Update TOC for Patch 8.2
+
+commit 5b1adcbfbbecbb4ac5f331218e3b48dfd22cd212
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Thu May 9 21:08:51 2019 +0800
+Date:   Sun Jun 16 14:58:34 2019 +0800
 
-    fixes #279
+    fixes #257
 
-commit 7a2761f8e1576ab5fed33932228b9b69b8961a96
+commit fff36285f612951217ed0acbf1734087f5f3b29c
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Sun May 5 23:15:22 2019 +0800
+Date:   Fri Jun 14 16:46:17 2019 +0800
 
-    Track experience and rest experience
-    closes #181
+    fixes #287
 
-commit 3e38d55497367a8e69c69b300e00a00bbef1b8a1
+commit c3d5ac79b54f37a2117cee499234c7c1673ee225
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Sat May 4 21:04:05 2019 +0800
+Date:   Fri Jun 14 12:10:11 2019 +0800
 
-    Update Warfront after completing quest
-    fixes #276
-
-commit 36d6aaad31cba81442137cd1873a3c23048c623c
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Fri May 3 18:12:31 2019 +0800
-
-    Update Timewalking Weekly iconTexture
-
-commit dc0d88b8b4a65a51709929546361dbdc2cfcd3dc
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Fri May 3 14:54:50 2019 +0800
-
-    Use M+ Keystone Abbr. from Raider.io
-    closes #275
+    Fix Quest Tag
+    fixes #284
 

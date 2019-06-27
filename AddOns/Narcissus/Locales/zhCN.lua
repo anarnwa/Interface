@@ -141,6 +141,7 @@ NARCI_PATCH_NOTES = "v1.0.5 Patch Notes";
 NARCI_SPLASH_CLOSE_AND_CONTINUE = "关闭此窗口并继续";
 NARCI_TRY_IT_NOW = "点击这里来启用...";
     --Patch-specific
+    NARCI_SPLASH_MESSAGE82 = "|cff40C7EB8.2版本常规更新 :)|r"
     NARCI_AFK_ENABLED = "AFK画面已开启。你可以在“偏好设定-拓展功能”中关闭它。";
     NARCI_LETTERBOX_ENABLED = "宽荧幕效果已开启。 你可以在“偏好设定-效果”中关闭它。";
     --

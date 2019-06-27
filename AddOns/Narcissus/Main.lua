@@ -3,7 +3,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 --]]
 
 --Settings storaged in NarcissusDB
-local Current_Version = 10050;	--last: 41
+local Current_Version = 10051;	--last: 50
 local Irrelevant_Attribute_Alpha = 0.5;
 local slotTable = {};
 local statTable = {};
@@ -41,6 +41,7 @@ local ltrim = string.trim;
 local UIFrameFadeIn = UIFrameFadeIn;
 local UIFrameFadeOut = UIFrameFadeOut;
 local FadeFrame = NarciAPI_FadeFrame;
+local UIParent = _G.UIParent
 
 function PlaceHolderFeature_OnLoad(self)
 	self.tooltipHeadline = "Button-PH";
@@ -630,10 +631,11 @@ local function ResetCamera()
 	end
 		
 	ConsoleExec( "pitchlimit 88")
-
+	
 	FadeFrame(Narci_Vignette, 0.5, "OUT")
 	Narci_Attribute.animOut:Play();
 	C_Timer.After(0.1, function()
+		--UIFrameFadeIn(UIParent, 0.5, 0, 1);	--cause frame rate drop
 		Minimap:Show()
 		local CameraFollowStyle = GetCVar("cameraSmoothStyle");
 		if CameraFollowStyle == "0" then		--workaround for auto-following
@@ -830,9 +832,11 @@ end
 ---------------End of derivation---------------
 
 function Narci_ItemSlotButton_OnEnter(self, direction)
+	--[[
 	if self.itemModID then
-		--print(self.itemModID)
+		print(self.itemModID)
 	end
+	--]]
 	self.Highlight:StopAnimating();
 	self.Highlight.BlingIn:Play();
 	ForceTooltipToShow();
@@ -1023,6 +1027,7 @@ function Narci_ItemSlotButton_OnClick(self, button)
 			PaperDollItemSlotButton_OnModifiedClick(self, button);
 			
 			TakeOutFromUIParent(AzeriteEmpoweredItemUI, "MEDIUM", true);
+			TakeOutFromUIParent(AzeriteEssenceUI, "MEDIUM", true);
 			TakeOutFromUIParent(ItemSocketingFrame, "MEDIUM", true);
 			TakeOutFromUIParent(ArtifactFrame, "MEDIUM", true);
 
@@ -1161,17 +1166,12 @@ function Narci_ItemSlotButton_OnLoad(self)
 		itemIcon = C_Item.GetItemIcon(itemLocation)
 		itemQuality = C_Item.GetItemQuality(itemLocation)
 		local appliedSourceID, appliedVisualID = GetSlotVisualID(slotId);
-		--print(self:GetName().." "..appliedVisualID)
 		if appliedVisualID > 0 then
 			local sourceInfo = C_TransmogCollection.GetSourceInfo(appliedSourceID)
-			--print(sourceInfo.name)
-			--local sources = C_TransmogCollection.GetAppearanceSources(appliedVisualID);
 			self.itemID = sourceInfo.itemID																							--saved for export
 			itemName = sourceInfo.name; 																							--sourceitemName
-			local appearanceID, sourceID = C_TransmogCollection.GetItemInfo(sourceInfo.itemID, sourceInfo.itemModID)
-
-			itemQuality = sourceInfo.quality or 12;
-			--print("quality is: "..itemQuality)																					--sourceitemQuality
+			local _, sourceID = C_TransmogCollection.GetItemInfo(sourceInfo.itemID, sourceInfo.itemModID)							--appearanceID, sourceID
+			itemQuality = sourceInfo.quality or 12;																				--sourceitemQuality
 			itemIcon = GetItemIcon(sourceInfo.itemID); 																				--sourceitemIcon
 			local _, _, _, hex = GetItemQualityColor(itemQuality)
 			_, self.hyperlink = GetItemInfo(sourceInfo.itemID)
@@ -3299,14 +3299,14 @@ ACL:SetScript("OnEvent",function(self,event,...)
 		Narci_SetActiveBorderTexture();
 		AAAStatus_OnLoad(Narci_Attribute);
 		Narci_MinimapButton_OnLoad();
-		C_Timer.After(1, function()
+		C_Timer.After(2, function()
 			RefreshAllStatus();
 			SetRadarChart();
 			CacheSourceInfo();
 			XmogName_OnLoad();
 		end)
-		C_Timer.After(3, function()
-			CacheSourceInfo();					--Using "MogIt" seems to cause problem, so it has to cache 2 times (this is a temporary workaround)
+		C_Timer.After(5, function()
+			RefreshAllSlot();					--Using "MogIt" seems to cause problem, so it has to cache 2 times (this is a temporary workaround)
 		end)
 	elseif event == "PLAYER_ENTERING_WORLD" then
 		ShowDetailedIlvlInfo()
@@ -3491,6 +3491,7 @@ function Narci_Open()
 		frame.PhotoModeController_AnimFrame:Show();
 		TakeOutFromUIParent(GameTooltip, "TOOLTIP", false);
 		TakeOutFromUIParent(AzeriteEmpoweredItemUI, "MEDIUM", false);
+		TakeOutFromUIParent(AzeriteEssenceUI, "MEDIUM", false);
 		TakeOutFromUIParent(ArtifactFrame, "MEDIUM", false);
 		TakeOutFromUIParent(ItemSocketingFrame, "MEDIUM", false);
 	end
@@ -4127,7 +4128,7 @@ local function CopyTexts(type, subType)
 	local type = type or "TEXT"
 	local subType = subType or "Wowhead"
 	local showItemID = Narci_XmogButtonPopUp.CopyButton.showItemID or false;
-
+	local source;
 	if type == "TEXT" then
 		texts = texts.."\n"
 		for i=1, #xmogTable do
@@ -4138,9 +4139,10 @@ local function CopyTexts(type, subType)
 				if showItemID and slotTable[index].itemID then
 					text = text.." |cFFacacac"..slotTable[index].itemID.."|r";
 				end
-
-				if slotTable[index].ItemLevel:GetText() then
-				text = text.." |cFF40C7EB("..slotTable[index].ItemLevel:GetText()..")|r"
+				
+				source = slotTable[index].ItemLevel:GetText()
+				if source ~= " " then
+				text = text.." |cFF40C7EB("..source..")|r"
 				end
 				if text then
 					texts = texts.."\n"..text;
@@ -4173,8 +4175,9 @@ local function CopyTexts(type, subType)
 				else
 					text = text..(slotTable[index].Name:GetText() or " ").."|r|cFF959595[/td]|r"
 				end
-				if slotTable[index].ItemLevel:GetText() then
-					text = text.."|cFF959595[td]|r|cFF40C7EB"..slotTable[index].ItemLevel:GetText().."|r|cFF959595[/td]|r"
+				source = slotTable[index].ItemLevel:GetText()
+				if source then
+					text = text.."|cFF959595[td]|r|cFF40C7EB"..source.."|r|cFF959595[/td]|r"
 				else
 					text = text.."|cFF959595[td] [/td]|r"
 				end
@@ -4196,8 +4199,9 @@ local function CopyTexts(type, subType)
 				else
 					text = text..(slotTable[index].Name:GetText() or " ")
 				end
-				if slotTable[index].ItemLevel:GetText() then
-				text = text.." |cFF959595| |r|cFF40C7EB"..slotTable[index].ItemLevel:GetText().."|r |cFF959595| |r"
+				source = slotTable[index].ItemLevel:GetText()
+				if source then
+				text = text.." |cFF959595| |r|cFF40C7EB"..source.."|r |cFF959595| |r"
 				else
 					text = text.." |cFF959595| |r"
 				end
@@ -4816,7 +4820,7 @@ function SwitchMode_OnClick(self, key)
 	end
 
 	self.IsOn = not self.IsOn;
-	TimeSinceLastUpdate_Rotate = 0;
+	self:GetParent().PhotoModeController_UpdateFrame.TimeSinceLastUpdate = 0;
 	self:GetParent().PhotoModeController_UpdateFrame:Hide();
 	self:GetParent().PhotoModeController_UpdateFrame:Show();
 	if self.IsOn then
@@ -4826,7 +4830,6 @@ function SwitchMode_OnClick(self, key)
 		self.Icon:SetTexCoord(0, 0.25, 0.75, 1);
 		PhotoModeControllerBar:SetClipsChildren(true);
 	end
-
 
 	--GameTooltip:Hide();
 	ShowButtonTooltip(self);
@@ -5296,6 +5299,12 @@ IAC:SetScript("OnEvent",function(self,event,...)
 	HeartofAzeroth_AnimFrame.SN:SetText("No."..HeartSerialNumber)
 end)
 
+function CameraControlBar_ResetPosition_AnimFrame_OnShow(self)
+	local StartX = CameraOffsetControlBar.PosX or 0;
+	local StartAngle = CameraOffsetControlBar.PosRadian or 0;
+	self.tOut = math.max(math.abs(StartX) / CameraOffsetControlBar.Range, math.abs(StartAngle)/(2*pi), 0.2)
+end
+
 function CameraControlBar_ResetPosition_AnimFrame_OnUpdate(self, elapsed)
 
 	AnimationSequenceContainer_Controller.Pending = true;
@@ -5306,7 +5315,7 @@ function CameraControlBar_ResetPosition_AnimFrame_OnUpdate(self, elapsed)
 		EndX = 0;
 		StartAngle = CameraOffsetControlBar.PosRadian or 0;
 		EndAngle = 0;
-		t = math.max(math.abs(StartX) / CameraOffsetControlBar.Range, math.abs(StartAngle)/(2*pi))
+		t = self.tOut
 	else
 		StartX = 0;
 		EndX = CameraOffsetControlBar.PosX or 0;

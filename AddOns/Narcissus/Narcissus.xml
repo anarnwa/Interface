@@ -2049,6 +2049,8 @@
 							</Button>
 							<Frame name="CameraControlBar_ResetPosition_AnimFrame" hidden="true">
 								<Scripts>
+									<OnShow function="CameraControlBar_ResetPosition_AnimFrame_OnShow"/>
+
 									<OnLoad>
 										self.OppoDirection = false;
 										self.TimeSinceLastUpdate = 0;

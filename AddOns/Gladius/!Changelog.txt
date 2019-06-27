@@ -1,3 +1,7 @@
+**6.0.8**
+* Update for 8.2.0.
+* DRData and library updates.
+
 **6.0.7**
 * DRData and Class Icon updates.
 

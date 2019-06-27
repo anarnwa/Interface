@@ -1,16 +1,25 @@
-lightweight tag 6039224594a48e08ded734646db9fcc6cb64fa33 r11
+lightweight tag dc0ac95137dee5ca7ae7d35edf0912ab3d4ac53e r12
 Author:	MysticalOS <mysticalosx@gmail.com>
-Date:	Tue Apr 16 21:32:09 2019 -0400
+Date:	Tue Jun 25 10:33:37 2019 -0400
 
-commit 6039224594a48e08ded734646db9fcc6cb64fa33
+commit dc0ac95137dee5ca7ae7d35edf0912ab3d4ac53e
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Tue Apr 16 21:32:09 2019 -0400
+Date:   Tue Jun 25 10:33:37 2019 -0400
 
-    Another pkgmeta fix, stan you forgot a few DBM-'s
+    Migrated all mods to new countdown feature
+    Bumped TOC files
+    Disabled Model viewer playsoundfile in mods to avoid lua errors (since these aren't converted to soundkit yet)
+    Updated some textures to use file data id instead of texture path, in some legacy mods that still use direct textures instead of GetSpellTexture
 
-commit 73fac5430ce73f9f487fa681a97ee7e52eb46457
+commit 23d7fc2f7fbb24d7efc3abd074cf81253b3520d6
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Tue Apr 16 21:24:46 2019 -0400
+Date:   Mon May 20 21:07:08 2019 -0400
 
-    fix pkgmeta
+    A code improvement forgot to commit
+
+commit c16d29fd25dda7bbfb53e7a80aa4d7d066126fdd
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Sat Apr 20 00:13:52 2019 -0400
+
+    Revert Ilgynoth back to the old way.
 

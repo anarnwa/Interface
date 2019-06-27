@@ -12,9 +12,36 @@ local ButtonBar = Bartender4.ButtonBar.prototype
 
 local pairs, setmetatable, table_insert = pairs, setmetatable, table.insert
 
+local WoWClassic = select(4, GetBuildInfo()) < 20000
+
 -- GLOBALS: CharacterMicroButton, SpellbookMicroButton, TalentMicroButton, AchievementMicroButton, QuestLogMicroButton, GuildMicroButton
 -- GLOBALS: LFDMicroButton, CollectionsMicroButton, EJMicroButton, MainMenuMicroButton
 -- GLOBALS: HasVehicleActionBar, UnitVehicleSkin, HasOverrideActionBar, GetOverrideBarSkin
+
+local BT_MICRO_BUTTONS = WoWClassic and {
+	"CharacterMicroButton",
+	"SpellbookMicroButton",
+	"TalentMicroButton",
+	"QuestLogMicroButton",
+	"SocialsMicroButton",
+	"WorldMapMicroButton",
+	"MainMenuMicroButton",
+	"HelpMicroButton",
+	}
+	or
+	{
+	"CharacterMicroButton",
+	"SpellbookMicroButton",
+	"TalentMicroButton",
+	"AchievementMicroButton",
+	"QuestLogMicroButton",
+	"GuildMicroButton",
+	"LFDMicroButton",
+	"CollectionsMicroButton",
+	"EJMicroButton",
+	"StoreMicroButton",
+	"MainMenuMicroButton",
+	}
 
 -- create prototype information
 local MicroMenuBar = setmetatable({}, {__index = ButtonBar})
@@ -41,17 +68,9 @@ function MicroMenuMod:OnEnable()
 		self.bar = setmetatable(Bartender4.ButtonBar:Create("MicroMenu", self.db.profile, L["Micro Menu"]), {__index = MicroMenuBar})
 		local buttons = {}
 
-		table_insert(buttons, CharacterMicroButton)
-		table_insert(buttons, SpellbookMicroButton)
-		table_insert(buttons, TalentMicroButton)
-		table_insert(buttons, AchievementMicroButton)
-		table_insert(buttons, QuestLogMicroButton)
-		table_insert(buttons, GuildMicroButton)
-		table_insert(buttons, LFDMicroButton)
-		table_insert(buttons, CollectionsMicroButton)
-		table_insert(buttons, EJMicroButton)
-		table_insert(buttons, StoreMicroButton)
-		table_insert(buttons, MainMenuMicroButton)
+		for i=1, #BT_MICRO_BUTTONS do
+			table_insert(buttons, _G[BT_MICRO_BUTTONS[i]])
+		end
 		self.bar.buttons = buttons
 
 		MicroMenuMod.button_count = #buttons
@@ -65,10 +84,14 @@ function MicroMenuMod:OnEnable()
 	end
 
 	self:SecureHook("UpdateMicroButtons", "MicroMenuBarShow")
-	self:SecureHookScript(OverrideActionBar, "OnShow", "BlizzardBarShow")
-	self:SecureHookScript(OverrideActionBar, "OnHide", "MicroMenuBarShow")
-	self:SecureHookScript(PetBattleFrame.BottomFrame.MicroButtonFrame, "OnShow", "BlizzardBarShow")
-	self:SecureHookScript(PetBattleFrame.BottomFrame.MicroButtonFrame, "OnHide", "MicroMenuBarShow")
+	if OverrideActionBar then
+		self:SecureHookScript(OverrideActionBar, "OnShow", "BlizzardBarShow")
+		self:SecureHookScript(OverrideActionBar, "OnHide", "MicroMenuBarShow")
+	end
+	if PetBattleFrame then
+		self:SecureHookScript(PetBattleFrame.BottomFrame.MicroButtonFrame, "OnShow", "BlizzardBarShow")
+		self:SecureHookScript(PetBattleFrame.BottomFrame.MicroButtonFrame, "OnHide", "MicroMenuBarShow")
+	end
 
 	self.bar:Enable()
 	self:ToggleOptions()
@@ -83,7 +106,7 @@ end
 
 function MicroMenuMod:MicroMenuBarShow()
 	-- Only "fix" button anchors if another frame that uses the MicroButtonBar isn't active.
-	if not (OverrideActionBar:IsShown() or PetBattleFrame:IsShown()) then
+	if not ((OverrideActionBar and OverrideActionBar:IsShown()) or (PetBattleFrame and PetBattleFrame:IsShown())) then
 		UpdateMicroButtonsParent(self.bar)
 		self.bar:UpdateButtonLayout()
 	end
@@ -92,21 +115,15 @@ end
 function MicroMenuMod:BlizzardBarShow()
 	-- Only reset button positions not set in MoveMicroButtons()
 	for i,v in pairs(self.bar.buttons) do
-		if (((i-1)%6) > 0) then
+		if v ~= CharacterMicroButton and v ~= LFDMicroButton then
 			v:ClearSetPoint(unpack(self.bar.anchors[i]))
 		end
 	end
 end
 
 
-if not MicroButtonAndBagsBar then
-	MicroMenuBar.vpad_offset = -21
-	MicroMenuBar.button_width = 28
-	MicroMenuBar.button_height = 58
-else
-	MicroMenuBar.button_width = 28
-	MicroMenuBar.button_height = 36
-end
+MicroMenuBar.button_width = 28
+MicroMenuBar.button_height = 36
 function MicroMenuBar:ApplyConfig(config)
 	ButtonBar.ApplyConfig(self, config)
 
@@ -118,7 +135,7 @@ function MicroMenuBar:ApplyConfig(config)
 	self:UpdateButtonLayout()
 end
 
-if HelpMicroButton then
+if HelpMicroButton and StoreMicroButton then
 	function MicroMenuBar:UpdateButtonLayout()
 		ButtonBar.UpdateButtonLayout(self)
 		-- If the StoreButton is hidden we want to replace it with the Help button

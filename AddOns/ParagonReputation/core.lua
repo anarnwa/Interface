@@ -1,6 +1,6 @@
-		------------------------------------------------
-		-- Paragon Reputation 1.22 by Sev US-Drakkari --
-		------------------------------------------------
+		-------------------------------------------------
+		-- Paragon Reputation 1.24 by Fail US-Ragnaros --
+		-------------------------------------------------
 
 		  --[[	  Special thanks to Ammako for
 				  helping me with the vars and
@@ -27,11 +27,13 @@ local PARAGON_QUEST_ID = { --[QuestID] = {factionID,rewardID}
 	--Battle for Azeroth
 		--Neutral
 		[54453] = {2164,166298}, --Champions of Azeroth
+		[55348] = {2391,170061}, --Rustbolt Resistance
 		[54451] = {2163,166245}, --Tortollan Seekers
 		
 		--Horde
 		[54460] = {2156,166282}, --Talanji's Expedition
 		[54455] = {2157,166299}, --The Honorbound
+		[53982] = {2373,169940}, --The Unshackled
 		[54461] = {2158,166290}, --Voldunai
 		[54462] = {2103,166292}, --Zandalari Empire
 		
@@ -40,6 +42,7 @@ local PARAGON_QUEST_ID = { --[QuestID] = {factionID,rewardID}
 		[54458] = {2160,166295}, --Proudmoore Admiralty
 		[54457] = {2162,166294}, --Storm's Wake
 		[54454] = {2159,166300}, --The 7th Legion
+		[55976] = {2400,169939}, --Waveblade Ankoan
 }
 
 -- [Reputation Watchbar] Color the Reputation Watchbar by the settings. (Thanks Hoalz)

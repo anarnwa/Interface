@@ -176,6 +176,76 @@
 		</Scripts>
 	</Slider>
 
+	<Slider name="NarciVerticalSliderTemplate" orientation="VERTICAL" enableMouse="true" virtual="true">
+		<HitRectInsets>
+			<AbsInset left="-8" right="-8" top="-4" bottom="-4"/>
+		</HitRectInsets>
+		<ThumbTexture parentKey="Thumb" name="$parentThumb" setAllPoints="true" rotation="45">
+			<Size x="12" y="12"/>
+            <Color r="0" g="0" b="0" a="0.0"/>
+		</ThumbTexture>
+		<Layers>
+			<Layer level="BACKGROUND" textureSubLevel="1">
+				<Texture setAllPoints="true" snapToPixelGrid="false">
+					<Color r="0.3" g="0.3" b="0.3" a="1"/>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND" textureSubLevel="2">
+				<Texture setAllPoints="true" parentKey="Border" snapToPixelGrid="false">
+					<Color r="0" g="0" b="0" a="0.9"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="1" y="-1"/>
+						<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-1" y="1"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND" textureSubLevel="4">
+				<Texture parentKey="VirtualThumb" setAllPoints="true" rotation="45">
+					<Color r="0" g="0" b="0" a="1"/>
+                    <Size x="10" y="10"/>
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BACKGROUND" textureSubLevel="3">
+				<Texture setAllPoints="true" rotation="45" parentKey="ThumbBorder">
+					<Color r="0.3" g="0.3" b="0.3" a="1"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.VirtualThumb" relativePoint="TOPLEFT" x="-2" y="2"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.VirtualThumb" relativePoint="BOTTOMRIGHT" x="2" y="-2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="KeyLabel" inherits="NarciIndicatorLetter" text="0" hidden="false" ignoreParentScale="true" justifyH="CENTER" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOP" relativeKey="$parent.VirtualThumb" relativePoint="BOTTOM" x="0" y="-6"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="KeyLabel2" inherits="NarciIndicatorLetter" text="0" hidden="true" ignoreParentScale="true" justifyH="LEFT" justifyV="MIDDLE">
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent" relativePoint="RIGHT" x="6" y="0"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="Label" inherits="AAAPreferenceMedium" justifyH="RIGHT" justifyV="CENTER" text="Label">
+					<Size x="0" y="0"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeKey="$parent" relativePoint="LEFT" x="-12" y="0"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				self.ThumbBorder:SetColorTexture(1, 1, 1);
+			</OnEnter>
+			<OnLeave>
+				self.ThumbBorder:SetColorTexture(0.3, 0.3, 0.3);
+			</OnLeave>
+		</Scripts>
+	</Slider>
+
     <Slider name="NarciHorizontalSliderWithMarksTemplate" inherits="NarciHorizontalSliderTemplate" virtual="true">
         <Scripts>
             <OnShow function="NarciAPI_OptimizeBorderThickness"/>
@@ -189,12 +259,12 @@
 			<AbsInset left="-9" right="-9" top="-9" bottom="-9"/>
 		</HitRectInsets>
 		<Layers>
-			<Layer level="ARTWORK">
+			<Layer level="OVERLAY" textureSubLevel="4">
 				<Texture file="Interface\AddOns\Narcissus\ART\Tooltip\CloseButton" Alpha="1">
 					<TexCoords left="0" right="0.5" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
-			<Layer level="OVERLAY">
+			<Layer level="OVERLAY" textureSubLevel="5">
 				<Texture file="Interface\AddOns\Narcissus\ART\Tooltip\CloseButton" Alpha="0.2" alphaMode="ADD">
 					<TexCoords left="0.5" right="1" top="0" bottom="1"/>
 				</Texture>
@@ -237,10 +307,10 @@
 			<Layer level="BACKGROUND" textureSubLevel="2">
 				<Texture setAllPoints="true" parentKey="Border">
 					<Color r="0" g="0" b="0" a="0.9"/>
-					<Anchors>
+					<!--Anchors>
 						<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="1" y="-1"/>
 						<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-1" y="1"/>
-					</Anchors>
+					</Anchors-->
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY" textureSubLevel="4">

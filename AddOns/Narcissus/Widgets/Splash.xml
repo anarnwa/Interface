@@ -84,11 +84,21 @@
 					</Anchors>
 				</FontString>
 
+
 				<FontString parentKey="Header1" inherits="AAAStatusNameMedium" justifyH="LEFT" justifyV="TOP" text="NARCI_SPLASH_HEADER1" ignoreParentScale="true">
 					<Size x="0" y="0"/>
                     <Color r="0.9" g="0.9" b="0.9" a="1"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="16" y="-20"/>
+						<Anchor point="TOPLEFT" relativeKey="$parent" relativePoint="TOPLEFT" x="16" y="-36"/>
+                        <Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="-16"/>
+					</Anchors>
+				</FontString>
+
+				<FontString parentKey="Text82" inherits="AAAStatusNameMedium" justifyH="LEFT" justifyV="TOP" text="NARCI_SPLASH_MESSAGE82" spacing="2">
+					<Size x="0" y="0"/>
+                    <Color r="0.9" g="0.9" b="0.9" a="1"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeKey="$parent.Header1" relativePoint="TOPLEFT" x="0" y="12"/>
                         <Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="-16"/>
 					</Anchors>
 				</FontString>
@@ -279,8 +289,8 @@
                     </OnLoad>
                     <OnShow function="NarciAPI_OptimizeBorderThickness"/>
                     <OnClick>
-                        Narci_CloseSplash(self);
-                        --NarciAPI_FadeFrame(self:GetParent(), 0.2, "OUT");
+                        --Narci_CloseSplash(self);
+                        NarciAPI_FadeFrame(self:GetParent(), 0.2, "OUT");
                     </OnClick>
                 </Scripts>
             </Button>

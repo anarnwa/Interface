@@ -207,6 +207,11 @@ faFactionDataRow[2158]  = 185;
 faFactionDataRow[2111]  = 186;
 faFactionDataRow[2103]  = 187;
 
+faFactionDataRow[2391]  = 188;
+faFactionDataRow[2373]  = 189;
+faFactionDataRow[2400]  = 190;
+
+
 faFactionData = {
 	{1037, "Interface\\ICONS\\spell_misc_hellifrepvphonorholdfavor",
 			2,1,14},
@@ -597,7 +602,13 @@ faFactionData = {
 			7,0,20}, -- VERIFY - 
 	{2103, "Interface\\ICONS\\inv__faction_zandalariempire",
 			7,2,20},
-	-- 2370 - Dino Training - Direhorn - Not a "real" faction?
+	-- 8.2.0
+	{2391, "Interface\\ICONS\\inv_faction_rustbolt",
+			7,0,20},
+	{2373, "Interface\\ICONS\\inv_sharkraymount_2",
+			7,2,20},
+	{2400, "Interface\\ICONS\\inv_sharkraymount_1",
+			7,1,20},
 };
 
 local faFactionDataDesc = { -- column descriptions - info only, no need to localize

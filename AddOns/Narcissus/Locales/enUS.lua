@@ -6,7 +6,7 @@ local L = Narci.L
 NARCI_GRADIENT = "|cffA236EFN|cff9448F1a|cff865BF2r|cff786DF4c|cff6A80F6i|cff5D92F7s|cff4FA4F9s|cff41B7FAu|cff33C9FCs|r"
 MYMOG_GRADIENT = "|cffA236EFM|cff9448F1y |cff865BF2T|cff786DF4r|cff6A80F6a|cff5D92F7n|cff4FA4F9s|cff41B7FAm|cff33C9FCo|cff32c9fbg|r"
 
-NARCI_VERSION_INFO = "1.0.5[BETA]";
+NARCI_VERSION_INFO = "1.0.5b[BETA]";
 NARCI_DEVELOPER_INFO = "Designed by Peterodox";
 
 L["Movement Speed"] = "MSPD";
@@ -149,10 +149,11 @@ NARCI_TUTORIAL_ANIMATION_ID = "Left-click: ID +1  Right-click: ID -1\nValid anim
 NARCI_TUTORIAL_GREEN_SCREEN = "Click the square button on the left end to show the green screen.";
 
 --Splash--
-NARCI_PATCH_NOTES = "v1.0.5 Patch Notes";
+NARCI_PATCH_NOTES = "v1.0.5b Patch Notes";
 NARCI_SPLASH_CLOSE_AND_CONTINUE = "Close this window and continue";
 NARCI_TRY_IT_NOW = "Click here to enable...";
     --Patch-specific
+    NARCI_SPLASH_MESSAGE82 = "|cff40C7EBRoutine update for 8.2 :)|r"
     NARCI_AFK_ENABLED = "AFK Screen enabled. You can turn it off via Preferences - Extensions.";
     NARCI_LETTERBOX_ENABLED = "Letterbox effect enabled. You can turn it off via Preferences - Effects.";
     --

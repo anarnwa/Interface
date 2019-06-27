@@ -1,5 +1,5 @@
-## Interface: 80100
-## Version: v8.1.2
+## Interface: 80200
+## Version: v8.2.0
 ## Title: SexyMap
 ## Notes: Spice up your minimap with some sexy options.
 ## Notes-deDE: Spice up your minimap with some sexy options.

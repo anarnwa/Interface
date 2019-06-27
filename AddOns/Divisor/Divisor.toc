@@ -1,6 +1,6 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: Divisor
-## Version: 1.1.8k
+## Version: 1.1.8m
 ## Notes: Divisor shows you how much each item in a stack costs at the auction house.
 ## SavedVariablesPerCharacter: DivisorOptions
 

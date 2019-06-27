@@ -1704,7 +1704,7 @@ function addon:UpdateToonData()
   end
   t.Warmode = C_PvP.IsWarModeDesired()
   local azeriteItemLocation = C_AzeriteItem.FindActiveAzeriteItem()
-  if azeriteItemLocation then
+  if azeriteItemLocation and azeriteItemLocation:IsEquipmentSlot() then
     local xp, totalLevelXP = C_AzeriteItem.GetAzeriteItemXPInfo(azeriteItemLocation)
     local currentLevel = C_AzeriteItem.GetPowerLevel(azeriteItemLocation)
     t.Artifact = format("%d (%d%%)", currentLevel, xp / totalLevelXP  * 100)
@@ -1757,7 +1757,7 @@ local function SI_GetQuestReward()
   end
   local questTagID, tagName = GetQuestTagInfo(id)
   if questTagID and tagName then
-    isAccount = (questTagID == QUEST_TAG_ACCOUNT)
+    isAccount = (questTagID == Enum.QuestTag.Account)
   else
     isAccount = db.QuestDB.AccountDaily[id] or db.QuestDB.AccountWeekly[id]
     debug("Fetched isAccount")
@@ -2543,7 +2543,7 @@ end
 function core:OnInitialize()
   local versionString = GetAddOnMetadata(addonName, "version")
   --[===[@debug@
-  if versionString == "8.1.4" then
+  if versionString == "8.2.0" then
     versionString = "Dev"
   end
   --@end-debug@]===]
@@ -2609,7 +2609,6 @@ function core:OnInitialize()
   end
   RequestRaidInfo() -- get lockout data
   RequestLFDPlayerLockInfo()
-  C_Calendar.OpenCalendar() -- Request for event info, not actually open the calendar
   addon.dataobject = addon.LDB and addon.LDB:NewDataObject("SavedInstances", {
     text = addonAbbrev,
     type = "launcher",

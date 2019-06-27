@@ -5,8 +5,8 @@ deDE localization strings for Collectinator
 ************************************************************************
 File date: 2012-09-12T1:10:19Z 
 File revision: 5ba9799caf14e633944aab5775e188f66ae4206a 
-Project revision: 65649dd172fee3271d0a16d3aaa0e0eb3a8a8600
-Project version: 8.1.5.1
+Project revision: 3c640e0bf38df3d1a487c9415b7a7e6d275a5e85
+Project version: 8.2.0.1
 ************************************************************************
 Currently maintained by:
 http://www.wowace.com/addons/collectinator/localization/translators/
@@ -112,6 +112,7 @@ L["Breathless"] = "Atemlos"
 L["Briarthorn"] = "Wilddornrose"
 L["Bron"] = true
 L["Brother Wilhelm"] = "Bruder Wilhelm"
+L["BRUCE"] = "Töte Bruce in der Kampfgilde."
 L["Brunn Flamebeard"] = "Brunn Flammenbart"
 L["Bufo"] = true
 L["Burgy Blackheart"] = "Bürgi Schwarzherz"
@@ -356,6 +357,7 @@ L["Instructor Tarahna"] = "Lehrmeisterin Tarahna"
 L["INVADERS_TREASURE"] = "Zufällige Beute in Zurückgelassener Invasorenschatz nach dem beenden der Wochenquest Goldsieg - Level 100 Invasion."
 L["Irisee"] = true
 L["ISLAND_EXPEDITIONS"] = "Wird nach dem Töten bestimmter Rares in einer Inselexpedition zufällig belohnt."
+L["ITEM_GENERAL_DESC"] = "Bezieht %s Rüstungsgegenstände mit Sockel in den Scan ein."
 L["Jadefang"] = "Jadezahn"
 L["Jademist Dancer"] = "Jadenebeltänzer"
 L["Jakur of Ordon"] = "Jakur von Ordos"
@@ -391,6 +393,7 @@ L["Kor'gresh Coldrage"] = "Kor'gresh Frostzorn"
 L["Kosumoth the Hungering"] = "Kosumoth der Hungernde"
 L["Kovork"] = true
 L["Krom Stoutarm"] = "Krom Starkarm"
+L["Kronnus"] = true
 L["Ku-Mo"] = true
 L["Kwilax Fuseshiv"] = "Kwilax Zündspitze"
 L["Larissia"] = true
@@ -452,6 +455,7 @@ L["Milli Featherwhistle"] = "Milli Federpfiff"
 L["Mimi Wizzlebub"] = "Mimi Wirbelwolke"
 L["Mirket"] = true
 L["Mirla Silverblaze"] = "Mirla Silberstreif"
+L["MISC_GENERAL_DESC"] = "Bezieht %s Rüstungsgegenstände in den Scan ein."
 L["Miscellaneous"] = "Sonstiges"
 L["Misensi"] = true
 L["MISSION"] = "Als Belohnung bei einer Garnisons Mission erhältlich"
@@ -676,6 +680,7 @@ L["Tanak"] = true
 L["Tannec Stonebeak"] = "Tannec Steinschnabel"
 L["Tarnon"] = true
 L["TCG"] = "WoW Trading Card Game"
+L["Tempra"] = true
 L["Tenpak Flametotem"] = "Tenpak Flammtotem"
 L["Terokk"] = true
 L["Terrorfist"] = "Terrorfaust"

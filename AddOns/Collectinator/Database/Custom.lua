@@ -2,10 +2,10 @@
 ************************************************************************
 Custom.lua
 ************************************************************************
-File date: 2019-04-08T3:01:56Z
-File hash: b190d41
-Project hash: 65649dd
-Project version: 8.1.5.1
+File date: 2019-06-25T17:59:51Z
+File hash: 3c640e0
+Project hash: 3c640e0
+Project version: 8.2.0.1
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -130,6 +130,9 @@ function addon:InitCustom()
 	AddCustom("FEL-SPOTTED_EGG")
 	AddCustom("FALCOSAUR")
 	AddCustom("BRUCE")
+	AddCustom("SCRYING_STONE",	Z.NAZJATAR)
+	AddCustom("SNOWSOFT_NIBBLER",	Z.MECHAGON_ISLAND)
+	AddCustom("OOX-35",		Z.MECHAGON_ISLAND)
 
 	AddCustom("SECRETDISCORD")
 
@@ -139,11 +142,12 @@ function addon:InitCustom()
 
 	AddCustom("EXALTEDCACHE")
 
-
 	AddCustom("CHROMIE",		Z.THE_DEATHS_OF_CHROMIE)
 	AddCustom("FRANCOIS",		Z.TIRAGARDE_SOUND,		52.8,	31.1)
 	AddCustom("ISLAND_EXPEDITIONS")
 	AddCustom("ZAND_AMULET",	Z.DAZARALOR)
+
+	AddCustom("UNKNOWN_COLLECT")
 
 	self.InitCustom = nil
 end

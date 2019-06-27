@@ -382,7 +382,7 @@ CharacterTitlesTable =
     [633] = {"pvp", 0, "Contender", 383, 12861}, --
     [634] = {"pve", 5, "Famed Conqueror of Dazar'alor", 384, 13326}, --
     [635] = {"pve", 5, "Famed Defender of Dazar'alor", 385, 13327}, --
-    [636] = {"pve", 3, "Hero of Dazar'alor", 386, 13314}, --Change this value at 9.0
+    [636] = {"pve", 0, "Hero of Dazar'alor", 386, 13314}, --
 
     [637] = {"pvp", 1, "the Elite Death Knight", 387, }, --PVP 2400
     [638] = {"pvp", 1, "the Elite Demon Hunter", 388, }, --
@@ -397,4 +397,13 @@ CharacterTitlesTable =
     [647] = {"pvp", 1, "the Elite Warlock", 397, }, --
     [648] = {"pvp", 1, "the Elite Warrior", 398, }, --
     [649] = {"pvp", 1, "the T-Shirt Enthusiast", 399, }, --
+
+    [650] = {"achv", 0, "Trashmaster", 324, }, --
+    [651] = {"pve", 5, "Famed Slayer of the Harbinger", 400, 13424}, --Unnat
+    [654] = {"pvp", 5, "Notorious Gladiator", 402, 13630}, --BFA S3
+    [655] = {"achv", 0, "Junkyard", 403, 13555}, --Mechagon
+    [656] = {"pve", 3, "the Eternal", 404, 13733}, --Mythic Azshara
+    [657] = {"pve", 0, "of the Deeps", 405, }, --Mythic Azshara
+    [658] = {"achv", 0, "Sparking", 406, }, --
+    [659] = {"achv", 1, "Azeroth's Champion", 407, 13779}, --
     }

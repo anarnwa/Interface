@@ -103,8 +103,8 @@
         </Scripts>
     </Button>	
 
-    <Frame name="Narci_Preference" parent="Narci_Character" ignoreParentScale="true" FrameStrata="DIALOG" movable="false" enableMouse="true" enableMouseMotion="true" hidden="true" Alpha="0" scale="0.711111111">
-        <Size x="540" y="310"/>
+    <Frame name="Narci_Preference" parent="Narci_Character" ignoreParentScale="true" FrameStrata="DIALOG" movable="false" enableMouse="true" enableMouseMotion="true" hidden="true" Alpha="0" scale="0.72">
+        <Size x="540" y="334"/>
         <Anchors>
             <Anchor point="CENTER" relativeTo="VirtualLineCenter" relativePoint="CENTER" x="0"/>
         </Anchors>

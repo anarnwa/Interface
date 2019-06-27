@@ -35,7 +35,7 @@ do
 		err = "친구 목록이 최대한도에 도달했습니다. 제대로 애드온이 작업을 하기 위해서는 2명을 제거해야 합니다!"
 	elseif L == "zhTW" then
 		whisp = "BadBoy_Levels: 你起碼要達到 %d 級才能密我。"
-		whisp_notallowed = "你没有达到向我发送密语的条件，这条密语将被过滤，这意味着我无法看见你的密语."
+		--whisp_notallowed = "BadBoy_Levels: You do not meet the requirements to whisper me."
 		err = "你的好友列表滿了，此插件需要你騰出2個好友空位!"
 	elseif L == "zhCN" then
 		whisp = "BadBoy_Levels: 你起码要达到 %d 级才能和我讲话。"

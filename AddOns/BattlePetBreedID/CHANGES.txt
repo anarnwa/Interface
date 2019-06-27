@@ -1,7 +1,7 @@
-changeset:   192:511b6d437eee
-tag:         v1.13.5
+changeset:   194:5f7b68f8311c
+tag:         v1.14.0
 user:        Caleb Atherton <atcaleb@twitch.tv>
-date:        Sat Apr 06 16:35:31 2019 -0400
-summary:     Updated breed data for Patch 8.1.5.
+date:        Tue Jun 25 20:33:09 2019 -0400
+summary:     Updated base stats data, breed data, and TOC for Patch 8.2.0.
 
 

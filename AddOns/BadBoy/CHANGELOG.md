@@ -1,6 +1,6 @@
 # BadBoy
 
-## [v8.1.5](https://github.com/funkydude/BadBoy/tree/v8.1.5) (2019-03-16)
-[Full Changelog](https://github.com/funkydude/BadBoy/compare/v8.1.4...v8.1.5)
+## [v8.2.0](https://github.com/funkydude/BadBoy/tree/v8.2.0) (2019-06-26)
+[Full Changelog](https://github.com/funkydude/BadBoy/compare/v8.1.7...v8.2.0)
 
-- anti-spam update  
+- bump toc  

@@ -1,6 +1,6 @@
-		------------------------------------------------
-		-- Paragon Reputation 1.22 by Sev US-Drakkari --
-		------------------------------------------------
+		-------------------------------------------------
+		-- Paragon Reputation 1.24 by Fail US-Ragnaros --
+		-------------------------------------------------
 
 		  --[[	  Special thanks to Ammako for
 				  helping me with the vars and

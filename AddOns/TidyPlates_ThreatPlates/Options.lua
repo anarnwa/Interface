@@ -2205,31 +2205,6 @@ local function CreateBossModsWidgetOptions()
           } ,
         },
       },
-      TrackingLine = {
-        name = L["Tracking Line"],
-        type = "group",
-        order = 20,
-        inline = true,
-        args = {
-          Show = {
-            name = L["Enable"],
-            order = 1,
-            type = "toggle",
-            desc = L["Show tracking lines between player and an active nameplate aura."],
-            arg = { "BossModsWidget", "ShowTrackingLine" },
-          },
-          Thickness = {
-            name = L["Thickness"],
-            type = "range",
-            order = 20,
-            step = 1,
-            min = 1,
-            max = 20,
-            isPercent = false,
-            arg = { "BossModsWidget", "TrackingLineThickness" },
-          },
-        },
-      },
       Placement = GetPlacementEntryWidget(30, "BossModsWidget", true),
       Config = {
         name = L["Configuration Mode"],
@@ -3570,11 +3545,14 @@ local function CreateVisibilitySettings()
             type = "toggle",
             width = "full",
             set = function(info, val)
-              SetValue(info, val)
-              Addon:SetBaseNamePlateSize() -- adjust clickable area if switching from Blizzard plates to Threat Plate plates
-              for plate, unitid in pairs(Addon.PlatesVisible) do
-                Addon:UpdateNameplateStyle(plate, unitid)
-              end
+              info = t.CopyTable(info)
+              Addon:CallbackWhenOoC(function()
+                SetValue(info, val)
+                Addon:SetBaseNamePlateSize() -- adjust clickable area if switching from Blizzard plates to Threat Plate plates
+                for plate, unitid in pairs(Addon.PlatesVisible) do
+                  Addon:UpdateNameplateStyle(plate, unitid)
+                end
+              end, L["Unable to change a setting while in combat."])
             end,
             get = GetValue,
             desc = L["Use Blizzard default nameplates for friendly nameplates and disable ThreatPlates for these units."],
@@ -3586,11 +3564,14 @@ local function CreateVisibilitySettings()
             type = "toggle",
             width = "full",
             set = function(info, val)
-              SetValue(info, val)
-              Addon:SetBaseNamePlateSize() -- adjust clickable area if switching from Blizzard plates to Threat Plate plates
-              for plate, unitid in pairs(Addon.PlatesVisible) do
-                Addon:UpdateNameplateStyle(plate, unitid)
-              end
+              info = t.CopyTable(info)
+              Addon:CallbackWhenOoC(function()
+                SetValue(info, val)
+                Addon:SetBaseNamePlateSize() -- adjust clickable area if switching from Blizzard plates to Threat Plate plates
+                for plate, unitid in pairs(Addon.PlatesVisible) do
+                  Addon:UpdateNameplateStyle(plate, unitid)
+                end
+              end, L["Unable to change a setting while in combat."])
             end,
             get = GetValue,
             desc = L["Use Blizzard default nameplates for neutral and enemy nameplates and disable ThreatPlates for these units."],
@@ -3742,8 +3723,12 @@ local function CreateBlizzardSettings()
             type = "toggle",
             desc = L["The size of the clickable area is always derived from the current size of the healthbar."],
             set = function(info, val)
-              SetValue(info, val)
-              Addon:SetBaseNamePlateSize()
+              if InCombatLockdown() then
+                t.Print("We're unable to change this while in combat", true)
+              else
+                SetValue(info, val)
+                Addon:SetBaseNamePlateSize()
+              end
             end,
             arg = { "settings", "frame", "SyncWithHealthbar"},
           },
@@ -3755,8 +3740,12 @@ local function CreateBlizzardSettings()
             max = 500,
             step = 1,
             set = function(info, val)
-              SetValue(info, val)
-              Addon:SetBaseNamePlateSize()
+              if InCombatLockdown() then
+                t.Print("We're unable to change this while in combat", true)
+              else
+                SetValue(info, val)
+                Addon:SetBaseNamePlateSize()
+              end
             end,
             disabled = function() return db.settings.frame.SyncWithHealthbar end,
             arg = { "settings", "frame", "width" },
@@ -3769,8 +3758,12 @@ local function CreateBlizzardSettings()
             max = 100,
             step = 1,
             set = function(info, val)
-              SetValue(info, val)
-              Addon:SetBaseNamePlateSize()
+              if InCombatLockdown() then
+                t.Print("We're unable to change this while in combat", true)
+              else
+                SetValue(info, val)
+                Addon:SetBaseNamePlateSize()
+              end
             end,
             disabled = function() return db.settings.frame.SyncWithHealthbar end,
             arg = { "settings", "frame", "height"},

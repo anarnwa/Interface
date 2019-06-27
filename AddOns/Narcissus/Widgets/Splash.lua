@@ -52,9 +52,10 @@ function Narci_CloseSplash(self)
 end
 
 --Events Test--
+
 --[[
 local EventListener = CreateFrame("Frame");
---EventListener:RegisterAllEvents()
+EventListener:RegisterAllEvents()
 --EventListener:RegisterEvent("CVAR_UPDATE")
 --EventListener:RegisterEvent("CONSOLE_MESSAGE")
 EventListener:RegisterEvent("CHAT_MSG_SYSTEM")
@@ -70,7 +71,7 @@ EventListener:SetScript("OnEvent",function(self,event,...)
     and event ~= "NAME_PLATE_UNIT_ADDED" and event ~= "NAME_PLATE_UNIT_REMOVED" and event ~= "NAME_PLATE_CREATED"
     and event ~= "SPELL_UPDATE_COOLDOWN" and event ~= "SPELL_UPDATE_USABLE"
     and event ~= "BN_FRIEND_INFO_CHANGED" and event ~= "FRIENDLIST_UPDATE"
-	and event ~= "MODIFIER_STATE_CHANGED" and event ~= "UPDATE_SHAPESHIFT_FORM"
+	and event ~= "MODIFIER_STATE_CHANGED" and event ~= "UPDATE_SHAPESHIFT_FORM" and event ~= "SOCIAL_QUEUE_UPDATE" and event ~= "COMPANION_UPDATE" and event ~= "UPDATE_MOUSEOVER_UNIT"
 	and event ~= "COMPANION_UPDATE" and event ~= "UPDATE_INVENTORY_DURABILITY" then
 		print("Event: |cFFFFD100"..event)
 		local name, value, value2, value3, value4, value5 = ...
@@ -79,11 +80,5 @@ EventListener:SetScript("OnEvent",function(self,event,...)
         print(value2)
 		--print("\n")
     end
-
-	if event ~= "UNIT_POWER_FREQUENT" and event ~= "UNIT_POWER_UPDATE" and event ~= "COMBAT_LOG_EVENT_UNFILTERED" and event ~= "SPELL_UPDATE_USABLE" then
-		print("Event: "..event)
-		local name, value = ...
-		print(name)
-	end
 end)
 --]]

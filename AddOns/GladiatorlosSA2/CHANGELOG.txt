@@ -1,3 +1,9 @@
+- version B10 (8.2)
+
+General
+* Epic Battlegrounds now have their own toggle. Epic Battlegrounds include: Isle of Conquest, Alterac Valley, Southshore vs Tarren Mill, Wintergrasp, and Ashran.
+
+===============================================
 - version B8 (and B9) (8.1.5)
 
 B9: Caught a typo right after I posted B8 that caused Buff Applied abilities to not function correctly. Fixed, re-download if you happened to get B8.

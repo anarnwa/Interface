@@ -61,7 +61,8 @@ oAFK:RegisterEvent("ADDON_LOADED");
 oAFK:SetScript("OnEvent", function(self, event, ...)
     local name = ...
     if (name == "ElvUI" or IsAddOnLoaded("ElvUI")) and ElvUI then                         --ElvUI
-        UnToggleElvUIAFK()
+        UnToggleElvUIAFK();
+        self:UnregisterEvent("ADDON_LOADED");
     end
 end)
 
