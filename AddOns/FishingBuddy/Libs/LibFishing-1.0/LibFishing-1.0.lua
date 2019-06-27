@@ -94,8 +94,8 @@ FishLib.continent_fishing = {
     { ["max"] = 75, ["skillid"] = 2588, ["cat"] = 1108, ["rank"] = 0 },	-- Pandaria Fishing
     { ["max"] = 100, ["skillid"] = 2587, ["cat"] = 1110, ["rank"] = 0 },	-- Draenor Fishing
     { ["max"] = 100, ["skillid"] = 2586, ["cat"] = 1112, ["rank"] = 0 },	-- Legion Fishing
-    { ["max"] = 150, ["skillid"] = 2585, ["cat"] = 1114, ["rank"] = 0 },	-- Kul Tiras Fishing
-    { ["max"] = 150, ["skillid"] = 2585, ["cat"] = 1114, ["rank"] = 0 },	-- Zandalar Fishing
+    { ["max"] = 175, ["skillid"] = 2585, ["cat"] = 1114, ["rank"] = 0 },	-- Kul Tiras Fishing
+    { ["max"] = 175, ["skillid"] = 2585, ["cat"] = 1114, ["rank"] = 0 },	-- Zandalar Fishing
 }
 
 local itsready = C_TradeSkillUI.IsTradeSkillReady
@@ -1428,6 +1428,7 @@ local continent_map = {
     [619] = 8,		-- Broken Isles
     [876] = 9,		-- Kul Tiras
     [875] = 10,     -- Zandalar
+    [1355] = 9,     -- Nazjatar
     [407] = 5,		-- Darkmoon Island
 }
 
