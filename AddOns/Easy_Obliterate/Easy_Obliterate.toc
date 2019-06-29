@@ -1,8 +1,8 @@
-## Interface: 80000
+## Interface: 80200
 ## Title: Easy Obliterate
 ## Notes: Adds all eligible gear to the obliterate interface.
 ## Author: Motig
-## Version: 31
+## Version: 32
 ## SavedVariablesPerCharacter: EasyObliterate_IgnoreList
 ## SavedVariables: EasyObliterate_Data
 

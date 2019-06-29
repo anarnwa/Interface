@@ -1,10 +1,10 @@
-lightweight tag 9d6a06aa2440ab8676801f813ce1e824ee6c03f7 v80200-1.0.1
-Author:	Ludovicus <ludovicus.maior@gmail.com>
-Date:	Tue Jun 25 19:21:02 2019 -0400
+lightweight tag 159e1205857f00ba8a378c663f83a0bd51708102 v80200-1.0.2
+Author:	Ludovicus Maior <ludovicus.maior@gmail.com>
+Date:	Fri Jun 28 13:36:58 2019 +0000
 
-commit 9d6a06aa2440ab8676801f813ce1e824ee6c03f7
-Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Tue Jun 25 19:21:02 2019 -0400
+commit 159e1205857f00ba8a378c663f83a0bd51708102
+Author: Ludovicus Maior <ludovicus.maior@gmail.com>
+Date:   Fri Jun 28 13:36:58 2019 +0000
 
-    Update Interface to 80200
+    Fix bogus references to opts.silent
 

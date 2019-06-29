@@ -1,7 +1,7 @@
 --Easy Obliterate by Motig
 LoadAddOn("Blizzard_ObliterumUI")
 
-local addonVersion = 31
+local addonVersion = 32
 local currentPage = 1
 local selectedButton = nil
 local previousSelectedButton = nil
@@ -546,10 +546,12 @@ local function addItemToForge(self, button)
                     UseContainerItem(eligibleItems[self.itemRef].bag, eligibleItems[self.itemRef].index)
                 end
                 hideTooltip(self)
-                PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON) 
+                --PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+                PlaySound(856) 
             end               
         elseif button == 'RightButton' then
-            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+            --PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+            PlaySound(856)
             if not eligibleItems[self.itemRef].ignore then
                 --itemIgnoreList[eligibleItems[self.itemRef].itemLink] = true
                 table.insert(itemIgnoreList, eligibleItems[self.itemRef].itemLink)
@@ -589,7 +591,8 @@ local function addItemToForge(self, button)
 end
 
 local function createItemButton(i)
-    local frame = CreateFrame('Button', 'EasyObliterateItemButton'..i, contentFrame, "ItemButtonTemplate")
+    --local frame = CreateFrame('Button', 'EasyObliterateItemButton'..i, contentFrame, "ItemButtonTemplate")
+    local frame = CreateFrame('ItemButton', 'EasyObliterateItemButton'..i, contentFrame)
     frame:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
     frame.bg = frame:CreateTexture(nil, 'BACKGROUND')
     frame.bg:SetTexture("Interface\\Buttons\\UI-EmptySlot-Disabled")

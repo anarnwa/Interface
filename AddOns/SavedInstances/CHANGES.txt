@@ -1,31 +1,17 @@
-tag d54f8b6683a236500c565c0836767a3ca41e64c3 8.2.0
+tag 1082f9ee0489c55146e34d46d050d18205a3b561 8.2.1
 Author:	Benjamin Staneck <staneck@gmail.com>
-Date:	Wed Jun 26 06:42:57 2019 +0200
+Date:	Fri Jun 28 20:55:44 2019 +0200
 
-Tagging as 8.2.0
+Tagging as 8.2.1
 
-commit 6225925772e18c06162fd0518742323a1dd2113f
-Author: Benjamin Staneck <staneck@gmail.com>
-Date:   Wed Jun 26 06:42:00 2019 +0200
-
-    Update TOC for Patch 8.2
-
-commit 5b1adcbfbbecbb4ac5f331218e3b48dfd22cd212
+commit eb8d7b9fb1e8d836860e28c2d0ab473978accbbd
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Sun Jun 16 14:58:34 2019 +0800
+Date:   Fri Jun 28 18:04:45 2019 +0800
 
-    fixes #257
-
-commit fff36285f612951217ed0acbf1734087f5f3b29c
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Fri Jun 14 16:46:17 2019 +0800
-
-    fixes #287
-
-commit c3d5ac79b54f37a2117cee499234c7c1673ee225
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Fri Jun 14 12:10:11 2019 +0800
-
-    Fix Quest Tag
-    fixes #284
+    Patch 8.2
+    * Track Prismatic Manapearl
+    * Add new emissary quest
+    * Add The Eternal Palace LFR
+    * Add new faction
+    * Add new world boss placeholder
 

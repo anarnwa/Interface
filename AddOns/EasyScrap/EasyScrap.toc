@@ -1,8 +1,8 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: Easy Scrap
 ## Notes: Adds all eligible gear to the scrapper interface.
 ## Author: Motig
-## Version: 22
+## Version: 23
 ## SavedVariablesPerCharacter: EasyScrap_IgnoreList
 ## SavedVariables: EasyScrap_SaveData
 

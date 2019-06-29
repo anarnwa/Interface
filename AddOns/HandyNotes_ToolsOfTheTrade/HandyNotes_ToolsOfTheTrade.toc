@@ -1,0 +1,16 @@
+## Interface: 80200
+## Title: HandyNotes: Tools of the Trade
+## Notes: Tools of the Trade locations
+## Author: Imoom
+## Version: 4.0.0
+## DefaultState: enabled
+## X-Category: Map
+## X-eMail: 
+## SavedVariables: HandyNotes_ToolsOfTheTradeDB
+## RequiredDeps: HandyNotes
+## Credit: Kemayo
+
+handler.lua
+config.lua
+Cauldron.lua
+TimeRift.lua
