@@ -1,4 +1,7 @@
 # Changelog
+## Changed in v4.1.0
+* Cauldron Spawnspot added
+
 ## Changed in v4.0.0
 * Spawnspots added for 8.2 content
 

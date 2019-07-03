@@ -1,15 +1,14 @@
-lightweight tag 2018078d4b29336863e6ceff0a6f13ba564377d7 v8.2.0-v1.13.2-7135.139
+lightweight tag 04f621d78e8200bb45db0656f39f53384c1e6df1 v8.2.0-v1.13.2-7150.140
 Author:	Tercioo <terciob19@hotmail.com>
-Date:	Wed Jun 26 12:55:18 2019 -0300
+Date:	Tue Jul 2 18:50:14 2019 -0300
 
-commit 2018078d4b29336863e6ceff0a6f13ba564377d7
+commit 04f621d78e8200bb45db0656f39f53384c1e6df1
 Author: Tercioo <terciob19@hotmail.com>
-Date:   Wed Jun 26 12:55:18 2019 -0300
+Date:   Tue Jul 2 18:50:14 2019 -0300
 
-    WoW Patch 8.2 General Fixes
+    Added Click Through and 8.2 Bug Fixes
     
-    - Cleanup on .pkgmeta file.
-    - Removed 3DModelsPatch plugin.
-    - ToC files Updated.
-    - Minor 8.2 API changes bug fixes.
+    - Added click through option in options > display section.
+    - Fixed code editor for bar texts not opening.
+    - General small bug fixes.
 

@@ -30,7 +30,7 @@ AchievementTrackerOptions = {}
 
 -- Purpose:         Information about the current release. This is mianly used to detect which addon should output messages to chat to avoid spam
 Config.majorVersion = 2						--Addon with a higher major version change have priority over a lower major version
-Config.minorVersion = 46    				--Addon with a minor version change have prioirty over a lower minor version
+Config.minorVersion = 47    				--Addon with a minor version change have prioirty over a lower minor version
 Config.revisionVersion = 0					--Addon with a revision change have the same priorty as a lower revision verison
 Config.releaseType = ""                     --Release type (Alpha, Beta, Release)
 
@@ -1651,6 +1651,7 @@ function IATInfoFrame:SetSubHeading1(text)
     end                        
     InfoFrame.subHeading1:SetText(text)
     InfoFrame.subHeading1:SetHeight(InfoFrame.subHeading1:GetStringHeight())
+    InfoFrame.subHeading1:ClearAllPoints()
     InfoFrame.subHeading1:SetPoint("TOPLEFT", InfoFrame.heading, "BOTTOMLEFT", 0, -5)
     
     -- if InfoFrame.subHeading1:GetStringWidth() > InfoFrame:GetWidth()then

@@ -50,7 +50,7 @@ local function CleanTrash()
 				PickupContainerItem(bestBag, bestSlot)
 				DeleteCursorItem()
 				
-				NextTime = time + 1--select(3, GetNetStats())
+				NextTime = time + select(3, GetNetStats())
 				TimerFrame:SetScript('OnUpdate', nil)
 			end
 		end

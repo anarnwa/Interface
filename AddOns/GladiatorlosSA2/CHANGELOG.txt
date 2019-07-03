@@ -1,3 +1,24 @@
+- version B11 (8.2)
+
+General
+* Fixed Gladiator's Maledict spellID and moved it from Buff Applied to Special Abilities.
+* Fixed "Invalid fileDataID" error in combat caused by: Cenarion Ward cast, Safeguard expiration, Holy Word: Salvation cast, Faerie Swarm cast, Psychic Horror cast.
+** NOTE: You will continue to receive the "Invalid fileDataID" when changing certain options for GSA. This can safely be ignored and is the result of how the spell options playback was coded. I'll fix this eventually.
+
+Druid
+* Fixed Cenarion Ward.
+* Fixed Faerie Swarm.
+
+Priest
+* Psychic Horror alert is back!
+
+Shaman
+* Tremor Totem alert is back, and is no longer off by default.
+* Fixed Lightning Lasso's spellID.
+
+Warlock
+* Removed Howl of Terror (no longer exists).
+===============================================
 - version B10 (8.2)
 
 General

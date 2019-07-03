@@ -1,11 +1,11 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: Scrap Options
 ## Notes: Load on demand options and tutorials.
 
 ## Author: Jaliborc (João Cardoso)
 ## X-License: GNU General Public License Version 3
 ## X-Category: Inventory
-## Version: 13.15
+## Version: 8.2.0
 
 ## OptionalDeps: Poncho-1.0, Sushi-3.0, CustomTutorials-2.1
 ## Dependencies: Scrap

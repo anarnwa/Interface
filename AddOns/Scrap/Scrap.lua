@@ -78,6 +78,7 @@ function Scrap:Startup()
 	self:RegisterEvent('VARIABLES_LOADED')
 	self:RegisterEvent('MERCHANT_SHOW')
 	self.Startup = nil
+	self.Junk = {}
 end
 
 function Scrap:VARIABLES_LOADED()
@@ -145,12 +146,12 @@ function Scrap:ToggleJunk(id)
 	local message
 
 	if self:IsJunk(id) then
-	   	self.Junk[id] = false
+		self.Junk[id] = false
 		message = L.Removed
 	else
-	   	self.Junk[id] = true
+		self.Junk[id] = true
 		message = L.Added
-  	end
+  end
 
 	self:Print(message, select(2, GetItemInfo(id)), 'LOOT')
 end

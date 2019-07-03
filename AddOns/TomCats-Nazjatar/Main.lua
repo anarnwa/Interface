@@ -571,7 +571,7 @@ if (TomCats and TomCats.Register) then
                 }
             },
             name = "Rares of Nazjatar",
-            version = "1.0.2"
+            version = "1.0.3"
         }
     )
 end

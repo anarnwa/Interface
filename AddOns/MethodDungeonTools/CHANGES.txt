@@ -1,16 +1,16 @@
-lightweight tag b15b9c2f35e147711221fcb3ee43f60524e81eba v2.6.1
+lightweight tag d59a73b583a8cf8ee7e70885cb4156cb033a73e2 v2.6.2
 Author:	Nnogga <27819512+nnogga@users.noreply.github.com>
-Date:	Tue Jun 25 17:04:30 2019 +0200
+Date:	Tue Jul 2 22:43:35 2019 +0200
 
-commit b15b9c2f35e147711221fcb3ee43f60524e81eba
+commit d59a73b583a8cf8ee7e70885cb4156cb033a73e2
 Author: Nnogga <27819512+nnogga@users.noreply.github.com>
-Date:   Tue Jun 25 17:04:30 2019 +0200
+Date:   Tue Jul 2 22:43:35 2019 +0200
 
     version update
 
-commit 401c327cb53897ee01b37fa1565d04607ffaa4ae
+commit c3d4649587e35500f5b0c002c7e790627c394d24
 Author: Nnogga <27819512+nnogga@users.noreply.github.com>
-Date:   Tue Jun 25 17:03:49 2019 +0200
+Date:   Tue Jul 2 22:43:25 2019 +0200
 
-    interface number
+    affix rotation updates
 

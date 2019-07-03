@@ -17,7 +17,7 @@ This file is part of Scrap.
 
 local NoVisuals = not Scrap.HasSpotlight
 local HasPawn = IsAddOnLoaded('Pawn_Scrap')
-local Patrons = {{title='Jenkins',people={'Robert Schultz','Gnare','Robert McCarthy','Sandra Stevens'}},{},{title='Ambassador',people={'Fernando Bandeira','Michael Irving','Julia Frizzell','Peggy Webb','Lolari','Craig Falb','Chris Jones'}}} -- generated patron list
+local Patrons = {{title='Jenkins',people={'Sembiance ','Gnare ','Eitrigg A. Runefire','Lars Romeijn'}},{},{title='Ambassador',people={'Fernando Bandeira','Michael Irving','Julia Frizzell','Peggy Webb','Lolari ','Craig Falb','Mary Barrentine','Grey Sample'}}} -- generated patron list
 
 local Options = SushiMagicGroup(ScrapOptions)
 Options:SetAddon('Scrap')

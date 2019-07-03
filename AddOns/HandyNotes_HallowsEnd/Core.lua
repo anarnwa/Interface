@@ -31,9 +31,14 @@ local continents = {
 }
 
 local notes = {
+	[12331] = "Speak to Zidormi in Darkshore to gain access to Teldrassil.",
+	[12334] = "Speak to Zidormi in Darkshore to gain access to Teldrassil.",
 	[12340] = "If Sentinel Hill is on fire, the bucket will be in the tower. If not, it will be in the inn.",
 	[12349] = "Speak to Zidormi if you can't find the bucket.", -- Theramore Isle, Alliance
+	[12363] = "Speak to Zidormi if you can't find the bucket.", -- Brill, Horde
+	[12368] = "Speak to Zidormi in Tirisfal to gain access to The Undercity.",
 	[12380] = "Speak to Zidormi if you can't find the bucket.", -- Hammerfall, Horde
+	[12401] = "Speak to Zidormi if you can't find the bucket.", -- Cenarion Hold, Silithus
 	[13472] = "Down in the Underbelly Tavern.",
 	[28954] = "Speak to Zidormi if you can't find the bucket.", -- Refuge Pointe, Alliance
 	[28959] = "Speak to Zidormi if you can't find the bucket.", -- Dreadmaul Hold, Horde
@@ -108,10 +113,12 @@ end
 
 local function createAllWaypoints()
 	for mapID, coords in next, points do
+		if not continents[mapFile] then
 		for coord, questID in next, coords do
 			if coord and (db.completed or not completedQuests[questID]) then
 				createWaypoint(mapID, coord)
 			end
+		end
 		end
 	end
 	TomTom:SetClosestWaypoint()
@@ -197,8 +204,8 @@ local options = {
 -- check
 local setEnabled = false
 local function CheckEventActive()
-	local date = C_Calendar.GetDate()
-	local month, day, year = date.month, date.monthDay, date.year
+	local calendar = C_Calendar.GetDate()
+	local month, day, year = calendar.month, calendar.monthDay, calendar.year
 
 	local monthInfo = C_Calendar.GetMonthInfo()
 	local curMonth, curYear = monthInfo.month, monthInfo.year
@@ -210,16 +217,14 @@ local function CheckEventActive()
 		local event = C_Calendar.GetDayEvent(monthOffset, day, i)
 
 		if event.iconTexture == 235460 or event.iconTexture == 235461 or event.iconTexture == 235462 then
-			if event.sequenceType == "ONGOING" then
-				setEnabled = true
-			else
-				local hour = GetGameTime()
+			local hour, minute = GetGameTime()
 
-				if event.sequenceType == "END" and hour <= event.endTime.hour or event.sequenceType == "START" and hour >= event.startTime.hour then
-					setEnabled = true
-				else
-					setEnabled = false
-				end
+			setEnabled = event.sequenceType == "ONGOING" -- or event.sequenceType == "INFO"
+
+			if event.sequenceType == "START" then
+				setEnabled = hour >= event.startTime.hour and (hour > event.startTime.hour or minute >= event.startTime.minute)
+			elseif event.sequenceType == "END" then
+				setEnabled = hour <= event.endTime.hour and (hour < event.endTime.hour or minute <= event.endTime.minute)
 			end
 		end
 	end
@@ -290,8 +295,8 @@ function HallowsEnd:OnEnable()
 		end
 	end
 
-	local date = C_Calendar.GetDate()
-	C_Calendar.SetAbsMonth(date.month, date.year)
+	local calendar = C_Calendar.GetDate()
+	C_Calendar.SetAbsMonth(calendar.month, calendar.year)
 
 	C_Timer_NewTicker(15, CheckEventActive)
 	HandyNotes:RegisterPluginDB("HallowsEnd", self, options)
