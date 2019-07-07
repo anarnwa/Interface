@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker", 25
+local Type, Version = "ColorPicker", 24
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -13,7 +13,7 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 
 -- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
 -- List them here for Mikk's FindGlobals script
--- GLOBALS: ColorPickerFrame, OpacitySliderFrame
+-- GLOBALS: ShowUIPanel, HideUIPanel, ColorPickerFrame, OpacitySliderFrame
 
 --[[-----------------------------------------------------------------------------
 Support functions
@@ -47,7 +47,7 @@ local function Control_OnLeave(frame)
 end
 
 local function ColorSwatch_OnClick(frame)
-	ColorPickerFrame:Hide()
+	HideUIPanel(ColorPickerFrame)
 	local self = frame.obj
 	if not self.disabled then
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
@@ -77,7 +77,7 @@ local function ColorSwatch_OnClick(frame)
 			ColorCallback(self, r, g, b, a, true)
 		end
 
-		ColorPickerFrame:Show()
+		ShowUIPanel(ColorPickerFrame)
 	end
 	AceGUI:ClearFocus()
 end

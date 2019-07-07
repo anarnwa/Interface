@@ -116,9 +116,10 @@ local node_ids = {
 		[NL["Slimy Mackerel School"]]			= 194,
 		[NL["Tiragarde Perch School"]]			= 195,
 		[NL["U'taka School"]]					= 196,
-		[NL["Mauve Stinger School"]]			= 197,
-		[NL["Viper Fish School"]]				= 198,
-		[NL["Ionized Minnows"]]					= 199,
+		[NL["Ionized Minnows"]]					= 197,
+		[NL["Mauve Stinger School"]]			= 198,
+		[NL["Viper Fish School"]]				= 199,
+		[NL["Sentry Fish School"]]				= 1101,
 	},
 	["Mining"] = {
 		[NL["Copper Vein"]] 					= 201,
@@ -452,8 +453,8 @@ local rare_spawns = {
 	[263] = {[262]=true}, -- rich monelite deposit
 	[266] = {[265]=true}, -- rich platinum deposit
 	[268] = {[267]=true}, -- rich storm silver deposit
-	[486] = {[485]=true,[487]=true,[488]=true,[491]=true,[492]=true}, -- anchor weed
 	[271] = {[270]=true}, -- rich osmenite deposit
+	[486] = {[485]=true,[487]=true,[488]=true,[491]=true}, -- anchor weed
 }
 Collector.rareNodes = rare_spawns
 -- Format zone = { "Database", "new node id"}
@@ -583,9 +584,10 @@ local node_textures = {
 		[194] = icon_path.."Fish\\slimy_mackerel.tga",
 		[195] = icon_path.."Fish\\tiragarde_perch.tga",
 		[196] = icon_path.."Fish\\utaka.tga",
-		[197] = icon_path.."Fish\\fish_hook.tga", -- 8.2 fish TODO
-		[198] = icon_path.."Fish\\fish_hook.tga", -- 8.2 fish TODO
-		[199] = icon_path.."Fish\\fish_hook.tga", -- 8.2 fish TODO
+		[197] = icon_path.."Fish\\fish_hook.tga",
+		[198] = icon_path.."Fish\\fish_hook.tga",
+		[199] = icon_path.."Fish\\fish_hook.tga",
+		[1101] = icon_path.."Fish\\fish_hook.tga",
 	},
 	["Mining"] = {
 		[201] = icon_path.."Mine\\copper.tga",
@@ -657,9 +659,9 @@ local node_textures = {
 		[267] = icon_path.."Mine\\stormsilver.tga",
 		[268] = icon_path.."Mine\\stormsilver.tga",
 		[269] = icon_path.."Mine\\stormsilver.tga",
-		[270] = icon_path.."Mine\\ghostiron.tga", -- osmenite TODO
-		[271] = icon_path.."Mine\\ghostiron.tga", -- osmenite TODO
-		[272] = icon_path.."Mine\\ghostiron.tga", -- osmenite TODO
+		[270] = icon_path.."Mine\\white_trillium.tga",
+		[271] = icon_path.."Mine\\white_trillium.tga",
+		[272] = icon_path.."Mine\\white_trillium.tga",
 	},
 	["Extract Gas"] = {
 		[301] = icon_path.."Gas\\windy_cloud.tga",
@@ -762,7 +764,7 @@ local node_textures = {
 		[489] = icon_path.."Herb\\sirens_pollen.tga",
 		[490] = icon_path.."Herb\\star_moss.tga",
 		[491] = icon_path.."Herb\\winters_kiss.tga",
-		[492] = icon_path.."Herb\\rain_poppy.tga", -- Zin'anthid TODO
+		[492] = icon_path.."Herb\\winters_kiss.tga",
 	},
 	["Treasure"] = {
 		[501] = icon_path.."Treasure\\clam.tga",

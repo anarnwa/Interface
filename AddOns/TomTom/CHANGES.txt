@@ -1,10 +1,10 @@
-lightweight tag 159e1205857f00ba8a378c663f83a0bd51708102 v80200-1.0.2
-Author:	Ludovicus Maior <ludovicus.maior@gmail.com>
-Date:	Fri Jun 28 13:36:58 2019 +0000
+lightweight tag aab66857d4a7d355631f8252bbcf0ab0ae8dc7b9 v80200-1.0.3
+Author:	Ludovicus <ludovicus.maior@gmail.com>
+Date:	Wed Jul 3 17:36:29 2019 -0400
 
-commit 159e1205857f00ba8a378c663f83a0bd51708102
-Author: Ludovicus Maior <ludovicus.maior@gmail.com>
-Date:   Fri Jun 28 13:36:58 2019 +0000
+commit aab66857d4a7d355631f8252bbcf0ab0ae8dc7b9
+Author: Ludovicus <ludovicus.maior@gmail.com>
+Date:   Wed Jul 3 17:36:29 2019 -0400
 
-    Fix bogus references to opts.silent
+    Update to compensate for Outland and Draenor being demoted from Worlds.
 

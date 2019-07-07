@@ -69,6 +69,7 @@ local GeneralSettingsBase = {
 		["Completionist"] = true,
 		["MainOnly"] = false,
 		["DebugMode"] = false,
+		["Repeatable"] = false,
 		["AccountWide:Achievements"] = true,
 		-- ["AccountWide:BattlePets"] = true,
 		["AccountWide:FlightPaths"] = true,
@@ -77,7 +78,7 @@ local GeneralSettingsBase = {
 		["AccountWide:Illusions"] = true,
 		-- ["AccountWide:Mounts"] = true,
 		["AccountWide:MusicRolls"] = true,
-		-- ["AccountWide:Quests"] = false,
+		["AccountWide:Quests"] = false,
 		["AccountWide:Recipes"] = true,
 		["AccountWide:Reputations"] = true,
 		["AccountWide:SelfieFilters"] = true,
@@ -110,9 +111,12 @@ local FilterSettingsBase = {
 };
 local TooltipSettingsBase = {
 	__index = {
+		["Auto:BountyList"] = true,
 		["Auto:MiniList"] = true,
 		["Auto:ProfessionList"] = true,
+		["Auto:AH"] = true,
 		["Celebrate"] = true,
+		["Channel"] = "master",
 		["ClassRequirements"] = true,
 		["Descriptions"] = true,
 		["DisplayInCombat"] = true,
@@ -126,6 +130,8 @@ local TooltipSettingsBase = {
 		["Models"] = true,
 		["LiveScan"] = false,
 		["Locations"] = 5,
+		["MainListScale"] = 1,
+		["MiniListScale"] = 1,
 		["Precision"] = 2,
 		["Progress"] = true,
 		["QuestGivers"] = true,
@@ -133,6 +139,8 @@ local TooltipSettingsBase = {
 		["Report:Collected"] = true,
 		["ShowIconOnly"] = false,
 		["SharedAppearances"] = true,
+		["Show:Remaining"] = false,
+		["Skip:Cutscenes"] = false,
 		["SourceLocations"] = true,
 		["SourceLocations:Completed"] = true,
 		["SourceLocations:Creatures"] = true,
@@ -177,6 +185,8 @@ settings.Initialize = function(self)
 	FilterSettingsBase.__index = app.Presets[app.Class];
 	
 	self.LocationsSlider:SetValue(self:GetTooltipSetting("Locations"));
+	self.MainListScaleSlider:SetValue(self:GetTooltipSetting("MainListScale"));
+	self.MiniListScaleSlider:SetValue(self:GetTooltipSetting("MiniListScale"));
 	self.PrecisionSlider:SetValue(self:GetTooltipSetting("Precision"));
 	self.MinimapButtonSizeSlider:SetValue(self:GetTooltipSetting("MinimapSize"));
 	if self:GetTooltipSetting("MinimapButton") then
@@ -541,7 +551,7 @@ end
 
 -- The ALL THE THINGS Epic Logo!
 local f = settings:CreateTexture(nil, "ARTWORK");
-f:SetATTSprite("base_36x36", 429, 141, 36, 36, 512, 256);
+f:SetATTSprite("base_36x36", 429, 217, 36, 36, 512, 256);
 f:SetPoint("TOPLEFT", settings, "TOPLEFT", 8, -8);
 f:SetSize(36, 36);
 f:Show();
@@ -569,7 +579,7 @@ f:SetWidth(230);
 f:SetHeight(30);
 f:RegisterForClicks("AnyUp");
 f:SetScript("OnClick", settings.ShowCopyPasteDialog);
-f:SetATTTooltip("单击按钮复制url到我的Twitch Channel.\n\n可以在我直播的时候问问题，我会尽力回答!");
+f:SetATTTooltip("Click this button to copy the url to get to my Twitch Channel.\n\nYou can ask questions while I'm streaming and I will try my best to answer them!");
 settings.twitch = f;
 
 f = CreateFrame("Button", nil, settings, "OptionsButtonTemplate");
@@ -579,7 +589,7 @@ f:SetWidth(200);
 f:SetHeight(30);
 f:RegisterForClicks("AnyUp");
 f:SetScript("OnClick", settings.ShowCopyPasteDialog);
-f:SetATTTooltip("单击按钮复制url到ALL THE THINGS Discord.\n\n可以与其他收藏家分享进步/挫折!");
+f:SetATTTooltip("Click this button to copy the url to get to the ALL THE THINGS Discord.\n\nYou can share your progress/frustrations with other collectors!");
 settings.community = f;
 
 ------------------------------------------
@@ -587,7 +597,7 @@ settings.community = f;
 ------------------------------------------
 local line;
 (function()
-local tab = settings:CreateTab("常规");
+local tab = settings:CreateTab("General");
 tab:SetPoint("TOPLEFT", settings.logo, "BOTTOMRIGHT", 16, 0);
 line = settings:CreateTexture(nil, "ARTWORK");
 line:SetPoint("LEFT", settings, "LEFT", 4, 0);
@@ -605,17 +615,17 @@ ModeLabel.OnRefresh = function(self)
 	self:SetText(settings:GetModeString());
 end;
 
-local DebugModeCheckBox = settings:CreateCheckBox("|Cff15abff调试模式|r (展示所有事)",
+local DebugModeCheckBox = settings:CreateCheckBox("|Cff15abffDebug Mode|r (Show Everything)",
 function(self)
 	self:SetChecked(settings:Get("DebugMode"));
 end,
 function(self)
 	settings:SetDebugMode(self:GetChecked());
 end);
-DebugModeCheckBox:SetATTTooltip("字面意思是…游戏中的所有事情. PERIOD. DOT. 是的, 所有的一切. 即使是不可回收的物品，如袋子、消耗品、试剂等也会出现在清单中. (甚至你自己! 不, 真的. 看.)\n\n这仅用于调试目的. 不用于完成跟踪.\n\n此模式绕过所有过滤器, 包括不可获得的.");
+DebugModeCheckBox:SetATTTooltip("Quite literally... ALL THE THINGS IN THE GAME. PERIOD. DOT. YEAH, ALL OF IT. Even Uncollectible things like bags, consumables, reagents, etc will appear in the lists. (Even yourself! No, really. Look.)\n\nThis is for Debugging purposes only. Not intended to be used for completion tracking.\n\nThis mode bypasses all filters, including Unobtainables.");
 DebugModeCheckBox:SetPoint("TOPLEFT", ModeLabel, "BOTTOMLEFT", 0, -8);
 
-local CompletionistModeCheckBox = settings:CreateCheckBox("|CFFADD8E6完美主义模式|r (All Sources)",
+local CompletionistModeCheckBox = settings:CreateCheckBox("|CFFADD8E6Completionist Mode|r (All Sources)",
 function(self)
 	self:SetChecked(settings:Get("Completionist"));
 	if not settings:Get("Thing:Transmog") and not settings:Get("DebugMode") and not settings:Get("AccountMode") then
@@ -629,7 +639,7 @@ end,
 function(self)
 	settings:SetCompletionistMode(self:GetChecked());
 end);
-CompletionistModeCheckBox:SetATTTooltip("如果您希望ATT标记符合“已收集”相同解锁要求的共享外观，请关闭此设置.\n\n通过此模式“收集”的项目将用星号标记(*). 这意味着还没有收集到外观的特定来源.");
+CompletionistModeCheckBox:SetATTTooltip("Turn this setting off if you want ATT to mark shared appearances that qualify for the same unlock requirements as 'Collected'.\n\nItems 'Collected' through this mode will be marked with an asterisk (*). This means that you haven't collected that specific source of the appearance yet.");
 CompletionistModeCheckBox:SetPoint("TOPLEFT", DebugModeCheckBox, "BOTTOMLEFT", 0, 4);
 
 local MainOnlyModeCheckBox = settings:CreateCheckBox(L["I_ONLY_CARE_ABOUT_MY_MAIN"],
@@ -646,10 +656,10 @@ end,
 function(self)
 	settings:SetMainOnlyMode(self:GetChecked());
 end);
-MainOnlyModeCheckBox:SetATTTooltip("如果您还想让att*假装*您赢得了所有未被其他种族或职业锁定的共享外观，请启用此设置.\n\n例如，如果您从ICC收集了一个仅限猎人使用的等级，并且在没有等级/种族限制的情况下，有一个来自突袭的共享外观，那么ATT将*假装*您也获得了该外观的来源.\n\n注意: 以这种方式解锁时，切换到其他种族/职业将错误地报告您已经获得了尚未为新角色收集的外观源.");
+MainOnlyModeCheckBox:SetATTTooltip("Turn this setting on if you additionally want ATT to *pretend* that you've earned all shared appearances not locked by a different race or class.\n\nAs an example, if you have collected a Hunter-Only Tier Piece from ICC and there is a shared appearance from the raid without class/race restrictions, ATT will *pretend* that you've earned that source of the appearance as well.\n\nNOTE: Switching to a different race/class will incorrectly report that you've earned appearance sources that you haven't collected for that new chararacter when unlocked in this way.");
 MainOnlyModeCheckBox:SetPoint("TOPLEFT", CompletionistModeCheckBox, "BOTTOMLEFT", 4, 4);
 
-local AccountModeCheckBox = settings:CreateCheckBox("|Cff00ab00战网模式|r (All Characters)",
+local AccountModeCheckBox = settings:CreateCheckBox("|Cff00ab00Account Mode|r (All Characters)",
 function(self)
 	self:SetChecked(settings:Get("AccountMode"));
 	if settings:Get("DebugMode") then
@@ -663,7 +673,7 @@ end,
 function(self)
 	settings:SetAccountMode(self:GetChecked());
 end);
-AccountModeCheckBox:SetATTTooltip("如果要跟踪所有角色的所有内容，而不考虑职业和种族筛选器，请启用此设置.\n\n不可获得的过滤器仍然适用.");
+AccountModeCheckBox:SetATTTooltip("Turn this setting on if you want to track all of the Things for all of your characters regardless of class and race filters.\n\nUnobtainable filters still apply.");
 AccountModeCheckBox:SetPoint("TOPLEFT", MainOnlyModeCheckBox, "BOTTOMLEFT", -5, 4);
 
 
@@ -674,7 +684,7 @@ PrecisionSlider:SetPoint("RIGHT", settings, "RIGHT", -20, 0);
 PrecisionSlider:SetPoint("TOP", ModeLabel, "BOTTOM", 0, -12);
 table.insert(settings.MostRecentTab.objects, PrecisionSlider);
 settings.PrecisionSlider = PrecisionSlider;
-PrecisionSlider.tooltipText = '使用此选项可自定义百分比计算中所需的精度级别.\n\n默认: 2';
+PrecisionSlider.tooltipText = 'Use this to customize your desired level of precision in percentage calculations.\n\nDefault: 2';
 PrecisionSlider:SetOrientation('HORIZONTAL');
 PrecisionSlider:SetWidth(260);
 PrecisionSlider:SetHeight(20);
@@ -683,7 +693,7 @@ PrecisionSlider:SetMinMaxValues(0, 8);
 PrecisionSlider:SetObeyStepOnDrag(true);
 _G[PrecisionSlider:GetName() .. 'Low']:SetText('0')
 _G[PrecisionSlider:GetName() .. 'High']:SetText('8')
-_G[PrecisionSlider:GetName() .. 'Text']:SetText("百分比的精确度")
+_G[PrecisionSlider:GetName() .. 'Text']:SetText("Level of Precision for Percentage")
 PrecisionSlider.Label = PrecisionSlider:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
 PrecisionSlider.Label:SetPoint("TOP", PrecisionSlider, "BOTTOM", 0, 0);
 PrecisionSlider.Label:SetText(PrecisionSlider:GetValue());
@@ -702,7 +712,7 @@ MinimapButtonSizeSlider:SetPoint("RIGHT", settings, "RIGHT", -20, 0);
 MinimapButtonSizeSlider:SetPoint("TOP", PrecisionSlider, "BOTTOM", 0, -28);
 table.insert(settings.MostRecentTab.objects, MinimapButtonSizeSlider);
 settings.MinimapButtonSizeSlider = MinimapButtonSizeSlider;
-MinimapButtonSizeSlider.tooltipText = '使用此选项可自定义迷你地图按钮的大小.\n\n默认: 36';
+MinimapButtonSizeSlider.tooltipText = 'Use this to customize the size of the Minimap Button.\n\nDefault: 36';
 MinimapButtonSizeSlider:SetOrientation('HORIZONTAL');
 MinimapButtonSizeSlider:SetWidth(260);
 MinimapButtonSizeSlider:SetHeight(20);
@@ -711,7 +721,7 @@ MinimapButtonSizeSlider:SetMinMaxValues(18, 48);
 MinimapButtonSizeSlider:SetObeyStepOnDrag(true);
 _G[MinimapButtonSizeSlider:GetName() .. 'Low']:SetText('18')
 _G[MinimapButtonSizeSlider:GetName() .. 'High']:SetText('48')
-_G[MinimapButtonSizeSlider:GetName() .. 'Text']:SetText("迷你地图按钮的大小")
+_G[MinimapButtonSizeSlider:GetName() .. 'Text']:SetText("Minimap Button Size")
 MinimapButtonSizeSlider.Label = MinimapButtonSizeSlider:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
 MinimapButtonSizeSlider.Label:SetPoint("TOP", MinimapButtonSizeSlider, "BOTTOM", 0, 0);
 MinimapButtonSizeSlider.Label:SetText(MinimapButtonSizeSlider:GetValue());
@@ -724,41 +734,12 @@ MinimapButtonSizeSlider:SetScript("OnValueChanged", function(self, newValue)
 	if app.Minimap then app.Minimap:SetSize(newValue, newValue); end
 end);
 
-local ShowMinimapButtonCheckBox = settings:CreateCheckBox("显示尼米地图按钮",
-function(self)
-	self:SetChecked(settings:GetTooltipSetting("MinimapButton"));
-end,
-function(self)
-	settings:SetTooltipSetting("MinimapButton", self:GetChecked());
-	if self:GetChecked() then
-		if not app.Minimap then app.Minimap = app.CreateMinimapButton(); end
-		app.Minimap:Show();
-	elseif app.Minimap then
-		app.Minimap:Hide();
-	end
-end);
-ShowMinimapButtonCheckBox:SetATTTooltip("如果要查看小地图按钮，请启用此选项. 使用此按钮可以快速访问主列表，显示总体收集进度，并通过右键单击访问“设置菜单”.\n\n有些人不喜欢混乱. 或者，您可以通过在聊天框中键入“/ att”来访问主列表. 从那里，您可以右键单击标题以进入“设置”菜单.");
-ShowMinimapButtonCheckBox:SetPoint("TOP", MinimapButtonSizeSlider, "BOTTOM", 0, -12);
-ShowMinimapButtonCheckBox:SetPoint("RIGHT", settings, "RIGHT", -228, 0);
-
-local MinimapButtonStyleCheckBox = settings:CreateCheckBox("使用旧的迷你地图样式",
-function(self)
-	self:SetChecked(settings:GetTooltipSetting("MinimapStyle"));
-end,
-function(self)
-	settings:SetTooltipSetting("MinimapStyle", self:GetChecked());
-	if app.Minimap then app.Minimap:UpdateStyle(); end
-end);
-MinimapButtonStyleCheckBox:SetATTTooltip("有些人不喜欢新的小地图按钮...\n\n那些人错了!\n\n如果你不喜欢它，这里可以选择回到旧式.");
-MinimapButtonStyleCheckBox:SetPoint("TOP", ShowMinimapButtonCheckBox, "BOTTOM", 0, 4);
-MinimapButtonStyleCheckBox:SetPoint("RIGHT", settings, "RIGHT", -228, 0);
-
 
 
 local ThingsLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 ThingsLabel:SetPoint("TOPLEFT", AccountModeCheckBox, "BOTTOMLEFT", 0, -8);
 ThingsLabel:SetJustifyH("LEFT");
-ThingsLabel:SetText("您要跟踪哪些“事物”?");
+ThingsLabel:SetText("Which \"Things\" do you want to track?");
 ThingsLabel:Show();
 table.insert(settings.MostRecentTab.objects, ThingsLabel);
 ThingsLabel.OnRefresh = function(self)
@@ -769,7 +750,7 @@ ThingsLabel.OnRefresh = function(self)
 	end
 end;
 
-local AchievementsCheckBox = settings:CreateCheckBox("成就",
+local AchievementsCheckBox = settings:CreateCheckBox("Achievements",
 function(self)
 	self:SetChecked(settings:Get("Thing:Achievements"));
 	if settings:Get("DebugMode") then
@@ -785,10 +766,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-AchievementsCheckBox:SetATTTooltip("启用此选项可跟踪成就.");
+AchievementsCheckBox:SetATTTooltip("Enable this option to track achievements.");
 AchievementsCheckBox:SetPoint("TOPLEFT", ThingsLabel, "BOTTOMLEFT", 0, -8);
 
-local AchievementsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local AchievementsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:Achievements"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:Achievements") then
@@ -804,10 +785,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-AchievementsAccountWideCheckBox:SetATTTooltip("成就跟踪通常是广泛的，但有一些专属于特定职业和种族的成就，你无法在你的主要成就.");
+AchievementsAccountWideCheckBox:SetATTTooltip("Achievement tracking is usually account wide, but there are a number of achievements exclusive to specific classes and races that you can't get on your main.");
 AchievementsAccountWideCheckBox:SetPoint("TOPLEFT", AchievementsCheckBox, "TOPLEFT", 220, 0);
 
-local TransmogCheckBox = settings:CreateCheckBox("外形 / 幻化",
+local TransmogCheckBox = settings:CreateCheckBox("Appearances / Transmog",
 function(self)
 	self:SetChecked(settings:Get("Thing:Transmog"));
 	if settings:Get("DebugMode") then
@@ -827,21 +808,21 @@ function(self)
 	end
 	app:RefreshData();
 end);
-TransmogCheckBox:SetATTTooltip("启用此选项可跟踪外观获取.\n\n注意: 禁用此选项也会禁用所有采集逻辑，您可以使用此切换来防止在执行重要组内容时出现延迟，请牢记，重新启用后将需要进行计算.\n\n默认情况下跟踪战网范围.");
+TransmogCheckBox:SetATTTooltip("Enable this option to track appearance acquisition.\n\nNOTE: Disabling this option also disables all fanfares and acquisition logic.  You can use this toggle as a way to prevent lag spikes while doing important group content, but bear in mind the computation will need to occur once re-enabled.\n\nTracked Account Wide by Default.");
 TransmogCheckBox:SetPoint("TOPLEFT", AchievementsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local TransmogAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local TransmogAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(true);
 	self:Disable();
 	self:SetAlpha(0.2);
 end,
 function(self)
-	print("幻象外观仅在战网范围内进行跟踪，无法禁用.");
+	print("Transmog appearances are only tracked account wide and cannot be disabled.");
 end);
 TransmogAccountWideCheckBox:SetPoint("TOPLEFT", TransmogCheckBox, "TOPLEFT", 220, 0);
 
-local BattlePetsCheckBox = settings:CreateCheckBox("战斗宠物 / 同伴",
+local BattlePetsCheckBox = settings:CreateCheckBox("Battle Pets / Companions",
 function(self)
 	self:SetChecked(settings:Get("Thing:BattlePets"));
 	if settings:Get("DebugMode") then
@@ -857,21 +838,21 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-BattlePetsCheckBox:SetATTTooltip("启用此选项可跟踪战斗宠物和同伴. 这些可以在开放的世界中找到，也可以通过各种地下城和团本中的boss掉落，以及从供应商和声望获取.\n\n默认情况下跟踪战网范围.");
+BattlePetsCheckBox:SetATTTooltip("Enable this option to track battle pets and companions. These can be found in the open world or via boss drops in various Dungeons and Raids as well as from Vendors and Reputation.\n\nTracked Account Wide by Default.");
 BattlePetsCheckBox:SetPoint("TOPLEFT", TransmogCheckBox, "BOTTOMLEFT", 0, 4);
 
-local BattlePetsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local BattlePetsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(true);
 	self:Disable();
 	self:SetAlpha(0.2);
 end,
 function(self)
-	print("战斗宠物只在战网范围内被跟踪.");
+	print("Battle pets are only tracked account wide.");
 end);
 BattlePetsAccountWideCheckBox:SetPoint("TOPLEFT", BattlePetsCheckBox, "TOPLEFT", 220, 0);
 
-local FlightPathsCheckBox = settings:CreateCheckBox("飞行路径 / 飞艇",
+local FlightPathsCheckBox = settings:CreateCheckBox("Flight Paths / Ferry Stations",
 function(self)
 	self:SetChecked(settings:Get("Thing:FlightPaths"));
 	if settings:Get("DebugMode") then
@@ -887,10 +868,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-FlightPathsCheckBox:SetATTTooltip("启用此选项以跟踪飞行路径和飞艇.\n\n要收集这些信息，请与每个大陆的飞行点/飞艇船长打开对话.\n\注意: 由于分阶段技术，您可能必须分阶段到区域的其他敌方，以获得这些兴趣点的开启.");
+FlightPathsCheckBox:SetATTTooltip("Enable this option to track flight paths and ferry stations.\n\nTo collect these, open the dialog with the flight / ferry master in each continent.\n\NOTE: Due to phasing technology, you may have to phase to the other versions of a zone to get credit for those points of interest.");
 FlightPathsCheckBox:SetPoint("TOPLEFT", BattlePetsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local FlightPathsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local FlightPathsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:FlightPaths"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:FlightPaths") then
@@ -906,10 +887,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-FlightPathsAccountWideCheckBox:SetATTTooltip("飞行路径跟踪仅对每个角色非常有用，但是你真的想要在所有50个角色上收集它们吗?");
+FlightPathsAccountWideCheckBox:SetATTTooltip("Flight Paths tracking is only really useful per character, but do you really want to collect them all on all 50 of your characters?");
 FlightPathsAccountWideCheckBox:SetPoint("TOPLEFT", FlightPathsCheckBox, "TOPLEFT", 220, 0);
 
-local FollowersCheckBox = settings:CreateCheckBox("随从",
+local FollowersCheckBox = settings:CreateCheckBox("Followers / Champions",
 function(self)
 	self:SetChecked(settings:Get("Thing:Followers"));
 	if settings:Get("DebugMode") then
@@ -925,10 +906,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-FollowersCheckBox:SetATTTooltip("启用此选项可跟踪随从.\n\n即: 要塞随从, 德拉诺随从, BFA随从.");
+FollowersCheckBox:SetATTTooltip("Enable this option to track followers and champions.\n\nIE: Garrison Followers, Legion Class Hall Champions, and BFA Campaign Minions.");
 FollowersCheckBox:SetPoint("TOPLEFT", FlightPathsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local FollowersAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local FollowersAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:Followers"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:Followers") then
@@ -944,11 +925,11 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-FollowersAccountWideCheckBox:SetATTTooltip("随从通常是每个角色，但是你真的想以每周1个的速度在一个角色上收集243个随从吗?\n\n我想不行，好的先生.");
+FollowersAccountWideCheckBox:SetATTTooltip("Followers are typically per character, but do you really want to have to collect 243 Garrison Inn Followers on one character at a rate of 1 per week?\n\nI think not, good sir.");
 FollowersAccountWideCheckBox:SetPoint("TOPLEFT", FollowersCheckBox, "TOPLEFT", 220, 0);
 
 
-local HeirloomsCheckBox = settings:CreateCheckBox("传家宝",
+local HeirloomsCheckBox = settings:CreateCheckBox("Heirlooms",
 function(self)
 	self:SetChecked(settings:Get("Thing:Heirlooms"));
 	if settings:Get("DebugMode") then
@@ -964,7 +945,7 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-HeirloomsCheckBox:SetATTTooltip("启用此选项可跟踪您是否已解锁传家宝及其各自的升级级别.\n\n具有相关外观的传家宝将通过外观过滤器进行过滤. (关闭外观仍将显示传家宝本身)");
+HeirloomsCheckBox:SetATTTooltip("Enable this option to track whether you have unlocked an Heirloom and its respective Upgrade Levels.\n\nHeirlooms that have an associated Appearance are filtered via the Appearances filter. (turning off appearances will still show the Heirloom itself)\n\nSome items that appear with heirloom quality also help boost reputations and can be filtered via the Reputations filter.");
 HeirloomsCheckBox:SetPoint("TOPLEFT", FollowersCheckBox, "BOTTOMLEFT", 0, 4);
 
 local HeirloomsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
@@ -974,10 +955,10 @@ function(self)
 	self:SetAlpha(0.2);
 end,
 nil);
-HeirloomsAccountWideCheckBox:SetATTTooltip("战网范围追踪传家宝.");
+HeirloomsAccountWideCheckBox:SetATTTooltip("Heirlooms are tracked account wide.");
 HeirloomsAccountWideCheckBox:SetPoint("TOPLEFT", HeirloomsCheckBox, "TOPLEFT", 220, 0);
 
-local IllusionsCheckBox = settings:CreateCheckBox("幻象",
+local IllusionsCheckBox = settings:CreateCheckBox("Illusions",
 function(self)
 	self:SetChecked(settings:Get("Thing:Illusions"));
 	if settings:Get("DebugMode") then
@@ -993,10 +974,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-IllusionsCheckBox:SetATTTooltip("启用此选项以跟踪幻象.\n\n这些看起来很酷的变形效果，你可以应用到你的武器上!\n\n注意: 你不是一个幻象，尽管你是一个彻夜不眠的人.\n\n默认情况下的跟踪战网范围.");
+IllusionsCheckBox:SetATTTooltip("Enable this option to track illusions.\n\nThese are really cool looking transmog effects you can apply to your weapons!\n\nNOTE: You are not an Illusion despite what all the Nightborn think.\n\nTracked Account Wide by Default.");
 IllusionsCheckBox:SetPoint("TOPLEFT", HeirloomsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local IllusionsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local IllusionsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:Illusions"));
 	self:Disable();
@@ -1009,7 +990,7 @@ function(self)
 end);
 IllusionsAccountWideCheckBox:SetPoint("TOPLEFT", IllusionsCheckBox, "TOPLEFT", 220, 0);
 
-local MountsCheckBox = settings:CreateCheckBox("坐骑",
+local MountsCheckBox = settings:CreateCheckBox("Mounts",
 function(self)
 	self:SetChecked(settings:Get("Thing:Mounts"));
 	if settings:Get("DebugMode") then
@@ -1025,10 +1006,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-MountsCheckBox:SetATTTooltip("启用此选项以跟踪坐骑.\n\n你可以骑着它们去比跑步更快的地方. 谁知道!\n\n默认情况下的跟踪战网范围.");
+MountsCheckBox:SetATTTooltip("Enable this option to track mounts.\n\nYou can ride these to go places faster than when running. Who knew!\n\nTracked Account Wide by Default.");
 MountsCheckBox:SetPoint("TOPLEFT", IllusionsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local MountsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local MountsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(true);
 	self:Disable();
@@ -1036,7 +1017,7 @@ function(self)
 end);
 MountsAccountWideCheckBox:SetPoint("TOPLEFT", MountsCheckBox, "TOPLEFT", 220, 0);
 
-local MusicRollsCheckBox = settings:CreateCheckBox("乐谱",
+local MusicRollsCheckBox = settings:CreateCheckBox("Music Rolls",
 function(self)
 	self:SetChecked(settings:Get("Thing:MusicRolls"));
 	if settings:Get("DebugMode") then
@@ -1052,10 +1033,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-MusicRollsCheckBox:SetATTTooltip("启用此选项以跟踪乐谱.\n\n你可以用你的点唱机播放游戏中的音乐!");
+MusicRollsCheckBox:SetATTTooltip("Enable this option to track music rolls.\n\nYou can use your Jukebox Toy to play in-game music!");
 MusicRollsCheckBox:SetPoint("TOPLEFT", MountsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local MusicRollsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local MusicRollsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:MusicRolls"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:MusicRolls") then
@@ -1071,10 +1052,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-MusicRollsAccountWideCheckBox:SetATTTooltip("在暴雪的数据库中，乐谱通常不会被广泛跟踪，但我们可以这样做.\n\n注意: 您只能使用您在当前角色上收集的点唱机玩具播放音乐.");
+MusicRollsAccountWideCheckBox:SetATTTooltip("Music Rolls are not normally tracked account wide in Blizzard's database, but we can do that.\n\nNOTE: You can only play Music Rolls using the Jukebox Toy that you have collected on your current character.");
 MusicRollsAccountWideCheckBox:SetPoint("TOPLEFT", MusicRollsCheckBox, "TOPLEFT", 220, 0);
 
-local QuestsCheckBox = settings:CreateCheckBox("任务",
+local QuestsCheckBox = settings:CreateCheckBox("Quests",
 function(self)
 	self:SetChecked(settings:Get("Thing:Quests"));
 	if settings:Get("DebugMode") then
@@ -1090,18 +1071,28 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-QuestsCheckBox:SetATTTooltip("启用此选项以跟踪任务.\n\n您可以右键单击列表中的任何任务，弹出它们的完整任务链，以显示您的进度和任何先决条件或后续任务.\n\n注意: 由于暴雪数据库中每日、每周、每年和世界任务的跟踪方式的性质，任务不会被永久跟踪.");
+QuestsCheckBox:SetATTTooltip("Enable this option to track quests.\n\nYou can right click any quest in the lists to pop out their full quest chain to show your progress and any prerequisite or breadcrumb quests.\n\nNOTE: Quests are not permanently tracked due to the nature of how Daily, Weekly, Yearly, and World Quests are tracked in the Blizzard Database.");
 QuestsCheckBox:SetPoint("TOPLEFT", MusicRollsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local QuestsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local QuestsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
-	self:SetChecked(false);
-	self:Disable();
-	self:SetAlpha(0.2);
+	self:SetChecked(settings:Get("AccountWide:Quests"));
+	if settings:Get("DebugMode") or not settings:Get("Thing:Quests") then
+		self:Disable();
+		self:SetAlpha(0.2);
+	else
+		self:Enable();
+		self:SetAlpha(1);
+	end
+end,
+function(self)
+	settings:Set("AccountWide:Quests", self:GetChecked());
+	settings:UpdateMode();
+	app:RefreshData();
 end);
 QuestsAccountWideCheckBox:SetPoint("TOPLEFT", QuestsCheckBox, "TOPLEFT", 220, 0);
 
-local RecipesCheckBox = settings:CreateCheckBox("图纸",
+local RecipesCheckBox = settings:CreateCheckBox("Recipes",
 function(self)
 	self:SetChecked(settings:Get("Thing:Recipes"));
 	if settings:Get("DebugMode") then
@@ -1117,10 +1108,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-RecipesCheckBox:SetATTTooltip("启用此选项可跟踪您的专业图纸.\n\n注意: 您必须打开专业列表才能缓存这些.");
+RecipesCheckBox:SetATTTooltip("Enable this option to track recipes for your professions.\n\nNOTE: You must open your professions list in order to cache these.");
 RecipesCheckBox:SetPoint("TOPLEFT", QuestsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local RecipesAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local RecipesAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:Recipes"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:Recipes") then
@@ -1136,10 +1127,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-RecipesAccountWideCheckBox:SetATTTooltip("在暴雪的数据库中，图纸通常不会在整个战网范围内被跟踪，但我们可以做到这一点.\n\n在一个角色上收集它们是不可能的，所以有了这个，你可以追踪所有角色.");
+RecipesAccountWideCheckBox:SetATTTooltip("Recipes are not normally tracked account wide in Blizzard's database, but we can do that.\n\nIt is impossible to collect them all on one character, so with this, you can give your alts and their professions meaning.");
 RecipesAccountWideCheckBox:SetPoint("TOPLEFT", RecipesCheckBox, "TOPLEFT", 220, 0);
 
-local ReputationsCheckBox = settings:CreateCheckBox("声望",
+local ReputationsCheckBox = settings:CreateCheckBox("Reputations",
 function(self)
 	self:SetChecked(settings:Get("Thing:Reputations"));
 	if settings:Get("DebugMode") then
@@ -1155,10 +1146,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-ReputationsCheckBox:SetATTTooltip("启用此选项可跟踪声望.\n\n一旦你达到了有声望的尊敬或最好的朋友，它将被标记为收藏.\n\n您可能需要手动刷新才能正确更新.");
+ReputationsCheckBox:SetATTTooltip("Enable this option to track reputations.\n\nOnce you reach Exalted or Best Friend with a reputation, it will be marked Collected.\n\nYou may have to do a manual refresh for this to update correctly.");
 ReputationsCheckBox:SetPoint("TOPLEFT", RecipesCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ReputationsAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local ReputationsAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:Reputations"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:Reputations") then
@@ -1174,10 +1165,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-ReputationsAccountWideCheckBox:SetATTTooltip("在暴雪的数据库中，声望现在被广泛地追踪到，所以打开它可能是个好主意.");
+ReputationsAccountWideCheckBox:SetATTTooltip("Reputations are now tracked account wide in Blizzard's database for achievements, so turning this on may be a good idea.");
 ReputationsAccountWideCheckBox:SetPoint("TOPLEFT", ReputationsCheckBox, "TOPLEFT", 220, 0);
 
-local SelfieFiltersCheckBox = settings:CreateCheckBox("自拍滤镜",
+local SelfieFiltersCheckBox = settings:CreateCheckBox("Selfie Filters",
 function(self)
 	self:SetChecked(settings:Get("Thing:SelfieFilters"));
 	if settings:Get("DebugMode") then
@@ -1193,10 +1184,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-SelfieFiltersCheckBox:SetATTTooltip("启用此选项可跟踪S.E.L.F.I.E相机玩具的自拍过滤器.\n\n哦, 开心! 自拍照! 好的伙~~~计.");
+SelfieFiltersCheckBox:SetATTTooltip("Enable this option to track selfie filters for S.E.L.F.I.E Camera Toy.\n\nOh joy! Selfies! Okay duuude.");
 SelfieFiltersCheckBox:SetPoint("TOPLEFT", ReputationsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local SelfieFiltersAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local SelfieFiltersAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:SelfieFilters"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:SelfieFilters") then
@@ -1212,10 +1203,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-SelfieFiltersAccountWideCheckBox:SetATTTooltip("在暴雪的数据库中，自拍过滤器通常不会在战网范围内进行跟踪，但我们可以做到这一点.\n\n注意: 您必须使用S.E.L.F.I.E相机玩具拍摄自拍照!");
+SelfieFiltersAccountWideCheckBox:SetATTTooltip("Selfie Filters are not normally tracked account wide in Blizzard's database, but we can do that.\n\nNOTE: You have to snap a selfie with your S.E.L.F.I.E Camera Toy!");
 SelfieFiltersAccountWideCheckBox:SetPoint("TOPLEFT", SelfieFiltersCheckBox, "TOPLEFT", 220, 0);
 
-local TitlesCheckBox = settings:CreateCheckBox("头衔",
+local TitlesCheckBox = settings:CreateCheckBox("Titles",
 function(self)
 	self:SetChecked(settings:Get("Thing:Titles"));
 	if settings:Get("DebugMode") then
@@ -1231,10 +1222,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-TitlesCheckBox:SetATTTooltip("启用此选项可跟踪头衔.\n\n这些可以让你的角色脱颖而出，看起来你已经玩了一段时间. 通常只有新玩家没有称号.");
+TitlesCheckBox:SetATTTooltip("Enable this option to track titles.\n\nThese can make your character stand out and look like you've played for awhile. Typically only new players do not have a title active.");
 TitlesCheckBox:SetPoint("TOPLEFT", SelfieFiltersCheckBox, "BOTTOMLEFT", 0, 4);
 
-local TitlesAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local TitlesAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(settings:Get("AccountWide:Titles"));
 	if settings:Get("DebugMode") or not settings:Get("Thing:Titles") then
@@ -1250,10 +1241,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-TitlesAccountWideCheckBox:SetATTTooltip("大多数头衔都是在战网范围内进行跟踪，但是魔兽世界中一些着名的头衔被锁定在赢得他们的角色上.\n\n如果你不关心这个并且想要看到那些标记为你收集的标题，请切换它.");
+TitlesAccountWideCheckBox:SetATTTooltip("Most titles are tracked account wide, but some prestigious titles in WoW are locked to the character that earned them.\n\nToggle this if you don't care about that and want to see those titles marked Collected for your alts.");
 TitlesAccountWideCheckBox:SetPoint("TOPLEFT", TitlesCheckBox, "TOPLEFT", 220, 0);
 
-local ToysCheckBox = settings:CreateCheckBox("玩具",
+local ToysCheckBox = settings:CreateCheckBox("Toys",
 function(self)
 	self:SetChecked(settings:Get("Thing:Toys"));
 	if settings:Get("DebugMode") then
@@ -1269,10 +1260,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-ToysCheckBox:SetATTTooltip("启用此选项可跟踪玩具.\n\n这些玩具中的大多数玩具都有趣. 其他的，如炉石玩具，可以用来代替你的实际炉石，并可以为你节省一个袋子! 他们也有有趣的效果......很好!\n\n默认情况下跟踪战网范围.");
+ToysCheckBox:SetATTTooltip("Enable this option to track Toys.\n\nMost of these toys have a fun thing that they do. Others, like the Hearthstone Toys, can be used in place of your actual Hearthstone and can save you a bag slot! They also have interesting effects... Nice!\n\nTracked Account Wide by Default.");
 ToysCheckBox:SetPoint("TOPLEFT", TitlesCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ToysAccountWideCheckBox = settings:CreateCheckBox("战网范围",
+local ToysAccountWideCheckBox = settings:CreateCheckBox("Account Wide",
 function(self)
 	self:SetChecked(true);
 	self:Disable();
@@ -1281,8 +1272,34 @@ end);
 ToysAccountWideCheckBox:SetPoint("TOPLEFT", ToysCheckBox, "TOPLEFT", 220, 0);
 
 
+local ShowMinimapButtonCheckBox = settings:CreateCheckBox("Show the Minimap Button",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("MinimapButton"));
+end,
+function(self)
+	settings:SetTooltipSetting("MinimapButton", self:GetChecked());
+	if self:GetChecked() then
+		if not app.Minimap then app.Minimap = app.CreateMinimapButton(); end
+		app.Minimap:Show();
+	elseif app.Minimap then
+		app.Minimap:Hide();
+	end
+end);
+ShowMinimapButtonCheckBox:SetATTTooltip("Enable this option if you want to see the minimap button. This button allows you to quickly access the Main List, show your Overall Collection Progress, and access the Settings Menu by right clicking it.\n\nSome people don't like clutter. Alternatively, you can access the Main List by typing '/att' in your chatbox. From there, you can right click the header to get to the Settings Menu.");
+ShowMinimapButtonCheckBox:SetPoint("TOPLEFT", AchievementsAccountWideCheckBox, "TOPLEFT", 160, 16);
 
-local ShowCompletedGroupsCheckBox = settings:CreateCheckBox("显示已完成的组",
+local MinimapButtonStyleCheckBox = settings:CreateCheckBox("Use the Old Minimap Style",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("MinimapStyle"));
+end,
+function(self)
+	settings:SetTooltipSetting("MinimapStyle", self:GetChecked());
+	if app.Minimap then app.Minimap:UpdateStyle(); end
+end);
+MinimapButtonStyleCheckBox:SetATTTooltip("Some people don't like the new minimap button...\n\nThose people are wrong!\n\nIf you don't like it, here's an option to go back to the old style.");
+MinimapButtonStyleCheckBox:SetPoint("TOPLEFT", ShowMinimapButtonCheckBox, "BOTTOMLEFT", 0, 4);
+
+local ShowCompletedGroupsCheckBox = settings:CreateCheckBox("Show Completed Groups",
 function(self)
 	self:SetChecked(settings:Get("Show:CompletedGroups"));
 	if settings:Get("DebugMode") then
@@ -1298,10 +1315,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-ShowCompletedGroupsCheckBox:SetATTTooltip("如果要将已完成的组视为具有完成百分比的标题，请启用此选项. 如果某个群组与您的职业没有任何关联，则此设置也会使这些群组显示在列表中.\n\n我们建议您关闭此设置，因为它将节省迷你列表中的空间，并允许您快速查看区域中缺少的内容.");
-ShowCompletedGroupsCheckBox:SetPoint("TOPLEFT", AchievementsAccountWideCheckBox, "TOPLEFT", 160, 0);
+ShowCompletedGroupsCheckBox:SetATTTooltip("Enable this option if you want to see completed groups as a header with a completion percentage. If a group has nothing relevant for your class, this setting will also make those groups appear in the listing.\n\nWe recommend you turn this setting off as it will conserve the space in the mini list and allow you to quickly see what you are missing from the zone.");
+ShowCompletedGroupsCheckBox:SetPoint("TOPLEFT", MinimapButtonStyleCheckBox, "BOTTOMLEFT", 0, -4);
 
-local ShowCollectedThingsCheckBox = settings:CreateCheckBox("显示已收集的东西",
+local ShowCollectedThingsCheckBox = settings:CreateCheckBox("Show Collected Things",
 function(self)
 	self:SetChecked(settings:Get("Show:CollectedThings"));
 	if settings:Get("DebugMode") then
@@ -1317,10 +1334,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-ShowCollectedThingsCheckBox:SetATTTooltip("如果要将已完成的组视为具有完成百分比的标题，请启用此选项. 如果某个群组与您的职业没有任何关联，则此设置也会使这些群组显示在列表中.\n\n我们建议您关闭此设置，因为它将节省迷你列表中的空间，并允许您快速查看区域中缺少的内容.");
+ShowCollectedThingsCheckBox:SetATTTooltip("Enable this option if you want to see completed groups as a header with a completion percentage. If a group has nothing relevant for your class, this setting will also make those groups appear in the listing.\n\nWe recommend you turn this setting off as it will conserve the space in the mini list and allow you to quickly see what you are missing from the zone.");
 ShowCollectedThingsCheckBox:SetPoint("TOPLEFT", ShowCompletedGroupsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowIncompleteThingsCheckBox = settings:CreateCheckBox("显示未完成的任务",
+local ShowIncompleteThingsCheckBox = settings:CreateCheckBox("Show Incomplete Things",
 function(self)
 	self:SetChecked(settings:Get("Show:IncompleteThings"));
 	if settings:Get("DebugMode") then
@@ -1336,10 +1353,29 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-ShowIncompleteThingsCheckBox:SetATTTooltip("如果要查看与未完成任务相关联的物品，装备，NPC和称号，则启用此选项，这些任务不一定具有您可以通过完成任务而收集的任何内容.\n\n你可以用这个来帮助你获得博学者的成就，如果你还没有.\n\n注意: 在启用此设置的情况下，列表中也会出现稀有任务.");
+ShowIncompleteThingsCheckBox:SetATTTooltip("Enable this option if you want to see items, objects, NPCs, and headers associated with incomplete quests that don't necessarily have anything you can collect as a result of completing them.\n\nYou can use this to help you earn the Loremaster Achievement if you don't already have it.\n\nNOTE: Rare Spawns and Vignettes also appear in the listing with this setting turned on.");
 ShowIncompleteThingsCheckBox:SetPoint("TOPLEFT", ShowCollectedThingsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local FilterThingsByLevelCheckBox = settings:CreateCheckBox("按等级筛选内容",
+local ShowRepeatableThingsCheckBox = settings:CreateCheckBox("Track Repeatable Quests",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("Repeatable"));
+	if not settings:Get("Thing:Quests") then
+		self:Disable();
+		self:SetAlpha(0.2);
+	else
+		self:Enable();
+		self:SetAlpha(1);
+	end
+end,
+function(self)
+	settings:SetTooltipSetting("Repeatable", self:GetChecked());
+	settings:UpdateMode();
+	app:RefreshData();
+end);
+ShowRepeatableThingsCheckBox:SetATTTooltip("Enable this option if you want to treat repeatable daily, weekly, and yearly quests as collectible. They will appear in the list like a regular collectible quest.\n\nNOTE: This is NOT intended to be used all the time, but if you're doing a set of dailies in a zone you've otherwise completed and need to be reminded of what is there, you can use this to see them.");
+ShowRepeatableThingsCheckBox:SetPoint("TOPLEFT", ShowIncompleteThingsCheckBox, "BOTTOMLEFT", 4, 4);
+
+local FilterThingsByLevelCheckBox = settings:CreateCheckBox("Filter Things By Level",
 function(self)
 	self:SetChecked(settings:Get("Filter:ByLevel"));
 	if settings:Get("DebugMode") then
@@ -1355,10 +1391,10 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-FilterThingsByLevelCheckBox:SetATTTooltip("如果只想查看当前级别角色可用的内容，请启用此设置.\n\n注意: 这对新手战网特别有用.");
-FilterThingsByLevelCheckBox:SetPoint("TOPLEFT", ShowIncompleteThingsCheckBox, "BOTTOMLEFT", 0, 4);
+FilterThingsByLevelCheckBox:SetATTTooltip("Enable this setting if you only want to see content available to your current level character.\n\nNOTE: This is especially useful on Starter Accounts.");
+FilterThingsByLevelCheckBox:SetPoint("TOPLEFT", ShowRepeatableThingsCheckBox, "BOTTOMLEFT", 0, -4);
 
-local HideBoEItemsCheckBox = settings:CreateCheckBox("隐藏BoE物品",
+local HideBoEItemsCheckBox = settings:CreateCheckBox("Hide BoE Items",
 function(self)
 	self:SetChecked(settings:Get("Hide:BoEs"));
 	if settings:Get("DebugMode") or settings:Get("Filter:BoEs") then
@@ -1372,10 +1408,10 @@ end,
 function(self)
 	settings:SetHideBOEItems(self:GetChecked());
 end);
-HideBoEItemsCheckBox:SetATTTooltip("如果要隐藏BoE物品，请启用此设置.\n\n当您尝试为角色完成经典旧世并且不想专门用于可以在alts或拍卖行上放置的物品时，此设置非常有用.\n\n即: 不要因为毁灭之锤而扰乱你的思绪.");
+HideBoEItemsCheckBox:SetATTTooltip("Enable this setting if you want to hide Bind on Equip items.\n\nThis setting is useful for when you are trying to finish a Classic Dungeon for a character and don't want to farm specifically for items that can be farmed on alts or on the Auction House.\n\nIE: Don't lose your mind grinding for Pendulum of Doom.");
 HideBoEItemsCheckBox:SetPoint("TOPLEFT", FilterThingsByLevelCheckBox, "BOTTOMLEFT", 0, 4);
 
-local IgnoreFiltersForBoEsCheckBox = settings:CreateCheckBox("忽略BOE的筛选器",
+local IgnoreFiltersForBoEsCheckBox = settings:CreateCheckBox("Ignore Filters for BoEs",
 function(self)
 	self:SetChecked(settings:Get("Filter:BoEs"));
 	if settings:Get("DebugMode") then
@@ -1391,77 +1427,57 @@ function(self)
 	settings:UpdateMode();
 	app:RefreshData();
 end);
-IgnoreFiltersForBoEsCheckBox:SetATTTooltip("如果要忽略BOE项目的装备、武器、种族、等级或职业要求，请启用此设置.\n\n如果您正试图通过拍卖行扫描收集您的物品，此模式可能对您有用.");
+IgnoreFiltersForBoEsCheckBox:SetATTTooltip("Enable this setting if you want to ignore armor, weapon, race, class, or profession requirements for BoE items.\n\nIf you are trying to collect things for your alts via Auction House scanning, this mode may be useful to you.");
 IgnoreFiltersForBoEsCheckBox:SetPoint("TOPLEFT", HideBoEItemsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ExpandDifficultyCheckBox = settings:CreateCheckBox("展开当前难度",
+local ExpandDifficultyCheckBox = settings:CreateCheckBox("Expand Current Difficulty",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Expand:Difficulty"));
 end,
 function(self)
 	settings:SetTooltipSetting("Expand:Difficulty", self:GetChecked());
 end);
-ExpandDifficultyCheckBox:SetATTTooltip("如果要在进入地下城或团队时自动最小化迷你列表中未激活的难度标题，请启用此选项.\n\n比如: 在普通难度地下城中最小化英雄条目");
-ExpandDifficultyCheckBox:SetPoint("TOPLEFT", IgnoreFiltersForBoEsCheckBox, "BOTTOMLEFT", 0, 0);
+ExpandDifficultyCheckBox:SetATTTooltip("Enable this option if you want to automatically minimize difficulty headers in the mini list that are not active when you enter a dungeon or raid.\n\nExample: Minimize the Heroic header when in a Normal difficulty dungeon");
+ExpandDifficultyCheckBox:SetPoint("TOPLEFT", IgnoreFiltersForBoEsCheckBox, "BOTTOMLEFT", 0, -4);
 
-local WarnDifficultyCheckBox = settings:CreateCheckBox("警告已完成难度",
+local WarnDifficultyCheckBox = settings:CreateCheckBox("Warn Completed Difficulty",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Warn:Difficulty"));
 end,
 function(self)
 	settings:SetTooltipSetting("Warn:Difficulty", self:GetChecked());
 end);
-WarnDifficultyCheckBox:SetATTTooltip("如果您希望在进入具有难度设置的副本时收到警告，当您有其他未保存的难度时，您将无法获得新的收藏品.");
+WarnDifficultyCheckBox:SetATTTooltip("Enable this option if you want to be warned when you enter an instance with a difficulty setting that will result in you being unable to earn new collectibles when there is an alternative unsaved difficulty that you could enter instead.");
 WarnDifficultyCheckBox:SetPoint("TOPLEFT", ExpandDifficultyCheckBox, "BOTTOMLEFT", 0, 4);
 
-local CelebrateCollectedThingsCheckBox = settings:CreateCheckBox("庆祝已收集的东西",
-function(self)
-	self:SetChecked(settings:GetTooltipSetting("Celebrate"));
-end,
-function(self)
-	settings:SetTooltipSetting("Celebrate", self:GetChecked());
-end);
-CelebrateCollectedThingsCheckBox:SetATTTooltip("如果您希望在获得新物品时听到庆祝的声音效果，请启用此选项.\n\n此功能可以极大地帮助您保持动力.");
-CelebrateCollectedThingsCheckBox:SetPoint("TOPLEFT", WarnDifficultyCheckBox, "BOTTOMLEFT", 0, 4);
-
-local WarnRemovedThingsCheckBox = settings:CreateCheckBox("删除内容时发出警告",
-function(self)
-	self:SetChecked(settings:GetTooltipSetting("Warn:Removed"));
-end,
-function(self)
-	settings:SetTooltipSetting("Warn:Removed", self:GetChecked());
-end);
-WarnRemovedThingsCheckBox:SetATTTooltip("如果您想在不小心售出或交易某个物品时听到警告音效，而该物品的外观会导致您在收藏中丢失该外观，请启用此选项.\n\n如果您提供带有购买计时器的商品，这将非常有用. 插件会告诉你，你犯了一个错误.");
-WarnRemovedThingsCheckBox:SetPoint("TOPLEFT", CelebrateCollectedThingsCheckBox, "BOTTOMLEFT", 0, 4);
-
-local ReportCollectedThingsCheckBox = settings:CreateCheckBox("报告已收集的东西",
+local ReportCollectedThingsCheckBox = settings:CreateCheckBox("Report Collected Things",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Report:Collected"));
 end,
 function(self)
 	settings:SetTooltipSetting("Report:Collected", self:GetChecked());
 end);
-ReportCollectedThingsCheckBox:SetATTTooltip("如果您希望在聊天中看到一条消息，详细说明您从收藏中收集或删除了哪些物品，请启用此选项.\n\n注意: 这是因为暴雪默默地添加了外观和其他收藏品并且忽略了通知您可用的其他物品.\n\n我们建议您保持此设置. 如果你打开了这个选项，你仍然会听到警告声.");
-ReportCollectedThingsCheckBox:SetPoint("TOPLEFT", WarnRemovedThingsCheckBox, "BOTTOMLEFT", 0, 4);
+ReportCollectedThingsCheckBox:SetATTTooltip("Enable this option if you want to see a message in chat detailing which items you have collected or removed from your collection.\n\nNOTE: This is present because Blizzard silently adds appearances and other collectible items and neglects to notify you of the additional items available to you.\n\nWe recommend you keep this setting on. You will still hear the fanfare with it off assuming you have that option turned on.");
+ReportCollectedThingsCheckBox:SetPoint("TOPLEFT", WarnDifficultyCheckBox, "BOTTOMLEFT", 0, -4);
 
-local ReportCompletedQuestsCheckBox = settings:CreateCheckBox("报告已完成的任务",
+local ReportCompletedQuestsCheckBox = settings:CreateCheckBox("Report Completed Quests",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Report:CompletedQuests"));
 end,
 function(self)
 	settings:SetTooltipSetting("Report:CompletedQuests", self:GetChecked());
 end);
-ReportCompletedQuestsCheckBox:SetATTTooltip("如果您希望在任务发生后立即看到您完成的任何任务的任务ID，请启用此选项. (用于报告错误、跟踪等)");
+ReportCompletedQuestsCheckBox:SetATTTooltip("Enable this option if you want to see the Quest ID for any quest you complete immediately after it happens. (For reporting bugs, trackings purposes, etc)");
 ReportCompletedQuestsCheckBox:SetPoint("TOPLEFT", ReportCollectedThingsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ReportUnsortedCompletedQuestsCheckBox = settings:CreateCheckBox("仅限未分类的任务",
+local ReportUnsortedCompletedQuestsCheckBox = settings:CreateCheckBox("Only Unsorted Quests",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Report:UnsortedQuests"));
 end,
 function(self)
 	settings:SetTooltipSetting("Report:UnsortedQuests", self:GetChecked());
 end);
-ReportUnsortedCompletedQuestsCheckBox:SetATTTooltip("如果您只想查看您完成的任何任务的任务ID，而该任务ID尚未在加载项中列出，请启用此选项.");
+ReportUnsortedCompletedQuestsCheckBox:SetATTTooltip("Enable this option if you only want to see the Quest ID for any quest you complete that isn't already listed in the addon.");
 ReportUnsortedCompletedQuestsCheckBox:SetPoint("TOPLEFT", ReportCompletedQuestsCheckBox, "BOTTOMLEFT", 4, 4);
 end)();
 
@@ -1469,7 +1485,7 @@ end)();
 -- The "Filters" Tab.					--
 ------------------------------------------
 (function()
-local tab = settings:CreateTab("筛选");
+local tab = settings:CreateTab("Filters");
 tab.OnRefresh = function(self) 
 	if settings:Get("DebugMode") then
 		PanelTemplates_DisableTab(settings, self:GetID());
@@ -1481,7 +1497,7 @@ end;
 local ItemFiltersLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 ItemFiltersLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
 ItemFiltersLabel:SetJustifyH("LEFT");
-ItemFiltersLabel:SetText("装备 / 武器 筛选");
+ItemFiltersLabel:SetText("Armor / Weapon Filters");
 ItemFiltersLabel:Show();
 table.insert(settings.MostRecentTab.objects, ItemFiltersLabel);
 
@@ -1558,7 +1574,7 @@ end
 
 f = CreateFrame("Button", nil, settings, "OptionsButtonTemplate");
 f:SetPoint("BOTTOMLEFT", settings, "BOTTOMLEFT", 8, 8);
-f:SetText("默认职业");
+f:SetText("Class Defaults");
 f:SetWidth(120);
 f:SetHeight(24);
 f:RegisterForClicks("AnyUp");
@@ -1569,7 +1585,7 @@ f:SetScript("OnClick", function(self)
 	settings:Refresh();
 	app:RefreshData();
 end);
-f:SetATTTooltip("单击此按钮可将所有筛选器重置为职业默认值.\n\n注意: 只能打开可为职业收集的筛选器.");
+f:SetATTTooltip("Click this button to reset all of the filters to your class defaults.\n\nNOTE: Only filters that are collectible for your class can be turned on.");
 f.OnRefresh = function(self) 
 	if settings:Get("AccountMode") or settings:Get("DebugMode") then
 		self:Disable();
@@ -1582,7 +1598,7 @@ settings.classdefaults = f;
 
 f = CreateFrame("Button", nil, settings, "OptionsButtonTemplate");
 f:SetPoint("TOPLEFT", settings.classdefaults, "TOPRIGHT", 3, 0);
-f:SetText("所有");
+f:SetText("All");
 f:SetWidth(80);
 f:SetHeight(24);
 f:RegisterForClicks("AnyUp");
@@ -1610,7 +1626,7 @@ f:SetScript("OnClick", function(self)
 		app:RefreshData();
 	end
 end);
-f:SetATTTooltip("单击此按钮可一次切换所有筛选器.");
+f:SetATTTooltip("Click this button to toggle all of the filters at once.");
 f.OnRefresh = function(self) 
 	if settings:Get("AccountMode") or settings:Get("DebugMode") then
 		self:Disable();
@@ -1623,7 +1639,7 @@ table.insert(settings.MostRecentTab.objects, f);
 local LegacyFiltersLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 LegacyFiltersLabel:SetPoint("TOPRIGHT", line, "BOTTOMRIGHT", -88, -8);
 LegacyFiltersLabel:SetJustifyH("LEFT");
-LegacyFiltersLabel:SetText("遗留 / 不可获得 筛选");
+LegacyFiltersLabel:SetText("Legacy / Unobtainable Filters");
 LegacyFiltersLabel:Show();
 table.insert(settings.MostRecentTab.objects, LegacyFiltersLabel);
 
@@ -1631,7 +1647,7 @@ local LegacyFiltersTempLabel = settings:CreateFontString(nil, "ARTWORK", "GameFo
 LegacyFiltersTempLabel:SetPoint("TOPLEFT", LegacyFiltersLabel, "BOTTOMLEFT", 0, -8);
 LegacyFiltersTempLabel:SetPoint("TOPRIGHT", LegacyFiltersLabel, "BOTTOMRIGHT", 0, -8);
 LegacyFiltersTempLabel:SetJustifyH("LEFT");
-LegacyFiltersTempLabel:SetText("|CFFFFFFFF我将彻底修改我们的遗留、不可获得和节日性过滤器的工作方式.\n\n即将到来™.|r");
+LegacyFiltersTempLabel:SetText("|CFFFFFFFFI'm going to completely rework how our Legacy, Unobtainable, and Seasonal filters work.\n\nComing Soon™.|r");
 LegacyFiltersTempLabel:Show();
 table.insert(settings.MostRecentTab.objects, LegacyFiltersTempLabel);
 end)();
@@ -1641,7 +1657,7 @@ end)();
 ------------------------------------------
 --[[
 (function()
-local tab = settings:CreateTab("社交");
+local tab = settings:CreateTab("Social");
 tab.OnRefresh = function(self) 
 	-- We aren't ready yet. :(
 	PanelTemplates_DisableTab(settings, self:GetID());
@@ -1653,7 +1669,7 @@ end)();
 -- The temporary "Unobtainables" Tab.	--
 ------------------------------------------
 (function()
-local tab = settings:CreateTab("不可获得");
+local tab = settings:CreateTab("Unobtainables");
 tab.OnRefresh = function(self) 
 	if settings:Get("DebugMode") then
 		PanelTemplates_DisableTab(settings, self:GetID());
@@ -1707,7 +1723,7 @@ end
 -- seasonal
 local seasonal = child:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 seasonal:SetPoint("TOPLEFT", child, 4, -8)
-seasonal:SetText("节日 (选择隐藏)");
+seasonal:SetText("Seasonal (Check to hide)");
 
 local seasonalFrame = CreateFrame("Frame", nil, child, "ThinBorderTemplate");
 seasonalFrame:SetPoint("TOP", seasonal, "BOTTOM", 0, -4);
@@ -1716,7 +1732,7 @@ seasonalFrame:SetPoint("RIGHT", child, -4, 0);
 seasonalFrame:SetHeight(250);
 
 -- seasonal enable
-local seasonalEnable = child:CreateCheckBox("筛选节日物品", 
+local seasonalEnable = child:CreateCheckBox("Filter Seasonal Items", 
 function(self) 
 	self:SetChecked(app.GetDataMember("FilterSeasonal"));
 end,
@@ -1733,7 +1749,7 @@ end);
 seasonalEnable:SetPoint("TOPLEFT", seasonalFrame, "TOPLEFT", 4, -4);
 
 -- seasonal Everything
-local seasonalAll = child:CreateCheckBox("启用所有节日",
+local seasonalAll = child:CreateCheckBox("Enable All Seasonal",
 function(self)
 	local isTrue = true
 	local val = app.GetDataMember("SeasonalFilters")
@@ -1810,7 +1826,7 @@ end
 -- Unobtainable
 local unobtainable = child:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 unobtainable:SetPoint("TOPLEFT", seasonalFrame, 0, -(seasonalFrame:GetHeight() + 20))
-unobtainable:SetText("无法获得 (选择隐藏)");
+unobtainable:SetText("Unobtainable (Check to hide)");
 
 local unobtainableFrame = CreateFrame("Frame", nil, child, "ThinBorderTemplate");
 unobtainableFrame:SetPoint("TOP",unobtainable,0,-20);
@@ -1819,7 +1835,7 @@ unobtainableFrame:SetPoint("RIGHT", child, -4, 0);
 unobtainableFrame:SetHeight(535);
 
 -- unobtainable enable
-local unobtainableEnable = child:CreateCheckBox("筛选不可获得的物品",
+local unobtainableEnable = child:CreateCheckBox("Filter Unobtainable Items",
 function(self) 
 	self:SetChecked(app.GetDataMember("FilterUnobtainableItems"));
 end,
@@ -1836,7 +1852,7 @@ end);
 unobtainableEnable:SetPoint("TOPLEFT",unobtainable,5,-20)
 
 -- unobtainable Everything
-local unobtainableAll = child:CreateCheckBox("启用所有不可获得",
+local unobtainableAll = child:CreateCheckBox("Enable All Unobtainable",
 function(self)
 	local isTrue = true
 	local val = app.GetDataMember("UnobtainableItemFilters")
@@ -1870,7 +1886,7 @@ unobtainableAll:SetPoint("TOPLEFT",unobtainable, 300, -20)
 -- no chance
 local noChance = child:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 noChance:SetPoint("TOPLEFT", unobtainable, 10, -50)
-noChance:SetText("没有机会");
+noChance:SetText("No Chance");
 
 local noChanceFrame = CreateFrame("Frame", nil, child, "ThinBorderTemplate");
 noChanceFrame:SetPoint("TOP",noChance,0,-20);
@@ -1879,7 +1895,7 @@ noChanceFrame:SetPoint("RIGHT", child, -4, 0);
 noChanceFrame:SetHeight(120);
 
 -- no chance Everything
-local noChanceAll = child:CreateCheckBox("启用所有 \"没有机会\"",
+local noChanceAll = child:CreateCheckBox("Enable All \"No Chance\"",
 function(self)
 	local isTrue = true
 	local val = app.GetDataMember("UnobtainableItemFilters")
@@ -1951,7 +1967,7 @@ end
 -- possible
 local possChance = child:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 possChance:SetPoint("TOPLEFT", noChance, 0, -(noChanceFrame:GetHeight() + (2*20)))
-possChance:SetText("有机会");
+possChance:SetText("Possible Chance");
 
 local possChanceFrame = CreateFrame("Frame", nil, child, "ThinBorderTemplate");
 possChanceFrame:SetPoint("TOP",possChance,0,-20);
@@ -1960,7 +1976,7 @@ possChanceFrame:SetPoint("RIGHT", child, -4, 0);
 possChanceFrame:SetHeight(75);
 
 -- possible Everything
-local possChanceAll = child:CreateCheckBox("启用所有 \"有机会\"",
+local possChanceAll = child:CreateCheckBox("Enable All \"Possible Chance\"",
 function(self)
 	local isTrue = true
 	local val = app.GetDataMember("UnobtainableItemFilters")
@@ -2032,7 +2048,7 @@ end
 -- high
 local highChance = child:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 highChance:SetPoint("TOPLEFT", possChance, 0, -(possChanceFrame:GetHeight() + (2*20)))
-highChance:SetText("很大机会");
+highChance:SetText("High Chance");
 
 local highChanceFrame = CreateFrame("Frame", nil, child, "ThinBorderTemplate");
 highChanceFrame:SetPoint("TOP",highChance,0,-20);
@@ -2041,7 +2057,7 @@ highChanceFrame:SetPoint("RIGHT", child, -4, 0);
 highChanceFrame:SetHeight(90);
 
 -- high Everything
-local highChanceAll = child:CreateCheckBox("启用所有 \"很大机会\"",
+local highChanceAll = child:CreateCheckBox("Enable All \"High Chance\"",
 function(self)
 	local isTrue = true
 	local val = app.GetDataMember("UnobtainableItemFilters")
@@ -2113,7 +2129,7 @@ end
 -- Legacy
 local legacy = child:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 legacy:SetPoint("TOPLEFT", highChance, 0, -(highChanceFrame:GetHeight() + (2*15)))
-legacy:SetText("遗留");
+legacy:SetText("Legacy");
 
 local legacyFrame = CreateFrame("Frame", nil, child, "ThinBorderTemplate");
 legacyFrame:SetPoint("TOP",legacy,0,-20);
@@ -2122,7 +2138,7 @@ legacyFrame:SetPoint("RIGHT", child, -4, 0);
 legacyFrame:SetHeight(150);
 
 -- Legacy Everything
-local legacyAll = child:CreateCheckBox("启用所有 \"遗留\"",
+local legacyAll = child:CreateCheckBox("Enable All \"Legacy\"",
 function(self)
 	local isTrue = true
 	local val = app.GetDataMember("UnobtainableItemFilters")
@@ -2189,28 +2205,28 @@ end
 end)();
 
 ------------------------------------------
--- The "Features" Tab.					--
+-- The "Interface" Tab.					--
 ------------------------------------------
 (function()
-local tab = settings:CreateTab("特征");
+local tab = settings:CreateTab("Interface");
 local TooltipLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
 TooltipLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
 TooltipLabel:SetJustifyH("LEFT");
-TooltipLabel:SetText("鼠标提示");
+TooltipLabel:SetText("Tooltips");
 TooltipLabel:Show();
 table.insert(settings.MostRecentTab.objects, TooltipLabel);
 
-local EnableTooltipInformationCheckBox = settings:CreateCheckBox("|CFFADD8E6启用鼠标提示|r",
+local EnableTooltipInformationCheckBox = settings:CreateCheckBox("|CFFADD8E6Enable Tooltip Integrations|r",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Enabled"));
 end,
 function(self)
 	settings:SetTooltipSetting("Enabled", self:GetChecked());
 end);
-EnableTooltipInformationCheckBox:SetATTTooltip("如果希望在鼠标提示中查看att提供的信息，请启用此选项. 这包括其他玩家发送的物品链接，在拍卖行，在地下城助手，在你的包里，在世界上，在NPC上，等等.\n\n如果关闭此功能，则会严重降低快速确定是否需要杀BOSS徒或学习外观的能力.\n\n我们建议您保持此设置.");
+EnableTooltipInformationCheckBox:SetATTTooltip("Enable this option if you want to see the information provided by ATT in external tooltips. This includes item links sent by other players, in the auction house, in the dungeon journal, in your bags, in the world, on NPCs, etc.\n\nIf you turn this feature off, you are seriously reducing your ability to quickly determine if you need to kill a mob or learn an appearance.\n\nWe recommend you keep this setting on.");
 EnableTooltipInformationCheckBox:SetPoint("TOPLEFT", TooltipLabel, "BOTTOMLEFT", 4, 0);
 
-local DisplayInCombatCheckBox = settings:CreateCheckBox("在战斗中展示",
+local DisplayInCombatCheckBox = settings:CreateCheckBox("Display In Combat",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("DisplayInCombat"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2224,11 +2240,11 @@ end,
 function(self)
 	settings:SetTooltipSetting("DisplayInCombat", self:GetChecked());
 end);
-DisplayInCombatCheckBox:SetATTTooltip("如果要在战斗中呈现鼠标提示信息，请启用此选项.\n\n如果你正在使用你的史诗/史诗+公会进行攻击，你可能应该关闭这个设置以尽可能节省性能.\n\n当你正在查找旧的内容时，立即从BOSS那里知道你需要什么是很有用的.");
+DisplayInCombatCheckBox:SetATTTooltip("Enable this option if you want to render tooltip information while you are in combat.\n\nIf you are raiding with your Mythic/Mythic+ Guild, you should probably turn this setting off to save as much performance as you can.\n\nIt can be useful while you are soloing old content to immediately know what you need from a boss.");
 DisplayInCombatCheckBox:SetPoint("TOPLEFT", EnableTooltipInformationCheckBox, "BOTTOMLEFT", 8, 4);
 
 
-local ShowCollectionProgressCheckBox = settings:CreateCheckBox("显示收集进度",
+local ShowCollectionProgressCheckBox = settings:CreateCheckBox("Show Collection Progress",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Progress"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2242,10 +2258,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("Progress", self:GetChecked());
 end);
-ShowCollectionProgressCheckBox:SetATTTooltip("如果希望在鼠标提示的右上角看到收集某个对象或完成某组对象的进度，请启用此选项.\n\n我们建议您保持此设置处于打开状态.");
+ShowCollectionProgressCheckBox:SetATTTooltip("Enable this option if you want to see your progress towards collecting a Thing or completing a group of Things at the Top Right of its tooltip.\n\nWe recommend that you keep this setting turned on.");
 ShowCollectionProgressCheckBox:SetPoint("TOPLEFT", DisplayInCombatCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShortenProgressCheckBox = settings:CreateCheckBox("只显示图标",
+local ShortenProgressCheckBox = settings:CreateCheckBox("Only Show Icon",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("ShowIconOnly"));
 	if not settings:GetTooltipSetting("Enabled") or not settings:GetTooltipSetting("Progress") then
@@ -2259,11 +2275,11 @@ end,
 function(self)
 	settings:SetTooltipSetting("ShowIconOnly", self:GetChecked());
 end);
-ShortenProgressCheckBox:SetATTTooltip("如果只想在右上角看到图标而不是图标和已收集/未收集的文本，请启用此选项.\n\n有些人喜欢更小的鼠标提示...");
+ShortenProgressCheckBox:SetATTTooltip("Enable this option if you only want to see the icon in the topright corner instead of the icon and the collected/not collected text.\n\nSome people like smaller tooltips...");
 ShortenProgressCheckBox:SetPoint("TOPLEFT", ShowCollectionProgressCheckBox, "BOTTOMLEFT", 8, 4);
 
 
-local SummarizeThingsCheckBox = settings:CreateCheckBox("汇总",
+local SummarizeThingsCheckBox = settings:CreateCheckBox("Summarize Things",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("SummarizeThings"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2277,11 +2293,11 @@ end,
 function(self)
 	settings:SetTooltipSetting("SummarizeThings", self:GetChecked());
 end);
-SummarizeThingsCheckBox:SetATTTooltip("启用此选项可在鼠标提示中汇总. ");
+SummarizeThingsCheckBox:SetATTTooltip("Enable this option to summarize Things in the tooltip. For example, if a Thing can be turned into a Vendor for another Thing, then show that other thing in the tooltip to provide visibility for its multiple uses. If a Thing acts as a Container for a number of other Things, this option will show all of the other Things that the container Contains.\n\nWe recommend that you keep this setting turned on.");
 SummarizeThingsCheckBox:SetPoint("TOPLEFT", ShortenProgressCheckBox, "BOTTOMLEFT", -8, 4);
 
 
-local ShowCoordinatesCheckBox = settings:CreateCheckBox("显示坐标",
+local ShowCoordinatesCheckBox = settings:CreateCheckBox("Show Coordinates",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Coordinates"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2295,10 +2311,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("Coordinates", self:GetChecked());
 end);
-ShowCoordinatesCheckBox:SetATTTooltip("如果要将鼠标悬停在迷你列表中的条目上时查看鼠标提示中的坐标，请启用此选项.");
+ShowCoordinatesCheckBox:SetATTTooltip("Enable this option if you want to see coordinates in the tooltip when hovering over an entry in the mini list.");
 ShowCoordinatesCheckBox:SetPoint("TOPLEFT", SummarizeThingsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowDescriptionsCheckBox = settings:CreateCheckBox("显示说明",
+local ShowDescriptionsCheckBox = settings:CreateCheckBox("Show Descriptions",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Descriptions"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2312,10 +2328,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("Descriptions", self:GetChecked());
 end);
-ShowDescriptionsCheckBox:SetATTTooltip("启用此选项可在工具提示中显示说明. 这可能包括地下城说明提供的描述性文字，或由认为有必要提供其他信息的投稿人添加的自定义描述.\n\n你可能想把这个打开.");
+ShowDescriptionsCheckBox:SetATTTooltip("Enable this option to show descriptions within the tooltip. This may include the descriptive text supplied by the Dungeon Journal or a custom description added by a Contributor who felt some additional information was necessary.\n\nYou might want to keep this turned on.");
 ShowDescriptionsCheckBox:SetPoint("TOPLEFT", ShowCoordinatesCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowKnownByCheckBox = settings:CreateCheckBox("显示已知",
+local ShowKnownByCheckBox = settings:CreateCheckBox("Show Known By",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("KnownBy"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2329,10 +2345,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("KnownBy", self:GetChecked());
 end);
-ShowKnownByCheckBox:SetATTTooltip("如果要在鼠标提示中查看知道此配方的所有服务器上的完整角色列表，请启用此选项.");
+ShowKnownByCheckBox:SetATTTooltip("Enable this option if you want to see the full list of characters on all servers that know this recipe in the tooltip.");
 ShowKnownByCheckBox:SetPoint("TOPLEFT", ShowDescriptionsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowModelsCheckBox = settings:CreateCheckBox("显示模型预览",
+local ShowModelsCheckBox = settings:CreateCheckBox("Show Model Preview",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Models"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2346,11 +2362,28 @@ end,
 function(self)
 	settings:SetTooltipSetting("Models", self:GetChecked());
 end);
-ShowModelsCheckBox:SetATTTooltip("启用此选项可在预览中显示模型，而不是鼠标提示上的图标.\n\n此选项可以帮助您识别稀有怪或供应商的样子. 出于这个原因保持开启可能是一个好主意.");
+ShowModelsCheckBox:SetATTTooltip("Enable this option to show models within a preview instead of the icon on the tooltip.\n\nThis option may assist you in identifying what a Rare Spawn or Vendor looks like. It might be a good idea to keep this turned on for that reason.");
 ShowModelsCheckBox:SetPoint("TOPLEFT", ShowKnownByCheckBox, "BOTTOMLEFT", 0, 4);
 
+local ShowRemainingCheckBox = settings:CreateCheckBox("Show Remaining Things",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("Show:Remaining"));
+	if self:GetChecked() then
+		app.GetProgressText = app.GetProgressTextRemaining;
+	else
+		app.GetProgressText = app.GetProgressTextDefault;
+	end
+end,
+function(self)
+	settings:SetTooltipSetting("Show:Remaining", self:GetChecked());
+	-- app:RefreshData();
+	app:UpdateWindows();
+end);
+ShowRemainingCheckBox:SetATTTooltip("Enable this option if you want to see the number of items remaining instead of the progress over total.");
+ShowRemainingCheckBox:SetPoint("TOPLEFT", ShowModelsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowSharedAppearancesCheckBox = settings:CreateCheckBox("显示共享外观",
+
+local ShowSharedAppearancesCheckBox = settings:CreateCheckBox("Show Shared Appearances",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("SharedAppearances"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2364,10 +2397,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("SharedAppearances", self:GetChecked());
 end);
-ShowSharedAppearancesCheckBox:SetATTTooltip("启用此选项可在鼠标提示中查看共享相似外观的项目.\n\n注意: 列表中显示与装备类型不匹配的物品. 这是为了帮助您诊断收集进度.\n\n如果您对此感到困惑，从ATT v1.5.0开始，您可以右键单击该项目以将项目及其共享外观打开到他们自己的独立迷你列表中.");
-ShowSharedAppearancesCheckBox:SetPoint("TOPLEFT", ShowModelsCheckBox, "BOTTOMLEFT", 0, 4);
+ShowSharedAppearancesCheckBox:SetATTTooltip("Enable this option to see items that share a similar appearance in the tooltip.\n\nNOTE: Items that do not match the armor type are displayed in the list. This is to help you diagnose the Collection progress.\n\nIf you are ever confused by this, as of ATT v1.5.0, you can Right Click the item to open the item and its Shared Appearances into their own standalone Mini List.");
+ShowSharedAppearancesCheckBox:SetPoint("TOPLEFT", ShowRemainingCheckBox, "BOTTOMLEFT", 0, 4);
 
-local IncludeOriginalSourceCheckBox = settings:CreateCheckBox("包括原始来源",
+local IncludeOriginalSourceCheckBox = settings:CreateCheckBox("Include Original Source",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("IncludeOriginalSource"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2381,10 +2414,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("IncludeOriginalSource", self:GetChecked());
 end);
-IncludeOriginalSourceCheckBox:SetATTTooltip("如果您确实喜欢在鼠标提示的“共享外观”列表中查看原始源信息，请启用此选项.");
+IncludeOriginalSourceCheckBox:SetATTTooltip("Enable this option if you actually liked seeing the original source info within the Shared Appearances list in the tooltip.");
 IncludeOriginalSourceCheckBox:SetPoint("TOPLEFT", ShowSharedAppearancesCheckBox, "BOTTOMLEFT", 8, 4);
 
-local OnlyShowRelevantSharedAppearancesCheckBox = settings:CreateCheckBox("只有相关",
+local OnlyShowRelevantSharedAppearancesCheckBox = settings:CreateCheckBox("Only Relevant",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("OnlyShowRelevantSharedAppearances"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2398,11 +2431,11 @@ end,
 function(self)
 	settings:SetTooltipSetting("OnlyShowRelevantSharedAppearances", self:GetChecked());
 end);
-OnlyShowRelevantSharedAppearancesCheckBox:SetATTTooltip("如果您只想查看角色可以解锁的共享外观，请启用此选项.\n\n注意: 我们建议您将其关闭，因为知道项目的解锁要求有助于确定物品未收集的原因.");
+OnlyShowRelevantSharedAppearancesCheckBox:SetATTTooltip("Enable this option if you only want to see shared appearances that your character can unlock.\n\nNOTE: We recommend you keep this off as knowing the unlock requirements for an item can be helpful in identifying why an item is Not Collected.");
 OnlyShowRelevantSharedAppearancesCheckBox:SetPoint("TOPLEFT", IncludeOriginalSourceCheckBox, "BOTTOMLEFT", 0, 4);
 
 
-local ShowClassRequirementsCheckBox = settings:CreateCheckBox("显示职业要求",
+local ShowClassRequirementsCheckBox = settings:CreateCheckBox("Show Class Requirements",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("ClassRequirements"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2416,10 +2449,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("ClassRequirements", self:GetChecked());
 end);
-ShowClassRequirementsCheckBox:SetATTTooltip("如果要在工具提示中查看职业需求的完整列表，请启用此选项.");
+ShowClassRequirementsCheckBox:SetATTTooltip("Enable this option if you want to see the full list of class requirements in the tooltip.");
 ShowClassRequirementsCheckBox:SetPoint("TOPLEFT", OnlyShowRelevantSharedAppearancesCheckBox, "BOTTOMLEFT", -8, 4);
 
-local ShowRaceRequirementsCheckBox = settings:CreateCheckBox("显示种族要求",
+local ShowRaceRequirementsCheckBox = settings:CreateCheckBox("Show Race Requirements",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("RaceRequirements"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2433,10 +2466,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("RaceRequirements", self:GetChecked());
 end);
-ShowRaceRequirementsCheckBox:SetATTTooltip("如果要在工具提示中查看完整的种族要求列表，请启用此选项.");
+ShowRaceRequirementsCheckBox:SetATTTooltip("Enable this option if you want to see the full list of race requirements in the tooltip.");
 ShowRaceRequirementsCheckBox:SetPoint("TOPLEFT", ShowClassRequirementsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowSpecializationRequirementsCheckBox = settings:CreateCheckBox("显示专业要求",
+local ShowSpecializationRequirementsCheckBox = settings:CreateCheckBox("Show Specialization Requirements",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("SpecializationRequirements"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2450,10 +2483,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("SpecializationRequirements", self:GetChecked());
 end);
-ShowSpecializationRequirementsCheckBox:SetATTTooltip("启用此选项可显示项目工具提示中物品的战利品专业要求.\n\n注意: 无论此设置如何，这些图标仍将显示在ATT迷你列表中.");
+ShowSpecializationRequirementsCheckBox:SetATTTooltip("Enable this option to show the loot specialization requirements of items in the item's tooltip.\n\nNOTE: These icons will still appear within the ATT mini lists regardless of this setting.");
 ShowSpecializationRequirementsCheckBox:SetPoint("TOPLEFT", ShowRaceRequirementsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowSourceLocationsCheckBox = settings:CreateCheckBox("显示源位置",
+local ShowSourceLocationsCheckBox = settings:CreateCheckBox("Show Source Locations",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("SourceLocations"));
 	if not settings:GetTooltipSetting("Enabled") then
@@ -2467,10 +2500,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("SourceLocations", self:GetChecked());
 end);
-ShowSourceLocationsCheckBox:SetATTTooltip("如果要在工具提示中查看ATT数据库中对象的完整源位置路径，请启用此选项.");
+ShowSourceLocationsCheckBox:SetATTTooltip("Enable this option if you want to see full Source Location Paths for objects within the ATT database in the tooltip.");
 ShowSourceLocationsCheckBox:SetPoint("TOPLEFT", ShowSpecializationRequirementsCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowCompletedSourceLocationsForCheckBox = settings:CreateCheckBox("已完成的源",
+local ShowCompletedSourceLocationsForCheckBox = settings:CreateCheckBox("For Completed Sources",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("SourceLocations:Completed"));
 	if not settings:GetTooltipSetting("Enabled") or not settings:GetTooltipSetting("SourceLocations") then
@@ -2484,10 +2517,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("SourceLocations:Completed", self:GetChecked());
 end);
-ShowCompletedSourceLocationsForCheckBox:SetATTTooltip("如果要在工具提示中查看已完成的源位置，请启用此选项.\n\n.");
+ShowCompletedSourceLocationsForCheckBox:SetATTTooltip("Enable this option if you want to see completed source locations in the tooltip.\n\nAs an example, if you complete the quest \"Bathran's Hair\" in Ashenvale, the tooltip for Evenar Stillwhisper will no longer show that quest when hovering over him.");
 ShowCompletedSourceLocationsForCheckBox:SetPoint("TOPLEFT", ShowSourceLocationsCheckBox, "BOTTOMLEFT", 8, 4);
 
-local ShowSourceLocationsForCreaturesCheckBox = settings:CreateCheckBox("人物",
+local ShowSourceLocationsForCreaturesCheckBox = settings:CreateCheckBox("For Creatures",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("SourceLocations:Creatures"));
 	if not settings:GetTooltipSetting("Enabled") or not settings:GetTooltipSetting("SourceLocations") then
@@ -2501,10 +2534,10 @@ end,
 function(self)
 	settings:SetTooltipSetting("SourceLocations:Creatures", self:GetChecked());
 end);
-ShowSourceLocationsForCreaturesCheckBox:SetATTTooltip("如果要查看人物的源位置，请启用此选项.");
+ShowSourceLocationsForCreaturesCheckBox:SetATTTooltip("Enable this option if you want to see Source Locations for Creatures.");
 ShowSourceLocationsForCreaturesCheckBox:SetPoint("TOPLEFT", ShowCompletedSourceLocationsForCheckBox, "BOTTOMLEFT", 0, 4);
 
-local ShowSourceLocationsForThingsCheckBox = settings:CreateCheckBox("事物",
+local ShowSourceLocationsForThingsCheckBox = settings:CreateCheckBox("For Things",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("SourceLocations:Things"));
 	if not settings:GetTooltipSetting("Enabled") or not settings:GetTooltipSetting("SourceLocations") then
@@ -2518,25 +2551,157 @@ end,
 function(self)
 	settings:SetTooltipSetting("SourceLocations:Things", self:GetChecked());
 end);
-ShowSourceLocationsForThingsCheckBox:SetATTTooltip("如果要查看事物的源位置，请启用此选项.");
+ShowSourceLocationsForThingsCheckBox:SetATTTooltip("Enable this option if you want to see Source Locations for Things.");
 ShowSourceLocationsForThingsCheckBox:SetPoint("TOPLEFT", ShowSourceLocationsForCreaturesCheckBox, "BOTTOMLEFT", 0, 4);
+
+local DebuggingLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+DebuggingLabel:SetPoint("TOPRIGHT", line, "BOTTOMRIGHT", -220, -8);
+DebuggingLabel:SetJustifyH("LEFT");
+DebuggingLabel:SetText("Debugging");
+DebuggingLabel:Show();
+table.insert(settings.MostRecentTab.objects, DebuggingLabel);
+local ids = {["achievementID"] = "Achievement ID",
+	["artifactID"] = "Artifact ID",
+	["azeriteEssenceID"] = "Azerite Essence ID",
+	["bonusID"] = "Bonus ID",
+	["creatureID"] = "Creature ID",
+	["creatures"] = "Creatures List",
+	["currencyID"] = "Currency ID",
+	["difficultyID"] = "Difficulty ID",
+	["displayID"] = "Display ID",
+	["encounterID"] = "Encounter ID",
+	["factionID"] = "Faction ID",
+	["filterID"] = "Filter ID",
+	["fileID"] = "File ID",
+	["flightPathID"] = "Flight Path ID",
+	["followerID"] = "Follower ID",
+	["illusionID"] = "Illusion ID",
+	["instanceID"] = "Instance ID",
+	["itemID"] = "Item ID",
+	["itemString"] = "Item String",
+	["mapID"] = "Map ID",
+	["modID"] = "Mod ID",
+	["objectID"] = "Object ID",
+	["questID"] = "Quest ID",
+	["QuestGivers"] = "Quest Givers",
+	["sourceID"] = "Source ID",
+	["speciesID"] = "Species ID",
+	["spellID"] = "Spell ID",
+	["tierID"] = "Tier ID",
+	["titleID"] = "Title ID",
+	["visualID"] = "Visual ID",
+};
+local last = nil;
+for _,id in pairs({"achievementID","artifactID","azeriteEssenceID","bonusID","creatureID","creatures","currencyID","difficultyID","displayID","encounterID","factionID","fileID","filterID","flightPathID","followerID"}) do
+	local filter = settings:CreateCheckBox(ids[id],
+	function(self) 
+		self:SetChecked(settings:GetTooltipSetting(id));
+	end,
+	function(self)
+		settings:SetTooltipSetting(id, self:GetChecked());
+		settings:Refresh();
+	end);
+	if not last then
+		filter:SetPoint("TOPLEFT", DebuggingLabel, "BOTTOMLEFT", 4, 0);
+	else
+		filter:SetPoint("TOPLEFT", last, "BOTTOMLEFT", 0, 4);
+	end
+	last = filter;
+end
+last = nil;
+for _,id in pairs({"illusionID","instanceID","itemID","itemString", "mapID","modID","objectID","questID","QuestGivers","sourceID","speciesID","spellID","tierID","titleID","visualID"}) do
+	local filter = settings:CreateCheckBox(ids[id],
+	function(self) 
+		self:SetChecked(settings:GetTooltipSetting(id));
+	end,
+	function(self)
+		settings:SetTooltipSetting(id, self:GetChecked());
+		settings:Refresh();
+	end);
+	if not last then
+		filter:SetPoint("TOPLEFT", DebuggingLabel, "BOTTOMLEFT", 164, 0);
+	else
+		filter:SetPoint("TOPLEFT", last, "BOTTOMLEFT", 0, 4);
+	end
+	last = filter;
+end
+
+-- This creates the "Main List Scale" slider.
+local MainListScaleSlider = CreateFrame("Slider", "ATTMainListScaleSlider", settings, "OptionsSliderTemplate");
+MainListScaleSlider:SetPoint("LEFT", DebuggingLabel, "LEFT", 0, 0);
+MainListScaleSlider:SetPoint("TOP", ShowSpecializationRequirementsCheckBox, "BOTTOM", 0, 0);
+table.insert(settings.MostRecentTab.objects, MainListScaleSlider);
+settings.MainListScaleSlider = MainListScaleSlider;
+MainListScaleSlider.tooltipText = 'Use this to customize the scale of the Main List.\n\nDefault: 1';
+MainListScaleSlider:SetOrientation('HORIZONTAL');
+MainListScaleSlider:SetWidth(280);
+MainListScaleSlider:SetHeight(20);
+MainListScaleSlider:SetValueStep(0.1);
+MainListScaleSlider:SetMinMaxValues(0.1, 4);
+MainListScaleSlider:SetObeyStepOnDrag(true);
+_G[MainListScaleSlider:GetName() .. 'Low']:SetText('0.1')
+_G[MainListScaleSlider:GetName() .. 'High']:SetText('4')
+_G[MainListScaleSlider:GetName() .. 'Text']:SetText("Main List Scale")
+MainListScaleSlider.Label = MainListScaleSlider:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+MainListScaleSlider.Label:SetPoint("TOP", MainListScaleSlider, "BOTTOM", 0, 0);
+MainListScaleSlider.Label:SetText(MainListScaleSlider:GetValue());
+MainListScaleSlider:SetScript("OnValueChanged", function(self, newValue)
+	self.Label:SetText(newValue);
+	if newValue == settings:GetTooltipSetting("MainListScale") then
+		return 1;
+	end
+	settings:SetTooltipSetting("MainListScale", newValue)
+	app:GetWindow("Prime"):SetScale(newValue);
+end);
+
+-- This creates the "Mini List Scale" slider.
+local MiniListScaleSlider = CreateFrame("Slider", "ATTMiniListScaleSlider", settings, "OptionsSliderTemplate");
+MiniListScaleSlider:SetPoint("LEFT", DebuggingLabel, "LEFT", 0, 0);
+MiniListScaleSlider:SetPoint("TOP", MainListScaleSlider, "BOTTOM", 0, -32);
+table.insert(settings.MostRecentTab.objects, MiniListScaleSlider);
+settings.MiniListScaleSlider = MiniListScaleSlider;
+MiniListScaleSlider.tooltipText = 'Use this to customize the scale of all Mini and Bitty Lists.\n\nDefault: 1';
+MiniListScaleSlider:SetOrientation('HORIZONTAL');
+MiniListScaleSlider:SetWidth(280);
+MiniListScaleSlider:SetHeight(20);
+MiniListScaleSlider:SetValueStep(0.1);
+MiniListScaleSlider:SetMinMaxValues(0.1, 4);
+MiniListScaleSlider:SetObeyStepOnDrag(true);
+_G[MiniListScaleSlider:GetName() .. 'Low']:SetText('0.1')
+_G[MiniListScaleSlider:GetName() .. 'High']:SetText('4')
+_G[MiniListScaleSlider:GetName() .. 'Text']:SetText("Mini List Scale")
+MiniListScaleSlider.Label = MiniListScaleSlider:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+MiniListScaleSlider.Label:SetPoint("TOP", MiniListScaleSlider, "BOTTOM", 0, 0);
+MiniListScaleSlider.Label:SetText(MiniListScaleSlider:GetValue());
+MiniListScaleSlider:SetScript("OnValueChanged", function(self, newValue)
+	self.Label:SetText(newValue);
+	if newValue == settings:GetTooltipSetting("MiniListScale") then
+		return 1;
+	end
+	settings:SetTooltipSetting("MiniListScale", newValue)
+	for key,window in pairs(app.Windows) do
+		if key ~= "Prime" then
+			window:SetScale(newValue);
+		end
+	end
+end);
 
 -- This creates the "Locations" slider.
 local LocationsSlider = CreateFrame("Slider", "ATTLocationsSlider", settings, "OptionsSliderTemplate");
-LocationsSlider:SetPoint("LEFT", ShowSourceLocationsCheckBox, "LEFT", 0, 0);
-LocationsSlider:SetPoint("TOP", ShowSourceLocationsForThingsCheckBox, "BOTTOM", 0, -16);
+LocationsSlider:SetPoint("LEFT", DebuggingLabel, "LEFT", 0, 0);
+LocationsSlider:SetPoint("TOP", MiniListScaleSlider, "BOTTOM", 0, -32);
 table.insert(settings.MostRecentTab.objects, LocationsSlider);
 settings.LocationsSlider = LocationsSlider;
-LocationsSlider.tooltipText = '使用此选项可自定义要在鼠标提示中显示的源位置数.\n\n注意: 这也将根据显示元素的总数等于显示元素的总数来显示其他来源的“X”个数，然后只显示最后一个来源.\n\n默认: 5';
+LocationsSlider.tooltipText = 'Use this to customize the number of source locations to show in the tooltip.\n\nNOTE: This will also show "X" number of other sources based on how many, if that total is equivalent to the total number of displayed elements, then that will simply display the last source.\n\nDefault: 5';
 LocationsSlider:SetOrientation('HORIZONTAL');
-LocationsSlider:SetWidth(180);
+LocationsSlider:SetWidth(280);
 LocationsSlider:SetHeight(20);
 LocationsSlider:SetValueStep(1);
 LocationsSlider:SetMinMaxValues(1, 40);
 LocationsSlider:SetObeyStepOnDrag(true);
 _G[LocationsSlider:GetName() .. 'Low']:SetText('1')
 _G[LocationsSlider:GetName() .. 'High']:SetText('40')
-_G[LocationsSlider:GetName() .. 'Text']:SetText("显示的源位置")
+_G[LocationsSlider:GetName() .. 'Text']:SetText("Displayed Source Locations")
 LocationsSlider.Label = LocationsSlider:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
 LocationsSlider.Label:SetPoint("TOP", LocationsSlider, "BOTTOM", 0, 0);
 LocationsSlider.Label:SetText(LocationsSlider:GetValue());
@@ -2559,153 +2724,190 @@ LocationsSlider.OnRefresh = function(self)
 end;
 
 
+end)();
+
+------------------------------------------
+-- The "Features" Tab.					--
+------------------------------------------
+(function()
+local tab = settings:CreateTab("Features");
 local ModulesLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-ModulesLabel:SetPoint("TOPRIGHT", line, "BOTTOMRIGHT", -138, -8);
+ModulesLabel:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
 ModulesLabel:SetJustifyH("LEFT");
-ModulesLabel:SetText("模块 & 迷你列表");
+ModulesLabel:SetText("Modules & Mini Lists");
 ModulesLabel:Show();
 table.insert(settings.MostRecentTab.objects, ModulesLabel);
 
-local OpenMainListAutomatically = settings:CreateCheckBox("自动打开主列表",
+local ChangeSkipCutsceneState = function(self, checked)
+	if checked then
+		self:RegisterEvent("PLAY_MOVIE");
+		self:RegisterEvent("CINEMATIC_START");
+	else
+		self:UnregisterEvent("PLAY_MOVIE");
+		self:UnregisterEvent("CINEMATIC_START");
+	end
+end
+local AutomaticallySkipCutscenesCheckBox = settings:CreateCheckBox("Automatically Skip Cutscenes",
+function(self)
+	local checked = settings:GetTooltipSetting("Skip:Cutscenes");
+	self:SetChecked(checked);
+	self:SetScript("OnEvent", function(self, ...)
+		-- print(self, "OnEvent", ...);
+		MovieFrame:Hide();
+		CinematicFrame_CancelCinematic();
+	end);
+	ChangeSkipCutsceneState(self, checked);
+end,
+function(self)
+	settings:SetTooltipSetting("Skip:Cutscenes", self:GetChecked());
+end);
+AutomaticallySkipCutscenesCheckBox:SetATTTooltip("Enable this option if you want ATT to automatically skip all cutscenes on your behalf.");
+AutomaticallySkipCutscenesCheckBox:SetPoint("TOPLEFT", ModulesLabel, "BOTTOMLEFT", 4, 0);
+
+local OpenBountyListAutomatically = settings:CreateCheckBox("Automatically Open the Bounty List",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("Auto:BountyList"));
+end,
+function(self)
+	settings:SetTooltipSetting("Auto:BountyList", self:GetChecked());
+end);
+OpenBountyListAutomatically:SetATTTooltip("Enable this option if you want to see the items that have an outstanding collection bounty. If you manage to snag one of the items posted on this list, you could make a good sum of gold.\n\nShortcut Command: /attbounty");
+OpenBountyListAutomatically:SetPoint("TOPLEFT", AutomaticallySkipCutscenesCheckBox, "BOTTOMLEFT", 0, 4);
+
+local OpenMainListAutomatically = settings:CreateCheckBox("Automatically Open the Main List",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Auto:MainList"));
 end,
 function(self)
 	settings:SetTooltipSetting("Auto:MainList", self:GetChecked());
 end);
-OpenMainListAutomatically:SetATTTooltip("如果要在登录时自动打开主列表，请启用此选项.\n\n快捷命令: /att");
-OpenMainListAutomatically:SetPoint("TOPLEFT", ModulesLabel, "BOTTOMLEFT", 4, 0);
+OpenMainListAutomatically:SetATTTooltip("Enable this option if you want to automatically open the Main List when you login.\n\nYou can also bind this setting to a Key:\n\nKey Bindings -> Addons -> ALL THE THINGS -> Toggle Main List\n\nShortcut Command: /att");
+OpenMainListAutomatically:SetPoint("TOPLEFT", OpenBountyListAutomatically, "BOTTOMLEFT", 0, 4);
 
-local OpenMiniListAutomatically = settings:CreateCheckBox("自动打开迷你列表",
+local OpenMiniListAutomatically = settings:CreateCheckBox("Automatically Open the Mini List",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Auto:MiniList"));
 end,
 function(self)
 	settings:SetTooltipSetting("Auto:MiniList", self:GetChecked());
 end);
-OpenMiniListAutomatically:SetATTTooltip("如果要查看当前区域中可以收集的所有内容，请启用此选项. 更改区域时，列表将自动切换. 有些人不喜欢这个功能，但是当你进行solo时，这个功能非常有用.快捷命令: /att mini");
+OpenMiniListAutomatically:SetATTTooltip("Enable this option if you want to see everything you can collect in your current zone. The list will automatically switch when you change zones. Some people don't like this feature, but when you are solo farming, this feature is extremely useful.\n\nYou can also bind this setting to a Key.\n\nKey Bindings -> Addons -> ALL THE THINGS -> Toggle Mini List\n\nShortcut Command: /att mini");
 OpenMiniListAutomatically:SetPoint("TOPLEFT", OpenMainListAutomatically, "BOTTOMLEFT", 0, 4);
 
-local OpenProfessionListAutomatically = settings:CreateCheckBox("自动打开专业列表",
+local OpenProfessionListAutomatically = settings:CreateCheckBox("Automatically Open the Profession List",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Auto:ProfessionList"));
 end,
 function(self)
 	settings:SetTooltipSetting("Auto:ProfessionList", self:GetChecked());
 end);
-OpenProfessionListAutomatically:SetATTTooltip("如果您希望在打开专业时打开并刷新职业列表，请启用此选项. 由于暴雪强加的API限制，插件可以与您的专业数据进行交互的时间是打开时. 当您更改为其他专业时，列表将自动切换.\n\n我们不建议禁用此选项，因为它可能会阻止配方正确跟踪.\n\n快捷命令: /att prof");
+OpenProfessionListAutomatically:SetATTTooltip("Enable this option if you want ATT to open and refresh the profession list when you open your professions. Due to an API limitation imposed by Blizzard, the only time an addon can interact with your profession data is when it is open. The list will automatically switch when you change to a different profession.\n\nWe don't recommend disabling this option as it may prevent recipes from tracking correctly.\n\nYou can also bind this setting to a Key. (only works when a profession is open)\n\nKey Bindings -> Addons -> ALL THE THINGS -> Toggle Profession Mini List\n\nShortcut Command: /att prof");
 OpenProfessionListAutomatically:SetPoint("TOPLEFT", OpenMiniListAutomatically, "BOTTOMLEFT", 0, 4);
 
-local OpenRaidAssistantAutomatically = settings:CreateCheckBox("自动打开Raid助手",
+local OpenRaidAssistantAutomatically = settings:CreateCheckBox("Automatically Open the Raid Assistant",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Auto:RaidAssistant"));
 end,
 function(self)
 	settings:SetTooltipSetting("Auto:RaidAssistant", self:GetChecked());
 end);
-OpenRaidAssistantAutomatically:SetATTTooltip("如果要查看名为“RAID助手”的备用组/队伍/RAID设置管理器，请启用此选项. 当组设置更改时，列表将自动更新.\n\n快捷命令: /attra");
+OpenRaidAssistantAutomatically:SetATTTooltip("Enable this option if you want to see an alternative group/party/raid settings manager called the 'Raid Assistant'. The list will automatically update whenever group settings change.\n\nYou can also bind this setting to a Key.\n\nKey Bindings -> Addons -> ALL THE THINGS -> Toggle Raid Assistant\n\nShortcut Command: /attra");
 OpenRaidAssistantAutomatically:SetPoint("TOPLEFT", OpenProfessionListAutomatically, "BOTTOMLEFT", 0, 4);
 
-local OpenWorldQuestsListAutomatically = settings:CreateCheckBox("自动打开世界任务列表",
+
+local OpenWorldQuestsListAutomatically = settings:CreateCheckBox("Automatically Open the World Quests List",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("Auto:WorldQuestsList"));
 end,
 function(self)
 	settings:SetTooltipSetting("Auto:WorldQuestsList", self:GetChecked());
 end);
-OpenWorldQuestsListAutomatically:SetATTTooltip("如果希望“世界任务”列表自动显示，请启用此选项. 当您切换区域时，列表将自动更新.\n\nn快捷命令: /attwq");
+OpenWorldQuestsListAutomatically:SetATTTooltip("Enable this option if you want the 'World Quests' list to appear automatically. The list will automatically update whenever you switch zones.\n\nYou can also bind this setting to a Key.\n\nKey Bindings -> Addons -> ALL THE THINGS -> Toggle World Quests List\n\nShortcut Command: /attwq");
 OpenWorldQuestsListAutomatically:SetPoint("TOPLEFT", OpenRaidAssistantAutomatically, "BOTTOMLEFT", 0, 4);
 
-local ShowCurrenciesInWorldQuestsList = settings:CreateCheckBox("将货币视为容器",
+local ShowCurrenciesInWorldQuestsList = settings:CreateCheckBox("Treat Currencies as Containers",
 function(self)
 	self:SetChecked(settings:GetTooltipSetting("WorldQuestsList:Currencies"));
 end,
 function(self)
 	settings:SetTooltipSetting("WorldQuestsList:Currencies", self:GetChecked());
 end);
-ShowCurrenciesInWorldQuestsList:SetATTTooltip("如果您希望将世界任务授予的货币视为列表中用于获取的所有内容都计为+1，则启用此选项.");
+ShowCurrenciesInWorldQuestsList:SetATTTooltip("Enable this option if you want to treat currencies awarded by World Quests as if all of the Things they are used to acquire counted as +1 in the list.");
 ShowCurrenciesInWorldQuestsList:SetPoint("TOPLEFT", OpenWorldQuestsListAutomatically, "BOTTOMLEFT", 4, 4);
 
-local DebuggingLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
-DebuggingLabel:SetPoint("TOPLEFT", ShowCurrenciesInWorldQuestsList, "BOTTOMLEFT", -8, -8);
-DebuggingLabel:SetJustifyH("LEFT");
-DebuggingLabel:SetText("调试");
-DebuggingLabel:Show();
-table.insert(settings.MostRecentTab.objects, DebuggingLabel);
-local ids = {["achievementID"] = "Achievement ID",
-	["artifactID"] = "Artifact ID",
-	["bonusID"] = "Bonus ID",
-	["creatureID"] = "Creature ID",
-	["creatures"] = "Creatures List",
-	["currencyID"] = "Currency ID",
-	["difficultyID"] = "Difficulty ID",
-	["displayID"] = "Display ID",
-	["encounterID"] = "Encounter ID",
-	["factionID"] = "Faction ID",
-	["filterID"] = "Filter ID",
-	["fileID"] = "File ID",
-	["illusionID"] = "Illusion ID",
-	["instanceID"] = "Instance ID",
-	["itemID"] = "Item ID",
-	["itemString"] = "Item String",
-	["mapID"] = "Map ID",
-	["modID"] = "Mod ID",
-	["objectID"] = "Object ID",
-	["questID"] = "Quest ID",
-	["QuestGivers"] = "Quest Givers",
-	["sourceID"] = "Source ID",
-	["speciesID"] = "Species ID",
-	["spellID"] = "Spell ID",
-	["tierID"] = "Tier ID",
-	["titleID"] = "Title ID",
-	["visualID"] = "Visual ID",
-};
-local last = nil;
-for _,id in pairs({"achievementID","artifactID","bonusID","creatureID","creatures","currencyID","difficultyID","displayID","encounterID","factionID","fileID","filterID","illusionID","instanceID"}) do
-	local filter = settings:CreateCheckBox(ids[id],
-	function(self) 
-		self:SetChecked(settings:GetTooltipSetting(id));
-	end,
-	function(self)
-		settings:SetTooltipSetting(id, self:GetChecked());
-		settings:Refresh();
-	end);
-	if not last then
-		filter:SetPoint("TOPLEFT", DebuggingLabel, "BOTTOMLEFT", 4, 0);
-	else
-		filter:SetPoint("TOPLEFT", last, "BOTTOMLEFT", 0, 4);
+local ShowAuctionHouseModuleTab = settings:CreateCheckBox("Show the Auction House Module Tab",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("Auto:AH"));
+end,
+function(self)
+	settings:SetTooltipSetting("Auto:AH", self:GetChecked());
+	if app.Blizzard_AuctionUILoaded then
+		if app.AuctionModuleTabID then
+			if self:GetChecked() then
+				PanelTemplates_EnableTab(AuctionFrame, app.AuctionModuleTabID);
+				if app.OpenAuctionModule then app:OpenAuctionModule(); end
+			else
+				PanelTemplates_DisableTab(AuctionFrame, app.AuctionModuleTabID);
+			end
+		elseif app.OpenAuctionModule then
+			app:OpenAuctionModule();
+		end
 	end
-	last = filter;
-end
-last = nil;
-for _,id in pairs({"itemID","itemString", "mapID","modID","objectID","questID","QuestGivers","sourceID","speciesID","spellID","tierID","titleID","visualID"}) do
-	local filter = settings:CreateCheckBox(ids[id],
-	function(self) 
-		self:SetChecked(settings:GetTooltipSetting(id));
-	end,
-	function(self)
-		settings:SetTooltipSetting(id, self:GetChecked());
-		settings:Refresh();
-	end);
-	if not last then
-		filter:SetPoint("TOPLEFT", DebuggingLabel, "BOTTOMLEFT", 164, 0);
-	else
-		filter:SetPoint("TOPLEFT", last, "BOTTOMLEFT", 0, 4);
+end);
+ShowAuctionHouseModuleTab:SetATTTooltip("Enable this option if you want to see the Auction House Module provided with ATT.\n\nSome addons are naughty and modify this frame extensively. ATT doesn't always play nice with those toys.");
+ShowAuctionHouseModuleTab:SetPoint("TOPLEFT", ShowCurrenciesInWorldQuestsList, "BOTTOMLEFT", -4, 4);
+
+local CelebrationsLabel = settings:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge");
+CelebrationsLabel:SetPoint("TOPRIGHT", line, "BOTTOMRIGHT", -50, -8);
+CelebrationsLabel:SetJustifyH("LEFT");
+CelebrationsLabel:SetText("Celebrations & Sound Effects");
+CelebrationsLabel:Show();
+table.insert(settings.MostRecentTab.objects, CelebrationsLabel);
+
+local UseMasterAudioChannel = settings:CreateCheckBox("Use the Master Audio Channel",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("Channel") == "master");
+end,
+function(self)
+	local state = self:GetChecked() and "master" or "sound";
+	if settings:GetTooltipSetting("Channel") ~= state then
+		settings:SetTooltipSetting("Channel", state);
 	end
-	last = filter;
-end
+end);
+UseMasterAudioChannel:SetATTTooltip("Enable this option if you want the celebrations and other ATT sound effects to play on the 'MASTER' audio channel.\n\nDefault: Yes\n\nA lot of people play with sound effects off, so this option allows the ATT sounds to bypass that should it be desired.");
+UseMasterAudioChannel:SetPoint("TOPLEFT", CelebrationsLabel, "BOTTOMLEFT", 4, 0);
+
+local CelebrateCollectedThingsCheckBox = settings:CreateCheckBox("Collected Things Trigger a Celebration",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("Celebrate"));
+end,
+function(self)
+	settings:SetTooltipSetting("Celebrate", self:GetChecked());
+end);
+CelebrateCollectedThingsCheckBox:SetATTTooltip("Enable this option if you want to hear a celebratory 'fanfare' sound effect when you obtain a new Thing.\n\nThis feature can greatly help keep you motivated.");
+CelebrateCollectedThingsCheckBox:SetPoint("TOPLEFT", UseMasterAudioChannel, "BOTTOMLEFT", 0, 4);
+
+local WarnRemovedThingsCheckBox = settings:CreateCheckBox("Removed Things Trigger a Warning",
+function(self)
+	self:SetChecked(settings:GetTooltipSetting("Warn:Removed"));
+end,
+function(self)
+	settings:SetTooltipSetting("Warn:Removed", self:GetChecked());
+end);
+WarnRemovedThingsCheckBox:SetATTTooltip("Enable this option if you want to hear a warning sound effect when you accidentally sell back or trade an item that granted you an appearance that would cause you to lose that appearance from your collection.\n\nThis can be extremely helpful if you vendor an item with a purchase timer. The addon will tell you that you've made a mistake.");
+WarnRemovedThingsCheckBox:SetPoint("TOPLEFT", CelebrateCollectedThingsCheckBox, "BOTTOMLEFT", 0, 4);
 end)();
 
 ------------------------------------------
--- The "About/Help" Tab.				--
+-- The "About" Tab.				--
 ------------------------------------------
 (function()
-local tab = settings:CreateTab("关于/帮助");
+local tab = settings:CreateTab("About");
 local AboutText = settings:CreateFontString(nil, "ARTWORK", "GameFontNormal");
 AboutText:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 8, -8);
 AboutText:SetPoint("TOPRIGHT", line, "BOTTOMRIGHT", -8, -8);
 AboutText:SetJustifyH("LEFT");
-AboutText:SetText(L["TITLE"] .. " |CFFFFFFFFis a collection tracking addon that shows you where and how to get everything in the game! We have a large community of users on our Discord (link at the bottom) where you can ask questions, submit suggestions as well as Report Bugs / Missing Items. If you find something collectible or a quest that isn't documented, you can tell us on the Discord, or for the more technical savy, we have a Git that you may contribute directly to.\n\nWhile we do strive for completion, there's a lot of stuff getting added into the game each patch, so if we're missing something, please understand that we're a small team trying to keep up with changes as well as collect things ourselves. :D\n\nFeel free to ask me questions when I'm streaming and I'll try my best to answer it, even if it's not directly related to ATT. (general WoW Addon Programming as well)\n\n- |r|Cffff8000Crieve (DFortun81)|CFFFFFFFF\n\nPS: As a community, we're currently focusing on Legion Raid Transmog, so if you're interested in this, we form groups on Fridays and Saturdays at 3 PM Arizona Time. Search Premade Group finder for \"CRIEVE\" around this time and you'll likely find our group!\n\n\n\nI keep getting this question:\nYes, there will be a version of ATT for Classic WoW. It will simply be a loot and quest tracker as obviously there will be no transmog collecting in Classic. (nor should there be)\n\nYes, I intend to play Classic WoW, but between working full time and developing the two versions of the addon, there won't be a lot of time for raiding.\n\nNo, ATT is not the addon that places icons on your bag icons. That's CanIMogIt and Caerdon Wardrobe!\n\nWebsite for comparing Collections coming Soon™.|r");
+AboutText:SetText(L["TITLE"] .. " |CFFFFFFFFis a collection tracking addon that shows you where and how to get everything in the game! We have a large community of users on our Discord (link at the bottom) where you can ask questions, submit suggestions as well as report bugs or missing items. If you find something collectible or a quest that isn't documented, you can tell us on the Discord, or for the more technical savvy, we have a Git that you may contribute directly to.\n\nWhile we do strive for completion, there's a lot of stuff getting added into the game each patch, so if we're missing something, please understand that we're a small team trying to keep up with changes as well as collect things ourselves. :D\n\nFeel free to ask me questions when I'm streaming and I'll try my best to answer it, even if it's not directly related to ATT (general WoW addon programming as well).\n\n- |r|Cffff8000Crieve (DFortun81)|CFFFFFFFF\n\nPS: As a community, we're currently focusing on Legion Raid Transmog, so if you're interested in this, we form groups on Fridays and Saturdays at 3 PM Arizona Time. Search Premade Group finder for \"CRIEVE\" around this time and you'll likely find our group!\n\n\n\nI keep getting this question:\nYes, there will be a version of ATT for Classic WoW. It will simply be a loot and quest tracker as obviously there will be no transmog collecting in Classic (nor should there be).\n\nYes, I intend to play Classic WoW, but between working full time and developing the two versions of the addon, there won't be a lot of time for raiding.\n\nNo, ATT is not the addon that places icons on your bag icons. That's CanIMogIt and Caerdon Wardrobe!\n\nWebsite for comparing Collections coming Soon™.|r");
 AboutText:Show();
 table.insert(settings.MostRecentTab.objects, AboutText);
 

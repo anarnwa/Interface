@@ -1,16 +1,20 @@
-# [2.13.2](https://github.com/WeakAuras/WeakAuras2/tree/2.13.2) (2019-06-27)
+# [2.13.3](https://github.com/WeakAuras/WeakAuras2/tree/2.13.3) (2019-06-23)
 
-[Full Changelog](https://github.com/WeakAuras/WeakAuras2/compare/2.13.1...2.13.2)
+[Full Changelog](https://github.com/WeakAuras/WeakAuras2/compare/2.13.2...2.13.3)
 
 ## Highlights
 
- Swallow more errors 
+ Template additions and bug fixes 
 
 ## Commits
 
-emptyrivers (3):
+InfusOnWoW (1):
 
-- use file id for lich king apocalypse
-- always ClearAllPoints() when updating positions
-- swallow errors from GetCenter
+- Fix Model: Show Model of Unit
+
+mrbuds (3):
+
+- Templates: add some rogue spells
+- Templates: select last option instead of the first
+- Templates: add some warlock spells
 

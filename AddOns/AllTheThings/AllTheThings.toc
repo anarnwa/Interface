@@ -1,20 +1,30 @@
 ## Author: Crieve-Sargeras
-## Interface: 80100
+## Interface: 80200
 ## Title: AllTheThings
 ## Name: AllTheThings
 ## SavedVariables: AllTheThingsSettings, AllTheThingsAD, AllTheThingsAuctionData, AllTheThingsDebugData, AllTheThingsHarvestItems
-## SavedVariablesPerCharacter: AllTheThingsSettingsPerCharacter, AllTheThingsPCD
+## SavedVariablesPerCharacter: AllTheThingsSettingsPerCharacter
 ## Notes: Addon for Tracking Collections & Account Completion
-## Version: 1.9.1a
+## Version: 1.9.5
 lib\LibStub\LibStub.lua
 lib\CallbackHandler-1.0\CallbackHandler-1.0.lua
 lib\LibDataBroker-1.1\LibDataBroker-1.1.lua
 src\base.lua
 locales\enUS.lua
+locales\enGB.lua
+locales\esES.lua
+locales\esMX.lua
+locales\deDE.lua
+locales\frFR.lua
+locales\itIT.lua
+locales\koKR.lua
+locales\ptBR.lua
+locales\ruRU.lua
 locales\zhCN.lua
 db\Presets.lua
 Settings.lua
 AllTheThings.lua
+db\FlightPathDB.lua
 db\RaceDB.lua
 db\NPCDB.lua
 db\Categories.lua

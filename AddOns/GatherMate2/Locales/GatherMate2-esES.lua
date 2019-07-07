@@ -559,3 +559,12 @@ NL["Wintersbite"] = "Ivernalia"
 NL["Withered Herb"] = "Hierba marchita"
 NL["Zandalari Archaeology Find"] = "Hallazgo arqueológico Zandalari"
 
+NL["Osmenite Deposit"] = "Depósito de osmenita"
+NL["Rich Osmenite Deposit"] = "Depósito de osmenita abundante"
+NL["Osmenite Seam"] = "Veta de osmenita"
+NL["Zin'anthid"] = "Zin'anthid"
+NL["Ionized Minnows"] = "Pececillos ionizados"
+NL["Mauve Stinger School"] = "Banco de aguijoneros malva"
+NL["Viper Fish School"] = "Banco de peces víbora"
+NL["Sentry Fish School"] = "Banco de peces centinela"
+

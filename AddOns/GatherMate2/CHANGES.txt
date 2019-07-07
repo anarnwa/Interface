@@ -1,8 +1,18 @@
-Changes since tag 1.43.6
+tag eb022d9da5b6ab3b97f601adb3f9bc0867b76cf0 1.43.6
+Author:	Hendrik Leppkes <h.leppkes@gmail.com>
+Date:	Wed Mar 13 15:28:20 2019 +0100
 
-commit 1dbac8c679f8dc17e5350e421905862842eaa20a
+Tag as 1.43.6
+
+commit 336c65aea96938824558846fe35eb52bdae3f221
 Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Tue Jun 25 09:50:19 2019 +0200
+Date:   Wed Mar 13 15:27:59 2019 +0100
 
-    Add 8.2 Herbs, Mining Nodes and Fishing Schools
+    Replace a second WorldMapTooltip access
+
+commit 871aedff55b1232d0a40dd03938556848210d3b6
+Author: Hendrik Leppkes <h.leppkes@gmail.com>
+Date:   Wed Mar 13 15:27:15 2019 +0100
+
+    Remove WorldMapTooltip access
 
