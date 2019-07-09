@@ -1,4 +1,5 @@
 -- TODO:
+-- TODO:
 -- Test/fix Bar spam test bug report
 -- Test /reload then add via chat, open UI and use remove button
 -- Test /reload then add via unit right click, open UI and use remove
@@ -502,8 +503,8 @@ function SyncIgnoreList (silent)
 				if not silent then
 					ShowMsg (format(L["SYNC_1"], name))
 				end			
-			
-				BlizzardDelIgnore (hasIgnored(name))
+				
+				BlizzardDelIgnoreByIndex (hasIgnored(name))
 			end
 		else
 			GlobalIgnoreDB.syncInfo[globIdx] = {}

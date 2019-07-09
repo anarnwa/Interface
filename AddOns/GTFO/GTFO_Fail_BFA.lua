@@ -403,6 +403,80 @@ GTFO.SpellID["301802"] = {
   sound = 3;
 };
 
+GTFO.SpellID["299994"] = {
+  --desc = "Vent Blast (HK-8 Aerial Oppression Unit)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["299947"] = {
+  --desc = "Cannon Blast (HK-8 Aerial Oppression Unit)";
+  sound = 3;
+};
+
+GTFO.SpellID["244888"] = {
+  --desc = "Bonk (Moch'k Eight-Thumbs)";
+  sound = 3;
+};
+
+GTFO.SpellID["304200"] = {
+  --desc = "Azerite Cannon (Unit One-Thirty Three-Seven)";
+  sound = 3;
+};
+
+GTFO.SpellID["304460"] = {
+  --desc = "Dark Glaive (Lyani)";
+  sound = 3;
+};
+
+GTFO.SpellID["300257"] = {
+  --desc = "Firestorm (Magister Hathorel)";
+  sound = 3;
+};
+
+GTFO.SpellID["304348"] = {
+  --desc = "Annihilation (Magister Hathorel)";
+  sound = 3;
+};
+
+GTFO.SpellID["302181"] = {
+  --desc = "Maniacal Laugh (Junkbrat)";
+  sound = 3;
+};
+
+GTFO.SpellID["303167"] = {
+  --desc = "Tideslam (Zanj'ir Bulwark)";
+  sound = 3;
+};
+
+GTFO.SpellID["285460"] = {
+  --desc = "Discom-BOMB-ulator (Bondo Bigblock)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["266151"] = {
+  --desc = "Fire Bomb (Flamescale Wavebreaker)";
+  applicationOnly = true;
+  sound = 3;
+}
+
+GTFO.SpellID["286907"] = {
+  --desc = "Volatile Eruption (Azergem Crystalback)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["304176"] = {
+  --desc = "Mystic Tornado (Mystic Tornado)";
+  sound = 3;
+};
+
+GTFO.SpellID["294894"] = {
+  --desc = "Malfunction Sparks (Malfunctioning Scrapboss)";
+  sound = 3;
+};
+
 
 -- ***********************
 -- * Shrine of the Storm *
@@ -1321,4 +1395,103 @@ GTFO.SpellID["289937"] = {
 -- TODO: Maddening Eyes of N'Zoth (Uu'nat)
 -- TODO: Piercing Gaze of N'Zoth (Uu'nat) [Stackable debuff, affliction only]
 -- TODO: Unknowable Terror (Uu'nat) ???
+
+-- ***********************
+-- * Operation: Mechagon *
+-- ***********************
+
+
+
+-- **********************
+-- * The Eternal Palace *
+-- **********************
+
+-- TODO: Arcanado (Radiance of Azshara)
+-- TODO: Arcing Current (Orgozoa)
+-- TODO: Hatchery Moulting (Orgozoa)
+-- TODO: Fanatical Verdict (The Queen's Court)
+-- TODO: Tentacle Slam (Za'qul)
+-- TODO: Arcane Burst (Queen Azshara)
+
+GTFO.SpellID["293001"] = {
+  --desc = "Death from Below (Blackwater Behemoth)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["298595"] = {
+  --desc = "Glowing Stinger (Blackwater Behemoth)";
+  applicationOnly = true;
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["296566"] = {
+  --desc = "Tidefist (Radiance of Azshara)";
+  sound = 3;
+  affirmingDebuffSpellID = 296566; -- Tidefist
+  test = true;
+};
+
+GTFO.SpellID["296746"] = {
+  --desc = "Arcane Bomb (Radiance of Azshara)";
+  sound = 3;
+  applicationOnly = true;
+  test = true;
+};
+
+GTFO.SpellID["299093"] = {
+  --desc = "Radiant Fury (Radiance of Azshara)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["296555"] = {
+  --desc = "Coral Growth (Lady Ashvane)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["298087"] = {
+  --desc = "Dribbling Ichor (Orgozoa)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["300308"] = {
+  --desc = "Eggsplosion (Orgozoa)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["301808"] = {
+  --desc = "Zealous Eruption (The Queen's Court)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["299705"] = {
+  --desc = "Dark Passage (Za'qul)";
+  sound = 3;
+  applicationOnly = true;
+  test = true;
+};
+
+GTFO.SpellID["292565"] = {
+  --desc = "Crushing Grasp (Za'qul)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["298120"] = {
+  --desc = "Lightning Orbs (Queen Azshara)";
+  sound = 3;
+  test = true;
+};
+
+GTFO.SpellID["300518"] = {
+  --desc = "Arcane Detonation (Queen Azshara)";
+  sound = 3;
+  test = true;
+};
 

@@ -1,4 +1,4 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: Global Ignore List
 ## Notes: Maintain ignore list across all characters, filter chat spam and more
 ## Author: IceyPop

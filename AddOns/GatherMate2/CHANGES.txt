@@ -1,36 +1,12 @@
-tag 0e1241a16842ac2dfe0a9498b034ec13ef315fd4 1.44.1
+tag 6c3e7995dedaae5d35722c8c0b4855f59c574858 1.44.2
 Author:	Hendrik Leppkes <h.leppkes@gmail.com>
-Date:	Mon Jul 8 09:47:33 2019 +0200
+Date:	Tue Jul 9 12:13:20 2019 +0200
 
-Tag as 1.44.1
+Tag as 1.44.2
 
-commit 88232d3613f0d26cc8f2bbf3c36124a1f18d9e3b
+commit 8c93d7c4a9f6f6c7acde794fccc17fb50d29057a
 Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Mon Jul 8 09:44:18 2019 +0200
+Date:   Tue Jul 9 11:21:04 2019 +0200
 
-    Add artwork for 8.2 fish schools
-
-commit aacd5f8ee346ca930a52904672f7c4e3ae0fc664
-Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Mon Jul 8 09:05:16 2019 +0200
-
-    Add some more repeatable treasures from 8.2
-
-commit ce50fcddd9d8caf562407c34137b0f5496fdd95f
-Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Sun Jul 7 10:38:00 2019 +0200
-
-    Add Mechanized Chest
-
-commit f2c8192663dae69062e6817ac98e2f249604875b
-Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Sun Jul 7 10:20:58 2019 +0200
-
-    Add missing icon entry
-
-commit 23255273347d4d7ba2ae8f763058675f96d73627
-Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Sun Jul 7 10:08:35 2019 +0200
-
-    Add an entry for Sentry Fish School
+    Add an option to disable interacting with world map icons
 

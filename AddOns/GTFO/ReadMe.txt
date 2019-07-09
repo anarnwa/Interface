@@ -1417,3 +1417,8 @@ Change Log:
 4.48.3
 * Updated for patch 8.2
 * Added Battle for Azeroth spells (world)
+
+4.48.4
+* Added Battle for Azeroth spells (world)
+* Added BFA spells for Operation: Mechagon
+* Added BFA spells for The Eternal Palace

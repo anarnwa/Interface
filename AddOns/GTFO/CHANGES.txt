@@ -1,15 +1,28 @@
 ------------------------------------------------------------------------
-r459 | Zensunim | 2019-06-27 04:54:39 +0000 (Thu, 27 Jun 2019) | 3 lines
+r463 | Zensunim | 2019-07-09 06:50:56 +0000 (Tue, 09 Jul 2019) | 4 lines
 Changed paths:
    M /trunk/GTFO.lua
+   M /trunk/GTFO.toc
+   M /trunk/GTFO_Fail_BFA.lua
    M /trunk/GTFO_Spells_BFA.lua
+   M /trunk/ReadMe.txt
 
-4.48.3
-* Updated for 8.2
+4.48.4
+* Added Battle for Azeroth spells (world)
+* Added BFA spells for Operation: Mechagon
+* Added BFA spells for The Eternal Palace
+------------------------------------------------------------------------
+r462 | Zensunim | 2019-07-09 03:16:20 +0000 (Tue, 09 Jul 2019) | 1 line
+Changed paths:
+   M /trunk/GTFO_Fail_BFA.lua
+   M /trunk/GTFO_Spells_BFA.lua
+   M /trunk/GTFO_WeakAuras.lua
+
 * Added Battle for Azeroth spells (world)
 ------------------------------------------------------------------------
-r458 | Zensunim | 2019-06-26 08:04:58 +0000 (Wed, 26 Jun 2019) | 1 line
+r461 | Zensunim | 2019-06-28 07:48:34 +0000 (Fri, 28 Jun 2019) | 1 line
 Changed paths:
+   M /trunk/GTFO.lua
    M /trunk/GTFO.toc
    M /trunk/GTFO_Fail_BFA.lua
    M /trunk/GTFO_Spells_BFA.lua

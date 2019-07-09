@@ -171,6 +171,12 @@ The following commands are accessible by typing /gignore or /gi in the chat box:
 
 => VERSION HISTORY
 
+=> 8.2.0
+
+Fixed a residual 8.1 issue that was causing GIL to fail to remove players on synchronization
+
+Updated to patch 8.2
+
 => 8.1.4
 
 Spaces can now be used in a [Contains] tag by escaping the character similar to parenthesis, brackets, and backslashes ie "[contains=Filter\ This]"
