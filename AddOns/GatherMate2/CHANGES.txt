@@ -1,18 +1,36 @@
-tag eb022d9da5b6ab3b97f601adb3f9bc0867b76cf0 1.43.6
+tag 0e1241a16842ac2dfe0a9498b034ec13ef315fd4 1.44.1
 Author:	Hendrik Leppkes <h.leppkes@gmail.com>
-Date:	Wed Mar 13 15:28:20 2019 +0100
+Date:	Mon Jul 8 09:47:33 2019 +0200
 
-Tag as 1.43.6
+Tag as 1.44.1
 
-commit 336c65aea96938824558846fe35eb52bdae3f221
+commit 88232d3613f0d26cc8f2bbf3c36124a1f18d9e3b
 Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Wed Mar 13 15:27:59 2019 +0100
+Date:   Mon Jul 8 09:44:18 2019 +0200
 
-    Replace a second WorldMapTooltip access
+    Add artwork for 8.2 fish schools
 
-commit 871aedff55b1232d0a40dd03938556848210d3b6
+commit aacd5f8ee346ca930a52904672f7c4e3ae0fc664
 Author: Hendrik Leppkes <h.leppkes@gmail.com>
-Date:   Wed Mar 13 15:27:15 2019 +0100
+Date:   Mon Jul 8 09:05:16 2019 +0200
 
-    Remove WorldMapTooltip access
+    Add some more repeatable treasures from 8.2
+
+commit ce50fcddd9d8caf562407c34137b0f5496fdd95f
+Author: Hendrik Leppkes <h.leppkes@gmail.com>
+Date:   Sun Jul 7 10:38:00 2019 +0200
+
+    Add Mechanized Chest
+
+commit f2c8192663dae69062e6817ac98e2f249604875b
+Author: Hendrik Leppkes <h.leppkes@gmail.com>
+Date:   Sun Jul 7 10:20:58 2019 +0200
+
+    Add missing icon entry
+
+commit 23255273347d4d7ba2ae8f763058675f96d73627
+Author: Hendrik Leppkes <h.leppkes@gmail.com>
+Date:   Sun Jul 7 10:08:35 2019 +0200
+
+    Add an entry for Sentry Fish School
 
