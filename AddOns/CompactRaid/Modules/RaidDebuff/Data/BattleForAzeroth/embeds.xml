@@ -3,5 +3,7 @@
 	<Script file="Uldir.lua"/>
 	<Script file="PartyDungeons.lua"/>
 	<Script file="BattleofDazaralor.lua"/>
-                <Script file="CrucibleofStorms.lua"/> 
+	<Script file="CrucibleofStorms.lua"/>
+	<Script file="EternalPalace.lua"/>
+
 </Ui>
