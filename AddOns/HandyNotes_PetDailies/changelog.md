@@ -3,6 +3,14 @@ HandyNotes - Pet Dailies
 
 Changelog
 ------------
+
+v3.0
+------
+Update to 8.2
+
+v2.6
+------
+Update version
 v2.5.2
 ------
 Fixed coordinates of Fizzie Sparkwhistle, and Talia Sparkbrow

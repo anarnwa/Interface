@@ -6,6 +6,10 @@ local ADVENTURE = "9069"
 local ARGUS = "12088"
 local FAMILY = "12100"
 local BATTLER = "13279"
+local NUISANCES = "13626"
+local MINIONS = "13625"
+
+--To find map id for points[mmm] = /run print(C_Map.GetBestMapForUnit("player"))
 
 --Format: [xxxxyyyy] = "qqqqq.q:tooltip:icon:coin reward:horde or alliance or both"
 --xxxx is the x waypoint coordinate as in 33.50
@@ -48,10 +52,10 @@ points[422] = {
 }
 --Krasarang
 points[418] = {
-	[36233734] = "32868.3:Skitterer Xia:inv_misc_bag_cenarionherbbag:false:both",
-	[36233735] = "32603.10:Skitterer Xia:inv_misc_bag_cenarionherbbag:false:both",
-	[62204580] = "31954.0:Grand Master Mo'ruk:inv_misc_bag_cenarionherbbag:false:both",
-	[62204581] = "9069.24:Mo'ruk:inv_tailoring_elekkplushie:false:both",
+	[37133351] = "32868.3:Skitterer Xia:inv_misc_bag_cenarionherbbag:false:both",
+	[37133352] = "32603.10:Skitterer Xia:inv_misc_bag_cenarionherbbag:false:both",
+	[65094274] = "31954.0:Grand Master Mo'ruk:inv_misc_bag_cenarionherbbag:false:both",
+	[65094275] = "9069.24:Mo'ruk:inv_tailoring_elekkplushie:false:both",
 }
 --KunLaiSummit
 points[379] = {
@@ -444,6 +448,32 @@ points[864] = {
 	[57004900] = BATTLER..".14:Keeyo:inv_komododragon_gilaorange:false:both",
 }
 
+--Nazjatar
+points[1355]= {
+	[34702740] = NUISANCES..".1:Prince Wiggletail:inv_seasnail_bluepink:false:both",
+	[71905110] = NUISANCES..".2:Chomp:inv_seasnail_bluepink:false:both",
+	[58304810] = NUISANCES..".3:Silence:inv_seasnail_bluepink:false:both",
+	[42201400] = NUISANCES..".4:Shadowspike Lurker:inv_seasnail_bluepink:false:both",
+	[50605030] = NUISANCES..".5:Pearlhusk Crawler:inv_seasnail_bluepink:false:both",
+	[51307500] = NUISANCES..".6:Elderspawn of Nalaada:inv_seasnail_bluepink:false:both",
+	[29604970] = NUISANCES..".7:Ravenous Scalespawn:inv_seasnail_bluepink:false:both",
+	[56400810] = NUISANCES..".8:Mindshackle:inv_seasnail_bluepink:false:both",
+	[46602800] = NUISANCES..".9:Kelpstone:inv_seasnail_bluepink:false:both",
+	[37501670] = NUISANCES..".10:Voltgorger:inv_seasnail_bluepink:false:both",
+	[59102660] = NUISANCES..".11:Frenzied Knifefang:inv_seasnail_bluepink:false:both",
+	[28102670] = NUISANCES..".12:Giant Opaline Conch:inv_seasnail_bluepink:false:both"
+}
 
+--Mechagon
+points[1462] = {
+	[59205090] = NUISANCES..".1:Creakclank:inv_mechanicalprairiedog_black:false:both",
+	[60704650] = NUISANCES..".2:Sputtertube:inv_mechanicalprairiedog_black:false:both",
+	[65405770] = NUISANCES..".3:CK-9:inv_mechanicalprairiedog_black:false:both",
+	[72107290] = NUISANCES..".4:Unit 17:inv_mechanicalprairiedog_black:false:both",
+	[64706460] = NUISANCES..".5:Gnomefeaster:inv_mechanicalprairiedog_black:false:both",
+	[60605690] = NUISANCES..".6:Goldenbot XD:inv_mechanicalprairiedog_black:false:both",
+	[51104540] = NUISANCES..".7:Unit 35:inv_mechanicalprairiedog_black:false:both",
+	[39504010] = NUISANCES..".8:Unit 6:inv_mechanicalprairiedog_black:false:both"
+}
 
 

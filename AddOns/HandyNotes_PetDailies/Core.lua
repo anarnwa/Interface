@@ -46,7 +46,9 @@ local ARGUS = 12088
 local FAMILY = 12100
 local FAMILYALL = {12089,12091,12092,12093,12094,12095,12096,12097,12098,12099 }
 local BATTLER = 13279
-local BATTLERALL = {13270, 13271, 13272, 13273, 13274, 13275, 13277, 13278, 13280, 13281}
+local BATTLERALL = {13270, 13271, 13272, 13273, 13274, 13275, 13277, 13278, 13280, 13281 }
+local NUISANCES = 13626
+local MINIONS = 13625
 
 local playerfaction = UnitFactionGroup("PLAYER")
 local function showhorde()
@@ -93,6 +95,13 @@ end
 
 local function IsArgus( questID )
 	return (questID == ARGUS)
+end
+
+local function IsNuisances( questID )
+	return (questID == NUISANCES)
+end
+local function IsMinions( questID )
+	return (questID == MINIONS)
 end
 
 local function IsFamily( questID )
@@ -159,7 +168,7 @@ end
 
 local function IsLogged(questID, questIndex)
     if (questIndex > 0 and not IsAdventure(questID) and not IsFamily(questID) and not IsBattler(questID)
-			and not IsArgus(questID)) then
+			and not IsArgus(questID) and not IsNuisances(questID) and not IsMinions(questID)) then
         if (GetQuestLogIndexByID(questID) > 0) then return true
         else return false
         end
@@ -170,13 +179,14 @@ end
 local function IsComplete(questID, questIndex)
 
 	if (questIndex > 0 and not IsAdventure(questID) and not IsFamily(questID) and not IsBattler(questID)
-			and not IsArgus(questID)) then
+			and not IsArgus(questID) and not IsNuisances(questID) and not IsMinions(questID)) then
 		if (IsLogged(questID, questIndex)) then
             local _,_,done = GetQuestLogLeaderBoard(questIndex,GetQuestLogIndexByID(questID))
             return done
         else return true
         end
-	elseif (IsAdventure(questID) or IsFamily(questID) or IsArgus(questID)) or IsBattler(questID) then return false
+	elseif (IsAdventure(questID) or IsFamily(questID) or IsArgus(questID) or IsBattler(questID) or IsNuisances(questID)
+			or IsMinions(questID)) then return false
 	else return IsQuestFlaggedCompleted(questID)
 	end
 
@@ -206,6 +216,22 @@ end
 local function IsArgusComplete(questID, questIndex)
 	if (IsArgus( questID ) and db.argus) then
 		local _,_,done = GetAchievementCriteriaInfo(ARGUS,questIndex)
+		return done
+	else return true
+	end
+end
+
+local function IsMinionsComplete(questID, questIndex)
+	if (IsMinions( questID ) and db.minions) then
+		local _,_,done = GetAchievementCriteriaInfo(MINIONS,questIndex)
+		return done
+	else return true
+	end
+end
+
+local function IsNuisancesComplete(questID, questIndex)
+	if (IsNuisances( questID ) and db.nuisances) then
+		local _,_,done = GetAchievementCriteriaInfo(NUISANCES,questIndex)
 		return done
 	else return true
 	end
@@ -248,6 +274,10 @@ local function ShouldBeShown( questStr )
 		if (not IsAdventureComplete(questID, questIndex)) then print("TRUE Isn't complete adv") else print("FALSE Is complete adv") end
 		if (not IsArgus(questID)) then print("TRUE Isn't argus") else print("FALSE Is argus, but") end
 		if (not IsArgusComplete(questID, questIndex)) then print("TRUE Isn't complete argus"..questID.."."..questIndex) else print("FALSE Is complete argus") end
+		if (not IsNuisances(questID)) then print("TRUE Isn't nuisances") else print("FALSE Is nuisances, but") end
+		if (not IsNuisancesComplete(questID, questIndex)) then print("TRUE Isn't complete nuisances"..questID.."."..questIndex) else print("FALSE Is complete nuisances") end
+		if (not IsMinions(questID)) then print("TRUE Isn't minions") else print("FALSE Is minions, but") end
+		if (not IsMinionsComplete(questID, questIndex)) then print("TRUE Isn't complete minions"..questID.."."..questIndex) else print("FALSE Is complete minions") end
 		if (not IsFamily(questID)) then print("TRUE Isn't family") else print("FALSE Is family, but") end
 		if (not IsFamilyComplete(questID, questIndex)) then print("TRUE Isn't complete family") else print("FALSE Is complete family") end
 		if (db.coins) then print("TRUE DB Coins") else print("FALSE DB Coins, but") end
@@ -258,8 +288,9 @@ local function ShouldBeShown( questStr )
     return IsLogged(questID, questIndex) -- true if it doesn't need to be logged or it is still in log
         and (db.completed or not IsComplete(questID, questIndex) -- true if you want to show complete or it's not complete
 		and (not IsAdventure(questID) or not IsAdventureComplete(questID, questIndex)) -- true if it isn't the Adventure achievement or it isn't completed for Adventure
-		and (not IsArgus(questID) or not IsArgusComplete(questID, questIndex)) -- true if it isn't the Adventure achievement or it isn't completed for Adventure
-		and (not IsFamily(questID) or not IsFamilyComplete(questID, questIndex)) -- true if it isn't the Adventure achievement or it isn't completed for Adventure
+		and (not IsArgus(questID) or not IsArgusComplete(questID, questIndex)) -- true if it isn't the Argus achievement or it isn't completed for Argus
+		and (not IsMinions(questID) or not IsMinionsComplete(questID, questIndex)) -- true if it isn't the Minions achievement or it isn't completed for Minions
+		and (not IsNuisances(questID) or not IsNuisancesComplete(questID, questIndex)) -- true if it isn't the Nuisances achievement or it isn't completed for Nuisances
 		and (not IsBattler(questID) or not IsBattlerComplete(questID, questIndex)) -- true if it isn't the Family Battler achievement or it isn't completed for Battler
 		and (db.coins or not IsCoin(coinReward)) -- true if you want to show coins or it isn't a coin
         and (MatchesFaction(faction))) -- true if it is your faction or if it doesn't matter
@@ -446,17 +477,33 @@ local options = {
 			arg = "family",
 			order = 4,
 		},
+		nuisances = {
+			name = "Show Nautical Nuisances of Nazjatar",
+			desc = "Show icons for pet tamers you haven't defeated for this achievement.",
+			type = "toggle",
+			width = "full",
+			arg = "nuisances",
+			order = 5,
+		},
+		minions = {
+			name = "Show Mighty Minions of Mechagon",
+			desc = "Show icons for pet tamers you haven't defeated for this achievement.",
+			type = "toggle",
+			width = "full",
+			arg = "minions",
+			order = 6,
+		},
         desc = {
             name = "These settings control the look and feel of the icon.",
             type = "description",
-            order = 5,
+            order = 7,
         },		icon_scale = {
 			type = "range",
 			name = "Icon Scale",
 			desc = "Change the size of the icons.",
 			min = 0.25, max = 2, step = 0.01,
 			arg = "icon_scale",
-			order = 6,
+			order = 8,
 		},
 		icon_alpha = {
 			type = "range",
@@ -464,7 +511,7 @@ local options = {
 			desc = "Change the transparency of the icons.",
 			min = 0, max = 1, step = 0.01,
 			arg = "icon_alpha",
-			order = 7,
+			order = 9,
 		},
 	},
 }

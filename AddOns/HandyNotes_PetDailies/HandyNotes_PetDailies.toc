@@ -1,4 +1,4 @@
-## Interface: 81000
+## Interface: 82000
 ## Title: HandyNotes_PetDailies
 ## Notes: Displays the locations of incomplete Pet Dailies
 ## Author: LirameiRav
