@@ -4000,6 +4000,7 @@ if GrailDatabase.debug then print("GARRISON_BUILDING_UPDATE ", buildingId) end
 					end
 				end
 				if nil ~= GrailDatabase.learned.QUEST then
+					pcall(function()
 					for questId, questLine in pairs(GrailDatabase.learned.QUEST) do
 						local codes = { strsplit(' ', questLine) }
 						for c = 1, #codes do
@@ -4053,6 +4054,7 @@ if GrailDatabase.debug then print("GARRISON_BUILDING_UPDATE ", buildingId) end
 							end
 						end
 					end
+				end)
 				end
 			end
 		end,
@@ -4097,6 +4099,7 @@ if GrailDatabase.debug then print("GARRISON_BUILDING_UPDATE ", buildingId) end
 					GrailDatabase.learned.QUEST_NAME = newQuestNames
 				end
 				if nil ~= GrailDatabase.learned.QUEST then
+					pcall(function()
 					local newQuests = {}
 					for questId, questLine in pairs(GrailDatabase.learned.QUEST) do
 						local codes = { strsplit(' ', questLine) }
@@ -4178,6 +4181,7 @@ if GrailDatabase.debug then print("GARRISON_BUILDING_UPDATE ", buildingId) end
 						end
 					end
 					GrailDatabase.learned.QUEST = newQuests
+				end)
 				end
 				self.processedLearned = true
 			end
