@@ -213,8 +213,8 @@ function f2:SHIPMENT_CRAFTER_OPENED ()
     if IsAltKeyDown() or IsShiftKeyDown() or IsControlKeyDown() then
 	    return
     end
-       btn:SetScript("OnClick", XiaDinDan)
-       btn:Hide()
+      -- btn:SetScript("OnClick", XiaDinDan)
+      -- btn:Hide()
 end
 
 function f2:SHIPMENT_CRAFTER_INFO()
