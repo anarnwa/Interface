@@ -112,7 +112,7 @@ local SOUND_BACK = "Sound\\interface\\PickUp\\PickUpMeat.ogg"
 
 local function PlaySound(soundfile)
 	if cfg.MainFrame.PlaySounds then
-		PlaySoundFile(soundfile)
+		--PlaySoundFile(soundfile)
 	end
 end
 
