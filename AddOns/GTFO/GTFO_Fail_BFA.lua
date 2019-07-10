@@ -1400,6 +1400,52 @@ GTFO.SpellID["289937"] = {
 -- * Operation: Mechagon *
 -- ***********************
 
+GTFO.SpellID["300424"] = {
+  --desc = "Shockwave (Scrapbone Bully)";
+  sound = 3;
+};
+
+GTFO.SpellID["296522"] = {
+  --desc = "Self-Destruct (King Gobbamak)";
+  sound = 3;
+};
+
+GTFO.SpellID["297283"] = {
+  --desc = "Cave In (King Gobbamak)";
+  applicationOnly = true;
+  sound = 3;
+};
+
+GTFO.SpellID["302100"] = {
+  --desc = "Cannon Blast (HK-8 Aerial Oppression Unit)";
+  sound = 3;
+};
+
+GTFO.SpellID["300561"] = {
+  --desc = "Explosion (Scrapbone Trashtosser)";
+  sound = 3;
+};
+
+GTFO.SpellID["300427"] = {
+  --desc = "Shockwave (Scrapbone Bully)";
+  sound = 3;
+};
+
+GTFO.SpellID["299535"] = {
+  --desc = "Scrap Blast (Pistonhead Blaster)";
+  sound = 3;
+};
+
+GTFO.SpellID["298940"] = {
+  --desc = "Bolt Buster (Naeno Megacrash)";
+  sound = 3;
+};
+
+GTFO.SpellID["298588"] = {
+  --desc = "Crash (Mechacycle)";
+  sound = 3;
+};
+
 
 
 -- **********************

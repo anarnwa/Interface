@@ -755,4 +755,9 @@ GlowFoSho_enchants = {
         ["illusion"] = true,
         ["name"] = "Illusion: Primal Victory",
     },
+    ["191215"] = {
+        ["enchantID"] = "5448",
+        ["illusion"] = true,
+        ["name"] = "Illusion: Winter's Grasp",
+    },
 }

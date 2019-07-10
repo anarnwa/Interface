@@ -181,3 +181,4 @@ L["Illusion: Striking"] = true
 L["Illusion: Primal Victory"] = true
 L["Illusion: Jade Spirit"] = true
 L["Illusion: Flames of Ragnaros"] = true
+L["Illusion: Winter's Grasp"] = true

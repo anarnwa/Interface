@@ -1,17 +1,48 @@
-tag 1082f9ee0489c55146e34d46d050d18205a3b561 8.2.1
+tag d448ee4d2ba908653e8952f32c402c3d31952119 8.2.2
 Author:	Benjamin Staneck <staneck@gmail.com>
-Date:	Fri Jun 28 20:55:44 2019 +0200
+Date:	Wed Jul 10 16:25:20 2019 +0200
 
-Tagging as 8.2.1
+Tagging as 8.2.2
 
-commit eb8d7b9fb1e8d836860e28c2d0ab473978accbbd
+commit 729fe539914202610ce8228ba79d5bb24e121c0e
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Fri Jun 28 18:04:45 2019 +0800
+Date:   Wed Jul 10 21:12:47 2019 +0800
 
-    Patch 8.2
-    * Track Prismatic Manapearl
-    * Add new emissary quest
-    * Add The Eternal Palace LFR
-    * Add new faction
-    * Add new world boss placeholder
+    fixes #296
+
+commit 84ecc51a7927b596557e363a791e64bd5e1a0717
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Tue Jul 9 11:00:54 2019 +0800
+
+    Cache `type`
+
+commit c6ab9bd9ef506c778e5f61baadfbd287567c77d0
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Tue Jul 9 10:50:38 2019 +0800
+
+    Update M+ Key Rendering
+
+commit ae20444dcec3c04b2de66678d43ef4a78319bf68
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Tue Jul 9 10:47:09 2019 +0800
+
+    Prepare to support Heroic Warfront Scenario
+
+commit 6449c643a9721950d10c41d596446b938fa1c979
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Wed Jul 3 09:16:34 2019 +0800
+
+    fixes #293
+
+commit 18c378f98c0d10b8c9108b24781ae6d24894496e
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Sun Jun 30 02:04:56 2019 +0800
+
+    Ignore Even More Recycling
+
+commit 4079eb61ead045f83d343e02108d01fd8a7c522f
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Sun Jun 30 00:16:17 2019 +0800
+
+    Fix Blingtron 7000 in ShowQuestTooltip
 

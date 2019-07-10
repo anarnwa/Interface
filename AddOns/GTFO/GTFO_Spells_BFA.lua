@@ -839,8 +839,29 @@ GTFO.SpellID["287876"] = {
 GTFO.SpellID["302384"] = {
   --desc = "Static Discharge (HK-8 Aerial Oppression Unit)";
   sound = 1;
-  test = true;
 };
+
+GTFO.SpellID["294890"] = {
+  --desc = "Gyro-Scrap (Malfunctioning Scrapbot)";
+  sound = 1;
+};
+
+GTFO.SpellID["296560"] = {
+  --desc = "Clinging Static (King Gobbamak)";
+  sound = 1;
+};
+
+GTFO.SpellID["301680"] = {
+  --desc = "Rapid Fire (Mechagon Cavalry)";
+  sound = 1;
+};
+
+GTFO.SpellID["300160"] = {
+  --desc = "Gyro-Scrap (Heavy Scrapbot)";
+  sound = 1;
+};
+
+
 
 -- **********************
 -- * The Eternal Palace *

@@ -10,11 +10,44 @@ local L = core.L
 core._2097 = {}
 core._2097.Events = CreateFrame("Frame")
 
+------------------------------------------------------
+---- Blackwater Behemoth
+------------------------------------------------------
+local collectSampleUID = {}
+local samplesCollected = 0
+
+------------------------------------------------------
+---- Radiance of Azshara
+------------------------------------------------------
+local playersCompletedAchievement = 0
+
 function core._2097:AbyssalCommanderSivara()
     --Defeat Abyssal Commander Sivara in The Eternal Palace while all three of her lieutenants are alive and engaged in the fight on Normal difficulty or higher.
 
     --Blizzard tracking gone red so fail achievement
-	if core:getBlizzardTrackingStatus(13684) == true then
+	if core:getBlizzardTrackingStatus(13684) == false then
+		core:getAchievementFailed()
+	end
+end
+
+function core._2097:BlackwaterBehemoth()
+	--Defeat the Blackwater Behemoth in The Eternal Palace after collecting 50 samples of sea life from within the Darkest Depths on Normal Difficulty of higher.
+
+	if core.type == "SPELL_CAST_SUCCESS" and core.spellId == 302005 and collectSampleUID[core.spawn_uid_dest] == nil then
+		collectSampleUID[core.spawn_uid_dest] = core.spawn_uid_dest
+		samplesCollected = samplesCollected + 1
+	end
+
+	if samplesCollected >= 50 then
+		core:getAchievementSuccess()
+	end
+end
+
+function core._2097:LadyAshvane()
+	--Defeat Lady Ashvane in The Eternal Palace after having each cast of Arcing Azerite pass through her on Normal difficulty or higher.
+
+	--Blizzard tracking gone red so fail achievement
+	if core:getBlizzardTrackingStatus(13629) == false then
 		core:getAchievementFailed()
 	end
 end
@@ -23,7 +56,7 @@ function core._2097:Zaqul()
     --Defeat Za'qul in the Eternal Palace after killing ten Twinklehoof Bovine on Normal difficulty or higher.
 
     --Blizzard tracking gone white so complete achievement
-	if core:getBlizzardTrackingStatus(13716) == true then
+	if core:getBlizzardTrackingStatus(13716, 1) == true then
 		core:getAchievementSuccess()
 	end
 end
@@ -61,6 +94,60 @@ function core._2097:QueenAzshara()
                 local _, _, _, _, _, _, _, _, _, spellId = UnitBuff(unit, i)
 				if spellId == 300866 then
 					core:getAchievementSuccess()
+				end
+			end
+		end
+	end
+end
+
+function core._2097:RadianceOfAzshara()
+	--Defeat Radiance of Azshara in The Eternal Palace after running 6 consecutive complete laps around her arena without falling into the water on Normal difficulty on higher.
+
+	InfoFrame_UpdatePlayersOnInfoFramePersonal()
+	InfoFrame_SetHeaderCounter(L["Shared_PlayersWhoNeedAchievement"],playersCompletedAchievement,core.groupSize)
+	
+	if playersCompletedAchievement == core.groupSize then
+		core:getAchievementSuccess()
+	end
+end
+
+function core._2097:ClearVariables()
+	------------------------------------------------------
+	---- Radiance of Azshara
+	------------------------------------------------------
+	playersCompletedAchievement = 0
+	
+	------------------------------------------------------
+	---- Blackwater Behemoth
+	------------------------------------------------------
+	collectSampleUID = {}
+	samplesCollected = 0
+end
+
+function core._2097:InstanceCleanup()
+    core._2097.Events:UnregisterEvent("UNIT_AURA")
+end
+
+core._2097.Events:SetScript("OnEvent", function(self, event, ...)
+    return self[event] and self[event](self, event, ...)
+end)
+
+function core._2097:InitialSetup()
+    core._2097.Events:RegisterEvent("UNIT_AURA")
+end
+
+function core._2097.Events:UNIT_AURA(self, unitID)
+	if core.currentBosses[1].encounterID == 2305 then
+		for i=1,40 do
+			local _, _, count2, _, _, _, _, _, _, spellId = UnitDebuff(unitID, i)
+			if spellId == 305173 then
+				if spellID2 ~= nil then
+					local name, realm = UnitName(unitID)
+					if name ~= nil then
+						InfoFrame_SetPlayerComplete(name)
+						playersCompletedAchievement = playersCompletedAchievement + 1
+						core:getAchievementSuccessPersonalWithName(1, sender)
+					end
 				end
 			end
 		end
