@@ -17,6 +17,10 @@ do -- Set up the debug cache
 	Rarity.DebugCache:SetOutputHandler(addonTable.PrettyPrint.DebugMsg)
 end
 
+do -- Set up the DB helper
+	Rarity.DatabaseMaintenanceHelper = addonTable.DatabaseMaintenanceHelper
+end
+
 local L = LibStub("AceLocale-3.0"):GetLocale("Rarity")
 local R = Rarity
 local qtip = LibStub("LibQTip-1.0")
@@ -794,7 +798,11 @@ do
 		end, 240)
 		
 		self:Debug(L["Loaded (running in debug mode)"])
+		
+		if self.db.profile.verifyDatabaseOnLogin then self:VerifyItemDB() end	
+		
 	end
+	
 end
 
 
@@ -899,6 +907,40 @@ function R:BarAnchorClicked(cbk, group, button)
  self.db.profile.bar.relativePoint = relativePoint
 end
 
+-- TODO: Move elsewhere (in the final refactoring pass)
+function R:VerifyItemDB()
+
+	local DBH = self.DatabaseMaintenanceHelper
+	local ItemDB = self.db.profile.groups.items
+	local PetDB = self.db.profile.groups.pets
+	local MountDB = self.db.profile.groups.mounts
+	local UserDB = self.db.profile.groups.user
+	local DB = { ItemDB, PetDB, MountDB }
+
+	self:Print(L["Verifying item database..."])
+	
+	local numErrors = 0
+	
+	for category, entry in pairs(DB) do
+		for item, fields in pairs(entry) do
+			
+			if type(fields) == "table" then
+			
+				self:Debug(format(L["Verifying entry: %s ..."], item))
+				local isEntryValid = DBH:VerifyEntry(fields)
+				if not isEntryValid then  -- Skip pseudo-groups... Another artifact that has to be worked around, I guess
+					self:Print(format(L["Verification failed for entry: %s"], item))
+					numErrors = numErrors + 1
+				end
+				
+			end
+		end
+	end
+	
+	if numErrors == 0 then self:Print(L["Verification complete! Everything appears to be in order..."])
+	else self:Print(format(L["Verfication failed with %d errors!"], numErrors)) end
+
+end
 
 function R:ChatCommand(input)
 	if strlower(input) == "debug" then
@@ -912,6 +954,10 @@ function R:ChatCommand(input)
 	elseif strlower(input) == "dump" then	
 		local numMessages = 50 -- Hardcoded is meh, but it should suffice for the time being
 		self.DebugCache:PrintMessages(numMessages)
+	elseif strlower(input) == "verify" then -- Verify the ItemDB	
+		
+		self:VerifyItemDB()
+		
 	elseif strlower(input) == "profiling" then
 		if self.db.profile.enableProfiling then
 			self.db.profile.enableProfiling = false
@@ -2539,6 +2585,8 @@ do
 		[1898] = "Skittering Hollow",
 		[1814] = "Havenswood",
 		[1879] = "Jorundall",
+		[1907] = "Snowblossom",
+		[2124] = "Crestfall",
 	}
 
 	local islandExpeditionCollectibles = { -- List of collectibles (so we don't have to search the item DB for them)
@@ -2584,6 +2632,9 @@ do
 		"Firesting Buzzer",
 		"Needleback Pup",
 		"Shadefeather Hatchling",
+		---- 8.2
+		"Adventurous Hopling Pack",
+		"Ghostly Whelpling",
 		
 		-- Toys
 		---- 8.0
@@ -4168,7 +4219,7 @@ function R:ShowFoundAlert(itemId, attempts, item)
  end, 2)
 
 
- PlaySoundFile("Sound\\Spells\\AchievmentSound1.ogg")
+ PlaySound(12891) -- UI_Alert_AchievementGained
 end
 
 

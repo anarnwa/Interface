@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
-r465 | Zensunim | 2019-07-10 07:18:43 +0000 (Wed, 10 Jul 2019) | 2 lines
+r467 | Zensunim | 2019-07-11 06:57:34 +0000 (Thu, 11 Jul 2019) | 3 lines
 Changed paths:
    M /trunk/GTFO.lua
    M /trunk/GTFO.toc
@@ -7,7 +7,8 @@ Changed paths:
    M /trunk/GTFO_Spells_BFA.lua
    M /trunk/ReadMe.txt
 
-4.48.5
+4.48.6
+* Added Battle for Azeroth spells (world)
 * Added BFA spells for Operation: Mechagon
 ------------------------------------------------------------------------
 

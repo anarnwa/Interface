@@ -1426,3 +1426,6 @@ Change Log:
 4.48.5
 * Added BFA spells for Operation: Mechagon
 
+4.48.6
+* Added Battle for Azeroth spells (world)
+* Added BFA spells for Operation: Mechagon

@@ -1,4 +1,4 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: WeakAuras Companion
 ## Author: The WeakAuras Team
 ## Version: 1.0.0

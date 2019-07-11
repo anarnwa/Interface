@@ -1,6 +1,19 @@
 local L
 L = LibStub("AceLocale-3.0"):NewLocale("Rarity", "enUS", true)
 
+L["Experimental"] = true
+L["Verify item database on login"] = true
+L["Run the verification routine automatically after logging in. It can always be run manually (by typing %s)."] = true
+L["Advanced"] = true
+L["Adventurous Hopling Pack"] = true
+L["Ghostly Whelpling"] = true 
+
+L["Verifying item database..."] = true
+L["Verification complete! Everything appears to be in order..."] = true
+L["Verifying entry: %s ..."] = true
+L["Verification failed for entry: %s"] = true
+L["Verfication failed with %d errors!"] = true
+
 L["Stoneclaw"] = true
 L["Wayward Spirit"] = true
 L["Celestial Gift"] = true
@@ -2902,8 +2915,7 @@ L["and %d |4other zone:other zones;"] = "and %d |4other zone:other zones;"
 L["Angry Egg"] = "Angry Egg"
 L["Announce"] = "Anunciar"
 L["Announcements"] = "Anuncios"
---[[Translation missing --]]
-L["Announcements will only be triggered when the item is found. When this is off, Rarity will announce every attempt and when the item is found."] = "Announcements will only be triggered when the item is found. When this is off, Rarity will announce every attempt and when the item is found."
+L["Announcements will only be triggered when the item is found. When this is off, Rarity will announce every attempt and when the item is found."] = "Los anuncios solo se activarán cuando se encuentre el artículo. Cuando esto está desactivado, Rarity anunciará cada intento y cuando se encuentre el artículo."
 L["Antoran Charhound"] = "Sabueso calcinado antoran"
 L["Anubisath Idol"] = "Ídolo Anubisath"
 L["Any difficulty"] = "Cualquier dificultad"
@@ -2915,10 +2927,8 @@ L["Arakkoa"] = true
 L["Arcano-Shower"] = "Ducha Arcana"
 L["Archaeology race"] = "Razas de arqueología"
 L["Are you sure you want to delete this item?"] = "¿Estas seguro de que quieres borrar el objeto?"
---[[Translation missing --]]
-L["Are you sure you want to import the Rarity Item Pack you entered?"] = "Are you sure you want to import the Rarity Item Pack you entered?"
---[[Translation missing --]]
-L["Are you sure you want to turn off the Export toggle for all your Custom items?"] = "Are you sure you want to turn off the Export toggle for all your Custom items?"
+L["Are you sure you want to import the Rarity Item Pack you entered?"] = "¿Está seguro de que desea importar el paquete de elementos de Rarity que ingresó?"
+L["Are you sure you want to turn off the Export toggle for all your Custom items?"] = "¿Está seguro de que desea desactivar la opción Exportar para todos sus elementos personalizados?"
 L["Armored Razorback"] = "Picovaja blindado"
 L["Armored Razzashi Raptor"] = "Raptor Razzashi acorazado"
 L["Ash-Covered Horn"] = "Cuerno cubierto de cenizas"
@@ -2926,60 +2936,40 @@ L["Ashes of Al'ar"] = "Cenizas de Al'ar"
 L["Ashleaf Spriteling"] = "Duendecillo Hojaniza"
 L["Ataxon"] = true
 L["Attempts"] = "Intentos"
---[[Translation missing --]]
-L["Auto"] = "Auto"
+L["Auto"] = true
 L["Available starting December 25th"] = "Disponible a partir del 25 de diciembre"
 L["Avenging Felcrusher"] = "Machacavil vengativo"
 L["Azure Crane Chick"] = "Cría de grulla azur"
 L["Azure Whelpling"] = "Vástago azur"
 L["Baarut the Bloodthirsty"] = "Baruut el Sanguinario"
 L["Baarut the Brisk"] = "Baarut el Brioso"
---[[Translation missing --]]
-L["Bad Mojo Banana"] = "Bad Mojo Banana"
---[[Translation missing --]]
-L["Barnaby"] = "Barnaby"
+L["Bad Mojo Banana"] = "Plátano de mojo malo"
+L["Barnaby"] = true
 L["Barrier Generator"] = "Generador de barrera"
---[[Translation missing --]]
-L["Basten"] = "Basten"
+L["Basten"] = true
 L["Battle Horn"] = "Cuerno de batalla"
---[[Translation missing --]]
-L["Battle Pet"] = "Battle Pet"
---[[Translation missing --]]
-L["Battle Pets"] = "Battle Pets"
---[[Translation missing --]]
-L["Beastrider Kama"] = "Beastrider Kama"
+L["Battle Pet"] = "Mascota de batalla"
+L["Battle Pets"] = "Mascotas de batalla"
+L["Beastrider Kama"] = "Jinete de bestias Kama"
 L["Big Love Rocket"] = "Gran cohete de amor"
---[[Translation missing --]]
-L["Big Red Raygun"] = "Big Red Raygun"
---[[Translation missing --]]
-L["Biletooth Gnasher"] = "Biletooth Gnasher"
+L["Big Red Raygun"] = "Pistola de rayos rojos grandes"
+L["Biletooth Gnasher"] = "Rechinador dientebilis"
 L["Black Barracuda School"] = "Banco de Barracudas Negras"
 L["Black Trillium Deposit"] = "[Black Trillium Deposit]"
 L["Blackbelly Mudfish School"] = "Banco de pezfangos panzanegra"
---[[Translation missing --]]
-L["Blackflame Daggers"] = "Blackflame Daggers"
---[[Translation missing --]]
-L["Blackfuse Bombling"] = "Blackfuse Bombling"
---[[Translation missing --]]
-L["Blackhoof"] = "Blackhoof"
+L["Blackflame Daggers"] = "Dagas de llama negra"
+L["Blackfuse Bombling"] = "Bombita Mechanegra"
+L["Blackhoof"] = "Pezuña Negra"
 L["Blackrock Deposit"] = "Depósito de roca negra"
 L["Blackwater Whiptail School"] = "Banco de Bagre de Aguasnegras"
---[[Translation missing --]]
-L["Blackwing Banner"] = "Blackwing Banner"
---[[Translation missing --]]
-L["Blank line before tooltip additions"] = "Blank line before tooltip additions"
---[[Translation missing --]]
-L["Blazing Rune"] = "Blazing Rune"
---[[Translation missing --]]
-L["Bleakclaw"] = "Bleakclaw"
---[[Translation missing --]]
-L["Blessed Felcrusher"] = "Blessed Felcrusher"
---[[Translation missing --]]
-L["Blessed Seed"] = "Blessed Seed"
---[[Translation missing --]]
-L["Blight Boar Microphone"] = "Blight Boar Microphone"
---[[Translation missing --]]
-L["Blighted Spore"] = "Blighted Spore"
+L["Blackwing Banner"] = "Estandarte de Alanegra"
+L["Blank line before tooltip additions"] = "Línea en blanco antes de las adiciones de información sobre herramientas"
+L["Blazing Rune"] = "Runa llameante"
+L["Bleakclaw"] = "Garracruda"
+L["Blessed Felcrusher"] = "Machacavil bendito"
+L["Blessed Seed"] = "Semilla bendita"
+L["Blight Boar Microphone"] = "Micrófono de los Jabalí de Añublo"
+L["Blighted Spore"] = "Espora contagiada"
 L["Blind Lake Sturgeon School"] = "Banco de Esturión ciego de lago"
 --[[Translation missing --]]
 L["Blistermaw"] = "Blistermaw"

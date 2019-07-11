@@ -1,7 +1,7 @@
 ## Author: Allara
 ## Interface: 80100
 ## Title: Rarity
-## Version: 1.0 (r689-release-2)
+## Version: 1.0 (r690-release)
 
 ## Notes: Tracks rare drops, including companions and mounts
 ## Notes-frFR: Traque les butins rares, y compris les mascottes et montures
@@ -43,6 +43,7 @@ Libs\LibBars-1.0\lib.xml
 DB\SharedConstants.lua
 
 # Utility/Helpers
+Utils\DatabaseMaintenanceHelper.lua
 Utils\DebugCache.lua
 Utils\PrettyPrint.lua
 
