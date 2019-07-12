@@ -1,0 +1,46 @@
+v8.2:
+- TOC update
+
+v8.1.5
+- Added Jeeves
+- Adjusted font colour on print message
+- Fixed target id for Zandalari Emissary npc
+
+v8.1:
+- Added Muka Stormbreaker (Stormsong Valley Horde flight master)
+- Streamlined print message.
+
+v8:
+- Major rework:
+  - Addon now uses a catch-all system for all NPCs with only 1 gossip option; addon should now work automatically with all world NPCs that have a single gossip option, but stop automatically if quests or quest turn-ins are available. 
+  - Addon now uses UnitGUID for specific NPCs instead of gossip strings to help with non-English clients.  
+- Added changelog
+- Updated TOC info
+
+v7:
+- Legion Hunter eagle in Dalaran
+- Horde Dockmasters in Tiragarde Sound and Drustvar
+- BFA Tortollan Seekers WQs 8.1.5
+- Katy Stampwhistle
+- Corrected spelling for Seekers' Vista for Tortollan Seekers WQ
+
+v6:
+- BFA Like Fish in a Barrel WQ
+- Print message when Auto Gossip chooses an option
+
+v5:
+- Stormsong Valley flightpath (Horde)
+- BFA Tortollan Seekers WQs
+- Titan Residuum Vendor (Horde)
+- Azerite Reforger (Horde)
+- BFA Krag'wa WQ
+- BFA Strange Egg WQ
+
+v4:
+- Voldun Caravan (Horde)
+
+v3:
+- TOC update
+
+v2:
+- Alliance support
