@@ -9,10 +9,10 @@ GossipFrame:HookScript(
         end
         -- 不自动对话的NPC
         if
-			(targetid == 155261 --斯坦索姆 第一个对话出本NPC
-			or targetid == 155264 --斯坦索姆 第二个对话出本NPC
-			or targetid==155270)--斯坦索姆 第三个对话出本NPC
-         then
+            (targetid == 155261 or --斯坦索姆 第一个对话出本NPC
+                targetid == 155264 or --斯坦索姆 第二个对话出本NPC
+                targetid == 155270)
+         then --斯坦索姆 第三个对话出本NPC
             return
         end
 

@@ -77,6 +77,7 @@ local elite_names = {[66900] = "Huggalon the Heart Watcher",
 					 [68320] = "Ubunti the Shade",
 					 [68317] = "Mavis Harms",
 					}
+pcall(function()
 for i=1,56 do
 	local desc, _, _, _, _, _, _, assetID, _, _ = GetAchievementCriteriaInfo(7439, i)
 	elite_names[assetID] = desc
@@ -86,7 +87,7 @@ for i=1,31 do
 	local desc, _, _, _, _, _, _, assetID, _, _ = GetAchievementCriteriaInfo(8714, i)
 	elite_names[assetID] = desc
 end
-
+end)
 --local pandaria_mounts = {
 --	{94229, "Zandalari Warbringer"},
 --	{94230, "Zandalari Warbringer"},
