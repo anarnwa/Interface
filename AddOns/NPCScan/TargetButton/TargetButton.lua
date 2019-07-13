@@ -172,7 +172,7 @@ function TargetButton:PLAYER_REGEN_ENABLED()
 	elseif self.isDead then
 		local sound = private.db.profile.alert.sound
 		if sound.isEnabled then
-			_G.PlaySoundFile(LibSharedMedia:Fetch("sound", "NPCScan Killed"), sound.channel)
+			--_G.PlaySoundFile(LibSharedMedia:Fetch("sound", "NPCScan Killed"), sound.channel)
 		end
 
 		self:SetSpecialText(true)
