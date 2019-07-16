@@ -1429,3 +1429,7 @@ Change Log:
 4.48.6
 * Added Battle for Azeroth spells (world)
 * Added BFA spells for Operation: Mechagon
+
+4.48.7
+* Added Battle for Azeroth spells (world)
+* Added BFA spells for The Eternal Palace

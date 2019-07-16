@@ -1,9 +1,9 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: PetTracker Journal
 ## Notes: Load on demand modification for the Pet Journal.
 ## Author: Jaliborc (João Cardoso)
 ## X-Category: Battle Pets
-## Version: 8.1.2
+## Version: 8.2.0
 
 ## Dependencies: PetTracker
 ## LoadWith: Blizzard_Collections

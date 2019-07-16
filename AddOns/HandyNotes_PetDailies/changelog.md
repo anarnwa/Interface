@@ -4,6 +4,14 @@ HandyNotes - Pet Dailies
 Changelog
 ------------
 
+v3.2
+----
+Fixed Mechagon bug
+
+v3.1
+----
+Fixed Mechagon bug
+
 v3.0
 ------
 Update to 8.2

@@ -7,8 +7,8 @@ local L = core.L
 ------------------------------------------------------
 ---- Azshara's Eternal Palace
 ------------------------------------------------------
-core._2097 = {}
-core._2097.Events = CreateFrame("Frame")
+core._2164 = {}
+core._2164.Events = CreateFrame("Frame")
 
 ------------------------------------------------------
 ---- Blackwater Behemoth
@@ -21,7 +21,7 @@ local samplesCollected = 0
 ------------------------------------------------------
 local playersCompletedAchievement = 0
 
-function core._2097:AbyssalCommanderSivara()
+function core._2164:AbyssalCommanderSivara()
     --Defeat Abyssal Commander Sivara in The Eternal Palace while all three of her lieutenants are alive and engaged in the fight on Normal difficulty or higher.
 
     --Blizzard tracking gone red so fail achievement
@@ -30,7 +30,7 @@ function core._2097:AbyssalCommanderSivara()
 	end
 end
 
-function core._2097:BlackwaterBehemoth()
+function core._2164:BlackwaterBehemoth()
 	--Defeat the Blackwater Behemoth in The Eternal Palace after collecting 50 samples of sea life from within the Darkest Depths on Normal Difficulty of higher.
 
 	if core.type == "SPELL_CAST_SUCCESS" and core.spellId == 302005 and collectSampleUID[core.spawn_uid_dest] == nil then
@@ -43,7 +43,7 @@ function core._2097:BlackwaterBehemoth()
 	end
 end
 
-function core._2097:LadyAshvane()
+function core._2164:LadyAshvane()
 	--Defeat Lady Ashvane in The Eternal Palace after having each cast of Arcing Azerite pass through her on Normal difficulty or higher.
 
 	--Blizzard tracking gone red so fail achievement
@@ -52,7 +52,7 @@ function core._2097:LadyAshvane()
 	end
 end
 
-function core._2097:Zaqul() 
+function core._2164:Zaqul() 
     --Defeat Za'qul in the Eternal Palace after killing ten Twinklehoof Bovine on Normal difficulty or higher.
 
     --Blizzard tracking gone white so complete achievement
@@ -61,7 +61,7 @@ function core._2097:Zaqul()
 	end
 end
 
-function core._2097:QueenAzshara()
+function core._2164:QueenAzshara()
 	--Defeat Queen Azshara in The Eternal Palace with one player still alive who is currently affected by Essence of Azeroth on Normal difficulty or higher.
 
 	if core.type == "UNIT_DIED" and core.currentDest == "Player" then
@@ -100,7 +100,7 @@ function core._2097:QueenAzshara()
 	end
 end
 
-function core._2097:RadianceOfAzshara()
+function core._2164:RadianceOfAzshara()
 	--Defeat Radiance of Azshara in The Eternal Palace after running 6 consecutive complete laps around her arena without falling into the water on Normal difficulty on higher.
 
 	InfoFrame_UpdatePlayersOnInfoFramePersonal()
@@ -111,7 +111,7 @@ function core._2097:RadianceOfAzshara()
 	end
 end
 
-function core._2097:ClearVariables()
+function core._2164:ClearVariables()
 	------------------------------------------------------
 	---- Radiance of Azshara
 	------------------------------------------------------
@@ -124,24 +124,25 @@ function core._2097:ClearVariables()
 	samplesCollected = 0
 end
 
-function core._2097:InstanceCleanup()
-    core._2097.Events:UnregisterEvent("UNIT_AURA")
+function core._2164:InstanceCleanup()
+    core._2164.Events:UnregisterEvent("UNIT_AURA")
 end
 
-core._2097.Events:SetScript("OnEvent", function(self, event, ...)
+core._2164.Events:SetScript("OnEvent", function(self, event, ...)
     return self[event] and self[event](self, event, ...)
 end)
 
-function core._2097:InitialSetup()
-    core._2097.Events:RegisterEvent("UNIT_AURA")
+function core._2164:InitialSetup()
+    core._2164.Events:RegisterEvent("UNIT_AURA")
 end
 
-function core._2097.Events:UNIT_AURA(self, unitID)
-	if core.currentBosses[1].encounterID == 2305 then
-		for i=1,40 do
-			local _, _, count2, _, _, _, _, _, _, spellId = UnitDebuff(unitID, i)
-			if spellId == 305173 then
-				if spellID2 ~= nil then
+function core._2164.Events:UNIT_AURA(self, unitID)
+	if next(core.currentBosses) ~= nil then
+		if core.currentBosses[1].encounterID == 2305 then
+			--Fun Run
+			for i=1,40 do
+				local _, _, count2, _, _, _, _, _, _, spellId = UnitDebuff(unitID, i)
+				if spellId == 305173 then
 					local name, realm = UnitName(unitID)
 					if name ~= nil then
 						InfoFrame_SetPlayerComplete(name)
@@ -150,6 +151,46 @@ function core._2097.Events:UNIT_AURA(self, unitID)
 					end
 				end
 			end
+		elseif core.currentBosses[1].encounterID == 2303 then
+			--A Smack of Jellyfish
+			--Incubation Fluid: 298306
+			--Incubating Zoatroid: 305322
+			local incubationFluidFound = false
+			local incubatingZoatroidFound = false
+			local incubationFluidPlayer = ""
+			local incubatingZoatroidPlayer = ""
+			for i=1,40 do
+				local _, _, count2, _, _, _, _, _, _, spellId = UnitDebuff(unitID, i)
+				if spellId == 298306 then
+					--Incubation Fluid
+					local name, realm = UnitName(unitID)
+					if name ~= nil then
+						incubationFluidFound = true
+						incubationFluidPlayer = name
+
+						--Check requirements have been met
+						if incubationFluidFound == true and incubatingZoatroidFound == true then
+							if incubationFluidPlayer == incubatingZoatroidPlayer then
+								core:getAchievementSuccess()
+							end
+						end
+					end
+				elseif spellId == 305322 then
+					--Incubating Zoatroid
+					local name, realm = UnitName(unitID)
+					if name ~= nil then
+						incubatingZoatroidFound = true
+						incubatingZoatroidPlayer = name
+
+						--Check requirements have been met
+						if incubationFluidFound == true and incubatingZoatroidFound == true then
+							if incubationFluidPlayer == incubatingZoatroidPlayer then
+								core:getAchievementSuccess()
+							end
+						end
+					end
+				end
+			end
 		end
-	end
+	end	
 end

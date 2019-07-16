@@ -1,4 +1,12 @@
-Changes since tag v8.2.0-v1.13.2-7150.140
+lightweight tag 627fc71661d6fd8a825b52215403895d10710df0 v8.2.0-v1.13.2-7165.140
+Author:	Tercioo <terciob19@hotmail.com>
+Date:	Sun Jul 14 11:44:56 2019 -0300
+
+commit 627fc71661d6fd8a825b52215403895d10710df0
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Sun Jul 14 11:44:56 2019 -0300
+
+    Fixed some issues for 8.2 wow patch
 
 commit b48ea2a64d662d3d200ea9cd048ca2bc1b60ff38
 Author: Tercioo <terciob19@hotmail.com>

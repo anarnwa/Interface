@@ -466,14 +466,14 @@ points[1355]= {
 
 --Mechagon
 points[1462] = {
-	[59205090] = NUISANCES..".1:Creakclank:inv_mechanicalprairiedog_black:false:both",
-	[60704650] = NUISANCES..".2:Sputtertube:inv_mechanicalprairiedog_black:false:both",
-	[65405770] = NUISANCES..".3:CK-9:inv_mechanicalprairiedog_black:false:both",
-	[72107290] = NUISANCES..".4:Unit 17:inv_mechanicalprairiedog_black:false:both",
-	[64706460] = NUISANCES..".5:Gnomefeaster:inv_mechanicalprairiedog_black:false:both",
-	[60605690] = NUISANCES..".6:Goldenbot XD:inv_mechanicalprairiedog_black:false:both",
-	[51104540] = NUISANCES..".7:Unit 35:inv_mechanicalprairiedog_black:false:both",
-	[39504010] = NUISANCES..".8:Unit 6:inv_mechanicalprairiedog_black:false:both"
+	[64706460] = MINIONS..".1:Gnomefeaster:inv_mechanicalprairiedog_black:false:both",
+	[60704650] = MINIONS..".2:Sputtertube:inv_mechanicalprairiedog_black:false:both",
+	[60605690] = MINIONS..".3:Goldenbot XD:inv_mechanicalprairiedog_black:false:both",
+	[59205090] = MINIONS..".4:Creakclank:inv_mechanicalprairiedog_black:false:both",
+	[65405770] = MINIONS..".5:CK-9:inv_mechanicalprairiedog_black:false:both",
+	[51104540] = MINIONS..".6:Unit 35:inv_mechanicalprairiedog_black:false:both",
+	[39504010] = MINIONS..".7:Unit 6:inv_mechanicalprairiedog_black:false:both",
+	[72107290] = MINIONS..".8:Unit 17:inv_mechanicalprairiedog_black:false:both"
 }
 
 

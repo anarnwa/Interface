@@ -1,8 +1,8 @@
-## Interface: 80000
+## Interface: 80200
 ## Title: Cromulent
 ## Notes: Shows ZoneInfo on the World Map in a perfectly cromulent fashion.
 ## Author: phyber
-## Version: 80000-2
+## Version: 80200-1
 ## X-Credit: ckknight (Cartographer_ZoneInfo author which this is shamelessly ripped off from)
 ## X-Embeds: Ace3, LibTourist-3.0, HereBeDragons
 ## OptionalDeps: Ace3, LibTourist-3.0, HereBeDragons
