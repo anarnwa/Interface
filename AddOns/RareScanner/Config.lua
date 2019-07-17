@@ -24,6 +24,17 @@ private.SOUNDS = {
 	["Level Up"] = "Interface\\AddOns\\RareScanner\\Media\\levelup2-4.ogg",
 }
 
+private.MARKERS = {
+	["Star"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_1",
+	["Circle"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_2",
+	["Diamond"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_3",
+	["Triangle"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_4",
+	["Moon"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_5",
+	["Square"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_6",
+	["Cross"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_7",
+	["Skull"] = "Interface\\TARGETINGFRAME\\UI-RaidTargetingIcon_8",
+}
+
 private.TOOLTIP_POSITIONS = {
 	["ANCHOR_LEFT"] = AL["TOOLTIP_LEFT"],
 	["ANCHOR_RIGHT"] = AL["TOOLTIP_RIGHT"],
@@ -160,6 +171,38 @@ local DEFAULT_MAIN_CATEGORY = 0
 local general_options
 
 local function GetGeneralOptions()
+	local orderedMarkers = {}
+	for k, v in pairs(private.MARKERS) do
+		orderedMarkers[#orderedMarkers+1] = v
+	end
+			
+	table.sort(orderedMarkers, function(a,b) return string.upper(a) < string.upper(b) end)
+	local setMarker = function(value)
+		if (value) then
+			for k, m in pairs (private.MARKERS) do
+				if (k == value) then
+					for i, v in ipairs(orderedMarkers) do
+						if (m == v) then
+							private.db.general.marker = i
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	local getMarker = function()
+		for i, v in ipairs(orderedMarkers) do
+			if (i == private.db.general.marker) then
+				for k, m in pairs (private.MARKERS) do
+					if (m == v) then
+						return k
+					end
+				end
+			end
+		end
+	end	
+	
 	if not general_options then
 		general_options = {
 			type = "group",
@@ -201,8 +244,19 @@ local function GetGeneralOptions()
 					end,
 					width = "full",
 				},
-				scanGarrison = {
+				scanChatAlerts = {
 					order = 3,
+					name = AL["ENABLE_SCAN_CHAT"],
+					desc = AL["ENABLE_SCAN_CHAT_DESC"],
+					type = "toggle",
+					get = function() return private.db.general.scanChatAlerts end,
+					set = function(_, value)
+						private.db.general.scanChatAlerts = value
+					end,
+					width = "full",
+				},
+				scanGarrison = {
+					order = 4,
 					name = AL["ENABLE_SCAN_GARRISON_CHEST"],
 					desc = AL["ENABLE_SCAN_GARRISON_CHEST_DESC"],
 					type = "toggle",
@@ -213,7 +267,7 @@ local function GetGeneralOptions()
 					width = "full",
 				},
 				scanInstances = {
-					order = 4,
+					order = 5,
 					name = AL["ENABLE_SCAN_IN_INSTANCE"],
 					desc = AL["ENABLE_SCAN_IN_INSTANCE_DESC"],
 					type = "toggle",
@@ -224,7 +278,7 @@ local function GetGeneralOptions()
 					width = "full",
 				},
 				scanOnTaxi = {
-					order = 5,
+					order = 6,
 					name = AL["ENABLE_SCAN_ON_TAXI"],
 					desc = AL["ENABLE_SCAN_ON_TAXI_DESC"],
 					type = "toggle",
@@ -234,8 +288,26 @@ local function GetGeneralOptions()
 					end,
 					width = "full",
 				},
+				marker = {
+					order = 7,
+					type = "select",
+					dialogControl = 'RS_Markers',
+					name = AL["MARKER"],
+					desc = AL["MARKER_DESC"],
+					values = private.MARKERS,
+					get = function() return getMarker() end,
+					set = function(_, value)
+						setMarker(value)
+					end,
+					width = "normal",
+				},
+				separatorMessages = {
+					order = 8,
+					type = "header",
+					name = "",
+				},
 				sync = {
-					order = 6,
+					order = 9,
 					name = AL["SYNCRONIZE"],
 					desc = AL["SYNCRONIZE_DESC"],
 					type = "execute",
@@ -243,7 +315,7 @@ local function GetGeneralOptions()
 					width = "double",
 				},
 				test = {
-					order = 7,
+					order = 10,
 					name = AL["TEST"],
 					desc = AL["TEST_DESC"],
 					type = "execute",
