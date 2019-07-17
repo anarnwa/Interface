@@ -1,12 +1,12 @@
 local mod	= DBM:NewMod(2352, "DBM-EternalPalace", nil, 1179)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("2019071111642")
+mod:SetRevision("2019071740256")
 mod:SetCreatureID(151881)
 mod:SetEncounterID(2298)
 mod:SetZone()
 mod:SetUsedIcons(4, 6)
---mod:SetHotfixNoticeRev(16950)
+mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29
 
@@ -24,7 +24,6 @@ mod:RegisterEventsInCombat(
 	"UNIT_SPELLCAST_SUCCEEDED boss1"
 )
 
---TODO, request voice pack authors add "frost mark" and "toxic mark"
 --TODO, fix tank swap code when a strategy consensus is reached
 --TODO, improve DBM when strats formulate for boss on how to handle tank stacks
 --TODO, if inversion sickness is a LOT of people (or everyone) ono mythic, disable target warning on mythic
@@ -83,18 +82,20 @@ local playerMark = 0--1 Toxic, 2 Frost
 function mod:OnCombatStart(delay)
 	table.wipe(MarksStacks)
 	playerMark = 0--1 Toxic, 2 Frost
-	timerCrushingReverbCD:Start(10.6-delay)
+	timerCrushingReverbCD:Start(10.6-delay)--START
 	timerOverflowCD:Start(15.7-delay)
-	timerOverwhelmingBarrageCD:Start(40.2-delay)
+	timerOverwhelmingBarrageCD:Start(40.1-delay)
 	timerfrostshockboltsCD:Start(50.8-delay)
-	if self:IsHard() then
-		if self:IsMythic() then
-			timerChimericMarksCD:Start(9.9-delay)
-		end
+	if not self:IsLFR() then
 		timerInversionCD:Start(70-delay)
-		self:RegisterShortTermEvents(
-			"UNIT_POWER_FREQUENT player"
-		)
+		if self:IsHard() then
+			if self:IsMythic() then
+				timerChimericMarksCD:Start(23-delay)
+			end
+			self:RegisterShortTermEvents(
+				"UNIT_POWER_FREQUENT player"
+			)
+		end
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(DBM:GetSpellInfo(294726))
@@ -143,7 +144,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 295346 then
 		DBM:AddMsg("blizzard added overflow to combat log, tell DBM author")
 	elseif spellId == 295332 then--Has to be in success, can stutter cast
-		timerCrushingReverbCD:Start()
+		timerCrushingReverbCD:Start()--START
 	elseif spellId == 295791 then
 		timerInversionCD:Start(90)
 	end
