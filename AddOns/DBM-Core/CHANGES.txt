@@ -1,56 +1,134 @@
-lightweight tag 01c4e7ce1dbcadafb979441c7ca2c1b21e9b5811 8.2.5
+lightweight tag 02545ae0f3fa8f1f82ec244d400e93d1c20a00ea 8.2.7
 Author:	MysticalOS <mysticalosx@gmail.com>
-Date:	Wed Jul 17 00:02:56 2019 -0400
+Date:	Fri Jul 19 18:42:20 2019 -0400
 
-commit 01c4e7ce1dbcadafb979441c7ca2c1b21e9b5811
+commit 02545ae0f3fa8f1f82ec244d400e93d1c20a00ea
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Wed Jul 17 00:02:56 2019 -0400
+Date:   Fri Jul 19 18:42:20 2019 -0400
 
-    Prep release and enable HF notifications on a few boses
+    Prepare to release. There may (and probably are) bugs in this release, but the scope of what needs testing needs more than just one person using the mod, so an open beta is a must and the testing is time constrained too (heroic warfronts alliance side)
 
-commit 9cc15cfd989f5c5772215b11919566af7e6dc8c2
+commit c25efeff1d8348f0e955bf272d4a7c433632c856
+Author: Elnarfim <37562642+Elnarfim@users.noreply.github.com>
+Date:   Sat Jul 20 07:24:47 2019 +0900
+
+    KR Update (#44)
+    
+    * KR Update
+    
+    * KR Update
+    
+    * KR Update
+    
+    * KR Update
+    
+    * KR Update
+    
+    * KR Update
+    
+    * KR Update
+    
+    * KR Update
+    
+    * KR Update
+
+commit a673ab9ea50bddd1d269f87440762febff03b31e
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Tue Jul 16 23:50:48 2019 -0400
+Date:   Fri Jul 19 18:17:15 2019 -0400
 
-    Update Ulmath and Wekemara
+    Added berserk timers to most bosses
 
-commit 372dd0800904cdb23da296ab029e4e83794b628d
+commit 0d5da779a63a1df88715af9a98a9fd5be00040a2
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Tue Jul 16 23:27:19 2019 -0400
+Date:   Fri Jul 19 17:21:57 2019 -0400
 
-    Fixed a bug where first inversion timer didn't show on normal Sivara
-    Tweaked some start timers on behemoth after verifying them in all 4 difficulties.
-    Fixed bug on Radiance where the tide fist timer never started on any difficulty do to a spell ID swap.
-    Simplified timer tables after verifying all 4 difficulties use exact same timers.
+    These should accept file ID now
 
-commit 4d3a3f0e8f92027d4d1349f5ec00b38a5058df1e
+commit eb403d63426e5fedb432a46e52d782223988aca7
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Tue Jul 16 20:32:15 2019 -0400
+Date:   Thu Jul 18 23:44:50 2019 -0400
 
-    Added fading countdown yells to Piercing Barb
-    Improved Ashvane timer handling so it better supports the major differences between normal's timers, and the timers heroic/mythic use.
-    Re-Added the rippling wave special warning but made it off by default. Wave handlers now has a warning they can enable and customize as needed.
-    No longer stop add timers after 3 casts On phase 1 Orgozoa, since now it's possible to get more than 3 add sets.
+    Add notes
 
-commit ccfa45a5006c8863f7ca091052a00ae39cea3086
+commit dbde2b29177906216b6302a4ae76fdb7ece66aed
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Tue Jul 16 19:08:25 2019 -0400
+Date:   Thu Jul 18 23:40:20 2019 -0400
 
-    Add auto range checker to Behemoth on all difficulties
-    Added mythic icon to Barb timer on Behemoth
-    Updated timer for First Chimeric Marks on mythic Sivara
-    Possible fix to azshara decree special warnings only ever showing first passed objective instead of all of them (didn't affect yells, which corrected detected them all)
-    Changed timer start event for Stormwraths to be more accurate, but disabled arcane bomb start timer since it's affected by spell lockout and I don't want to hard code every spell lockout into an ability it'll use right away once spell lockout ends.
-    Also applied experimental timer fade stuff to gale buffet timers on mythic based on which stormwrath you are near.
+    Add warfront info to the difficulty handling
+    Fixed countdown voice 3 option so all the variables match in name, as well as revert to original name instead of making it V3
 
-commit 30745c58e023cb10fd929406b72ae453cb317b8c
+commit 819c867edeacef7445e4e95002f29872986c08e3
 Author: MysticalOS <mysticalosx@gmail.com>
-Date:   Mon Jul 15 20:48:41 2019 -0400
+Date:   Thu Jul 18 22:38:25 2019 -0400
 
-    Added switch warnings for big adds in phase 1 and 2 for dps. The phase 2 warnings won't work on normal or LFR though since they use an event that only exists in heroic+
-    Fixed up heroic timers on phase changes for abilities who's timers do NOT match normal mode.
-    Fixed a bug where reversal timer was started in Phase 2 normal and not heroic. logic was reversed.
-    Fixed Heroic arcane detonation timer, it's faster than normal by 5 seconds.
-    Added Preliminary P3 beckon timer for second beckon cast of phase. needs a LOT more data since it only knows first two casts on heroic and only 1 cast on non heroic.
-    Moved P4 trigger to an earlier trigger, but left old one in case new one is a little too soon. Added some debug lines so advanced users can pay attention to whether or not the earlier P4 trigger has issues or not.
+    If I find one more problem with this mod, I'm scrapping the whole thing
+
+commit ad9623f36e15f6c63f2f1a9b2e8547382b09eec7
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 22:34:29 2019 -0400
+
+    fix another stupid mistake
+
+commit 6e4235660f84b24a9acf2aa8d67617f837c6bf58
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 22:30:51 2019 -0400
+
+    Another fix, what good is travis if it doesn't find anything
+
+commit 5e72cca03223c4e33606c626fc2047ac8da424cc
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 22:26:48 2019 -0400
+
+    .
+
+commit 778a08a88e093f148a414d3b9235031152f8aa8b
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 22:24:05 2019 -0400
+
+    focus stealing apps are garbage, that text wasn't even meant for that app
+
+commit bd6f32e3d0784151defc403e3d5254e64abdb5a7
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 22:19:21 2019 -0400
+
+    Heroic warfront support has begun
+
+commit 61116360051e8341b4b72c545420d2a88421c566
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 19:03:09 2019 -0400
+
+    How were these left behind. remove so they stop causing problems
+
+commit 6e153d5eedb841cd65bd3481814ea218bef5428a
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 18:38:21 2019 -0400
+
+    **THIS UPDATE REQUIRES A CLIENT RESTART
+    *Added countdown yells for tank debuffs on Sivara
+    *Updated audio countdown object in timers to support custom countdowns for everything (just like special warnings). This means that you are no longer limited to 3 voices, you can actually have unlimitted voices during an encounter via the mod dropdowns. There are still 3 core voice options which will be used as defaults, exactly like special warnings work, and just like special warnings, you can define those default voices in core spoken alert setup.
+    *Oh and one more surprise, A new built in countdown option has been added. SmoothMcGroove!
+
+commit ab5a3eb2bf61ce98d66ecd474776b5919fe6c8fe
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 13:54:01 2019 -0400
+
+    At mythic court berserk
+
+commit dcecbb68fded6f5d817a69d8b269d3b332510ed1
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 12:42:22 2019 -0400
+
+    Couple minor tweaks to Orgozoa timers and fixes mythic arcing lightning cast detection
+
+commit 84f11b9a1f596163d2badcc585a4d1468a6a628f
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 12:06:37 2019 -0400
+
+    Another attempt at fixing decree aggregation
+
+commit f63de188d4e6d17dfd253dd5a4f59f06ac236cec
+Author: MysticalOS <mysticalosx@gmail.com>
+Date:   Thu Jul 18 00:39:05 2019 -0400
+
+    Fix iconSet variable, it's supposed to be a table not a number
 

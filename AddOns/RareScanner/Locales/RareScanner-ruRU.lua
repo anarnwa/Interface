@@ -45,6 +45,10 @@ if AL then
 	AL["DISPLAY_NPC_ICONS_DESC"] = "Если настройка отключена, значки редких НИПов не показываются на карте мира."
 	AL["DISPLAY_OPTIONS"] = "Параметры отображения"
 	AL["DUNGEONS_SCENARIOS"] = "Подземелья и сценарии"
+	--[[Translation missing --]]
+	AL["ENABLE_MARKER"] = "Toggle target marker"
+	--[[Translation missing --]]
+	AL["ENABLE_MARKER_DESC"] = "When this is activated it will show a marker on top of the target when you click the main button"
 	AL["ENABLE_SCAN_CHAT"] = "Включить поиск редких НИП в чате."
 	AL["ENABLE_SCAN_CHAT_DESC"] = "При включении вы будете предупреждены визуально и со звуковым эффектом каждый раз когда редкий НИП будет кричать или будет найдена строка о найденном НИП в чате."
 	AL["ENABLE_SCAN_CONTAINERS"] = "Искать сокровища и сундуки"
@@ -65,12 +69,20 @@ if AL then
 	AL["FILTER"] = "Фильтры НИПов"
 	AL["FILTER_CONTINENT"] = "Континент или категория"
 	AL["FILTER_CONTINENT_DESC"] = "Название континента или категории"
+	--[[Translation missing --]]
+	AL["FILTER_NPCS_ONLY_MAP"] = "Enable filters only in the world map"
+	--[[Translation missing --]]
+	AL["FILTER_NPCS_ONLY_MAP_DESC"] = "When enabled you will still get alerts from filtered NPCs but they won't show up in your world map. When disabled you won't get alerts from filtered NPCs at all."
 	AL["FILTER_RARE_LIST"] = "Фильтр поиска редких НИПов"
 	AL["FILTER_RARE_LIST_DESC"] = "Искать этого редкого НИПа. Если настройка отключена, вы не будете оповещены о его нахождении."
 	AL["FILTER_ZONE"] = "Локация"
 	AL["FILTER_ZONE_DESC"] = "Локация внутри континента или категории"
 	AL["FILTER_ZONES_LIST"] = "Список локаций"
 	AL["FILTER_ZONES_LIST_DESC"] = "Оповещать в этой локации. Если настройка отключена, вы не будете оповещены о нахождении в ней редкого НИПа, события или сокровища."
+	--[[Translation missing --]]
+	AL["FILTER_ZONES_ONLY_MAP"] = "Enable filters only in the world map"
+	--[[Translation missing --]]
+	AL["FILTER_ZONES_ONLY_MAP_DESC"] = "When enabled you will still get alerts from NPCs that belong to filtered zones but they won't show up in your world map. When disabled you won't get alerts from NPCs that belong to filtered zones at all."
 	AL["FILTERS"] = "Фильтры редких НИПов"
 	AL["FILTERS_SEARCH"] = "Поиск"
 	AL["FILTERS_SEARCH_DESC"] = "Введите имя НИПа, чтобы отфильтровать приведённый ниже список"

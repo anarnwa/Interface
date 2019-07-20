@@ -231,6 +231,13 @@ if AL then
 	AL["ZONES_FILTER"] = "Filtros de zonas"
 	AL["ZONES_FILTERS_SEARCH_DESC"] = "Escribe el nombre de la zona para filtrar la lista de abajo"
 	
+	AL["ENABLE_MARKER"] = "Mostrar marcador sobre objetivo"
+	AL["ENABLE_MARKER_DESC"] = "Si se activa, se mostrará un marcador encima del objetivo al seleccionarlo pulsando el botón principal"
+	AL["FILTER_NPCS_ONLY_MAP"] = "Activa los filtros solo en el mapa del mundo"
+	AL["FILTER_NPCS_ONLY_MAP_DESC"] = "Cuando está activo aún recibirás alertas de NPCs filtrados pero no aparecerán en tu mapa del mundo. Cuando esta desactivado no recibirás alertas de NPCs filtrados ni aparecerán en el mapa del mundo."
+	AL["FILTER_ZONES_ONLY_MAP"] = "Activa los filtros solo en el mapa del mundo"
+	AL["FILTER_ZONES_ONLY_MAP_DESC"] = "Cuando está activo aún recibirás alertas de NPCs que pertenecen a zonas filtradas pero no aparecerán en tu mapa del mundo. Cuando esta desactivado no recibirás alertas de NPCs que pertenecen a zonas filtradas ni aparecerán en el mapa del mundo."
+	
 	-- CONTINENT names
 	AL["ZONES_CONTINENT_LIST"] = {
 		[9999] = "Sedes de clase"; --Class Halls

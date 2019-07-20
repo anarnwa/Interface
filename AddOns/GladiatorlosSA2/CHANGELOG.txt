@@ -1,3 +1,8 @@
+- version B12 (8.2)
+
+Druid
+* Fixed Thorns spellID for all specs.
+===============================================
 - version B11 (8.2)
 
 General

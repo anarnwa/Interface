@@ -1,7 +1,7 @@
 # SexyMap
 
-## [v8.2.0](https://github.com/funkydude/SexyMap/tree/v8.2.0) (2019-06-26)
-[Full Changelog](https://github.com/funkydude/SexyMap/compare/v8.1.5...v8.2.0)
+## [v8.2.1](https://github.com/funkydude/SexyMap/tree/v8.2.1) (2019-07-13)
+[Full Changelog](https://github.com/funkydude/SexyMap/compare/v8.2.0...v8.2.1)
 
-- Remove temporary chat print, should no longer be needed thanks to all the upgrade code. Closes #58  
-- bump toc  
+- Tweak  
+- Add 4 new rounded map shapes: Top/Right/Bottom/Left (#47)  

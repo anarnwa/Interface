@@ -7,15 +7,15 @@ local DoNotAutoGossip = {
     [77789] = true, --布灵顿5000
     [101527] = true --布灵顿6000
 }
-local AutoGossipOption_1 = {
-    [39188] = true, -- Mongar (Legion Dalaran)
-    [96782] = true, -- Lucian Trias (Legion Dalaran)
-    [97004] = true, -- "Red" Jack Findle (Legion Dalaran)
-    [138708] = true, -- Garona Halforcen (BFA)
-    [135614] = true, -- Master Mathias Shaw (BFA)
-    [131287] = true, -- Natal'hakata (Horde Zandalari Emissary)
-    [138097] = true, -- Muka Stormbreaker (Stormsong Valley Horde flight master)
-    [35642] = true -- Jeeves
+local OtherOption = {
+    [39188] = 1, -- Mongar (Legion Dalaran)
+    [96782] = 1, -- Lucian Trias (Legion Dalaran)
+    [97004] = 1, -- "Red" Jack Findle (Legion Dalaran)
+    [138708] = 1, -- Garona Halforcen (BFA)
+    [135614] = 1, -- Master Mathias Shaw (BFA)
+    [131287] = 1, -- Natal'hakata (Horde Zandalari Emissary)
+    [138097] = 1, -- Muka Stormbreaker (Stormsong Valley Horde flight master)
+    [35642] = 1 -- Jeeves
 }
 GossipFrame:HookScript(
     'OnShow',
@@ -35,11 +35,6 @@ GossipFrame:HookScript(
         if (GetNumGossipActiveQuests() > 0 or GetNumGossipAvailableQuests() > 0) then
             return
         end
-
-        -- 在列表1里的自动选择选项1
-        if (AutoGossipOption_1[targetid] == true) then
-            SelectGossipOption(1)
-        end
         -- 如果只有一个选项，就自动对话
         local ticker =
             C_Timer.NewTicker(
@@ -52,5 +47,9 @@ GossipFrame:HookScript(
                 end
             end
         )
+        --如果在other表里 就根据表数据选择
+        if (OtherOption[targetid] ~= nil) then
+            SelectGossipOption(OtherOption[targetid])
+        end
     end
 )

@@ -1,13 +1,14 @@
 ------------------------------------------------------------------------
-r469 | Zensunim | 2019-07-13 23:31:25 +0000 (Sat, 13 Jul 2019) | 3 lines
+r471 | Zensunim | 2019-07-18 08:28:15 +0000 (Thu, 18 Jul 2019) | 3 lines
 Changed paths:
    M /trunk/GTFO.lua
    M /trunk/GTFO.toc
    M /trunk/GTFO_Fail_BFA.lua
+   M /trunk/GTFO_Ignore.lua
    M /trunk/GTFO_Spells_BFA.lua
    M /trunk/ReadMe.txt
 
-4.48.7
+4.48.8
 * Added Battle for Azeroth spells (world)
 * Added BFA spells for The Eternal Palace
 ------------------------------------------------------------------------

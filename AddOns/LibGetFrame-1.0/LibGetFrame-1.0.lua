@@ -1,10 +1,11 @@
 local MAJOR_VERSION = "LibGetFrame-1.0"
-local MINOR_VERSION = 5
+local MINOR_VERSION = 7
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
-local GetPlayerInfoByGUID, UnitExists, IsAddOnLoaded, C_Timer, UnitIsUnit, SecureButton_GetUnit, wipe = GetPlayerInfoByGUID, UnitExists, IsAddOnLoaded, C_Timer, UnitIsUnit, SecureButton_GetUnit, wipe
+local GetPlayerInfoByGUID, UnitExists, IsAddOnLoaded, C_Timer, UnitIsUnit, SecureButton_GetUnit = GetPlayerInfoByGUID, UnitExists, IsAddOnLoaded, C_Timer, UnitIsUnit, SecureButton_GetUnit
+local tinsert, CopyTable, wipe = tinsert, CopyTable, wipe
 
 local maxDepth = 50
 
@@ -26,17 +27,18 @@ local defaultFramePriorities = {
     [14] = "^SUFHeaderraid", -- suf
     [15] = "^CompactRaid", -- blizz
     -- party frames
-    [16] = "^SUFHeaderparty", --suf
-    [17] = "^ElvUF_PartyGroup", -- elv
-    [18] = "^oUF.*party", -- generic oUF
-    [19] = "^PitBull4_Groups_Party", -- pitbull4
-    [20] = "^CompactParty", -- blizz
+    [16] = "^AleaUI_GroupHeader", -- Alea
+    [17] = "^SUFHeaderparty", --suf
+    [18] = "^ElvUF_PartyGroup", -- elv
+    [19] = "^oUF.*party", -- generic oUF
+    [20] = "^PitBull4_Groups_Party", -- pitbull4
+    [21] = "^CompactParty", -- blizz
     -- player frame
-    [21] = "^SUFUnitplayer",
-    [22] = "^PitBull4_Frames_Player",
-    [23] = "^ElvUF_Player",
-    [24] = "^oUF.*player",
-    [25] = "^PlayerFrame",
+    [22] = "^SUFUnitplayer",
+    [23] = "^PitBull4_Frames_Player",
+    [24] = "^ElvUF_Player",
+    [25] = "^oUF.*player",
+    [26] = "^PlayerFrame",
 }
 
 local defaultPlayerFrames = {
@@ -55,7 +57,7 @@ local defaultTargetFrames = {
 }
 local defaultTargettargetFrames = {
     "SUFUnittargetarget",
-    "PitBull4_Frames_TargetTarget",
+    "PitBull4_Frames_Target's target",
     "ElvUF_TargetTarget",
     "TargetTargetFrame",
     "oUF_TukuiTargetTarget",
@@ -63,17 +65,15 @@ local defaultTargettargetFrames = {
 
 local GetFramesCache = {}
 
-local function ScanFrames(frame, depth)
+local function ScanFrames(depth, frame, ...)
+    if not frame then return end
     if depth < maxDepth
-    and type(frame) == "table"
     and frame.IsForbidden
     and not frame:IsForbidden()
     then
         local frameType = frame:GetObjectType()
         if frameType == "Frame" or frameType == "Button" then
-            for _, child in ipairs({frame:GetChildren()}) do
-                ScanFrames(child, depth + 1)
-            end
+            ScanFrames(depth + 1, frame:GetChildren())
         end
         if frameType == "Button" then
             local unit = SecureButton_GetUnit(frame)
@@ -83,12 +83,13 @@ local function ScanFrames(frame, depth)
             end
         end
     end
+    ScanFrames(depth, ...)
 end
 
 local function ScanForUnitFrames()
     C_Timer.After(1, function()
         wipe(GetFramesCache)
-        ScanFrames(UIParent, 0)
+        ScanFrames(0, UIParent)
     end)
 end
 
@@ -101,7 +102,7 @@ local function isFrameFiltered(name, ignoredFrames)
     return false
 end
 
-local function GetFrames(target, ignoredFrames)
+local function GetUnitFrames(target, ignoredFrames)
     if not UnitExists(target) then
         if type(target) == "string" and target:find("Player") then
             target = select(6, GetPlayerInfoByGUID(target))
@@ -134,43 +135,44 @@ local function ElvuiWorkaround(frame)
     end
 end
 
-local function TableConcat(t1,t2)
-    for i=1,#t2 do
-        t1[#t1+1] = t2[i]
-    end
-    return t1
-end
+local defaultOptions = {
+    framePriorities = defaultFramePriorities,
+    ignorePlayerFrame = true,
+    ignoreTargetFrame = true,
+    ignoreTargettargetFrame = true,
+    playerFrames = defaultPlayerFrames,
+    targetFrames = defaultTargetFrames,
+    targettargetFrames = defaultTargettargetFrames,
+    ignoreFrames = {
+        "PitBull4_Frames_Target's target's target"
+    },
+    returnAll = false,
+}
 
-function lib.GetFrame(target, opt)
+function lib.GetUnitFrame(target, opt)
     opt = opt or {}
-    setmetatable(opt, {
-        __index = {
-            framePriorities = defaultFramePriorities,
-            ignorePlayerFrame = true,
-            ignoreTargetFrame = true,
-            ignoreTargettargetFrame = true,
-            playerFrames = defaultPlayerFrames,
-            targetFrames = defaultTargetFrames,
-            targettargetFrames = defaultTargettargetFrames,
-            ignoreFrames = {},
-            returnAll = false,
-        }
-    })
+    setmetatable(opt, { __index = defaultOptions })
 
     if not target then return end
 
-    local ignoredFrames = opt.ignoreFrames
+    local ignoredFrames = CopyTable(opt.ignoreFrames)
     if opt.ignorePlayerFrame then
-        ignoredFrames = TableConcat(ignoredFrames, opt.playerFrames)
+        for _,v in pairs(opt.playerFrames) do
+            tinsert(ignoredFrames, v)
+        end
     end
     if opt.ignoreTargetFrame then
-        ignoredFrames = TableConcat(ignoredFrames, opt.targetFrames)
+        for _,v in pairs(opt.targetFrames) do
+            tinsert(ignoredFrames, v)
+        end
     end
     if opt.ignoreTargettargetFrame then
-        ignoredFrames = TableConcat(ignoredFrames, opt.targettargetFrames)
+        for _,v in pairs(opt.targettargetFrames) do
+            tinsert(ignoredFrames, v)
+        end
     end
 
-    local frames = GetFrames(target, ignoredFrames)
+    local frames = GetUnitFrames(target, ignoredFrames)
     if not frames then return end
 
     if not opt.returnAll then
@@ -190,6 +192,7 @@ function lib.GetFrame(target, opt)
         return frames
     end
 end
+lib.GetFrame = lib.GetUnitFrame -- compatibility
 
 local GetFramesCacheListener = CreateFrame("Frame")
 GetFramesCacheListener:RegisterEvent("PLAYER_REGEN_DISABLED")

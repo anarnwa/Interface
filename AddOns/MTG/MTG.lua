@@ -93,7 +93,8 @@ local initializeValueableList = function()
         [170161] = buyRareItemsWithTaco,
         [170162] = buyRareItemsNoTaco, --# no need taco
         [170101] = buyRareItemsNoTaco,
-        [169202] = playerLearnedCrimsonTidestallion() and 0 or buyRareItemsWithTaco, --# Crimson Tidestallion
+        --[169202] = playerLearnedCrimsonTidestallion() and 0 or buyRareItemsWithTaco, --# Crimson Tidestallion
+        [169202] = buyRareItemsWithTaco,
         [170158] = buyRareItemsWithTaco,
     }
 
@@ -367,6 +368,13 @@ generateReqString = function(itemID)
     return strn
 end
 
+function J_TablevIn(tbl,value)
+    for k,v in pairs(tbl) do
+        if v.item==value then return true end
+    end
+    return false
+end
+
 
 
 function J_MRRL_DELAYED_MERCHANT_SHOW()
@@ -417,16 +425,15 @@ function J_MRRL_DELAYED_MERCHANT_SHOW()
                     end
                     
                     local _, _, rarity = GetItemInfo(currentItemID)
-
-                    
                     merchantItemList[currentItemID] = {
                         Req = currentItemReq,
                         NPC = NPCID,
                         rarity = rarity,
                     }
 
+    
                     if (NPCID == 152084) then --更新数据表
-                        if currentItemReq[1].item ==170100 or currentItemReq[2].item ==170100 or currentItemReq[3].item ==170100 then 
+                        if J_TablevIn(currentItemReq, 170100) then 
                             J_UpdavalueableList(currentItemID,true)
                         else
                             J_UpdavalueableList(currentItemID,false)
@@ -470,7 +477,14 @@ end
 
 
 function frame:MERCHANT_CLOSED(event,...)
-
+    if IsAddOnLoaded("WeakAuras") then
+        if WeakAuras.loaded["Mrrl's trade game"] then 
+            frame:UnregisterEvent("MERCHANT_SHOW")
+            frame:UnregisterEvent("MERCHANT_CLOSED")
+            frame:UnregisterEvent("CHAT_MSG_LOOT")
+            JNAYDBM_Purchase_prompt("检测到你已加载WA的Mrrl's trade game,为了避免重复购买,MTG插件已自动关闭,接下来使用的是WA的Mrrl's trade game购买.",5.0,false)
+        end
+    end
     return true
 end
 
@@ -483,7 +497,8 @@ function frame:CHAT_MSG_LOOT(event,...)
             if string.match(line, item) then
                 local lootAmount = string.match(line, item .. "]|h|rx(%d+)") or 1
                 buyitems = buyitems ..itemID.."("..lootAmount..")"..unit.."】【"
-                buyList[itemID].amount = buyList[itemID].amount - lootAmount
+                buyList[itemID].amount = buyList[itemID].amount - lootAmount           
+                C_Timer.After(2, function() JNAYDBM_Purchase_prompt(string.format("%s%s", generatebuyString(), checkDealReplacementString()),5.0,false) end)
                 break
             end
         end
@@ -529,8 +544,6 @@ function frame:ADDON_LOADED(event,...)
       frame:RegisterEvent("MERCHANT_SHOW")
       frame:RegisterEvent("MERCHANT_CLOSED")
       frame:RegisterEvent("CHAT_MSG_LOOT")
-      
-
     initializeValueableList()
 end
 

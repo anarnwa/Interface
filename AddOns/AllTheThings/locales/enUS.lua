@@ -138,7 +138,7 @@ AllTheThings.L = {
 		["25 Player (Heroic)"] = "25M (H)",
 		["Player vs. Player"] = STAT_CATEGORY_PVP,
 		["Outdoor Zones"] = LFG_TYPE_ZONE,
-		["Zone Drop"] = LFG_TYPE_ZONE,
+--		["Zone Drop"] = LFG_TYPE_ZONE,
 		["Zone Wide"] = LFG_TYPE_ZONE,
 		["Item Sets"] = WARDROBE_SETS,
 		["Pet Journal"] = PETS,
@@ -524,6 +524,7 @@ AllTheThings.L = {
 		[-389] = "Interface\\Icons\\INV_MISC_KEY_13",								-- Service Entrance (Stratholme)
 		[-390] = "Interface\\Icons\\inv_misc_coinbag_special",						-- Smuggling Run!
 		[-391] = "Interface\\Icons\\achievement_guildperk_hastyhearth",				-- Stoktron Brewery (alliance)
+		[-392] = "Interface\\Icons\\achievement_guildperk_hastyhearth",				-- Hearthfire Tavern (horde)
 		[-491] = "Interface\\Icons\\inv_misc_ticket_tarot_rogue",					-- Tarot Cards
 		[-494] = "Interface\\Icons\\Ability_Shaman_Ascendance",						-- Miscellaneous
 		[-500] = "Interface\\Icons\\inv_misc_celebrationcake_01",					-- WoW Anniversary
@@ -1129,6 +1130,7 @@ AllTheThings.L = {
 		[-389] = "Service Entrance",											-- Service Entrance (Stratholme)
 		[-390] = "Smuggler's Den",												-- Smuggler's Den (Spires of Arak)
 		[-391] = "Stoktron Brewery",											-- Stoktron Brewery (Spires of Arak)
+		[-392] = "Hearthfire Tavern",											-- Hearthfire Tavern
 -- Blizzard Events and Anniversaries
 -- Lucetia Note: Leave these for now, some may be swapped to achieves instead.
 		[-488] = "War Chest",													-- Daily War Chest
@@ -1281,9 +1283,6 @@ AllTheThings.L = {
 		[-2000] = GetSpellInfo(41433),											-- Twin Blades of Azzinoth
 
 -- Other Sets
-		[-3156] = string.format(PLAYER_V_PLAYER_SEASON, 3),						-- Player vs. Player (Battle for Azeroth Season 3)
-		[-3157] = string.format(PLAYER_V_PLAYER_SEASON, 2),						-- Player vs. Player (Battle for Azeroth Season 2)
-		[-3158] = string.format(PLAYER_V_PLAYER_SEASON, 1),						-- Player vs. Player (Battle for Azeroth Season 1)
 		[-3159] = GARRISON_TIER.." 6.5 "..WARDROBE_SETS,
 		[-3160] = string.format(GARRISON_CURRENT_LEVEL.." "..WARDROBE_SETS, 21),
 		[-3161] = string.format(GARRISON_CURRENT_LEVEL.." "..WARDROBE_SETS, 20),
@@ -1644,7 +1643,7 @@ AllTheThings.L = {
 		[-9994] = select(1,GetCategoryInfo(15218)),		-- Deepwind Gorge
 		[-9995] = select(1,GetCategoryInfo(14901)),		-- Wintergrasp
 		[-9996] = select(1,GetCategoryInfo(15075)),		-- Tol Barad
-		[-9997] = select(1,GetCategoryInfo(15241)),		-- Ashran
+		[-9997] = select(1,GetCategoryInfo(15414)),		-- Ashran
 		[-9998] = select(1,GetCategoryInfo(15265)),		-- The Timeless Isle
 		[-9999] = select(1,GetCategoryInfo(15092)),		-- Rated Battleground
 		[-10000] = select(1,GetCategoryInfo(165)),		-- Arena
@@ -2605,6 +2604,7 @@ AllTheThings.L = {
 		[226967] = "Lagoon Pool",
 		[226976] = "Deceptia's Smoldering Boots",
 		[226983] = "Crag-Leaper's Cache",
+		[226987] = "Ricky",
 		[226990] = "Supply Dump",
 		[226993] = "Survivalist's Cache",
 		[226994] = "Grimfrost Treasure",
@@ -3199,6 +3199,7 @@ AllTheThings.L = {
 		[311902] = "Loose Parts",	-- Loose Parts (Horde Won)
 		[311903] = "Loose Parts",	-- Loose Parts (Alliance Won)
 		[332220] = "Glowing Arcane Trunk",
+		[322413] = "Glimmering Chest",
 		[322533] = "Mardivas's Tome of the Elements",
 		[325659] = "Mechanized Chest",
 		[325660] = "Mechanized Chest",
@@ -3380,8 +3381,8 @@ AllTheThings.L = {
 		{21, "|CFFFF0000These appearances are only available during the weekly Timewalking Event.\nOnly dungeons released during the featured expansion will be available.|r", "Timewalking (42)"}; -- 42
 		{1, "|CFFFF0000This NPC or creature has been removed from the game.|r", "Removed NPCs (43)"}; -- 43
 		{2, "|CFFFF0000This Item was only available from the BMAH for a limited Time.|r", "BMAH Limited Time (44)"}; -- 44
-		{1, "|CFFFF0000Blizzard's Legacy Loot changes broke several Items and made them Unobtainable.\nGruul (BC), Angerforge (BRD), Warpwood (DM West), Kara (Chess Event), and Halls of Stone (Tribunal of Ages)\nare all currently broken and need to be fixed.|r", "Broken Loot (45)"}; -- 45
-		{3, "|CFFFF0000This item is only available from War Chests while under max level.|r", "Incursion Loot (46)"}; -- 46
+		{1, "|CFFFF0000Blizzard's Legacy Loot changes broke several Items and made them Unobtainable.\nAngerforge (BRD), Warpwood (DM West), Kara (Chess Event), and Halls of Stone (Tribunal of Ages)\nare all currently broken and need to be fixed.|r", "Broken Loot (45)"}; -- 45
+	--	{3, "|CFFFF0000This item is only available from War Chests while under max level.|r", "Incursion Loot (46)"}; -- 46
 	--	{1, "|CFFFF0000With 8.0, Blizzard's Legacy Loot implementation broke Gruul' loot table.|r", "Gruul Non-Tier Loot (47)"}; -- 47
 	};
 };
