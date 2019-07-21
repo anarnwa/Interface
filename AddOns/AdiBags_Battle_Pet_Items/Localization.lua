@@ -66,6 +66,24 @@ elseif locale == "ptBR" then
 elseif locale == "ruRU" then
 --Translation missing
 elseif locale == "zhCN" then
+	L["Battle Pet Items"] = "宠物用品"
+L["Items that are connected to Battle Pets and not actual pets."] = "与战斗宠物相关的物品"
+L["Miscellaneous Items"] = "杂物"
+L["Items that dont fall into any other categorys"] = "不属于任何其他类别的项目"
+L["Battle Pet Currency Items"] = "宠物货币"
+L["Items used to buy Battle Pet related Items"] = "用于购买宠物物品的物品"
+L["Drop Battle Pet containers"] = true
+L["Items that drop that can contain Battle Pets"] = true
+L["Bags and Supplies"] = true
+L["Bags that are obtained that contain Battle Pet Items"] = true
+L["Rarity Stones"] = true
+L["Items that increase rarity of Battle Pets"] = true
+L["Training Stones"] = true
+L["Items that add levels to Battle Pets"] = true
+L["Pet Toys"] = "宠物玩具"
+L["Toys usable with all Battle Pets"] = true
+L["Pug Costumes"] = true
+L["All items for your Perky Pugs"] = true
 --Translation missing
 elseif locale == "zhTW" then
 --Translation missing
