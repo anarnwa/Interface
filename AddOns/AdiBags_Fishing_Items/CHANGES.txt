@@ -1,0 +1,28 @@
+lightweight tag 70b6a0d63c5b0cb18251990d28389bfd52b374b2 v1.0.8
+Author:	Lown Ignitus <lownignitus@gmail.com>
+Date:	Sat Jul 6 15:42:22 2019 -0700
+
+commit ef1290734df9680eba0da87cb68fea5978ea2048
+Author: Lown Ignitus <lownignitus@gmail.com>
+Date:   Sat Jul 6 15:39:13 2019 -0700
+
+    v1.0.8
+    
+    Added zhCN Localization, from gjfLeo
+
+commit ef1290734df9680eba0da87cb68fea5978ea2048
+Author: Lown Ignitus <lownignitus@gmail.com>
+Date:   Sat Jul 6 15:39:13 2019 -0700
+
+    v1.0.8
+    
+    Added zhCN Localization, from gjfLeo
+
+commit cb1cded4b6da4f55a69d36b42a624546fd728ea1
+Author: Lown Ignitus <lownignitus@gmail.com>
+Date:   Sat Jul 6 15:39:13 2019 -0700
+
+    v1.0.7
+    
+    Added zhCN Localization, from gjfLeo
+

@@ -1,0 +1,16 @@
+# AdiBags - Zone Items
+# Copyright 2019 Eek! (wowitseek@gmail.com)
+# All rights reserved.
+
+## Interface: 80200
+## Title: AdiBags - Zone Items
+## Notes: AdiBags filters for Nazjatar and Mechagon items
+## Author: Eek - Earthen Ring
+## Version: 1.01
+## X-Date: 2019-06-26
+## X-License: GPL v3
+## X-Category: Bags & Inventory
+## Dependencies: AdiBags
+
+AdiBags_BfAZoneItems.lua
+

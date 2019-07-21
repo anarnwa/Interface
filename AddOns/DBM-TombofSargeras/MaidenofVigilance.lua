@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(1897, "DBM-TombofSargeras", nil, 875)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20190625143337")
+mod:SetRevision("20190720215946")
 mod:SetCreatureID(118289)
 mod:SetEncounterID(2052)
 mod:SetZone()
@@ -63,8 +63,6 @@ local berserkTimer					= mod:NewBerserkTimer(480)
 --Mythic
 mod:AddTimerLine(ENCOUNTER_JOURNAL_SECTION_FLAG12)
 local timerSpontFragmentationCD		= mod:NewCDTimer(8, 239153, nil, nil, nil, 5, nil, DBM_CORE_HEROIC_ICON)
-
-local voicePhaseChange				= mod:NewVoice(nil, nil, DBM_CORE_AUTO_VOICE2_OPTION_TEXT)
 
 mod:AddSetIconOption("SetIconOnInfusion", 235271, true)
 mod:AddInfoFrameOption(235117, true)
@@ -158,7 +156,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerInfusionCD:Stop()
 		timerLightHammerCD:Stop()
 		timerFelHammerCD:Stop()
-		voicePhaseChange:Play("phasechange")
 	end
 end
 
@@ -169,7 +166,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFelInfusion:Show(self:IconNumToTexture(4))
 			specWarnFelInfusion:Play("felinfusion")
 			if spellId == 235213 then--Not LFR
-				yellInfusion:Yell(4, "", 4)
+				yellInfusion:Yell(4, "")
 			end
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -181,7 +178,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnLightInfusion:Show(self:IconNumToTexture(1))
 			specWarnLightInfusion:Play("lightinfusion")
 			if spellId == 235213 then--Not LFR
-				yellInfusion:Yell(1, "", 1)
+				yellInfusion:Yell(1, "")
 			end
 		end
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -251,7 +248,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		self.vb.hammerCount = 0
 		self.vb.infusionCount = 0
 		self.vb.massShitCount = 0
-		voicePhaseChange:Play("phasechange")
 		if self:IsLFR() then
 			timerMassInstabilityCD:Start(8, 1)
 			timerInfusionCD:Start(61, 1)

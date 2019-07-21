@@ -47,7 +47,7 @@ GossipFrame:HookScript(
                 end
             end
         )
-        --如果在other表里 就根据表数据选择
+        --如果不止一个选项且在other表里 就根据表数据选择
         if (OtherOption[targetid] ~= nil) then
             SelectGossipOption(OtherOption[targetid])
         end

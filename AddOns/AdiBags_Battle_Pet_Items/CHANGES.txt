@@ -1,0 +1,12 @@
+lightweight tag 42d12a2fe6361af2bd6451a7ab04b77436063b4a v1.0.5
+Author:	Lown Ignitus <lownignitus@gmail.com>
+Date:	Sat Jul 6 15:40:02 2019 -0700
+
+commit 42d12a2fe6361af2bd6451a7ab04b77436063b4a
+Author: Lown Ignitus <lownignitus@gmail.com>
+Date:   Sat Jul 6 15:40:02 2019 -0700
+
+    v1.0.5
+    
+    Added koKR Localization from Comiluv
+
