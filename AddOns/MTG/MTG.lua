@@ -42,7 +42,21 @@ frame:SetScript("OnEvent", function(self, event,...)
     end
 end )
 
-
+local function MTG_Set_Text(msg)
+    if not MTG_Text_Frame then
+        MTG_Text_Frame=CreateFrame('SimpleHTML','MTGTEXTFRAME', UIParent)
+        MTG_Text_Frame:SetWidth(1000)
+        MTG_Text_Frame:SetHeight(600)
+        MTG_Text_Frame:SetFont('Fonts\\FRIZQT__.TTF', 25);
+        MTG_Text_Frame:SetPoint('CENTER', UIParent)
+    end
+    MTG_Text_Frame:SetText("<html><body><h1>"..msg.."</h1></body></html>");
+    MTG_Text_Frame:Show()
+end
+local function MTG_Clearn_Text()
+    MTG_Text_Frame:SetText("")
+    MTG_Text_Frame:Hide()
+end
 
 local debug = {
     forceValueablePurchase = false, --# open up this to test under item daily locked.
@@ -517,9 +531,11 @@ end
 function JNAYDBM_Purchase_prompt(message,duration,clear)
     -- center-screen raid notice is easy
     if(clear)then
-        RaidNotice_Clear(RaidBossEmoteFrame)
+        MTG_Clearn_Text()
+        --RaidNotice_Clear(RaidBossEmoteFrame)
     end
-    RaidNotice_AddMessage(RaidBossEmoteFrame, message, ChatTypeInfo["RAID_BOSS_EMOTE"],duration)
+    MTG_Set_Text(message)
+    --RaidNotice_AddMessage(RaidBossEmoteFrame, message, ChatTypeInfo["RAID_BOSS_EMOTE"],duration)
     -- chat messages are trickier
     local i
     for i = 1, NUM_CHAT_WINDOWS do
