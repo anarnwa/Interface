@@ -1,7 +1,8 @@
 # BadBoy_Levels
 
-## [v8.2.0](https://github.com/funkydude/BadBoy_Levels/tree/v8.2.0) (2019-06-26)
-[Full Changelog](https://github.com/funkydude/BadBoy_Levels/compare/v8.1.0...v8.2.0)
+## [v8.2.1](https://github.com/funkydude/BadBoy_Levels/tree/v8.2.1) (2019-07-08)
+[Full Changelog](https://github.com/funkydude/BadBoy_Levels/compare/v8.2.0...v8.2.1)
 
-- bump toc  
-- fix curse link  
+- Tweaks  
+- Fix a debug comment  
+- Re-write the core in an attempt to reduce interference from other addons.  
