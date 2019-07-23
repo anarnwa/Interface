@@ -7,7 +7,12 @@ local DoNotAutoGossip = {
     [77789] = true, --布灵顿5000
     [101527] = true --布灵顿6000
 }
-local OtherOption = {
+
+--会弹出任务框  无限对话会卡住的NPC 或者不止一个选项的NPC
+local AUtoGossipOnlyOnce = {
+    [56667] = 1, --巨龙之魂 萨尔，
+    [56103] = 1, --巨龙之魂 萨尔，
+    [55870] = 1, --巨龙之魂 空军上尉
     [39188] = 1, -- Mongar (Legion Dalaran)
     [96782] = 1, -- Lucian Trias (Legion Dalaran)
     [97004] = 1, -- "Red" Jack Findle (Legion Dalaran)
@@ -17,12 +22,7 @@ local OtherOption = {
     [138097] = 1, -- Muka Stormbreaker (Stormsong Valley Horde flight master)
     [35642] = 1 -- Jeeves
 }
-local AUtoGossipOnlyOnce = {
-    --会弹出任务框  无限对话会卡住
-    [56667] = 1, --巨龙之魂 萨尔，
-    [56103] = 1, --巨龙之魂 萨尔，
-    [55870] = 1 --巨龙之魂 空军上尉
-}
+
 GossipFrame:HookScript(
     'OnShow',
     function()
@@ -41,7 +41,7 @@ GossipFrame:HookScript(
         if (GetNumGossipActiveQuests() > 0 or GetNumGossipAvailableQuests() > 0) then
             return
         end
-
+        --如果不止一个选项且在AUtoGossipOnlyOnce表里 就根据表数据选择
         if (AUtoGossipOnlyOnce[targetid] ~= nil) then
             SelectGossipOption(AUtoGossipOnlyOnce[targetid])
             return
@@ -59,9 +59,5 @@ GossipFrame:HookScript(
                 end
             end
         )
-        --如果不止一个选项且在other表里 就根据表数据选择
-        if (OtherOption[targetid] ~= nil) then
-            SelectGossipOption(OtherOption[targetid])
-        end
     end
 )
