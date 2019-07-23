@@ -146,6 +146,7 @@ BarrelsFrame:SetScript("OnEvent", function(self,event,arg1,arg2)
 		end
 		
 		if BarrelsOEasyX ~= nil and BarrelsOEasyY ~= nil then
+			BOEIconFrame:ClearAllPoints();
 			BOEIconFrame:SetPoint(BarrelsOEasyFrom, UIParent, BarrelsOEasyTo, BarrelsOEasyX, BarrelsOEasyY);
 		end
 	elseif event == "QUEST_ACCEPTED" then

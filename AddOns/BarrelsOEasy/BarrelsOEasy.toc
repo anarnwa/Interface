@@ -1,9 +1,9 @@
-﻿## Interface: 80000
+## Interface: 80200
 ## Title: Barrels o' Easy
 ## Notes: Marks the Barrels o' Fun Barrels
-## Version: 1.1.14
+## Version: 1.1.15
 ## SavedVariables: BarrelsOEasyShowFrame, BarrelsOEasyX, BarrelsOEasyY, BarrelsOEasyFrom, BarrelsOEasyTo, BarrelsOEasyShowMessageCount
-## X-Curse-Packaged-Version: v1.1.1.11
+## X-Curse-Packaged-Version: v1.1.16
 ## X-Curse-Project-Name: BarrelsOEasy
 ## X-Curse-Project-ID: barrelsoeasy
 ## X-Curse-Repository-ID: wow/barrelsoeasy/mainline
@@ -13,4 +13,3 @@
 ## X-email: none
 
 BarrelsOEasy.lua
-## AU_Info:{"sv":false,"time":"1533960895","name":"barrels-o-easy","loctm":1536045582}
