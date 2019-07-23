@@ -17,6 +17,12 @@ local OtherOption = {
     [138097] = 1, -- Muka Stormbreaker (Stormsong Valley Horde flight master)
     [35642] = 1 -- Jeeves
 }
+local AUtoGossipOnlyOnce = {
+    --会弹出任务框  无限对话会卡住
+    [56667] = 1, --巨龙之魂 萨尔，
+    [56103] = 1, --巨龙之魂 萨尔，
+    [55870] = 1 --巨龙之魂 空军上尉
+}
 GossipFrame:HookScript(
     'OnShow',
     function()
@@ -35,6 +41,12 @@ GossipFrame:HookScript(
         if (GetNumGossipActiveQuests() > 0 or GetNumGossipAvailableQuests() > 0) then
             return
         end
+
+        if (AUtoGossipOnlyOnce[targetid] ~= nil) then
+            SelectGossipOption(AUtoGossipOnlyOnce[targetid])
+            return
+        end
+
         -- 如果只有一个选项，就自动对话
         local ticker =
             C_Timer.NewTicker(
