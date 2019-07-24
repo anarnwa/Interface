@@ -10,9 +10,6 @@ local DoNotAutoGossip = {
 
 --会弹出任务框  无限对话会卡住的NPC 或者不止一个选项的NPC
 local AUtoGossipOnlyOnce = {
-    [56667] = 1, --巨龙之魂 萨尔，
-    [56103] = 1, --巨龙之魂 萨尔，
-    [55870] = 1, --巨龙之魂 空军上尉
     [39188] = 1, -- Mongar (Legion Dalaran)
     [96782] = 1, -- Lucian Trias (Legion Dalaran)
     [97004] = 1, -- "Red" Jack Findle (Legion Dalaran)
@@ -50,10 +47,18 @@ GossipFrame:HookScript(
         -- 如果只有一个选项，就自动对话
         local ticker =
             C_Timer.NewTicker(
-            0.1,
+            0.3,
             function(ticker)
                 if (GetNumGossipOptions() == 1) then
                     SelectGossipOption(1)
+                    C_Timer.After(
+                        0.1,
+                        function()
+                            if (StaticPopup1:IsVisible()) then
+                                StaticPopup_OnClick(StaticPopup_FindVisible('GOSSIP_CONFIRM'), 1)
+                            end
+                        end
+                    )
                 else
                     ticker:Cancel()
                 end

@@ -267,7 +267,7 @@ function EasyScrap:getTrueAzeriteItemLevel(itemIndex)
     local item = self.scrappableItems[itemIndex]
     local itemLocation = ItemLocation:CreateFromBagAndSlot(item.bag, item.slot)
     
-    if not itemLocation then
+    if not itemLocation or not C_Item.DoesItemExist(itemLocation) then
         if EasyScrap.debugMode then
             print('Easy Scrap: Failed to create itemLocation for '..item.itemID..' bag '..item.bag..' slot '..item.slot)
         end

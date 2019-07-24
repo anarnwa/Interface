@@ -1035,22 +1035,89 @@ filters['bags'].filterFunction = function(itemIndex, filterIndex)
     return filterMatch
 end
 
+--[[---------------------------------------------------------------------------------------------------------------------------------------
+BENTHIC NOT KNOWN
+--]]---------------------------------------------------------------------------------------------------------------------------------------
+filters['benthicArmor'] = {}
+filters['benthicArmor'].menuText = 'Benthic Armor'
+filters['benthicArmor'].data = {[1] = true, [2] = false}
+filters['benthicArmor'].filterMessage = 'item is or is not Benthic Armor.'
+
+f = createFilterFrame('Benthic Armor', 50)
+f.checkButtons = {}
+f.checkButtons[1] = CreateFrame('CheckButton', nil, f, 'EasyScrapCheckButtonTemplate')
+f.checkButtons[1]:SetPoint('TOPLEFT', 8, -8)
+f.checkButtons[1].text:SetText('Show only Benthic Armor items.')
+f.checkButtons[2] = CreateFrame('CheckButton', nil, f, 'EasyScrapCheckButtonTemplate')
+f.checkButtons[2]:SetPoint('TOPLEFT', 8, -28)
+f.checkButtons[2].text:SetText('Hide all Benthic Armor items.')
+
+f.checkButtons[1]:HookScript('OnClick', function(self) filters['benthicArmor'].frame.checkButtons[2]:SetChecked(not self:GetChecked()) end)
+f.checkButtons[2]:HookScript('OnClick', function(self) filters['benthicArmor'].frame.checkButtons[1]:SetChecked(not self:GetChecked()) end)
+
+function f:populateData(data)
+    self.checkButtons[1]:SetChecked(data[1])
+    self.checkButtons[2]:SetChecked(data[2])
+end
+
+function f:saveData(customFilterIndex)
+    EasyScrap.saveData.customFilters[customFilterIndex].rules[self.ruleIndex].data[1] = self.checkButtons[1]:GetChecked()
+    EasyScrap.saveData.customFilters[customFilterIndex].rules[self.ruleIndex].data[2] = self.checkButtons[2]:GetChecked()
+end
+
+filters['benthicArmor'].frame = f
+
+filters['benthicArmor'].filterFunction = function(itemIndex, filterIndex)
+    local item = EasyScrap.scrappableItems[itemIndex]
+    local filterData = EasyScrap.saveData.customFilters[EasyScrap.activeFilterID].rules[filterIndex].data
+
+    local tempString, unknown1, unknown2, unknown3 = strmatch(item.itemLink, "item:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:[-%d]-:([-:%d]+):([-%d]-):([-%d]-):([-%d]-)|")
+    local bonusIDs = {}
+    local upgradeValue
+    local isBenthic = false
+    
+    if tempString then
+        if upgradeTypeID and upgradeTypeID ~= "" then
+            upgradeValue = tempString:match("[-:%d]+:([-%d]+)")
+            bonusIDs = {strsplit(":", tempString:match("([-:%d]+):"))}
+        else
+            bonusIDs = {strsplit(":", tempString)}
+        end
+        --4775 bonus ID = azerite power ID 13 active
+        for k,v in pairs(bonusIDs) do if v == '6300' then isBenthic = true end end
+    end
+    
+    if filterData[1] then       
+        local isMatch = isBenthic
+        if not isMatch then filters['benthicArmor'].filterMessage = 'item is not Benthic Armor.' end
+        return isMatch
+    else
+        local isMatch = not isBenthic
+        if not isMatch then filters['benthicArmor'].filterMessage = 'item is Benthic Armor.' end
+        return isMatch
+    end
+end
+
+
 ------------------------------------------------------------------------------------------------------------------------------
+
+
 filters['azeriteArmor'].order = 1
 filters['armorType'].order = 2
 filters['bags'].order = 3
-filters['bindType'].order = 4
-filters['bonusStats'].order = 5
-filters['duplicates'].order = 6
-filters['equipmentSet'].order = 7
-filters['itemLevel'].order = 8
-filters['itemName'].order = 9
-filters['itemQuality'].order = 10
-filters['itemSlot'].order = 11
-filters['itemType'].order = 12
-filters['transmogKnown'].order = 14
-filters['weaponType'].order = 15
-filters['sellPrice'].order = 13
+filters['benthicArmor'].order = 4
+filters['bindType'].order = 5
+filters['bonusStats'].order = 6
+filters['duplicates'].order = 7
+filters['equipmentSet'].order = 8
+filters['itemLevel'].order = 9
+filters['itemName'].order = 10
+filters['itemQuality'].order = 11
+filters['itemSlot'].order = 12
+filters['itemType'].order = 13
+filters['sellPrice'].order = 14
+filters['transmogKnown'].order = 15
+filters['weaponType'].order = 16
 
 
 
