@@ -47,8 +47,10 @@ function TomTom:Initialize(event, addon)
             mapcoords = {
                 playerenable = true,
                 playeraccuracy = 2,
+                playeroffset = 0,
                 cursorenable = true,
                 cursoraccuracy = 2,
+                cursoroffset = 0,
 				throttle = 0.1,
             },
             arrow = {
@@ -63,6 +65,7 @@ function TomTom:Initialize(event, addon)
                 showtta = true,
 				showdistance = true,
 				stickycorpse = false,
+				highstrata = false,
                 autoqueue = true,
                 menu = true,
                 scale = 1.0,
@@ -81,6 +84,8 @@ function TomTom:Initialize(event, addon)
                 otherzone = true,
                 tooltip = true,
                 menu = true,
+                default_iconsize = 16,
+                default_icon = "Interface\\AddOns\\TomTom\\Images\\GoldGreenDot",
             },
             worldmap = {
                 enable = true,
@@ -89,6 +94,8 @@ function TomTom:Initialize(event, addon)
                 clickcreate = true,
                 menu = true,
                 create_modifier = "C",
+                default_iconsize = 16,
+                default_icon = "Interface\\AddOns\\TomTom\\Images\\GoldGreenDot",
             },
             comm = {
                 enable = true,
@@ -324,11 +331,15 @@ function TomTom:ShowHideWorldCoords()
         TomTomWorldFrame.Cursor:ClearAllPoints()
 
         if WorldMapMixin.isMaximized then
-            TomTomWorldFrame.Player:SetPoint("TOPLEFT", WorldMapFrame.BorderFrame, "TOPLEFT",   30, -6)
-            TomTomWorldFrame.Cursor:SetPoint("TOPLEFT",  WorldMapFrame.BorderFrame, "TOPRIGHT",  -170, -6)
+            TomTomWorldFrame.Player:SetPoint("TOPLEFT", WorldMapFrame.BorderFrame, "TOPLEFT",
+                                             self.db.profile.mapcoords.playeroffset, -6)
+            TomTomWorldFrame.Cursor:SetPoint("TOPLEFT",  WorldMapFrame.BorderFrame, "TOPRIGHT",
+                                             - self.db.profile.mapcoords.cursoroffset + -170, -6)
         else
-            TomTomWorldFrame.Player:SetPoint("TOPLEFT", WorldMapFrame.BorderFrame, "TOPLEFT", 100, -6)
-            TomTomWorldFrame.Cursor:SetPoint("TOPLEFT",  WorldMapFrame.BorderFrame, "TOPRIGHT", -170, -6)
+            TomTomWorldFrame.Player:SetPoint("TOPLEFT", WorldMapFrame.BorderFrame, "TOPLEFT",
+                                                        self.db.profile.mapcoords.playeroffset + 100, -6)
+            TomTomWorldFrame.Cursor:SetPoint("TOPLEFT",  WorldMapFrame.BorderFrame, "TOPRIGHT",
+                                                         - self.db.profile.mapcoords.cursoroffset + -170, -6)
         end
 
         TomTomWorldFrame.Player:Hide()
@@ -349,6 +360,19 @@ function TomTom:ShowHideWorldCoords()
     end
 end
 
+function TomTom:DebugCoordBlock()
+    local msg
+    msg = string.format(L["|cffffff78TomTom:|r CoordBlock %s visible"], (TomTomBlock:IsVisible() and L["is"]) or L["not"])
+    ChatFrame1:AddMessage(msg)
+
+    if TomTomBlock:IsVisible() then
+        local point, relativeTo, relativePoint, xOfs, yOfs = TomTomBlock:GetPoint(1)
+        relativeTo = (relativeTo and relativeTo:GetName()) or "UIParent"
+        msg = string.format("|cffffff78TomTom:|r CoordBlock point=%s frame=%s rpoint=%s xo=%.2f yo=%.2f",  point, relativeTo, relativePoint, xOfs, yOfs)
+        ChatFrame1:AddMessage(msg)
+    end
+end
+
 function TomTom:ShowHideCoordBlock()
     -- Bail out if we're not supposed to be showing this frame
     if self.profile.block.enable then
@@ -359,7 +383,7 @@ function TomTom:ShowHideCoordBlock()
             TomTomBlock:SetWidth(120)
             TomTomBlock:SetHeight(32)
             TomTomBlock:SetToplevel(1)
-            TomTomBlock:SetFrameStrata("LOW")
+            TomTomBlock:SetFrameStrata("MEDIUM")
             TomTomBlock:SetMovable(true)
             TomTomBlock:EnableMouse(true)
             TomTomBlock:SetClampedToScreen(true)
@@ -547,7 +571,7 @@ end,
             local mapId = data[1]
 
             if mapId then
-                if UIDIsSavedTomTom.waypointprofile[mapId][key] then
+                if TomTom:UIDIsSaved(uid) then
                     TomTom.waypointprofile[mapId][key] = nil
                 else
                     TomTom.waypointprofile[mapId][key] = data
@@ -632,6 +656,7 @@ function TomTom:InitializeDropdown(uid)
 end
 
 function TomTom:UIDIsSaved(uid)
+    if type(uid) ~= "table" then error("TomTom:UIDIsSaved(uid) UID is not a table."); end
     local data = uid
     if data then
         local key = TomTom:GetKey(data)
@@ -645,6 +670,7 @@ function TomTom:UIDIsSaved(uid)
 end
 
 function TomTom:SendWaypoint(uid, channel)
+    if type(uid) ~= "table" then error("TomTom:SendWaypoint(uid) UID is not a table."); end
     local data = uid
     local m, x, y = unpack(data)
     local msg = string.format("%d:%f:%f:%s", m, x, y, data.title or "")
@@ -759,6 +785,7 @@ end
 local function noop() end
 
 function TomTom:RemoveWaypoint(uid)
+    if type(uid) ~= "table" then error("TomTom:RemoveWaypoint(uid) UID is not a table."); end
     local data = uid
     self:ClearWaypoint(uid)
 
@@ -824,6 +851,16 @@ function TomTom:DefaultCallbacks(opts)
     end
     if opts.arrivaldistance then
         arrivaldistance = opts.arrivaldistance
+    end
+
+    -- User wants ping, they get ping!
+    if TomTom.profile.arrow.enablePing then
+        if arrivaldistance <= 0 then
+            arrivaldistance = 1
+        end
+        if arrivaldistance < cleardistance then
+            arrivaldistance = cleardistance
+        end
     end
 
     if cleardistance == arrivaldistance then
@@ -903,6 +940,7 @@ end
 
 -- Check to see if a given uid/waypoint is actually set somewhere
 function TomTom:IsValidWaypoint(waypoint)
+    if type(waypoint) ~= "table" then error("TomTom:IsValidWaypoint(waypoint) UID is not a table."); end
     local m = waypoint[1]
     local key = self:GetKey(waypoint)
     if waypoints[m] and waypoints[m][key] then
@@ -1046,7 +1084,7 @@ function TomTom:DebugListAllWaypoints()
             local ctxt = RoundCoords(wp[2], wp[3], 2)
             local desc = wp.title and wp.title or L["Unknown waypoint"]
             local indent = "   "
-            self:Printf(L["%s%s - %s %s %s"], indent, desc, ctxt, wp[1], (wp.minimap_icon or "*"), (wp.worldmap_icon or "*"))
+            self:Printf(L["%s%s - %s %s %s %s"], indent, desc, ctxt, wp[1], (wp.minimap_icon or "*"), (wp.worldmap_icon or "*"))
         end
     end
 end
@@ -1059,6 +1097,8 @@ local function usage()
     ChatFrame1:AddMessage(L["|cffffff78/way reset <zone>|r - Resets all waypoints in zone"])
     ChatFrame1:AddMessage(L["|cffffff78/way local|r - Lists active waypoints in current zone"])
     ChatFrame1:AddMessage(L["|cffffff78/way list|r - Lists all active waypoints"])
+    ChatFrame1:AddMessage(L["|cffffff78/way arrow|r - Prints status of the Crazy Arrow"])
+    ChatFrame1:AddMessage(L["|cffffff78/way block|r - Prints status of the Coordinate Block"])
 end
 
 TomTom.CZWFromMapID = {}
@@ -1160,7 +1200,7 @@ function TomTom:GetClosestWaypoint()
     end
 end
 
-function TomTom:SetClosestWaypoint()
+function TomTom:SetClosestWaypoint(verbose)
     local uid = self:GetClosestWaypoint()
     if uid then
         local data = uid
@@ -1181,7 +1221,7 @@ function TomTom:SetClosestWaypoint()
         else
            msg = L["|cffffff78TomTom:|r Could not find a closest waypoint in this continent."]
         end
-        if self.profile.general.announce then
+        if verbose then
             ChatFrame1:AddMessage(msg)
         end
     end
@@ -1191,7 +1231,7 @@ end
 SLASH_TOMTOM_CLOSEST_WAYPOINT1 = "/cway"
 SLASH_TOMTOM_CLOSEST_WAYPOINT2 = "/closestway"
 SlashCmdList["TOMTOM_CLOSEST_WAYPOINT"] = function(msg)
-    TomTom:SetClosestWaypoint()
+    TomTom:SetClosestWaypoint(true)
 end
 
 SLASH_TOMTOM_WAYBACK1 = "/wayb"
@@ -1292,6 +1332,9 @@ SlashCmdList["TOMTOM_WAY"] = function(msg)
         return
     elseif ltoken == "arrow" then
         TomTom:DebugCrazyArrow()
+        return
+    elseif ltoken == "block" then
+        TomTom:DebugCoordBlock()
         return
     elseif ltoken == "reset" then
         local ltoken2 = tokens[2] and tokens[2]:lower()
