@@ -5,6 +5,6 @@
 
 ## Dependencies: PetTracker
 ## X-Category: Battle Pets
-## Version: 8.2.0
+## Version: 8.2.1
 
 ..\PetTracker\Features\Breeds.lua

@@ -5,7 +5,7 @@
 
 ## Dependencies: PetTracker
 ## X-Category: Battle Pets
-## Version: 8.2.0
+## Version: 8.2.1
 
 ..\PetTracker\Libs\Sushi-3.0\Classes\GlowBox.lua
 ..\PetTracker\Features\Upgrades.lua
