@@ -153,26 +153,6 @@ local function SetupSpecialItem(id, info, fixsetting, fixloc)
 end
 FishingBuddy.SetupSpecialItem = SetupSpecialItem
 
-local function AlreadyUsedFishingItem(id, info)
-    if (info.spell) then
-        return FL:HasBuff(info.spell)
-    end
-end
-
-local function CanUseFishingItems(setting, items)
-    if (GSB(setting)) then
-        local foundone = false;
-        for id,info in pairs(items) do
-            foundone = true;
-            if (AlreadyUsedFishingItem(id, info)) then
-                return false;
-            end
-        end
-        return foundone;
-    end
-    return false;
-end
-
 local FishingItems = {};
 FishingItems[85973] = {
     ["enUS"] = "Ancient Pandaren Fishing Charm",
@@ -200,6 +180,7 @@ FishingItems[122742] = {
         end,
     ["default"] = false,
 };
+
 FishingItems[116755] = {
     ["enUS"] = "Nat's Hookshot",
     spell = 171740,
@@ -354,8 +335,6 @@ local function CastAndThrow()
     end
 end
 FishingBuddy.CastAndThrow = CastAndThrow
-
-
 
 FishingBuddy.FishingItems = FishingItems;
 

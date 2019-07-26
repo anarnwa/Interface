@@ -1,4 +1,13 @@
-﻿Version 1.9.30.2
+﻿Version 1.10.1
+- Check cooldown when using lures, the Scarelet Lure in particular
+- Don't cast while flying
+- Don't clear "fishing without a pole" if on a raft and moving
+- Use the "Secret Fish Goggles" as the first action in "Fish without a pole"
+
+Version 1.10
+- Update TOC
+
+Version 1.9.30.2
 - Remove the skill check completely until I can figure out why IWOMM and nowhere else
 
 Version 1.9.30.1

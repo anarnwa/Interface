@@ -3,6 +3,7 @@ local showAllButNotOnlyMeetsReq = false --显示每个项目，但不是仅显�
 
 local j_sort = 1  --按以下方式对buyString进行排序：1个NPC优先。2稀有优先
 local j_MerchantShowDelay = 0.5 --延迟
+local J_timeryet = nil --计时器
 
 local valueableList = {}
 local fullNPC = {
@@ -23,16 +24,14 @@ local j_fullNPCRaidTargetIndex = {
     [151953] = 3,
     [152084] = 2,
 }
-local check_List = {
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_1:26|t ", -- 星星
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_2:26|t ", -- 圆
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_3:26|t ", -- 菱形
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_4:26|t ", -- 三角形
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_5:26|t ", -- 月亮
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_6:26|t ", -- 正方形
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_7:26|t ", -- 叉叉
-  "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_8:26|t ", -- 骷髅
-}
+local NPCNameList={
+        [152084] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_2:26|t 穆勒尔",
+        [151952] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_1:26|t 弗勒格勒",
+        [151953] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_3:26|t 胡勒格勒",
+        [151950] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_6:26|t 穆勒格勒勒",
+        [151951] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_5:26|t 格姆勒格",
+} 
+
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("ADDON_LOADED") 
@@ -42,21 +41,7 @@ frame:SetScript("OnEvent", function(self, event,...)
     end
 end )
 
-local function MTG_Set_Text(msg)
-    if not MTG_Text_Frame then
-        MTG_Text_Frame=CreateFrame('SimpleHTML','MTGTEXTFRAME', UIParent)
-        MTG_Text_Frame:SetWidth(1000)
-        MTG_Text_Frame:SetHeight(600)
-        MTG_Text_Frame:SetFont('Fonts\\FRIZQT__.TTF', 25);
-        MTG_Text_Frame:SetPoint('CENTER', UIParent)
-    end
-    MTG_Text_Frame:SetText("<html><body><h1>"..msg.."</h1></body></html>");
-    MTG_Text_Frame:Show()
-end
-local function MTG_Clearn_Text()
-    MTG_Text_Frame:SetText("")
-    MTG_Text_Frame:Hide()
-end
+
 
 local debug = {
     forceValueablePurchase = false, --# open up this to test under item daily locked.
@@ -66,7 +51,7 @@ local debug = {
 local j_playerIsWearingCape = function()
     return (GetInventoryItemID("player", 15) == 169489) and true or false
 end
-local initializeValueableList = function()   
+local initializeValueableList = function(J_id,J_Boolean)   
     local playerIsWearingCape = j_playerIsWearingCape
     local playerHasTaco = (GetItemCount(170100, true) > 0) and true or false --查看身上的 可饼数量 大于0才买
     local playerLearnedCrimsonTidestallion = function() --玩家学习了深红色的小种马
@@ -112,47 +97,23 @@ local initializeValueableList = function()
         [170158] = buyRareItemsWithTaco,
     }
 
-    if debug.showValueableList then
+    if debug.showValueableList or true then
         for k,v in pairs(valueableList) do 
-            print(k, GetItemInfo(k), v)
+            --print(k, GetItemInfo(k), v)
+            GetItemInfo(k)
         end        
+    end
+    if J_Boolean and valueableList[J_id]~=nil and valueableList[J_id] == buyRareItemsNoTaco then
+        valueableList[J_id] = buyRareItemsWithTaco
+        print(J_id,"这个物品要塔饼")
+    elseif not J_Boolean and valueableList[J_id]~=nil and valueableList[J_id] == buyRareItemsWithTaco then
+        valueableList[J_id] = buyRareItemsNoTaco
+        print(J_id,"这个物品不要塔饼")
     end
 end
 local everGenerated = false
 
-local function J_UpdavalueableList(J_id,J_Boolean)--更新数据表
-    local playerIsWearingCape = j_playerIsWearingCape
-    local playerHasTaco = (GetItemCount(170100, true) > 0) and true or false --查看身上的 可饼数量 大于0才买
-    local buyRareItemsNoTaco = (j_BuyRareItemOption <= 2) and playerIsWearingCape and 1 or 0
-    local buyRareItemsWithTaco = (j_BuyRareItemOption == 2) and playerIsWearingCape and ((not j_CheckTacoFirst) or playerHasTaco) and 1 or 0
-    local playerLearnedCrimsonTidestallion = function() --玩家学习了深红色的小种马
-        for k,v in pairs(C_MountJournal.GetMountIDs()) do
-            local _, spellID, _, _, _, _, _, _, _, _, isCollected = C_MountJournal.GetMountInfoByID(v)
-            if spellID == 300153 then
-                return isCollected
-            end
-        end
-        return false --# incorrectly not scanned (maybe in some case?) return as unlearned
-    end
-    local J_valueableList = {
-        [170159] = buyRareItemsNoTaco,
-        [170152] = buyRareItemsNoTaco,
-        [170153] = buyRareItemsWithTaco,
-        [170157] = buyRareItemsNoTaco,
-        [170161] = buyRareItemsWithTaco,
-        [170162] = buyRareItemsNoTaco, --# no need taco
-        [170101] = buyRareItemsNoTaco,
-        [169202] = playerLearnedCrimsonTidestallion() and 0 or buyRareItemsWithTaco, --# Crimson Tidestallion
-        [170158] = buyRareItemsWithTaco,
-    }
-    if J_Boolean and J_valueableList[J_id]~=nil and valueableList[J_id] == buyRareItemsNoTaco and J_id ~= 169202 then
-        valueableList[J_id] = buyRareItemsWithTaco
-        print(J_id,"更新数据表-这个物品要塔饼")
-    elseif not J_Boolean and J_valueableList[J_id]~=nil and valueableList[J_id] == buyRareItemsWithTaco and J_id ~= 169202 then
-        valueableList[J_id] = buyRareItemsNoTaco
-        print(J_id,"更新数据表-这个物品不要塔饼")
-    end
-end
+
 --# Don't touch anything below!
 
 local name, realm = UnitFullName("player")
@@ -164,9 +125,233 @@ local name, realm = UnitFullName("player")
     end
 local playerFullName = name.."-"..realm
 
+
 local talkedNPC = {}
-local NPCNameList = {}
-local merchantItemList = {}
+
+local merchantItemList = {
+        [167902] = {
+            ["NPC"] = 151950,
+            ["rarity"] = 3,
+            ["Req"] = {
+                {
+                    ["item"] = 167910,
+                    ["amount"] = 3,
+                }, -- [1]
+                {
+                    ["item"] = 167914,
+                    ["amount"] = 3,
+                }, -- [2]
+            },
+        },
+        [167906] = {
+            ["NPC"] = 151951,
+            ["rarity"] = 1,
+            ["Req"] = {
+                {
+                    ["item"] = "c",
+                    ["amount"] = 10000,
+                }, -- [1]
+            },
+        },
+        [167910] = {
+            ["NPC"] = 151952,
+            ["rarity"] = 2,
+            ["Req"] = {
+                {
+                    ["item"] = 167906,
+                    ["amount"] = 2,
+                }, -- [1]
+            },
+        },
+        [167914] = {
+            ["NPC"] = 151953,
+            ["rarity"] = 2,
+            ["Req"] = {
+                {
+                    ["item"] = 167906,
+                    ["amount"] = 5,
+                }, -- [1]
+            },
+        },
+        [169782] = {
+            ["NPC"] = 151952,
+            ["rarity"] = 4,
+            ["Req"] = {
+                {
+                    ["item"] = 167904,
+                    ["amount"] = 2,
+                }, -- [1]
+                {
+                    ["item"] = 167902,
+                    ["amount"] = 9,
+                }, -- [2]
+            },
+        },
+        [167903] = {
+            ["NPC"] = 151950,
+            ["rarity"] = 2,
+            ["Req"] = {
+                {
+                    ["item"] = 167915,
+                    ["amount"] = 4,
+                }, -- [1]
+            },
+        },
+
+        [167911] = {
+            ["NPC"] = 151952,
+            ["rarity"] = 2,
+            ["Req"] = {
+                {
+                    ["item"] = 167915,
+                    ["amount"] = 4,
+                }, -- [1]
+            },
+        },
+        [167915] = {
+            ["NPC"] = 151953,
+            ["rarity"] = 1,
+            ["Req"] = {
+                {
+                    ["item"] = "c",
+                    ["amount"] = 10000,
+                }, -- [1]
+            },
+        },
+        [169783] = {
+            ["NPC"] = 151953,
+            ["rarity"] = 4,
+            ["Req"] = {
+                {
+                    ["item"] = 167904,
+                    ["amount"] = 4,
+                }, -- [1]
+                {
+                    ["item"] = 167909,
+                    ["amount"] = 7,
+                }, -- [2]
+            },
+        },
+        [167896] = {
+            ["NPC"] = 151950,
+            ["rarity"] = 1,
+            ["Req"] = {
+                {
+                    ["item"] = "c",
+                    ["amount"] = 10000,
+                }, -- [1]
+            },
+        },
+        [167904] = {
+            ["NPC"] = 151950,
+            ["rarity"] = 3,
+            ["Req"] = {
+                {
+                    ["item"] = 167911,
+                    ["amount"] = 2,
+                }, -- [1]
+            },
+        },
+        [167908] = {
+            ["NPC"] = 151951,
+            ["rarity"] = 3,
+            ["Req"] = {
+                {
+                    ["item"] = 167923,
+                    ["amount"] = 3,
+                }, -- [1]
+            },
+        },
+        [167912] = {
+            ["NPC"] = 151952,
+            ["rarity"] = 1,
+            ["Req"] = {
+                {
+                    ["item"] = "c",
+                    ["amount"] = 10000,
+                }, -- [1]
+            },
+        },
+        [167916] = {
+            ["NPC"] = 151953,
+            ["rarity"] = 2,
+            ["Req"] = {
+                {
+                    ["item"] = 167912,
+                    ["amount"] = 6,
+                }, -- [1]
+            },
+        },
+        [169780] = {
+            ["NPC"] = 151950,
+            ["rarity"] = 4,
+            ["Req"] = {
+                {
+                    ["item"] = 167908,
+                    ["amount"] = 8,
+                }, -- [1]
+                {
+                    ["item"] = 167913,
+                    ["amount"] = 7,
+                }, -- [2]
+            },
+        },
+        [167905] = {
+            ["NPC"] = 151951,
+            ["rarity"] = 2,
+            ["Req"] = {
+                {
+                    ["item"] = 167896,
+                    ["amount"] = 3,
+                }, -- [1]
+            },
+        },
+        [167909] = {
+            ["NPC"] = 151952,
+            ["rarity"] = 3,
+            ["Req"] = {
+                {
+                    ["item"] = 167905,
+                    ["amount"] = 6,
+                }, -- [1]
+            },
+        },
+        [167913] = {
+            ["NPC"] = 151953,
+            ["rarity"] = 3,
+            ["Req"] = {
+                {
+                    ["item"] = 167905,
+                    ["amount"] = 5,
+                }, -- [1]
+            },
+        },
+
+        [169781] = {
+            ["NPC"] = 151951,
+            ["rarity"] = 4,
+            ["Req"] = {
+                {
+                    ["item"] = 167913,
+                    ["amount"] = 8,
+                }, -- [1]
+                {
+                    ["item"] = 167909,
+                    ["amount"] = 4,
+                }, -- [2]
+            },
+        },
+        [167907] = {
+            ["NPC"] = 151951,
+            ["rarity"] = 3,
+            ["Req"] = {
+                {
+                    ["item"] = 167903,
+                    ["amount"] = 5,
+                }, -- [1]
+            },
+        },
+    }
 
 local buyList = {}
 local buyLists = {}
@@ -178,9 +363,16 @@ end
 
 local getItemLink = function(itemID)
     if not itemID then return nil end
-    return select(2,GetItemInfo(itemID))
+    return select(2,GetItemInfo(itemID))--/run print(select(2,GetItemInfo(167905)))
 end
-
+local function J_ADDmerchantItemList()--加载物品列表，解决function_***.lua:***: bad argument #2 to '***' (string expected, got nil)错误
+  for itemID, itemBuyInfo in pairs(merchantItemList) do
+    local Req = merchantItemList[itemID].Req
+        for k, req in pairs(Req) do
+            getItemLink(req.item)
+        end
+  end 
+end
 local GetNPCID = function(unit)
     if not unit then return nil end
     local id = UnitGUID(unit)
@@ -199,6 +391,7 @@ end
 
 local queueBuyMerchantItem = function(itemIndex, amount)
     local amountLeft = amount
+    
     local max = math.min(GetMerchantItemMaxStack(itemIndex), 255)
     while amountLeft > 0  do
         BuyMerchantItem(itemIndex, min(amountLeft, max))
@@ -264,7 +457,6 @@ local generateBuyListFromValueable = function()
 
     for itemID, itemNum in pairs(valueableList) do
         if itemNum > 0 then
-
             generateBuyList(itemNum, itemID)
         end
         
@@ -314,11 +506,10 @@ local generatebuyString = function()
 
     
     local tempStrnSet = {}
-    
+ 
     for itemID, itemBuyInfo in pairs(buyList) do
         local ReqStrn = showReq and string.format(" (%s)", generateReqString(itemID)) or ""
-        local strn
-        
+        local strn 
         if meetsReq(itemID) or showAllButNotOnlyMeetsReq then--满足要求
             if itemBuyInfo.amount > 1 then
                 strn = string.format(" %s 购买 %sx%d%s",NPCNameList[itemBuyInfo.NPC], getItemLink(itemID), itemBuyInfo.amount, ReqStrn)
@@ -373,6 +564,7 @@ generateReqString = function(itemID)
             else
                 if strn == "" then
                     strn = (Amount * req.amount > 1) and string.format("%sx%d", getItemLink(req.item), Amount * req.amount) or string.format("%s", getItemLink(req.item))
+
                 else
                     strn = (Amount * req.amount > 1) and string.format("%s+%sx%d", strn, getItemLink(req.item), Amount * req.amount) or string.format("%s+%s", strn, getItemLink(req.item))
                 end
@@ -398,6 +590,7 @@ function J_MRRL_DELAYED_MERCHANT_SHOW()
     end
 
     if NPCID and fullNPC[NPCID] then
+        J_ADDmerchantItemList()
         for itemIndex = 1, GetMerchantNumItems() do
             local currentItem = GetMerchantItemLink(itemIndex)
             
@@ -415,6 +608,7 @@ function J_MRRL_DELAYED_MERCHANT_SHOW()
                 --# 满足需求检查购买列表。这是自动购买功能，并且只有在生成买单后才会使用。
                 if meetsReq(currentItemID) then
                     if buyList[currentItemID].amount > 0 then
+                        if getItemLink(currentItemID) ==nil then return end
                         queueBuyMerchantItem(itemIndex, buyList[currentItemID].amount)
                         
                     end
@@ -448,9 +642,9 @@ function J_MRRL_DELAYED_MERCHANT_SHOW()
     
                     if (NPCID == 152084) then --更新数据表
                         if J_TablevIn(currentItemReq, 170100) then 
-                            J_UpdavalueableList(currentItemID,true)
+                            initializeValueableList(currentItemID,true)
                         else
-                            J_UpdavalueableList(currentItemID,false)
+                            initializeValueableList(currentItemID,false)
                         end
                     end
 
@@ -465,20 +659,18 @@ function J_MRRL_DELAYED_MERCHANT_SHOW()
             end                
         end 
         talkedNPC[NPCID] = true
-        NPCNameList[NPCID] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_"..j_fullNPCRaidTargetIndex[NPCID]..":"..j_Markersize.."|t "..NPCname or NPCname
     end
 
-    if isSetContain(talkedNPC, fullNPC) then --or talkedNPC[152084] 
+    if isSetContain(talkedNPC, fullNPC) or talkedNPC[152084] then --or talkedNPC[152084] 
 
         if everGenerated == false then
-            initializeValueableList()
             generateBuyListFromValueable()--从Valuable生成购买列表
             everGenerated = true
         end
         
     end
     if fullNPC[NPCID] then 
-        JNAYDBM_Purchase_prompt(string.format("%s%s", generatebuyString(), checkDealReplacementString()),5.0,false)
+        C_Timer.After(1, function() JNAYDBM_Purchase_prompt(string.format("%s%s", generatebuyString(), checkDealReplacementString()),5.0,false) end)
     end
     return true
 end
@@ -499,6 +691,7 @@ function frame:MERCHANT_CLOSED(event,...)
             JNAYDBM_Purchase_prompt("检测到你已加载WA的Mrrl's trade game,为了避免重复购买,MTG插件已自动关闭,接下来使用的是WA的Mrrl's trade game购买.",5.0,false)
         end
     end
+    J_timeryet = nil
     return true
 end
 
@@ -508,16 +701,16 @@ function frame:CHAT_MSG_LOOT(event,...)
     if unit == playerFullName then
         for itemID, _ in pairs(buyList) do
             local item = GetItemInfo(itemID)
-            if string.match(line, item) then
+            if item == nil and itemID ~= 167916 and itemID ~= 170100 then 
+                print(JNAYDBM_Purchase_prompt(itemID.."发生了一些错误,/RL后重新购买.",5.0,false))
+            end
+            if item ~= nil and string.match(line, item) then
                 local lootAmount = string.match(line, item .. "]|h|rx(%d+)") or 1
                 buyitems = buyitems ..itemID.."("..lootAmount..")"..unit.."】【"
-                buyList[itemID].amount = buyList[itemID].amount - lootAmount           
-                C_Timer.After(2, function() JNAYDBM_Purchase_prompt(string.format("%s%s", generatebuyString(), checkDealReplacementString()),5.0,false) end)
+                buyList[itemID].amount = buyList[itemID].amount - lootAmount   
                 break
             end
         end
-    
-    end
     MTGDB ={
     ["talkedNPC"] = talkedNPC,
     ["NPCNameList"] = NPCNameList,
@@ -526,16 +719,15 @@ function frame:CHAT_MSG_LOOT(event,...)
     ["buyLists"] = buyLists,
     ["购买详情"] = buyitems,
     }
+    end
     return true
 end
 function JNAYDBM_Purchase_prompt(message,duration,clear)
     -- center-screen raid notice is easy
     if(clear)then
-        MTG_Clearn_Text()
-        --RaidNotice_Clear(RaidBossEmoteFrame)
+        RaidNotice_Clear(RaidBossEmoteFrame)
     end
-    MTG_Set_Text(message)
-    --RaidNotice_AddMessage(RaidBossEmoteFrame, message, ChatTypeInfo["RAID_BOSS_EMOTE"],duration)
+    RaidNotice_AddMessage(RaidBossEmoteFrame, message, ChatTypeInfo["RAID_BOSS_EMOTE"],duration)
     -- chat messages are trickier
     local i
     for i = 1, NUM_CHAT_WINDOWS do
@@ -552,6 +744,16 @@ function JNAYDBM_Purchase_prompt(message,duration,clear)
         end
     end
 end
+
+function frame:GET_ITEM_INFO_RECEIVED(event,...)
+    local  itemID, success = ...
+    if itemID ~= 0 and not success then
+        print(itemID,"未成功地从服务器查询该项")
+        if merchantItemList[itemID] then
+            J_ADDmerchantItemList()--加载物品列表
+        end 
+    end
+end
 function frame:ADDON_LOADED(event,...)
     if j_BuyRareItemOption == nil then j_BuyRareItemOption = 2 end --1 购买不含塔可的稀有品。2 购买每一件珍稀物品。3 不要买稀有品
     if j_BuyItemOption == nil then j_BuyItemOption = 1 end --1购买普通物品  2不购买普通物品
@@ -560,7 +762,10 @@ function frame:ADDON_LOADED(event,...)
       frame:RegisterEvent("MERCHANT_SHOW")
       frame:RegisterEvent("MERCHANT_CLOSED")
       frame:RegisterEvent("CHAT_MSG_LOOT")
+      frame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
     initializeValueableList()
+    J_ADDmerchantItemList()--加载物品列表
+
 end
 
 
@@ -657,3 +862,5 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     end)
 end)
 InterfaceOptions_AddCategory(MTG_OptionsFrame)
+
+

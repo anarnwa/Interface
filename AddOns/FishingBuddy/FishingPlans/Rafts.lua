@@ -139,7 +139,6 @@ local function RaftingPlan(queue)
         end
     end
 end
-FishingBuddy.RaftingPlan = RaftingPlan;
 
 local RaftEvents = {}
 RaftEvents[FBConstants.FIRST_UPDATE_EVT] = function()
@@ -148,7 +147,7 @@ RaftEvents[FBConstants.FIRST_UPDATE_EVT] = function()
     FishingBuddy.raftoptions = options
     if options then
         FishingBuddy.AddFluffOptions(options);
-        FishingBuddy.RegisterPlan(RaftingPlan)
+        FishingBuddy.FishingPlans:RegisterPlan(RaftingPlan)
     end
 end
 

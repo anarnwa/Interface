@@ -236,7 +236,7 @@ BaitEvents["VARIABLES_LOADED"] = function(started)
         end
     end
     FishingBuddy.SetupSpecialItems(Maintainable, false, true, true)
-    FishingBuddy.RegisterPlan(SpecialBaitPlan)
+    FishingBuddy.FishingPlans:RegisterPlan(SpecialBaitPlan)
 end
 
 FishingBuddy.RegisterHandlers(BaitEvents);

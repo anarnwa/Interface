@@ -1,16 +1,18 @@
 ## Interface: 80200
 ## Title: Fishing Buddy
-## Version: 1.10
+## Version: 1.10.1
 ## Notes: Help with fishing related tasks -- clothing, fish information, etc.
 ## Notes-deDE: Erleichtert das Angeln - Ausrüstung und Fish-Infos
 ## Notes-frFR: Vous facilite la vie de pecheur. Informations sur les poissons, changement d'habits, etc.
-## Notes-esES: Ayude con las tareas relacionadas pesca -- ropa, información de los pescados 
+## Notes-esES: Ayude con las tareas relacionadas pesca -- ropa, información de los pescados
 ## Author: Sutorix=AT=hotmail.com
 ## OptionalDeps: FB_Debugging, Outfitter, myAddOns, Titan, InfoBar, FishWarden
 ## SavedVariables: FishingBuddy_Info
 ## SavedVariablesPerCharacter: FishingBuddy_Player
 ## X-Date: July 21, 2005
-## X-Help: FBConstants.HELPMSG     
+## X-Help: FBConstants.HELPMSG
+## X-Curse-Project-ID: 15093
+## X-WoWI-ID: 4239
 Libs\Libs.xml
 localization.lua
 localization.de.lua

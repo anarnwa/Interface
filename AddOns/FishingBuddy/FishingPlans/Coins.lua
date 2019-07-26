@@ -13,10 +13,6 @@ local CurLoc = GetLocale();
 
 -- Dalaran coin lures
 local CoinLures = {};
-local function CanUseCoinLure()
-    return CanUseFishingItems("DalaranLures", CoinLures);
-end
-
 CoinLures[138956] = {
     ["enUS"] = "Hypermagnetic Lure",
     spell = 217835,
@@ -79,7 +75,7 @@ end
 local ItemsEvents = {}
 ItemsEvents["VARIABLES_LOADED"] = function(started)
     FishingBuddy.SetupSpecialItems(CoinLures, false, true, true)
-    FishingBuddy.RegisterPlan(CoinPlan)
+    FishingBuddy.FishingPlans:RegisterPlan(CoinPlan)
 end
 
 FishingBuddy.RegisterHandlers(ItemsEvents);

@@ -90,10 +90,8 @@ local SalmonLure = {
 local function PickLure()
     -- only apply a lure if we're actually fishing with a "real" pole
     if (FL:IsFishingPole()) then
-        if GSB("UseSalmonLure") then
-            if GetItemCount(SALMON_LURE_ID) > 0 and not FL:HasBuff(SalmonLure.spell) then
-                return true, SALMON_LURE_ID, SalmonLure[CurLoc]
-            end
+        if FishingBuddy.FishingPlans:CanUseFishingItem(SALMON_LURE_ID, SalmonLure) then
+            return true, SALMON_LURE_ID, SalmonLure[CurLoc]
         end
 
         local skill, _, _, _ = FL:GetCurrentSkill();
@@ -163,7 +161,7 @@ local LuringEvents = {}
 LuringEvents["VARIABLES_LOADED"] = function(started)
     FishingBuddy.SetupSpecialItems({ [SALMON_LURE_ID] = SalmonLure }, false, true, true)
     FishingBuddy.UpdateFluffOption(SALMON_LURE_ID, SalmonLure)
-    FishingBuddy.RegisterPlan(LurePlan)
+    FishingBuddy.FishingPlans:RegisterPlan(LurePlan)
 end
 
 LuringEvents["UNIT_SPELLCAST_CHANNEL_START"] = function(unit, lineid, spellid)

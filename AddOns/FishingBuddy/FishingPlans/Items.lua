@@ -150,15 +150,16 @@ end
 
 local ItemsEvents = {}
 ItemsEvents["VARIABLES_LOADED"] = function(started)
+    local PLANS = FishingBuddy.FishingPlans
     FishingBuddy.SetupSpecialItems({ [TUSKARR_ID] = TuskarrItem }, false, true, true)
     FishingBuddy.SetupSpecialItems({ [TRAWLER_ID] = TrawlerTotem }, false, true, true)
     FishingBuddy.UpdateFluffOption(TUSKARR_ID, TuskarrItem)
     FishingBuddy.UpdateFluffOption(TRAWLER_ID, TrawlerTotem)
-    FishingBuddy.RegisterPlan(TuskarrPlan)
-    FishingBuddy.RegisterPlan(TrawlerPlan)
+    PLANS:RegisterPlan(TuskarrPlan)
+    PLANS:RegisterPlan(TrawlerPlan)
 
     FishingBuddy.SetupSpecialItems({ [34832] = LagerItem }, false, true, true)
-    FishingBuddy.RegisterPlan(LagerPlan)
+    PLANS:RegisterPlan(LagerPlan)
 end
 
 FishingBuddy.RegisterHandlers(ItemsEvents);

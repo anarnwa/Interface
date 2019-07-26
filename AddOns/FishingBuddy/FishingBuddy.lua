@@ -659,6 +659,15 @@ QuestLures[69907] = {
     spell = 99315,
 };
 
+local AutoFishingItems = {}
+local GOGGLES_ID = 167698;
+AutoFishingItems[GOGGLES_ID] = {
+    ["enUS"] = "Secret Fishing Goggles",
+    spell = 293671,
+    setting = "UseSecretGoggles",
+    ["tooltip"] = FBConstants.CONFIG_SECRET_FISHING_GOGGES_INFO,
+    ["default"] = false,
+}
 
 -- Get an array of all the lures we have in our inventory, sorted by
 -- cost, then bonus
@@ -686,27 +695,19 @@ local function HideAwayAll(self, button, down)
     FishingBuddy_PostCastUpdateFrame:Show();
 end
 
-local function HaveThing(itemid, info)
-    if (info.toy) then
-        return PlayerHasToy(itemid)
-    else
-        return GetItemCount(itemid) > 0;
-    end
-end
-
 local function GetFishingItem(itemtable)
     local GSB = FishingBuddy.GetSettingBool;
+    local PLANS = FishingBuddy.FishingPlans;
     for itemid, info in pairs(itemtable) do
-        if ( info.always or (HaveThing(itemid, info) and (not info.setting or GSB(info.setting))) ) then
+        if ( info.always or (PLANS:HaveThing(itemid, info) and (not info.setting or GSB(info.setting))) ) then
             if (not info[CurLoc]) then
                 info[CurLoc] = GetItemInfo(itemid);
             end
-            if ( not info.usable or info.usable(info) ) then
-                local buff = info.spell;
-                local doit = not FL:HasBuff(buff);
+            if PLANS:CanUseFishingItem(itemid, info) then
+                local doit = true;
                 local it = nil;
                 if ( info.check ) then
-                    doit, itemid, it = info.check(info, buff, doit, itemid);
+                    doit, itemid, it = info.check(info, info.spell, doit, itemid);
                 elseif (info.toy) then
                     _, itemid = C_ToyBox.GetToyInfo(itemid);
                 end
@@ -760,6 +761,7 @@ end
 local function GetUpdateLure()
     local GSB = FishingBuddy.GetSettingBool;
     local LSM = FishingBuddy.LureStateManager;
+    local PLANS = FishingBuddy.FishingPlans;
     local lureinventory, _ = FL:GetLureInventory();
 
     -- Let's wait a bit so that the enchant can show up before we lure again
@@ -769,7 +771,16 @@ local function GetUpdateLure()
 
     DoAutoOpenLoot = nil;
 
-    local doit, id, name, it = FishingBuddy.GetPlan()
+    local doit, id, name, it;
+
+    if autopoleframe:IsShown() then
+        doit, id, name, it = PLANS:CanUseFishingItems(AutoFishingItems)
+        if ( doit ) then
+            return doit, id, name, it;
+        end
+    end
+
+    doit, id, name, it = PLANS:GetPlan()
     if ( doit ) then
         return doit, id, name, it;
     end
@@ -901,7 +912,7 @@ local function NormalHijackCheck()
     local GSB = FishingBuddy.GetSettingBool;
     local LSM = FishingBuddy.LureStateManager;
     if ( not LSM:GetLastLure() and
-         not CheckCombat() and (not IsMounted() or GSB("MountedCast")) and
+         not CheckCombat() and not IsFlying() and (not IsMounted() or GSB("MountedCast")) and
          not IsFishingAceEnabled() and
          GSB("EasyCast") and (CastingKeys() or (GSB("KeepOnTruckin") and AreWeFishing()) or ReadyForFishing()) ) then
         return true;
@@ -934,16 +945,16 @@ FishingBuddy.SetStealClick = SetStealClick;
 local function CentralCasting()
     -- put on a lure if we need to
     if ( not StealClick() ) then
+        autopoleframe:Show();
         local update, id, n, target = GetUpdateLure();
         if (update and id) then
             FL:InvokeLuring(id, target);
         else
+            SetLastCastTime();
             if ( not FL:GetLastTooltipText() or not FL:OnFishingBobber() ) then
                  -- watch for fishing holes
                 FL:SaveTooltipText();
             end
-            SetLastCastTime();
-            autopoleframe:Show();
             local macrotext = FishingBuddy.CastAndThrow()
             if macrotext then
                 FL:InvokeMacro(macrotext)
@@ -963,10 +974,11 @@ local SavedWFOnMouseDown;
 -- that the mouse handler in the WorldFrame got everything first!
 local function WF_OnMouseDown(...)
     -- Only steal 'right clicks' (self is arg #1!)
+    local PLANS = FishingBuddy.FishingPlans;
     local button = select(2, ...);
 
     if ( HijackCheck() ) then
-        FishingBuddy.ExecutePlans()
+        PLANS:ExecutePlans()
         if ( FL:CheckForDoubleClick(button) ) then
             -- We're stealing the mouse-up event, make sure we exit MouseLook
             if ( IsMouselooking() ) then
@@ -1118,10 +1130,12 @@ local function AutoPoleCheck(self, ...)
             self.x, self.y, self.instanceID = HBD:GetPlayerWorldPosition();
         elseif (self.x) then
             if (self.moving) then
-                local x, y, instanceID = HBD:GetPlayerWorldPosition();
-                local _, distance = HBD:GetWorldVector(instanceId, self.x, self.y, x, y);
-                if instanceID ~= self.instanceID or distance > 10 then
-                    LastCastTime = GetTime() - FISHINGSPAN - 1
+                if not FishingBuddy.HasRaftBuff() then
+                    local x, y, instanceID = HBD:GetPlayerWorldPosition();
+                    local _, distance = HBD:GetWorldVector(instanceId, self.x, self.y, x, y);
+                    if instanceID ~= self.instanceID or distance > 10 then
+                        LastCastTime = GetTime() - FISHINGSPAN - 1
+                    end
                 end
             elseif (self.stopped) then
                 self.x, self.y, self.instanceID = HBD:GetPlayerWorldPosition();
@@ -1173,7 +1187,7 @@ FishingBuddy.Commands[FBConstants.FISHINGMODE].func =
 
         return true;
     end;
-    
+
 FishingBuddy.Commands['macro'] = {};
 FishingBuddy.Commands['macro'].help = FBConstants.FBMACRO_HELP;
 FishingBuddy.Commands['macro'].func =
@@ -1473,6 +1487,9 @@ FishingBuddy.OnEvent = function(self, event, ...)
         if (FishingBuddy_Player and FishingBuddy_Player["Settings"] and FishingBuddy_Player["Settings"]["ShowBanner"] == nil) then
             FishingBuddy.Output(FBConstants.WINDOW_TITLE.." loaded");
         end
+
+        FishingBuddy.SetupSpecialItems(AutoFishingItems, false, true, true)
+        FishingBuddy.UpdateFluffOption(GOGGLES_ID, AutoFishingItems[GOGGLES_ID])
 
         self:UnregisterEvent("VARIABLES_LOADED");
         -- tell all the listeners about this one
