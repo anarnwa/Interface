@@ -8,7 +8,7 @@ local DoNotAutoGossip = {
     [101527] = true --布灵顿6000
 }
 
---会弹出任务框  无限对话会卡住的NPC 或者不止一个选项的NPC
+--不止一个选项的NPC
 local AUtoGossipOnlyOnce = {
     [39188] = 1, -- Mongar (Legion Dalaran)
     [96782] = 1, -- Lucian Trias (Legion Dalaran)
@@ -30,7 +30,7 @@ GossipFrame:HookScript(
             return
         end
         -- 不自动对话的NPC
-        if (DoNotAutoGossip[targetid] == true) then
+        if (DoNotAutoGossip[targetid]) then
             return
         end
 
@@ -41,7 +41,6 @@ GossipFrame:HookScript(
         --如果不止一个选项且在AUtoGossipOnlyOnce表里 就根据表数据选择
         if (AUtoGossipOnlyOnce[targetid] ~= nil) then
             SelectGossipOption(AUtoGossipOnlyOnce[targetid])
-            return
         end
 
         -- 如果只有一个选项，就自动对话
