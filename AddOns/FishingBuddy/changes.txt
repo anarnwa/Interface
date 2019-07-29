@@ -1,4 +1,7 @@
-﻿Version 1.10.1
+﻿Version 1.10.2
+- Fix some bugs in the new item handling code
+
+Version 1.10.1
 - Check cooldown when using lures, the Scarelet Lure in particular
 - Don't cast while flying
 - Don't clear "fishing without a pole" if on a raft and moving

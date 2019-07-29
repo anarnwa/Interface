@@ -2,7 +2,7 @@
 ## Title: Global Ignore List
 ## Notes: Maintain ignore list across all characters, filter chat spam and more
 ## Author: IceyPop
-## Version: 8.1.4
+## Version: 8.2.1
 ## SavedVariables: GlobalIgnoreDB
 ## SavedVariablesPerCharacter: GlobalIgnoreImported
 

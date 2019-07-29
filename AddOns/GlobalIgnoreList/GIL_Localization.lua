@@ -122,6 +122,7 @@ L["OPT_8"]	= "Ignore List Options:"
 L["OPT_9"]	= "Spam Filtering Options:"
 L["OPT_10"]	= "Perform reverse spam filtering (not recommended)"
 L["OPT_11"] = "Automatically update default Spam Filters"
+L["OPT_12"] = "Never filter Guild chat"
 L["TIP_1"]  = "|cffffffffFilter Editing Help\n\n|cffffff00Enter chat filter in the box below.  Chat text is converted to lower cased letters before\napplying filters, so all filters must be defined using lower cased letters only.\n\nAny links entered into the edit box will be automatically converted to the appropriate\nfilter tag.\n\nPlease view the website for more detailed information on creating chat filters."
 L["TIP_2"]  = "|cffffffffFilter Testing Help\n\n|cffffff00Enter chat text into the Filter Testing box and GIL will apply the current filter\nto the contents in the box whenever the Test button is clicked.\n\nThe result of the applied filter is shown as BLOCKED if the text would be\nfiltered, or PASSED if the text would not be filtered."
 

@@ -11,6 +11,7 @@ local LEW = LibStub("LibEventWindow-1.0");
 local HBD = LibStub("HereBeDragons-2.0")
 
 local CurLoc = GetLocale();
+local PLANS = FishingBuddy.FishingPlans;
 
 -- Information for the stylin' fisherman
 local POLES = {
@@ -697,7 +698,6 @@ end
 
 local function GetFishingItem(itemtable)
     local GSB = FishingBuddy.GetSettingBool;
-    local PLANS = FishingBuddy.FishingPlans;
     for itemid, info in pairs(itemtable) do
         if ( info.always or (PLANS:HaveThing(itemid, info) and (not info.setting or GSB(info.setting))) ) then
             if (not info[CurLoc]) then
@@ -761,7 +761,6 @@ end
 local function GetUpdateLure()
     local GSB = FishingBuddy.GetSettingBool;
     local LSM = FishingBuddy.LureStateManager;
-    local PLANS = FishingBuddy.FishingPlans;
     local lureinventory, _ = FL:GetLureInventory();
 
     -- Let's wait a bit so that the enchant can show up before we lure again
@@ -974,7 +973,6 @@ local SavedWFOnMouseDown;
 -- that the mouse handler in the WorldFrame got everything first!
 local function WF_OnMouseDown(...)
     -- Only steal 'right clicks' (self is arg #1!)
-    local PLANS = FishingBuddy.FishingPlans;
     local button = select(2, ...);
 
     if ( HijackCheck() ) then
@@ -1472,6 +1470,7 @@ FishingBuddy.OnEvent = function(self, event, ...)
         end
     elseif ( event == "VARIABLES_LOADED" ) then
         local _, name = FL:GetFishingSkillInfo();
+        PLANS = FishingBuddy.FishingPlans;
         FishingBuddy.Initialize();
         PrepareVolumeSlider()
         FishingBuddy.OptionsFrame.HandleOptions(GENERAL, nil, GeneralOptions);

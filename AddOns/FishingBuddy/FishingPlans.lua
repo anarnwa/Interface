@@ -90,7 +90,7 @@ FishingBuddy.FishingPlans = FishingPlans
 
 local PlanEvents = {}
 PlanEvents[FBConstants.FISHING_DISABLED_EVT] = function()
-    self.planqueue = {}
+    FishingPlans.planqueue = {}
 end
 
 FishingBuddy.RegisterHandlers(PlanEvents);

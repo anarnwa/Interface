@@ -171,6 +171,10 @@ The following commands are accessible by typing /gignore or /gi in the chat box:
 
 => VERSION HISTORY
 
+=> 8.2.1
+
+Added option to never apply spam filters to Guild chat.  This option is turned on by default in the options tab.
+
 => 8.2.0
 
 Fixed a residual 8.1 issue that was causing GIL to fail to remove players on synchronization

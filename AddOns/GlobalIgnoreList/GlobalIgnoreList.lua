@@ -381,7 +381,8 @@ local function ResetIgnoreDB()
 		filterTotal		= 0,
 		filterCount		= {},
 		filterDesc		= {},
-		filterList		= {}
+		filterList		= {},
+		skipGuild		= true
 	}
 	
 	GlobalIgnoreImported = false
@@ -678,6 +679,10 @@ local function ApplicationStartup(self)
 	
 	-- set missing defaults or upgrade if needed
 
+	if GlobalIgnoreDB.skipGuild == nil then
+		GlobalIgnoreDB.skipGuild = true
+	end
+	
 	if GlobalIgnoreDB.filterTotal == nil then
 		GlobalIgnoreDB.filterTotal = 0
 	end
@@ -1579,7 +1584,7 @@ local function chatMessageFilter (self, event, message, from, ...)
 		return false
 
 	elseif (from ~= nil) and (from ~= "") then
-		
+			
 		local idx = string.find(from, "-", 1, true)
 		
 		if idx == nil then
@@ -1604,6 +1609,10 @@ local function chatMessageFilter (self, event, message, from, ...)
 		
 			if GlobalIgnoreDB.spamFilter == true then
 			
+				if GlobalIgnoreDB.skipGuild == true and (event == "CHAT_MSG_GUILD" or event == "CHAT_MSG_OFFICER") then
+					return false
+				end
+
 				if (event == "CHAT_MSG_ACHIEVEMENT") or (event == "CHAT_MSG_GUILD_ACHIEVEMENT") then			
 					return false
 				end

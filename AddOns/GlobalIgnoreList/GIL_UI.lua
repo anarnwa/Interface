@@ -1320,6 +1320,13 @@ local function CreateUIFrames()
 	Button:SetScript("OnShow",  function(self) self:SetChecked(GlobalIgnoreDB.autoUpdate == true) end)
 	Button:SetScript("OnClick" ,function(self) GlobalIgnoreDB.autoUpdate = (self:GetChecked() or false) end)
 
+	Button = CreateFrame("CheckButton", "GILFrame3SkipGuild", Tab3Frame, "UICheckButtonTemplate")
+	Button:SetPoint("TOPLEFT", Text, "BOTTOMLEFT", 450, -6)
+	 _G[Button:GetName().."Text"]:SetText(L["OPT_12"])
+	 _G[Button:GetName().."Text"]:SetFontObject("GameFontHighlight")
+	Button:SetScript("OnShow",  function(self) self:SetChecked(GlobalIgnoreDB.skipGuild == true) end)
+	Button:SetScript("OnClick" ,function(self) GlobalIgnoreDB.skipGuild = (self:GetChecked() or false) end)
+
 	-- SHOW
 	
 	PanelTemplates_SetNumTabs(MainFrame, 3)

@@ -8,6 +8,7 @@ local _
 local FL = LibStub("LibFishing-1.0");
 
 local CurLoc = GetLocale();
+local PLANS = FishingBuddy.FishingPlans;
 
 local BOBBER_NONE = -1;
 local BOBBER_ALL = -2;
@@ -115,7 +116,7 @@ local function PickRandomBobber(bobbersetting)
 	local baits = {};
 	for _,id in ipairs(bobbersetting) do
 		if (PlayerHasToy(id) and C_ToyBox.IsToyUsable(id)) then
-			if not FishingBuddy.ItemCooldownOn(id) then
+			if not PLANS:ItemCooldownOn(id) then
 				_, id = C_ToyBox.GetToyInfo(id);
 				tinsert(baits, id);
 			end
@@ -131,7 +132,7 @@ local function UseThisBobber(itemid, info)
     if (info.toy) then
         canuse = false
 		if (PlayerHasToy(itemid) and C_ToyBox.IsToyUsable(itemid)) then
-			if not FishingBuddy.ItemCooldownOn(itemid) then
+			if not PLANS:ItemCooldownOn(itemid) then
                 _, itemid = C_ToyBox.GetToyInfo(itemid);
                 canuse = true
             end
@@ -258,7 +259,7 @@ if ( FishingBuddy.Debugging ) then
 			local baits = {};
 			for _,id in ipairs(bobberkeys) do
 				if (PlayerHasToy(id) and C_ToyBox.IsToyUsable(id)) then
-					if not FishingBuddy.ItemCooldownOn(id) then
+					if not PLANS:ItemCooldownOn(id) then
 						_, id = C_ToyBox.GetToyInfo(id);
 						tinsert(baits, id);
 					end
