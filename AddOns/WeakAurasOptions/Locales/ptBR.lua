@@ -5,11 +5,9 @@ end
 local L = WeakAuras.L
 
 -- WeakAuras/Options
-	--[[Translation missing --]]
-	L[" by "] = " by "
+	L[" by "] = "por"
 	L["-- Do not remove this comment, it is part of this trigger: "] = "-- Não remova este comentário, ele é parte deste gatilho:"
-	--[[Translation missing --]]
-	L[" to version "] = " to version "
+	L[" to version "] = "para versão"
 	L["% of Progress"] = "% do progresso"
 	--[[Translation missing --]]
 	L["%i auras selected"] = "%i auras selected"
@@ -46,8 +44,7 @@ local L = WeakAuras.L
 	L["Actions"] = "Ações"
 	L["Add a new display"] = "Adicionar um novo display"
 	L["Add Condition"] = "Adicionar condição"
-	--[[Translation missing --]]
-	L["Add Option"] = "Add Option"
+	L["Add Option"] = "Adicionar Opção"
 	--[[Translation missing --]]
 	L["Add Overlay"] = "Add Overlay"
 	L["Add Property Change"] = "Adicionar mudança de propriedade"
@@ -81,8 +78,7 @@ WeakAuras → Opções → Opções ]=]
 	L["Animation Sequence"] = "Sequência da animação"
 	L["Animations"] = "Animações"
 	L["Any of"] = "Qualquer"
-	--[[Translation missing --]]
-	L["Apply Template"] = "Apply Template"
+	L["Apply Template"] = "Aplicar Modelo"
 	--[[Translation missing --]]
 	L["Arc Length"] = "Arc Length"
 	--[[Translation missing --]]
@@ -124,8 +120,7 @@ WeakAuras → Opções → Opções ]=]
 	--[[Translation missing --]]
 	L["Bar Color Settings"] = "Bar Color Settings"
 	L["Bar Texture"] = "Textura da barra"
-	--[[Translation missing --]]
-	L["Big Icon"] = "Big Icon"
+	L["Big Icon"] = "Ícone Grande"
 	--[[Translation missing --]]
 	L["Blend Mode"] = "Blend Mode"
 	--[[Translation missing --]]
@@ -140,12 +135,9 @@ WeakAuras → Opções → Opções ]=]
 	--[[Translation missing --]]
 	L["Border Inset"] = "Border Inset"
 	L["Border Offset"] = "Posicionamento da borda"
-	--[[Translation missing --]]
-	L["Border Settings"] = "Border Settings"
-	--[[Translation missing --]]
-	L["Border Size"] = "Border Size"
-	--[[Translation missing --]]
-	L["Border Style"] = "Border Style"
+	L["Border Settings"] = "Configurações da Borda"
+	L["Border Size"] = "Tamanho da Borda"
+	L["Border Style"] = "Estilo da Borda"
 	L["Bottom Text"] = "Texto na base"
 	--[[Translation missing --]]
 	L["Bracket Matching"] = "Bracket Matching"

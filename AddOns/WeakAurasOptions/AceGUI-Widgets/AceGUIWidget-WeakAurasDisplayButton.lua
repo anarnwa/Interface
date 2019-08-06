@@ -26,6 +26,11 @@ local ignoreForCopyingDisplay = {
   uid = true,
   authorOptions = true,
   config = true,
+  url = true,
+  semver = true,
+  version = true,
+  internalVersion = true,
+  tocbuild = true
 }
 
 local function copyAuraPart(source, destination, part)
@@ -99,6 +104,7 @@ clipboard.pasteMenuEntry = {
     WeakAuras.SortDisplayButtons();
     WeakAuras.PickDisplay(clipboard.current.id);
     WeakAuras.UpdateDisplayButton(clipboard.current.id);
+    WeakAuras.ReloadOptions(clipboard.current.id);
   end
 }
 
@@ -608,12 +614,10 @@ local methods = {
           WeakAuras.DuplicateAura(childData, new_idGroup)
         end
         WeakAuras.SortDisplayButtons()
-        WeakAuras.DoConfigUpdate()
         WeakAuras.PickAndEditDisplay(new_idGroup)
       else
         local new_id = WeakAuras.DuplicateAura(data)
         WeakAuras.SortDisplayButtons()
-        WeakAuras.DoConfigUpdate()
         WeakAuras.PickAndEditDisplay(new_id)
       end
     end
@@ -857,14 +861,6 @@ local methods = {
 
     function self.frame.terribleCodeOrganizationHackTable.SetNormalTooltip()
       self:SetNormalTooltip();
-    end
-
-    function self.frame.terribleCodeOrganizationHackTable.OnShow()
-      WeakAuras.UpdateCloneConfig(data);
-    end
-
-    function self.frame.terribleCodeOrganizationHackTable.OnHide()
-      WeakAuras.CollapseAllClones(data.id);
     end
 
     local copyEntries = {};
@@ -1783,8 +1779,7 @@ local function Constructor()
     if(priority >= self.visibility) then
       self.visibility = priority;
       if(self.region and self.region.Expand) then
-        button.terribleCodeOrganizationHackTable.OnShow();
-        self.region:Expand();
+        WeakAuras.FakeStatesFor(self.region.id, true)
         if (WeakAuras.personalRessourceDisplayFrame) then
           WeakAuras.personalRessourceDisplayFrame:expand(self.region.id);
         end
@@ -1804,8 +1799,7 @@ local function Constructor()
     if(priority >= self.visibility) then
       self.visibility = 0;
       if(self.region and self.region.Collapse) then
-        button.terribleCodeOrganizationHackTable.OnHide();
-        self.region:Collapse();
+        WeakAuras.FakeStatesFor(self.region.id, false)
         if (WeakAuras.personalRessourceDisplayFrame) then
           WeakAuras.personalRessourceDisplayFrame:collapse(self.region.id);
         end

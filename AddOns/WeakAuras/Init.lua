@@ -6,11 +6,11 @@ WeakAuras.halfWidth = WeakAuras.normalWidth / 2
 WeakAuras.doubleWidth = WeakAuras.normalWidth * 2
 
 local versionStringFromToc = GetAddOnMetadata("WeakAuras", "Version")
-local versionString = "2.13.4"
-local buildTime = "20190707114458"
+local versionString = "2.14.0-beta1"
+local buildTime = "20190805215757"
 
 --[===[@debug@
-if versionStringFromToc == "2.13.4" then
+if versionStringFromToc == "2.14.0-beta1" then
   versionStringFromToc = "Dev"
   buildTime = "Dev"
 end
@@ -20,6 +20,16 @@ WeakAuras.versionString = versionStringFromToc
 WeakAuras.buildTime = buildTime
 WeakAuras.printPrefix = "|cff9900ffWeakAuras:|r "
 WeakAuras.newFeatureString = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:0|t"
+WeakAuras.BuildInfo = select(4, GetBuildInfo())
+
+local isClassic = false
+--@non-retail@
+isClassic = WeakAuras.BuildInfo < 20000
+--@end-non-retail@
+
+function WeakAuras.IsClassic()
+  return isClassic
+end
 
 WeakAuras.prettyPrint = function(msg)
   print(WeakAuras.printPrefix .. msg)

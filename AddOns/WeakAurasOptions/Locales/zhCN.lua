@@ -11,21 +11,15 @@ local L = WeakAuras.L
 	L["% of Progress"] = "% 进度"
 	L["%i auras selected"] = "%i 个光环被选中"
 	L["%i Matches"] = "%i 符合"
-	--[[Translation missing --]]
-	L["%s %s, lines: %d, frequency: %0.2f, length: %d, thickness: %d"] = "%s %s, lines: %d, frequency: %0.2f, length: %d, thickness: %d"
-	--[[Translation missing --]]
-	L["%s %s, particles: %d, frequency: %0.2f, scale: %0.2f"] = "%s %s, particles: %d, frequency: %0.2f, scale: %0.2f"
+	L["%s %s, lines: %d, frequency: %0.2f, length: %d, thickness: %d"] = "%s %s, 线条数: %d, 动画速度: %0.2f, 线条长度: %d, 线条粗细: %d"
+	L["%s %s, particles: %d, frequency: %0.2f, scale: %0.2f"] = "%s %s, 粒子数量: %d, 动画速度: %0.2f, 粒子缩放: %0.2f"
 	L["%s Color"] = "%s 颜色"
 	L["%s total auras"] = "%s 所有的光环"
-	--[[Translation missing --]]
-	L["%s, border"] = "%s, border"
-	--[[Translation missing --]]
-	L["%s, offset: %0.2f;%0.2f"] = "%s, offset: %0.2f;%0.2f"
-	--[[Translation missing --]]
-	L["|c%02x%02x%02x%02xColor|r"] = "|c%02x%02x%02x%02xColor|r"
+	L["%s, border"] = "%s, 边框"
+	L["%s, offset: %0.2f;%0.2f"] = "%s, 偏移: %0.2f;%0.2f"
+	L["|c%02x%02x%02x%02xColor|r"] = "|c%02x%02x%02x%02x颜色|r"
 	L["|cFFFF0000Duplicate Keys Found!|nPlease change the keys of the following options!|r"] = "|cFFFF0000发现重复的键值！|n请修改下列选项的键值！|r"
-	--[[Translation missing --]]
-	L["|cFFffcc00Glow:|r"] = "|cFFffcc00Glow:|r"
+	L["|cFFffcc00Glow:|r"] = "|cFFffcc00发光:|r"
 	L["1 Match"] = "1符合"
 	L["1. Text"] = "文本"
 	L["1. Text Settings"] = "字体设置"
@@ -167,11 +161,9 @@ local L = WeakAuras.L
 	L["Custom Code"] = "自定义代码"
 	L["Custom Configuration"] = "自定义设置"
 	L["Custom Function"] = "自定义功能"
-	--[[Translation missing --]]
-	L["Custom Grow"] = "Custom Grow"
+	L["Custom Grow"] = "自定义增长"
 	L["Custom Options"] = "自定义选项"
-	--[[Translation missing --]]
-	L["Custom Sort"] = "Custom Sort"
+	L["Custom Sort"] = "自定义排序"
 	L["Custom Trigger"] = "自定义生效触发器"
 	L["Custom trigger event tooltip"] = [=[选择用于检查自订触发的事件。
 如果有多个事件,可以用逗号或空白分隔。
@@ -188,8 +180,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Custom Variables"] = "自定义变量"
 	L["Debuff Type"] = "减益类型"
 	L["Default"] = "默认"
-	--[[Translation missing --]]
-	L["Default Color"] = "Default Color"
+	L["Default Color"] = "默认颜色"
 	L["Delete"] = "删除"
 	L["Delete all"] = "删除所有"
 	L["Delete children and group"] = "删除子节点和组"
@@ -269,8 +260,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Foreground Texture"] = "前景材质"
 	L["Frame"] = "框架"
 	L["Frame Strata"] = "框架层级"
-	--[[Translation missing --]]
-	L["Frequency"] = "Frequency"
+	L["Frequency"] = "动画速度"
 	L["From Template"] = "从模板"
 	L["From version "] = "自版本"
 	L["General Text Settings"] = "通用字体设置"
@@ -346,8 +336,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Legacy Aura Trigger"] = "传统光环触发器"
 	L["Length"] = "长度"
 	L["Limit"] = "限制"
-	--[[Translation missing --]]
-	L["Lines & Particles"] = "Lines & Particles"
+	L["Lines & Particles"] = "线条&粒子数量"
 	L["Load"] = "载入"
 	L["Loaded"] = "已载入"
 	L["Loop"] = "循环"
@@ -551,8 +540,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["The duration of the animation in seconds. The finish animation does not start playing until after the display would normally be hidden."] = "动画时长秒时。直到显示内容被正常隐藏之后结束动画才会播放。"
 	L["The type of trigger"] = "触发器类型"
 	L["Then "] = "然后"
-	--[[Translation missing --]]
-	L["Thickness"] = "Thickness"
+	L["Thickness"] = "线条粗细"
 	L["This adds %tooltip, %tooltip1, %tooltip2, %tooltip3 as text replacements."] = "这将替换 %tooltip, %tooltip1, %tooltip2, %tooltip3 的文本。"
 	L["This aura has legacy aura trigger(s). Convert them to the new system to benefit from enhanced performance and features"] = "这个光环使用了传统光环触发器，将它们转换到新版来获得更好的体验和更多的功能。"
 	L["This display is currently loaded"] = "此显示内容已加载"
@@ -592,8 +580,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Update Custom Text On..."] = "更新自定义文字于"
 	L["Update in Group"] = "更新群组内所有项"
 	L["Update this Aura"] = "更新此光环"
-	--[[Translation missing --]]
-	L["Use Display Info Id"] = "Use Display Info Id"
+	L["Use Display Info Id"] = "使用显示信息ID"
 	L["Use Full Scan (High CPU)"] = "使用完整扫描(高CPU)"
 	L["Use nth value from tooltip:"] = "使用来自鼠标提示的值的顺序："
 	L["Use SetTransform"] = "使用 SetTransform 方法"
@@ -613,15 +600,13 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["X Offset"] = "X 偏移"
 	L["X Rotation"] = "X旋转"
 	L["X Scale"] = "宽度比例"
-	--[[Translation missing --]]
-	L["X-Offset"] = "X-Offset"
+	L["X-Offset"] = "X 偏移"
 	L["Y Offset"] = "Y 偏移"
 	L["Y Rotation"] = "Y旋转"
 	L["Y Scale"] = "长度比例"
 	L["Yellow Rune"] = "黄色符文"
 	L["Yes"] = "是"
-	--[[Translation missing --]]
-	L["Y-Offset"] = "Y-Offset"
+	L["Y-Offset"] = "Y 偏移"
 	L["You are about to delete %d aura(s). |cFFFF0000This cannot be undone!|r Would you like to continue?"] = "正在删除 %d 个光环，|cFFFF0000此操作无法被撤销！|r真的要删除吗?"
 	L["Z Offset"] = "深度 偏移"
 	L["Z Rotation"] = "Z旋转"

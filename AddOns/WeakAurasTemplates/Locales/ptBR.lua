@@ -5,8 +5,7 @@ end
 local L = WeakAuras.L
 
 -- WeakAuras/Templates
-	--[[Translation missing --]]
-	L["Abilities"] = "Abilities"
+	L["Abilities"] = "Habilidades"
 	L["Ability Charges"] = "Cargas da habilidade"
 	L["Add Triggers"] = "Adicionar gatilhos"
 	L["Always Active"] = "Sempre ativo"

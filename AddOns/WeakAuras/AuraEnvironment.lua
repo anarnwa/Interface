@@ -59,6 +59,9 @@ local LCG = LibStub("LibCustomGlow-1.0")
 WeakAuras.ShowOverlayGlow = LCG.ButtonGlow_Start
 WeakAuras.HideOverlayGlow = LCG.ButtonGlow_Stop
 
+local LGF = LibStub("LibGetFrame-1.0")
+WeakAuras.GetUnitFrame = LGF.GetUnitFrame
+
 local function forbidden()
   prettyPrint(L["A WeakAura just tried to use a forbidden function but has been blocked from doing so. Please check your auras!"])
 end
@@ -122,7 +125,7 @@ function WeakAuras.ClearAuraEnvironment(id)
   environment_initialized[id] = false;
 end
 
-function WeakAuras.ActivateAuraEnvironment(id, cloneId, state)
+function WeakAuras.ActivateAuraEnvironment(id, cloneId, state, states)
   local data = WeakAuras.GetData(id)
   local region = WeakAuras.GetRegion(id, cloneId)
   if not data then
@@ -136,6 +139,7 @@ function WeakAuras.ActivateAuraEnvironment(id, cloneId, state)
       current_aura_env.id = id
       current_aura_env.cloneId = cloneId
       current_aura_env.state = state
+      current_aura_env.states = states
       current_aura_env.region = WeakAuras.GetRegion(id, cloneId)
       -- Push the new environment onto the stack
       tinsert(aura_env_stack, current_aura_env)
@@ -147,6 +151,7 @@ function WeakAuras.ActivateAuraEnvironment(id, cloneId, state)
       current_aura_env.id = id
       current_aura_env.cloneId = cloneId
       current_aura_env.state = state
+      current_aura_env.states = states
       current_aura_env.region = region
       -- push new environment onto the stack
       tinsert(aura_env_stack, current_aura_env)

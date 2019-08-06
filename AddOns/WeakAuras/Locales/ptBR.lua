@@ -93,8 +93,7 @@ L["Alive"] = "Vivo"
 --[[Translation missing --]]
 L["All"] = "All"
 L["All Triggers"] = "Todos os Gatilhos"
---[[Translation missing --]]
-L["Alliance"] = "Alliance"
+L["Alliance"] = "Aliança"
 L["Allow partial matches"] = "Permitir combinações parciais"
 L["Alpha"] = "Transparência"
 L["Alternate Power"] = "Alternar Poder"
@@ -152,8 +151,7 @@ L["Autocast Shine"] = "Autocast Shine"
 --[[Translation missing --]]
 L["Auto-Clone (Show all Matches)"] = "Auto-Clone (Show all Matches)"
 L["Automatic"] = "Automático"
---[[Translation missing --]]
-L["Automatic Rotation"] = "Automatic Rotation"
+L["Automatic Rotation"] = "Rotação Automática"
 --[[Translation missing --]]
 L["Avoidance (%)"] = "Avoidance (%)"
 --[[Translation missing --]]
@@ -164,8 +162,7 @@ L["Back and Forth"] = "Back and Forth"
 L["Backdrop Color"] = "Backdrop Color"
 --[[Translation missing --]]
 L["Background Color"] = "Background Color"
---[[Translation missing --]]
-L["Bar Color"] = "Bar Color"
+L["Bar Color"] = "Cor da Barra"
 L["Battle.net Whisper"] = "Battle.net Sussuro"
 L["Battleground"] = "Campo de Batalha"
 L["BG>Raid>Party>Say"] = "CB>Raid>Grupo>Fala"
@@ -189,11 +186,9 @@ L["Blocked"] = "Bloqueado"
 L["Border"] = "Border"
 --[[Translation missing --]]
 L["Border Color"] = "Border Color"
---[[Translation missing --]]
-L["Boss"] = "Boss"
+L["Boss"] = "Chefe"
 L["Boss Emote"] = "Emote do Chefe"
---[[Translation missing --]]
-L["Boss Whisper"] = "Boss Whisper"
+L["Boss Whisper"] = "Sussurro do Chefe"
 L["Bottom"] = "Embaixo"
 L["Bottom Left"] = "Embaixo à esquerda"
 L["Bottom Right"] = "Embaixo à direita"
@@ -238,8 +233,7 @@ L["Chat Frame"] = "Quadro do bate-papo"
 L["Chat Message"] = "Mensagem de bate-papo"
 --[[Translation missing --]]
 L["Children:"] = "Children:"
---[[Translation missing --]]
-L["Choose a category"] = "Choose a category"
+L["Choose a category"] = "Escolha uma catedoria"
 L["Circle"] = "Círculo"
 --[[Translation missing --]]
 L["Clamp"] = "Clamp"

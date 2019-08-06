@@ -6,6 +6,8 @@ local profileData = {}
 profileData.systems = {}
 profileData.auras = {}
 
+WeakAuras.profileData = profileData
+
 WeakAuras.table_to_string = function(tbl, depth)
   if depth and depth >= 3 then
     return "{ ... }"
@@ -81,7 +83,7 @@ local function CreateProfilePopup()
   local popupFrame = CreateFrame("EditBox", "WADebugEditBox", UIParent)
   popupFrame:SetFrameStrata("DIALOG")
   popupFrame:SetMultiLine(true)
-  popupFrame:SetAutoFocus(true)
+  popupFrame:SetAutoFocus(false)
   popupFrame:SetFontObject(ChatFontNormal)
   popupFrame:SetSize(450, 300)
   popupFrame:Hide()
@@ -114,7 +116,10 @@ local function CreateProfilePopup()
   end
 
   popupFrame:SetScript("OnEscapePressed", function(self)
-    self:ClearFocus() -- TODO: Does not work
+    self:ClearFocus()
+    if IsModifierKeyDown() then
+      popupFrame:Hide()
+    end
   end)
 
   local scrollFrame = CreateFrame("ScrollFrame", "WADebugEditBoxScrollFrame", UIParent, "UIPanelScrollFrameTemplate")
@@ -152,7 +157,7 @@ local function CreateProfilePopup()
     edgeSize = 32,
     insets = { left = 4, right = 4, top = 4, bottom = 4 }
   })
-  bg:SetPoint("TOPLEFT", scrollFrame, -15, 15)
+  bg:SetPoint("TOPLEFT", scrollFrame, -20, 20)
   bg:SetPoint("BOTTOMRIGHT", scrollFrame, 35, -25)
   bg:Hide()
 

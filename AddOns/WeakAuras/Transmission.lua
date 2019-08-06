@@ -135,6 +135,7 @@ function CompressDisplay(data)
   copiedData.regionType = regionType
   copiedData.ignoreWagoUpdate = nil
   copiedData.skipWagoUpdate = nil
+  copiedData.tocversion = WeakAuras.BuildInfo
 
   return copiedData;
 end
@@ -153,7 +154,7 @@ local function filterFunc(_, event, msg, player, l, cs, t, flag, channelId, ...)
       characterName = characterName:gsub("|c[Ff][Ff]......", ""):gsub("|r", "");
       displayName = displayName:gsub("|c[Ff][Ff]......", ""):gsub("|r", "");
       newMsg = newMsg..remaining:sub(1, start-1);
-      newMsg = newMsg.."|Hweakauras|h|cFF8800FF["..characterName.." |r|cFF8800FF- "..displayName.."]|h|r";
+      newMsg = newMsg.."|Hgarrmission:weakauras|h|cFF8800FF["..characterName.." |r|cFF8800FF- "..displayName.."]|h|r";
       remaining = remaining:sub(finish + 1);
     else
       done = true;
@@ -545,10 +546,10 @@ local Comm = LibStub:GetLibrary("AceComm-3.0");
 local tooltipLoading;
 local receivedData;
 
-hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
+hooksecurefunc("SetItemRef", function(link, text)
   buttonAnchor:Hide()
-  if(link == "weakauras") then
-    local _, _, characterName, displayName = text:find("|Hweakauras|h|cFF8800FF%[([^%s]+) |r|cFF8800FF%- ([^%]]+)%]|h");
+  if(link == "garrmission:weakauras") then
+    local _, _, characterName, displayName = text:find("|Hgarrmission:weakauras|h|cFF8800FF%[([^%s]+) |r|cFF8800FF%- ([^%]]+)%]|h");
     if(characterName and displayName) then
       characterName = characterName:gsub("|c[Ff][Ff]......", ""):gsub("|r", "");
       displayName = displayName:gsub("|c[Ff][Ff]......", ""):gsub("|r", "");
@@ -584,22 +585,6 @@ hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
     end
   end
 end);
-
-local OriginalSetHyperlink = ItemRefTooltip.SetHyperlink
-function ItemRefTooltip:SetHyperlink(link, ...)
-  if(link and link:sub(0, 9) == "weakauras") then
-    return;
-  end
-  return OriginalSetHyperlink(self, link, ...);
-end
-
-local OriginalHandleModifiedItemClick = HandleModifiedItemClick
-function HandleModifiedItemClick(link, ...)
-  if(link and link:find("|Hweakauras|h")) then
-    return;
-  end
-  return OriginalHandleModifiedItemClick(link, ...);
-end
 
 function TableToString(inTable, forChat)
   local serialized = Serializer:Serialize(inTable)
@@ -1374,6 +1359,7 @@ function WeakAuras.ShowDisplayTooltip(data, children, matchInfo, icon, icons, im
   local hasDescription = data.desc and data.desc ~= "";
   local hasUrl = data.url and data.url ~= "";
   local hasVersion = (data.semver and data.semver ~= "") or (data.version and data.version ~= "");
+  local tocbuild = data.tocbuild;
 
   if hasDescription or hasUrl or hasVersion then
     tinsert(tooltip, {1, " "});
@@ -1517,6 +1503,7 @@ function WeakAuras.ShowDisplayTooltip(data, children, matchInfo, icon, icons, im
           if excessChildren <= 0 then
             tinsert(tooltip, {2, " ", child.id, 1, 1, 1, 1, 1, 1})
           end
+          tocbuild = tocbuild or child.tocbuild
         end
         if excessChildren > 0 then
           tinsert(tooltip, {2, " ", "[...]", 1, 1, 1, 1, 1, 1})
@@ -1538,6 +1525,14 @@ function WeakAuras.ShowDisplayTooltip(data, children, matchInfo, icon, icons, im
     if (highestVersion > WeakAuras.InternalVersion()) then
       tinsert(tooltip, {1, L["This aura was created with a newer version of WeakAuras."], 1, 0, 0})
       tinsert(tooltip, {1, L["It might not work correctly with your version!"], 1, 0, 0})
+    end
+
+    if WeakAuras.IsClassic() and (not tocbuild or tocbuild > 20000) then
+      tinsert(tooltip, {1, L["This aura was created with the retail version of World of Warcraft."], 1, 0, 0})
+      tinsert(tooltip, {1, L["It might not work correctly on Classic!"], 1, 0, 0})
+    elseif tocbuild and not WeakAuras.IsClassic() and tocbuild < 20000 then
+      tinsert(tooltip, {1, L["This aura was created with the Classic version of World of Warcraft."], 1, 0, 0})
+      tinsert(tooltip, {1, L["It might not work correctly on Retail!"], 1, 0, 0})
     end
 
     tinsert(tooltip, {2, " ", "                         ", 0, 1, 0})
@@ -1647,11 +1642,15 @@ function WeakAuras.ShowDisplayTooltip(data, children, matchInfo, icon, icons, im
   if not IsAddOnLoaded('WeakAurasOptions') then
     LoadAddOn('WeakAurasOptions')
   end
-
-  local ok,thumbnail = pcall(regionOptions[regionType].createThumbnail, thumbnailAnchor, regionTypes[regionType].create);
+  if thumbnailAnchor.currentThumbnail then
+    thumbnailAnchor.currentThumbnail:Hide()
+    thumbnailAnchor.currentThumbnail = nil
+  end
+  local ok,thumbnail = pcall(regionOptions[regionType].createThumbnail, thumbnailAnchor);
   if not ok then
     error("Error creating thumbnail", 2)
   end
+  pcall(regionOptions[regionType].modifyThumbnail, thumbnailAnchor, thumbnail, data)
   thumbnailAnchor.currentThumbnail = thumbnail
   thumbnail:SetAllPoints(thumbnailAnchor);
   if (thumbnail.SetIcon) then
@@ -1663,6 +1662,8 @@ function WeakAuras.ShowDisplayTooltip(data, children, matchInfo, icon, icons, im
     end
     if (i) then
       thumbnail:SetIcon(i);
+    else
+      thumbnail:SetIcon();
     end
   end
   WeakAuras.GetData = RegularGetData or WeakAuras.GetData
