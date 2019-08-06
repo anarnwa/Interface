@@ -5,9 +5,6 @@
 ## Notes: 搬运Mrrl's trade game
 ## SavedVariables: MTGDB,j_BuyRareItemOption,j_BuyItemOption,j_Markersize,j_CheckTacoFirst
 
-
+localization.lua
 MTG.lua
-
-
-
 

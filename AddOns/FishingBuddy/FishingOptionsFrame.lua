@@ -84,16 +84,25 @@ end
 FishingBuddy.SetSetting = SetSetting;
 
 local function GetSettingOption(setting)
-    local val = nil;
     if ( setting ) then
         local info = FindOptionInfo(setting);
-        if (info) then
+        if info then
             return info.options[setting];
         end
     end
     -- return nil;
 end
 FishingBuddy.GetSettingOption = GetSettingOption;
+
+local function ActiveSetting(setting)
+    local info = GetSettingOption(setting);
+    local active = GetSettingBool(setting)
+    if info.active then
+        return info.active(info, setting, active)
+    end
+    return active
+end
+FishingBuddy.ActiveSetting = ActiveSetting;
 
 -- tooltip support for disabled buttons
 local function Handle_OnEnter(self)

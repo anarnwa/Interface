@@ -1,4 +1,8 @@
-﻿Version 1.10.2
+﻿Version 1.10.3
+- Update support libraries (HereBeDragons)
+- Add option to allowing casting while flying (Monks!)
+
+Version 1.10.2
 - Fix some bugs in the new item handling code
 
 Version 1.10.1

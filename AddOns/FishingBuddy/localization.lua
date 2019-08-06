@@ -152,6 +152,8 @@ FishingTranslations["enUS"] = {
     CONFIG_USEACTION_INFO	 = "If enabled, #NAME# will look for an action bar button to use for casting.",
     CONFIG_MOUNTEDCAST_ONOFF = "Mounted",
     CONFIG_MOUNTEDCAST_INFO  = "If enabled, allow casting while mounted.",
+    CONFIG_FLYINGCAST_ONOFF = "Flying",
+    CONFIG_FLYINGCAST_INFO  = "If enabled, allow casting while flying.",
     CONFIG_PARTIALGEAR_ONOFF = "Partial Outfit",
     CONFIG_PARTIALGEAR_INFO  = "If enabled, cast when wearing any fishing gear at all, even if a pole is not equipped.",
 

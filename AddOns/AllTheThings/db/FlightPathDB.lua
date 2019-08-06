@@ -1029,6 +1029,7 @@ AllTheThings.FlightPathDB = {
 	[646] = {
 		name="Forsaken Forward Command, Gilneas",
 		faction=1,
+		["altQuests"] = { 27438 },	-- The Great Escape
 	},
 	[2066] = {
 		name="Atal'Gral, Zuldazar",

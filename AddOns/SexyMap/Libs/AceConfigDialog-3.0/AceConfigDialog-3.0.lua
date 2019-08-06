@@ -1,13 +1,13 @@
 --- AceConfigDialog-3.0 generates AceGUI-3.0 based windows based on option tables.
 -- @class file
 -- @name AceConfigDialog-3.0
--- @release $Id: AceConfigDialog-3.0.lua 1220 2019-07-18 16:47:58Z funkydude $
+-- @release $Id: AceConfigDialog-3.0.lua 1222 2019-07-26 22:14:43Z funkydude $
 
 local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0", 76
+local MAJOR, MINOR = "AceConfigDialog-3.0", 77
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -553,11 +553,14 @@ do
 		frame:SetFrameStrata("TOOLTIP")
 		frame:SetScript("OnKeyDown", function(self, key)
 			if key == "ESCAPE" then
+				self:SetPropagateKeyboardInput(false)
 				if self.cancel:IsShown() then
 					self.cancel:Click()
 				else -- Showing a validation error
 					self:Hide()
 				end
+			else
+				self:SetPropagateKeyboardInput(true)
 			end
 		end)
 

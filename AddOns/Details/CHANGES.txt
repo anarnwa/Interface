@@ -1,12 +1,46 @@
-lightweight tag 6fec19f4b5a503c4d4ed3c46273a0e666344d325 v8.2.0.7166.140
+lightweight tag 9071980638d338e6b16b8564284eb5f98f3d02c9 v8.2.0.7172.140
 Author:	Tercioo <terciob19@hotmail.com>
-Date:	Thu Jul 18 18:34:31 2019 -0300
+Date:	Sat Aug 3 16:48:11 2019 -0300
 
-commit 6fec19f4b5a503c4d4ed3c46273a0e666344d325
+commit 9071980638d338e6b16b8564284eb5f98f3d02c9
 Author: Tercioo <terciob19@hotmail.com>
-Date:   Thu Jul 18 18:34:31 2019 -0300
+Date:   Sat Aug 3 16:48:11 2019 -0300
 
-    Added more spellIDs for food, flask and potions.
+    Better overall data warning for new users.
     
-    Missing spell ids for food, flask and potion has been added, patch by nullKomplex.
+    The localized string for the overall data was been updated: STRING_TUTORIAL_OVERALL1
+    Need to be translated to all languages except english.
+
+commit 85c23d940b91b8d2b44827666c11e460d19b40b0
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Sat Aug 3 16:22:45 2019 -0300
+
+    Eternal Palace boss info and Player Detail Window fixes
+
+commit 4d99f949794efb895e66487d179ac83d9a30b582
+Author: Joe Flint <gyrojoe@gmail.com>
+Date:   Thu Jul 25 20:21:49 2019 -0700
+
+    Adds initial data for The Eternal Palace
+
+commit 4d99f949794efb895e66487d179ac83d9a30b582
+Author: Joe Flint <gyrojoe@gmail.com>
+Date:   Thu Jul 25 20:21:49 2019 -0700
+
+    Adds initial data for The Eternal Palace
+
+commit b333731bd679d458645c3ab86035fd1837378134
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Thu Jul 25 15:16:32 2019 -0300
+
+    Last damage now shows the damage - overkill by default.
+    
+    A command has been added to test the overkill without discouting the overkill damage from the last hit.
+    /run Details.show_totalhitdamage_on_overkill = true
+
+commit 05d9f92ca1babe512e30ae69f6484db704fe1821
+Author: Tercioo <terciob19@hotmail.com>
+Date:   Wed Jul 24 13:22:39 2019 -0300
+
+    Overkill fixes
 

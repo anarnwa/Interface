@@ -1,11 +1,35 @@
+local L = MTG_L
 local showReq = true --显示每个项目的要求。
 local showAllButNotOnlyMeetsReq = false --显示每个项目，但不是仅显示当前要求。
 
 local j_sort = 1  --按以下方式对buyString进行排序：1个NPC优先。2稀有优先
 local j_MerchantShowDelay = 0.5 --延迟
-local J_timeryet = nil --计时器
+
 
 local valueableList = {}
+local valueableListinfo = {
+        [168053] = L[168053],
+        [168091] = L[168091],--严重生锈的保险箱
+        [168092] = L[168092],--一捆异常暖和的洗澡
+        [168093] = L[168093],--污秽的法力珍珠手镯
+        [168094] = L[168094],--微微嗡鸣的海石
+        [168095] = L[168095],--奇特的珊瑚丛
+        [168096] = L[168096],--浸水的工具箱
+        [168097] = L[168097],--被盗的护甲箱
+        --## the following items require Azsh'ari Stormsurger Cape
+        --## as the wowhead data is not completed yet, some might skip taco check 
+        [170159] = L[170159],--污秽的法力珍珠手镯
+        [170152] = L[170152],--裹影贝壳
+        [170153] = L[170153],--看起来很不祥的书典
+        [170157] = L[170157],--一堆凶兆之沙
+        [170161] = L[170161],--极其聪明的寄居蟹
+        [170162] = L[170162], --浸水的工具箱
+        [170101] = L[170101],--被盗的护甲箱
+        [169202] = L[169202],
+        [170158] = L[170158],--不可名状的珍珠人偶
+
+    }
+
 local fullNPC = {
     [151950] = true,
     [151951] = true,
@@ -24,13 +48,16 @@ local j_fullNPCRaidTargetIndex = {
     [151953] = 3,
     [152084] = 2,
 }
+
 local NPCNameList={
-        [152084] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_2:26|t 穆勒尔",
-        [151952] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_1:26|t 弗勒格勒",
-        [151953] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_3:26|t 胡勒格勒",
-        [151950] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_6:26|t 穆勒格勒勒",
-        [151951] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_5:26|t 格姆勒格",
+        [152084] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_2:26|t "..L["Mrrl"],
+        [151952] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_1:26|t "..L["Flrgrrl"],
+        [151953] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_3:26|t "..L["Hurlgrl"],
+        [151950] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_6:26|t "..L["Mrrglrlr"],
+        [151951] = "|TInterface\\TARGETINGFRAME\\UI-RaidTargetingIcon_5:26|t "..L["Grrmrlg"],
 } 
+
+
 
 
 local frame = CreateFrame("Frame")
@@ -105,10 +132,10 @@ local initializeValueableList = function(J_id,J_Boolean)
     end
     if J_Boolean and valueableList[J_id]~=nil and valueableList[J_id] == buyRareItemsNoTaco then
         valueableList[J_id] = buyRareItemsWithTaco
-        print(J_id,"这个物品要塔饼")
+        print(J_id,L["This item wants a Taco cake"])
     elseif not J_Boolean and valueableList[J_id]~=nil and valueableList[J_id] == buyRareItemsWithTaco then
         valueableList[J_id] = buyRareItemsNoTaco
-        print(J_id,"这个物品不要塔饼")
+        print(J_id,L["This item doesn't need tower cakes"])
     end
 end
 local everGenerated = false
@@ -512,9 +539,9 @@ local generatebuyString = function()
         local strn 
         if meetsReq(itemID) or showAllButNotOnlyMeetsReq then--满足要求
             if itemBuyInfo.amount > 1 then
-                strn = string.format(" %s 购买 %sx%d%s",NPCNameList[itemBuyInfo.NPC], getItemLink(itemID), itemBuyInfo.amount, ReqStrn)
+                strn = string.format(" %s %s %sx%d%s",NPCNameList[itemBuyInfo.NPC], L["buy"],getItemLink(itemID), itemBuyInfo.amount, ReqStrn)
             elseif itemBuyInfo.amount > 0 then
-                strn = string.format(" %s 购买 %s%s",NPCNameList[itemBuyInfo.NPC], getItemLink(itemID), ReqStrn)
+                strn = string.format(" %s %s %s%s",NPCNameList[itemBuyInfo.NPC], L["buy"], getItemLink(itemID), ReqStrn)
             end
             
             table.insert(tempStrnSet, {
@@ -543,7 +570,7 @@ local checkDealReplacementString = function()
 
     for _, itemID in pairs(replaceList) do
         if GetItemCount(itemID) >= 1 then
-            strn = string.format("%s 去水里手动使用 %s", strn, getItemLink(itemID))
+            strn = string.format("%s %s %s", strn,L["Use it manually in the water"], getItemLink(itemID))
         end
     end
     
@@ -650,7 +677,7 @@ function J_MRRL_DELAYED_MERCHANT_SHOW()
 
                 end 
             if not talkedNPC[NPCID] then
-                print("扫描", NPCname,"物品信息",currentItem)
+                print(L["Detected"], NPCname,currentItem,valueableListinfo[GetItemID(currentItem)] or "")
             end
                               
             else
@@ -683,15 +710,18 @@ end
 
 
 function frame:MERCHANT_CLOSED(event,...)
+    if IsAddOnLoaded("MTG") and IsAddOnLoaded("EuiScript") then
+        DisableAddOn("MTG")
+        ReloadUI()
+    end
     if IsAddOnLoaded("WeakAuras") then
         if WeakAuras.loaded["Mrrl's trade game"] then 
             frame:UnregisterEvent("MERCHANT_SHOW")
             frame:UnregisterEvent("MERCHANT_CLOSED")
             frame:UnregisterEvent("CHAT_MSG_LOOT")
-            JNAYDBM_Purchase_prompt("检测到你已加载WA的Mrrl's trade game,为了避免重复购买,MTG插件已自动关闭,接下来使用的是WA的Mrrl's trade game购买.",5.0,false)
+            JNAYDBM_Purchase_prompt(L["Detected that you have loaded WeakAuras's Mrrl's trade game, to avoid repeated purchases, the MTG addon has been automatically closed, followed by WeakAuras's Mrrl's trade game purchase"],5.0,false)
         end
     end
-    J_timeryet = nil
     return true
 end
 
@@ -701,7 +731,7 @@ function frame:CHAT_MSG_LOOT(event,...)
     if unit == playerFullName then
         for itemID, _ in pairs(buyList) do
             local item = GetItemInfo(itemID)
-            if item == nil and itemID ~= 167916 and itemID ~= 170100 then 
+            if item == nil and itemID ~= 167916 and itemID ~= 170100 and merchantItemList[itemID] then 
                 print(JNAYDBM_Purchase_prompt(itemID.."发生了一些错误,/RL后重新购买.",5.0,false))
             end
             if item ~= nil and string.match(line, item) then
@@ -723,6 +753,8 @@ function frame:CHAT_MSG_LOOT(event,...)
     return true
 end
 function JNAYDBM_Purchase_prompt(message,duration,clear)
+
+    
     -- center-screen raid notice is easy
     if(clear)then
         RaidNotice_Clear(RaidBossEmoteFrame)
@@ -747,10 +779,11 @@ end
 
 function frame:GET_ITEM_INFO_RECEIVED(event,...)
     local  itemID, success = ...
-    if itemID ~= 0 and not success then
-        print(itemID,"未成功地从服务器查询该项")
+    if itemID ~= 0 and not success then     
         if merchantItemList[itemID] then
+            print(itemID,"未成功地从服务器查询该项")
             J_ADDmerchantItemList()--加载物品列表
+            C_Timer.After(3, function() frame:UnregisterEvent("GET_ITEM_INFO_RECEIVED") end)--3秒后自动关闭未加载物品提示,防止死循环
         end 
     end
 end
@@ -784,12 +817,12 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     guangao:SetTextColor(255,255,0)
     guangao:SetPoint("TOP")
     guangao:SetFont(GameFontNormal:GetFont(), 30)
-    guangao:SetText("鱼人购买助手")
+    guangao:SetText(L["Mrrl's trade game"])
 
     local dropDown = CreateFrame("FRAME", "WPDemoDropDown", MTG_OptionsFrame, "UIDropDownMenuTemplate")
     dropDown:SetPoint("LEFT",0,-30)
     UIDropDownMenu_SetWidth(dropDown, 200)
-    local j_fonts = {"购买普通物品", "不购买普通物品"}
+    local j_fonts = {L["Buy normal items"],L["Don't buy normal items"]}
     UIDropDownMenu_SetText(dropDown,j_fonts[j_BuyItemOption])
     UIDropDownMenu_Initialize(dropDown, function(self, level, menuList)
         local info = UIDropDownMenu_CreateInfo()
@@ -808,7 +841,7 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     local BuyRareItemdropDown = CreateFrame("FRAME", "WPDemoDropDown", MTG_OptionsFrame, "UIDropDownMenuTemplate")
     BuyRareItemdropDown:SetPoint("LEFT")
     UIDropDownMenu_SetWidth(BuyRareItemdropDown, 200)
-    local fonts = {"购买不含饼干的的稀有品", "购买每一件珍稀物品", "不要买稀有品"}
+    local fonts = {L["buy cape items that don't need taco"],L["buy every cape items"],L["Don't buy cape items"]}
     UIDropDownMenu_SetText(BuyRareItemdropDown,fonts[j_BuyRareItemOption])
     UIDropDownMenu_Initialize(BuyRareItemdropDown, function(self, level, menuList)
         local info = UIDropDownMenu_CreateInfo()
@@ -825,7 +858,7 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     end)
 
 
-
+--[[
     local Markersizetext = MTG_OptionsFrame:CreateFontString(nil,"ARTWORK","GameFontNormal")
     Markersizetext:SetTextColor(1,1,1)
     Markersizetext:SetPoint("LEFT",0,60)
@@ -836,19 +869,20 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     MarkersizeEditBox:SetAutoFocus(false)
     MarkersizeEditBox:SetText(j_Markersize)
     MarkersizeEditBox:SetCursorPosition(0)
-
+]]
     local J_button = CreateFrame("CheckButton", "j_s_CheckTacoFirst", MTG_OptionsFrame, "InterfaceOptionsCheckButtonTemplate")
     J_button:SetPoint("LEFT",0,-60)
-    getglobal(J_button:GetName().."Text"):SetText("先检查塔可饼，然后再用塔可饼购买稀有品。")
+    getglobal(J_button:GetName().."Text"):SetText(L["Check taco before buying rare items with taco"])
     if j_CheckTacoFirst == true then J_button:SetChecked(true) else J_button:SetChecked(false) end
 
 
     self.show = true
     MTG_OptionsFrame:SetScript("OnHide", function(self)
+--[[
     if _G["Markersize"]:GetText() then
         j_Markersize=_G["Markersize"]:GetText()
     end
-
+]]
 
     if _G["j_s_CheckTacoFirst"]:GetChecked() then
         if j_CheckTacoFirst ~= true then

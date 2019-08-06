@@ -1276,12 +1276,25 @@ local function GetMapOptions()
 					get = function() return private.db.map.keepShowingAfterDead end,
 					set = function(_, value)
 						private.db.map.keepShowingAfterDead = value
+						private.db.map.keepShowingAfterDeadReseteable = false
 					end,
 					width = "full",
 					disabled = function() return (not private.db.map.displayNpcIcons and not private.db.map.displayContainerIcons and not private.db.map.displayEventIcons) end,
 				},
-				keepShowingAfterCollected = {
+				keepShowingAfterDeadReseteable = {
 					order = 9,
+					type = "toggle",
+					name = AL["MAP_SHOW_ICON_AFTER_DEAD_RESETEABLE"],
+					desc = AL["MAP_SHOW_ICON_AFTER_DEAD_RESETEABLE_DESC"],
+					get = function() return private.db.map.keepShowingAfterDeadReseteable end,
+					set = function(_, value)
+						private.db.map.keepShowingAfterDeadReseteable = value
+					end,
+					width = "full",
+					disabled = function() return (not private.db.map.displayNpcIcons and not private.db.map.displayContainerIcons and not private.db.map.displayEventIcons) or private.db.map.keepShowingAfterDead end,
+				},
+				keepShowingAfterCollected = {
+					order = 10,
 					type = "toggle",
 					name = AL["MAP_SHOW_ICON_AFTER_COLLECTED"],
 					desc = AL["MAP_SHOW_ICON_AFTER_COLLECTED_DESC"],
@@ -1293,7 +1306,7 @@ local function GetMapOptions()
 					disabled = function() return (not private.db.map.displayNpcIcons and not private.db.map.displayContainerIcons and not private.db.map.displayEventIcons) end,
 				},
 				maxSeenTime = {
-					order = 10,
+					order = 11,
 					type = "range",
 					name = AL["MAP_SHOW_ICON_MAX_SEEN_TIME"],
 					desc = AL["MAP_SHOW_ICON_MAX_SEEN_TIME_DESC"],
@@ -1310,7 +1323,7 @@ local function GetMapOptions()
 					disabled = function() return ((not private.db.map.displayNpcIcons and not private.db.map.displayContainerIcons and not private.db.map.displayEventIcons) or private.db.map.disableLastSeenFilter) end,	
 				},
 				maxSeenTimeContainer = {
-					order = 11,
+					order = 12,
 					type = "range",
 					name = AL["MAP_SHOW_ICON_CONTAINER_MAX_SEEN_TIME"],
 					desc = AL["MAP_SHOW_ICON_CONTAINER_MAX_SEEN_TIME_DESC"],

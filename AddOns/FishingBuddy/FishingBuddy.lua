@@ -130,6 +130,15 @@ local function IsFishingAceEnabled()
     return false;
 end
 
+-- we want to do all the magic stuff even when we didn't equip anything
+local autopoleframe = CreateFrame("Frame");
+autopoleframe:Hide();
+
+local function AreWeFishing()
+    return (FishingBuddy.StartedFishing ~= nil or autopoleframe:IsShown());
+end
+FishingBuddy.AreWeFishing = AreWeFishing
+
 local EasyCastInit;
 
 local CastingOptions = {
@@ -148,6 +157,14 @@ local CastingOptions = {
         ["tooltip"] = FBConstants.CONFIG_MOUNTEDCAST_INFO,
         ["v"] = 1,
         ["parents"] = { ["EasyCast"] = "d", },
+        ["active"] = function(i, s, b) return not IsMounted() or b end,
+        ["default"] = false },
+    ["FlyingCast"] = {
+        ["text"] = FBConstants.CONFIG_FLYINGCAST_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_FLYINGCAST_INFO,
+        ["v"] = 1,
+        ["parents"] = { ["EasyCast"] = "d", },
+        ["active"] = function(i, s, b) return (not IsFlying()) or b end,
         ["default"] = false },
     ["AutoLoot"] = {
         ["text"] = FBConstants.CONFIG_AUTOLOOT_ONOFF,
@@ -186,12 +203,14 @@ local CastingOptions = {
         ["tooltip"] = FBConstants.CONFIG_WATCHBOBBER_INFO,
         ["v"] = 1,
         ["parents"] = { ["EasyCast"] = "d" },
-        ["default"] = true },
+        ["default"] = true
+    },
     ["ContestSupport"] = {
         ["text"] = FBConstants.CONFIG_CONTESTS_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_CONTESTS_INFO,
         ["v"] = 1,
-        ["default"] = false },
+        ["default"] = false
+    },
     ["STVTimer"] = {
         ["text"] = FBConstants.CONFIG_STVTIMER_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_STVTIMER_INFO,
@@ -223,8 +242,9 @@ local CastingOptions = {
         ["text"] = FBConstants.CONFIG_KEEPONTRUCKIN_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_KEEPONTRUCKIN_INFO,
         ["v"] = 1,
-        ["default"] = true,
-        ["parents"] = { ["EasyCast"] = "d" }
+        ["active"] = function(i, s, b) return b and AreWeFishing() end,
+        ["parents"] = { ["EasyCast"] = "d" },
+        ["default"] = true
     },
     ["MouseEvent"] = {
         ["default"] = "RightButtonUp",
@@ -484,10 +504,6 @@ function bagupdateframe:StopInventory()
         self.fbframe:UnregisterEvent(event)
     end
 end
-
--- we want to do all the magic stuff even when we didn't equip anything
-local autopoleframe = CreateFrame("Frame");
-autopoleframe:Hide();
 
 local LastCastTime = nil;
 local FISHINGSPAN = 60;
@@ -902,18 +918,15 @@ local function ReadyForFishing()
 end
 FishingBuddy.ReadyForFishing = ReadyForFishing;
 
-local function AreWeFishing()
-    return (FishingBuddy.StartedFishing ~= nil or autopoleframe:IsShown());
-end
-FishingBuddy.AreWeFishing = AreWeFishing
 
 local function NormalHijackCheck()
     local GSB = FishingBuddy.GetSettingBool;
+    local GSA = FishingBuddy.ActiveSetting;
     local LSM = FishingBuddy.LureStateManager;
     if ( not LSM:GetLastLure() and
-         not CheckCombat() and not IsFlying() and (not IsMounted() or GSB("MountedCast")) and
+         not CheckCombat() and GSA("FlyingCast") and GSA("MountedCast") and
          not IsFishingAceEnabled() and
-         GSB("EasyCast") and (CastingKeys() or (GSB("KeepOnTruckin") and AreWeFishing()) or ReadyForFishing()) ) then
+         GSB("EasyCast") and (CastingKeys() or GSA("KeepOnTruckin") or ReadyForFishing()) ) then
         return true;
     end
 end

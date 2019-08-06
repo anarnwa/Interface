@@ -1131,9 +1131,65 @@ local NPCNameFromID = setmetatable({}, { __index = function(t, id)
 end })
 
 -- Search Caching
-local searchCache = {};
+local searchCache, CreateObject, MergeObject, MergeObjects = {};
 app.searchCache = searchCache;
-local function CreateObject(t)
+(function()
+local keysByPriority = {	-- Sorted by frequency of use.
+	"s",
+	"toyID",
+	"itemID",
+	"speciesID",
+	"questID",
+	"npcID",
+	"creatureID",
+	"objectID",
+	"mapID",
+	"criteriaID",
+	"achID",
+	"currencyID",
+	"encounterID",
+	"instanceID",
+	"recipeID",
+	"spellID",
+	"classID",
+	"professionID",
+	"categoryID",
+	"followerID",
+	"illusionID",
+	"unit",
+	"dungeonID"
+};
+local function GetKey(t)
+	for i,key in ipairs(keysByPriority) do
+		if rawget(t, key) then
+			return key;
+		end
+	end
+	for i,key in ipairs(keysByPriority) do
+		if t[key] then	-- This goes a bit deeper.
+			return key;
+		end
+	end
+	--[[
+	print("could not determine key for object")
+	for key,value in pairs(t) do
+		print(key, value);
+	end
+	]]--
+end
+local function CreateHash(t)
+	local key = t.key or GetKey(t);
+	if key then
+		local hash = key .. (rawget(t, key) or t[key]);
+		if key == "criteriaID" and t.achID then hash = hash .. ":" .. t.achID; end
+		rawset(t, "hash", hash);
+		return hash;
+	end
+end
+local function GetHash(t)
+	return t.hash or CreateHash(t);
+end
+CreateObject = function(t)
 	local s = {};
 	if t[1] then
 		-- array
@@ -1143,8 +1199,8 @@ local function CreateObject(t)
 		return s;
 	else
 		if t.key == "criteriaID" then s.achievementID = t.achievementID; end
-		for key,value in pairs(t) do
-			s[key] = value;
+		for k,v in pairs(t) do
+			rawset(s, k, v);
 		end
 		if t.g then
 			s.g = {};
@@ -1200,7 +1256,11 @@ local function CreateObject(t)
 			elseif t.npcID or t.creatureID then
 				t = app.CreateNPC(t.npcID or t.creatureID, t);
 			elseif t.questID then
-				t = app.CreateQuest(t.questID, t);
+				if t.isVignette then
+					t = app.CreateVignette(t.questID, t);
+				else
+					t = app.CreateQuest(t.questID, t);
+				end
 			elseif t.unit then
 				t = app.CreateUnit(t.unit, t);
 			else
@@ -1211,76 +1271,69 @@ local function CreateObject(t)
 		end
 	end
 end
-local function MergeObject(g, t, index)
-	local key = t.key;
-	if not key then
-		if t.mapID then
-			key = "mapID";
-		elseif t.s then
-			key = "s";
-		elseif t.currencyID then
-			key = "currencyID";
-		elseif t.objectID then
-			key = "objectID";
-		elseif t.followerID then
-			key = "followerID";
-		elseif t.encounterID then
-			key = "encounterID";
-		elseif t.instanceID then
-			key = "instanceID";
-		elseif t.illusionID then
-			key = "illusionID";
-		elseif t.speciesID then
-			key = "speciesID";
-		elseif t.recipeID then
-			key = "recipeID";
-		elseif t.spellID then
-			key = "spellID";
-		elseif t.categoryID then
-			key = "categoryID";
-		elseif t.achID then
-			key = "achID";
-		elseif t.toyID then
-			key = "toyID";
-		elseif t.itemID then
-			key = "itemID";
-		elseif t.professionID then
-			key = "professionID";
-		elseif t.classID then
-			key = "classID";
-		elseif t.npcID then
-			key = "npcID";
-		elseif t.creatureID then
-			key = "creatureID";
-		elseif t.questID then
-			key = "questID";
-		elseif t.unit then
-			key = "unit";
-		elseif t.criteriaID then
-			key = "criteriaID";
-		elseif t.dungeonID then
-			key = "dungeonID";
+MergeObjects = function(g, g2)
+	if #g2 > 25 then
+		local hashTable,t = {};
+		for i,o in ipairs(g) do
+			local hash = GetHash(o);
+			if hash then
+				hashTable[hash] = o;
+			end
 		end
-	end
-	for i,o in ipairs(g) do
-		if o[key] == t[key] then
-			if t.g then
-				local tg = t.g;
-				t.g = nil;
-				if o.g then
-					for j,k in ipairs(tg) do
-						MergeObject(o.g, k);
+		for i,o in ipairs(g2) do
+			local hash = GetHash(o);
+			if hash then
+				t = hashTable[hash];
+				if t then
+					if o.g then
+						local og = o.g;
+						o.g = nil;
+						if t.g then
+							MergeObjects(t.g, og);
+						else
+							t.g = og;
+						end
+					end
+					for k,v in pairs(o) do
+						if k ~= "expanded" then
+							rawset(t, k, v);
+						end
 					end
 				else
-					o.g = tg;
+					hashTable[hash] = o;
+					tinsert(g, o);
 				end
+			else
+				tinsert(g, o);
 			end
-			for k,value in pairs(t) do
-				if k ~= "expanded" then -- and k ~= "parent" then
-					o[k] = value;
+		end
+	else
+		for i,o in ipairs(g2) do
+			MergeObject(g, o);
+		end
+	end
+end
+MergeObject = function(g, t, index)
+	local hash = GetHash(t);
+	if hash then
+		for i,o in ipairs(g) do
+			if GetHash(o) == hash then
+				if t.g then
+					local tg = t.g;
+					t.g = nil;
+					if o.g then
+						MergeObjects(o.g, tg);
+					else
+						o.g = tg;
+					end
 				end
+				for k,v in pairs(t) do
+					if k ~= "expanded" then
+						rawset(o, k, v);
+					end
+				end
+				return o;
 			end
-			return o;
 		end
 	end
 	if index then
@@ -1290,6 +1343,7 @@ local function MergeObject(g, t, index)
 	end
 	return t;
 end
+end)();
 local function ExpandGroupsRecursively(group, expanded, manual)
 	if group.g and (not group.itemID or manual) then
 		group.expanded = expanded;
@@ -1320,16 +1374,288 @@ local function ReapplyExpand(g, g2)
 		end
 	end
 end
-local function ResolveSymbolicLink(o)
-	if o.sym then
-		local searchResults = {};
-		-- {{"select", "itemID", 119321}, {"where", "modID", 6 },{"pop"}},
+
+local ResolveSymbolicLink;
+(function()
+local subroutines;
+subroutines = {
+	["pvp_cata_gladiator_base"] = function(headerID, classID)
+		return {
+			{"select", "npcID", -9979 },	-- Select the "Cataclysm" header
+			{"pop"},	-- Discard the "Cataclysm" header and acquire the children.
+			{"where", "npcID", headerID },	-- Select the Gladiator header
+			{"pop"},	-- Discard the Gladiator header and acquire the children.
+			{"where", "npcID", -661 },	-- Select the "Gladiator PvP Gear" header
+			{"pop"},	-- Discard the "Gladiator PvP Gear" header and acquire the children.
+			{"where", "classID", classID },	-- Select all the class header.
+			{"pop"},	-- Discard the class header and acquire the children.
+			{"is", "itemID"},
+			{"is", "f"},	-- If it has a filterID, keep it, otherwise throw it away.
+		};
+	end,
+	["pvp_ruthless_gladiator"] = function(classID)
+		return { ["sym"] = { {"sub", "pvp_cata_gladiator_base", -673, classID }, }, };
+	end,
+	["pvp_vicious_gladiator"] = function(classID)
+		return { ["sym"] = { {"sub", "pvp_cata_gladiator_base", -672, classID }, }, };
+	end,
+	["legion_relinquished_base"] = function()
+		return {
+			-- Legion Legendaries
+			--[[
+			{"select", "npcID", 106655},	-- Arcanomancer Vridiel
+			{"pop"},	-- Remove Arcanomancer Vridiel and push his children into the processing queue.
+			{ "exclude", "itemID", 154879, 157796 },	-- Exclude the Purified Titan Essence and the Awoken Titan Essence
+			{"pop"},	-- Remove the Legendary Tokens and push the children into the processing queue.
+			{"finalize"},	-- Push the items to the finalized list.
+			]]--
+			
+			-- PVP Gear
+			--[[
+			-- Demonic Combatant & Gladiator Season 7 Gear
+			{"select", "npcID", -688},	-- Demonic Gladiator Season 7
+			{"pop"},	-- Remove Season Header and push the children into the processing queue.
+			{"pop"},	-- Remove Faction Header and push the children into the processing queue.
+			{"contains", "npcID", -660, -661},	-- Select only the Aspirant / Combatant Gear & Gladiator Headers.
+			{"pop"},	-- Remove Aspirant / Combatant Gear Header and push the children into the processing queue.
+			{"pop"},	-- Remove Class / Armor Header and push the children into the processing queue.
+			{"finalize"},	-- Push the items to the finalized list.
+			]]--
+			
+			-- Unsullied Gear
+			{"select", "itemID", 152740},	-- Unsullied Cloak
+			{"select", "itemID", 152738},	-- Unsullied Cloth Cap
+			{"select", "itemID", 152734},	-- Unsullied Cloth Mantle
+			{"select", "itemID", 153135},	-- Unsullied Cloth Robes
+			{"select", "itemID", 152742},	-- Unsullied Cloth Cuffs
+			{"select", "itemID", 153141},	-- Unsullied Cloth Mitts
+			{"select", "itemID", 153156},	-- Unsullied Cloth Sash
+			{"select", "itemID", 153154},	-- Unsullied Cloth Leggings
+			{"select", "itemID", 153144},	-- Unsullied Cloth Slippers
+			{"select", "itemID", 153139},	-- Unsullied Leather Headgear
+			{"select", "itemID", 153145},	-- Unsullied Leather Spaulders
+			{"select", "itemID", 153151},	-- Unsullied Leather Tunic
+			{"select", "itemID", 153142},	-- Unsullied Leather Armbands
+			{"select", "itemID", 152739},	-- Unsullied Leather Grips
+			{"select", "itemID", 153148},	-- Unsullied Leather Belt
+			{"select", "itemID", 152737},	-- Unsullied Leather Trousers
+			{"select", "itemID", 153136},	-- Unsullied Leather Treads
+			{"select", "itemID", 153147},	-- Unsullied Mail Coif
+			{"select", "itemID", 153137},	-- Unsullied Mail Spaulders
+			{"select", "itemID", 152741},	-- Unsullied Mail Chestguard
+			{"select", "itemID", 153158},	-- Unsullied Mail Bracers
+			{"select", "itemID", 153149},	-- Unsullied Mail Gloves
+			{"select", "itemID", 152744},	-- Unsullied Mail Girdle
+			{"select", "itemID", 153138},	-- Unsullied Mail Legguards
+			{"select", "itemID", 153152},	-- Unsullied Mail Boots
+			{"select", "itemID", 153155},	-- Unsullied Plate Helmet
+			{"select", "itemID", 153153},	-- Unsullied Plate Pauldrons
+			{"select", "itemID", 153143},	-- Unsullied Plate Breasplate
+			{"select", "itemID", 153150},	-- Unsullied Plate Vambraces
+			{"select", "itemID", 153157},	-- Unsullied Plate Gauntlets	
+			{"select", "itemID", 153140},	-- Unsullied Plate Waistplate
+			{"select", "itemID", 153146},	-- Unsullied Plate Greaves
+			{"select", "itemID", 152743},	-- Unsullied Plate Sabatons
+			{"select", "itemID", 152736},	-- Unsullied Necklace
+			{"select", "itemID", 152735},	-- Unsullied Ring
+			{"select", "itemID", 152733},	-- Unsullied Trinket
+			{"select", "itemID", 152799},	-- Unsullied Relic
+			{"pop"},	-- Remove the Unsullied Tokens and push the children into the processing queue.
+			{"finalize"},	-- Push the Unsullied items to the finalized list.
+			
+			-- World Bosses
+			{"select", "encounterID", 1790},	-- Ana-Mouz
+			{"select", "encounterID", 1956},	-- Apocron
+			{"select", "encounterID", 1883},	-- Brutallus
+			{"select", "encounterID", 1774},	-- Calamir
+			{"select", "encounterID", 1789},	-- Drugon the Frostblood
+			{"select", "encounterID", 1795},	-- Flotsam
+			{"select", "encounterID", 1770},	-- Humongris
+			{"select", "encounterID", 1769},	-- Levantus
+			{"select", "encounterID", 1884},	-- Malificus
+			{"select", "encounterID", 1783},	-- Na'zak the Fiend
+			{"select", "encounterID", 1749},	-- Nithogg
+			{"select", "encounterID", 1763},	-- Shar'thos
+			{"select", "encounterID", 1885},	-- Si'vash
+			{"select", "encounterID", 1756},	-- The Soultakers
+			{"select", "encounterID", 1796},	-- Withered J'im
+			{"pop"},	-- Remove the World Bosses and push the children into the processing queue.
+			{"finalize"},	-- Push the unprocessed Items to the finalized list.
+			
+			-- Raids
+			{"select", "instanceID", 768},	-- Emerald Nightmare
+			{"select", "instanceID", 861},	-- Trial of Valor
+			{"select", "instanceID", 786},	-- The Nighthold
+			{"select", "instanceID", 875},	-- Tomb of Sargeras
+			
+			-- Process the Dungeons, Normal Mode Only Loot for boots.
+			{"pop"},	-- Discard the Instance Headers and acquire all of their children.
+			{"where", "difficultyID", 14},	-- Select only the Normal Difficulty Headers.
+			{"pop"},	-- Discard the Difficulty Headers and acquire all of their children.
+			{"is", "encounterID"},	-- Only use the encounters themselves, no zone drops.
+			{"pop"},	-- Discard the Encounter Headers and acquire all of their children.
+			{"finalize"},	-- Push the unprocessed Items to the finalized list.
+			
+			-- Dungeons
+			{"select", "instanceID", 777},	-- Assault on Violet Hold
+			{"select", "instanceID", 740},	-- Blackrook Hold
+			{"select", "instanceID", 900},	-- Cathedral of Eternal Night
+			{"select", "instanceID", 800},	-- Court of Stars
+			{"select", "instanceID", 762},	-- Darkheart Thicket
+			{"select", "instanceID", 716},	-- Eye of Azshara
+			{"select", "instanceID", 721},	-- Halls of Valor
+			{"select", "instanceID", 727},	-- Maw of Souls
+			{"select", "instanceID", 767},	-- Neltharion's Lair
+			{"select", "instanceID", 860},	-- Return to Karazhan
+			{"select", "instanceID", 945},	-- Seat of the Triumvirate
+			{"select", "instanceID", 749},	-- The Arcway
+			{"select", "instanceID", 707},	-- Vault of the Wardens
+			
+			-- Process the Dungeons, Mythic Mode Only Loot for boots.
+			{"pop"},	-- Discard the Instance Headers and acquire all of their children.
+			{"where", "difficultyID", 23},	-- Select only the Mythic Difficulty Headers.
+			{"pop"},	-- Discard the Difficulty Headers and acquire all of their children.
+			{"pop"},	-- Discard the Encounter Headers and acquire all of their children.
+			{"finalize"},	-- Push the unprocessed Items to the finalized list.
+			
+			-- World Quest Rewards
+			{"select", "mapID", 905},	-- Argus
+			{"select", "mapID", 630},	-- Azsuna
+			{"select", "mapID", 646},	-- Broken Shore
+			{"select", "mapID", 650},	-- Highmountain
+			{"select", "mapID", 634},	-- Stormheim
+			{"select", "mapID", 680},	-- Suramar
+			{"select", "mapID", 641},	-- Val'sharah
+			
+			-- Process the World Quest Rewards
+			{"pop"},	-- Discard the Map Headers and acquire all of their children.
+			{"where", "npcID", -34},	-- Select only the World Quest Headers
+			{"pop"},	-- Discard the World Quest Headers and acquire all of their children.
+			{"is", "npcID"},	-- Only use the item sets themselves, no zone drops.
+			{"pop"},	-- Discard the item set Headers and acquire all of their children.
+			{"finalize"},	-- Push the unprocessed Items to the finalized list.
+			
+			{"merge"},	-- Merge the finalized items back into the processing queue.
+			{"is", "itemID"},	-- Only Items!
+		};
+	end,
+	["legion_relinquished"] = function(invtypes, ...)
+		local f = {...};
+		local commands = subroutines["legion_relinquished_base"]();
+		if type(invtypes) == 'number' then tinsert(f, invtypes); end
+		if #f > 0 then tinsert(commands, {"contains", "f", unpack(f) }); end	-- Specific filterIDs only!
+		if type(invtypes) == 'table' then tinsert(commands, {"invtype", unpack(invtypes)}); end	-- Only pay attention to items equipped in the slots.
+		tinsert(commands, {"postprocess"});	-- Post Process the search results to ensure no duplicate keys exist.
+		tinsert(commands, {"modID", 43});	-- Reassign the ModID to 43.
+		return commands;
+	end,
+	["legion_relinquished_relic"] = function(relictype)
+		local commands = subroutines["legion_relinquished_base"]();
+		if relictype then tinsert(commands, {"relictype", relictype}); end	-- Only pay attention to relics of a certain kind
+		tinsert(commands, {"postprocess"});	-- Post Process the search results to ensure no duplicate keys exist.
+		tinsert(commands, {"modID", 43});	-- Reassign the ModID to 43.
+		return commands;
+	end,
+	["bfa_azerite_armor_chest_dungeons"] = function()
+		return {
+			-- Dungeons
+			{"select", "instanceID", 968},	-- Atal'Dazar
+			{"select", "instanceID", 1001},	-- Freehold
+			{"select", "instanceID", 1041},	-- King's Rest
+			{"select", "instanceID", 1178},	-- Operation: Mechagon ??
+			{"select", "instanceID", 1036},	-- Shrine of the Storm
+			{"select", "instanceID", 1023},	-- Siege of Boralus
+			{"select", "instanceID", 1030},	-- Temple of Sethraliss
+			{"select", "instanceID", 1012},	-- The MOTHERLODE!!
+			{"select", "instanceID", 1022},	-- The Underrot
+			{"select", "instanceID", 1002},	-- Tol Dagor
+			{"select", "instanceID", 1021},	-- Waycrest Manor
+			
+			-- Process the Dungeons, Heroic Mode Only Loot for the azerite pieces.
+			{"pop"},	-- Discard the Instance Headers and acquire all of their children.
+			{"where", "difficultyID", 2},	-- Select only the Heroic Difficulty Headers.
+			{"pop"},	-- Discard the Difficulty Headers and acquire all of their children.
+			{"pop"},	-- Discard the Encounter Headers and acquire all of their children.
+			{"is", "itemID"},	-- Only Items!
+			{"invtype", "INVTYPE_HEAD", "INVTYPE_SHOULDER", "INVTYPE_CHEST", "INVTYPE_ROBE" },	-- Only Head, Shoulders, and Chest items. (azerite)
+			{"modID", 2},	-- Heroic
+		};
+	end,
+	["bfa_azerite_armor_chest_warfront"] = function()
+		return {
+			{"select", "npcID", -10057},	-- War Effort
+			{"pop"},	-- Discard the War Effort Header and acquire the children.
+			{"where", "mapID", 14},	-- Arathi Highlands
+			{"pop"},	-- Discard the Map Header and acquire the children.
+			{"where", "npcID", -1 },	-- Select the Common Boss Drop Header.
+			{"pop"},	-- Discard the Common Boss Drop Header and acquire the children.
+			{"postprocess"},	-- Post Process the search results to ensure no duplicate keys exist.
+			{"is", "itemID"},	-- Only Items!
+			{"invtype", "INVTYPE_HEAD", "INVTYPE_SHOULDER", "INVTYPE_CHEST", "INVTYPE_ROBE" },	-- Only Head, Shoulders, and Chest items. (azerite)
+			{"modID", 5},	-- iLvl 340
+		}
+	end,
+	["bfa_azerite_armor_chest_zonedrops"] = function()
+		return {
+			-- World Quest Rewards
+			{"select", "mapID", 896},	-- Drustvar
+			{"select", "mapID", 942},	-- Stormsong Valley
+			{"select", "mapID", 895},	-- Tiragarde Sound
+			{"select", "mapID", 863},	-- Nazmir
+			{"select", "mapID", 864},	-- Vol'dun
+			{"select", "mapID", 862},	-- Zuldazar
+			
+			-- Process the World Quest Rewards
+			{"pop"},	-- Discard the Map Headers and acquire all of their children.
+			{"where", "npcID", -34},	-- Select only the World Quest Headers
+			{"pop"},	-- Discard the World Quest Headers and acquire all of their children.
+			{"is", "npcID"},	-- Only use the item sets themselves, no zone drops.
+			{"pop"},	-- Discard the item set Headers and acquire all of their children.
+			
+			-- Process the the headers for the Azerite Armor pieces.
+			{"is", "itemID"},	-- Only Items!
+			{"invtype", "INVTYPE_HEAD", "INVTYPE_SHOULDER", "INVTYPE_CHEST", "INVTYPE_ROBE" },	-- Only Head, Shoulders, and Chest items. (azerite)
+			{"myModID"},
+		};
+	end,
+	["bfa_azerite_armor_chest"] = function()
+		return {
+			{ "subif", "bfa_azerite_armor_chest_dungeons", function(o) return (not o.modID) or o.modID == 1 or o.modID == 2; end },
+			{ "finalize" },
+			{ "subif", "bfa_azerite_armor_chest_warfront", function(o) return (not o.modID) or o.modID == 1 or o.modID == 5; end },
+			{ "finalize" },
+			{ "subif", "bfa_azerite_armor_chest_zonedrops", function(o) return (not o.modID) or (o.modID ~= 2 and o.modID ~= 5); end },
+			{ "merge" },
+			{ "postprocess" },
+		};
+	end,
+};
+ResolveSymbolicLink = function(o)
+	if o and o.sym then
+		local searchResults, finalized = {}, {};
 		for j,sym in ipairs(o.sym) do
 			local cmd = sym[1];
 			if cmd == "select" then
 				-- Instruction to search the full database for something.
-				for k,s in ipairs(app.SearchForField(sym[2], sym[3])) do
-					table.insert(searchResults, s);
+				local cache = app.SearchForField(sym[2], sym[3]);
+				if cache then
+					for k,s in ipairs(cache) do
+						local ref = ResolveSymbolicLink(s);
+						if ref then
+							if s.g then
+								for i,m in ipairs(s.g) do
+									table.insert(searchResults, m);
+								end
+							end
+							for i,m in ipairs(ref) do
+								table.insert(searchResults, m);
+							end
+						else
+							table.insert(searchResults, s);
+						end
+					end
+				else
+					print("Failed to select ", sym[2], sym[3]);
 				end
 			elseif cmd == "pop" then
 				-- Instruction to "pop" all of the group values up one level.
@@ -1411,23 +1737,177 @@ local function ResolveSymbolicLink(o)
 				local clone = {unpack(sym)};
 				table.remove(clone, 1);
 				table.remove(clone, 1);
+				if #clone > 0 then
+					for k=#searchResults,1,-1 do
+						local s = searchResults[k];
+						if not s[key] or not contains(clone, s[key]) then
+							table.remove(searchResults, k);
+						end
+					end
+				end
+			elseif cmd == "exclude" then
+				-- Instruction to exclude search results where a key value contains a value.
+				local key = sym[2];
+				local clone = {unpack(sym)};
+				table.remove(clone, 1);
+				table.remove(clone, 1);
+				if #clone > 0 then
+					for k=#searchResults,1,-1 do
+						local s = searchResults[k];
+						if s[key] and contains(clone, s[key]) then
+							table.remove(searchResults, k);
+						end
+					end
+				end
+			elseif cmd == "isrelic" then
+				-- Instruction to include only search results where an item is a relic.
 				for k=#searchResults,1,-1 do
 					local s = searchResults[k];
-					if not s[key] or not contains(clone, s[key]) then
+					if s.itemID and IsArtifactRelicItem(s.itemID) then
+						-- We're good.
+					else
 						table.remove(searchResults, k);
 					end
+				end
+			elseif cmd == "finalize" then
+				-- Instruction to finalize the current search results and prevent additional queries from affecting this selection.
+				for k,s in ipairs(searchResults) do
+					table.insert(finalized, s);
+				end
+				wipe(searchResults);
+			elseif cmd == "merge" then
+				-- Instruction to take all of the finalized and non-finalized search results and merge them back in to the processing queue.
+				for k,s in ipairs(searchResults) do
+					table.insert(finalized, s);
+				end
+				searchResults = finalized;
+				finalized = {};
+			elseif cmd == "postprocess" then
+				-- Instruction to take all of the current search results and ensure that there are no duplicated primary keys.
+				local uniques = {};
+				MergeObjects(uniques, searchResults);
+				searchResults = uniques;
+			elseif cmd == "invtype" then
+				-- Instruction to include only search results where an item is of a specific inventory type.
+				local types = {unpack(sym)};
+				table.remove(types, 1);
+				if #types > 0 then
+					for k=#searchResults,1,-1 do
+						local s = searchResults[k];
+						if s.itemID and not contains(types, select(4, GetItemInfoInstant(s.itemID))) then
+							table.remove(searchResults, k);
+						end
+					end
+				end
+			elseif cmd == "relictype" then
+				-- Instruction to include only search results where an item is of a specific relic type.
+				local types = {unpack(sym)};
+				table.remove(types, 1);
+				if #types > 0 then
+					--[[
+					RELIC_SLOT_TYPE_ARCANE = "Arcane";
+					RELIC_SLOT_TYPE_BLOOD = "Blood";
+					RELIC_SLOT_TYPE_FEL = "Fel";
+					RELIC_SLOT_TYPE_FIRE = "Fire";
+					RELIC_SLOT_TYPE_FROST = "Frost";
+					RELIC_SLOT_TYPE_HOLY = "Holy";
+					RELIC_SLOT_TYPE_IRON = "Iron";
+					RELIC_SLOT_TYPE_LIFE = "Life";
+					RELIC_SLOT_TYPE_SHADOW = "Shadow";
+					RELIC_SLOT_TYPE_WATER = "Water";
+					RELIC_SLOT_TYPE_WIND = "Storm";
+					]]--
+					for i=#types,1,-1 do
+						types[i] = _G["RELIC_SLOT_TYPE_" .. types[i]];
+					end
+					for k=#searchResults,1,-1 do
+						local s = searchResults[k];
+						if s.itemID and IsArtifactRelicItem(s.itemID) and contains(types, select(3, C_ArtifactUI.GetRelicInfoByItemID(s.itemID))) then
+							-- We're good.
+						else
+							table.remove(searchResults, k);
+						end
+					end
+				end
+			elseif cmd == "modID" then
+				local modID = sym[2];
+				for k=#searchResults,1,-1 do
+					local s = searchResults[k];
+					if s.itemID then
+						s.modID = modID;
+					end
+				end
+			elseif cmd == "myModID" then
+				local modID = o.modID;
+				if modID then
+					for k=#searchResults,1,-1 do
+						local s = searchResults[k];
+						if s.itemID then
+							s.modID = modID;
+						end
+					end
+				end
+			elseif cmd == "sub" then
+				local subroutine = subroutines[sym[2]];
+				if subroutine then
+					local args = {unpack(sym)};
+					table.remove(args, 1);
+					table.remove(args, 1);
+					local commands = subroutine(unpack(args));
+					if commands then
+						local results = ResolveSymbolicLink(setmetatable({sym=commands}, {__index=o}));
+						if results then
+							for k,s in ipairs(results) do
+								table.insert(searchResults, s);
+							end
+						end
+					end
+				else
+					print("Could not find subroutine", sym[2]);
+				end
+			elseif cmd == "subif" then
+				-- Instruction to perform a set of commands if a conditional is returned true.
+				local subroutine = subroutines[sym[2]];
+				if subroutine then
+					-- If the subroutine's conditional was successful.
+					if sym[3] and (sym[3])(o) then
+						local args = {unpack(sym)};
+						table.remove(args, 1);
+						table.remove(args, 1);
+						table.remove(args, 1);
+						local commands = subroutine(unpack(args));
+						if commands then
+							local results = ResolveSymbolicLink(setmetatable({sym=commands}, {__index=o}));
+							if results then
+								for k,s in ipairs(results) do
+									table.insert(searchResults, s);
+								end
+							end
+						end
+					end
+				else
+					print("Could not find subroutine", sym[2]);
 				end
 			end
 		end
 		
+		-- If we have any pending finalizations to make, then merge them into the finalized table. [Equivalent to a "finalize" instruction]
 		if #searchResults > 0 then
-			-- print("Symbolic Link for ", o.key, " ", o[o.key], " contains ", #searchResults, " values after filtering.");
-			return searchResults;
+			for k,s in ipairs(searchResults) do
+				table.insert(finalized, s);
+			end
+		end
+		
+		-- If we had any finalized search results, then return it.
+		if #finalized > 0 then
+			-- print("Symbolic Link for ", o.key, " ", o[o.key], " contains ", #finalized, " values after filtering.");
+			return finalized;
 		else
 			-- print("Symbolic Link for ", o.key, " ", o[o.key], " contained no values after filtering.");
 		end
 	end
 end
+end)();
 local function BuildContainsInfo(groups, entries, paramA, paramB, indent, layer)
 	for i,group in ipairs(groups) do
 		if app.GroupRequirementsFilter(group) and app.GroupFilter(group) then
@@ -1465,21 +1945,9 @@ local function BuildContainsInfo(groups, entries, paramA, paramB, indent, layer)
 				-- If this group has a droprate, add it to the display.
 				if group.dr then right = "|c" .. GetProgressColor(group.dr * 0.01) .. tostring(group.dr) .. "%|r " .. right; end
 				
-				-- If this group has specialization requirements, let's attempt to show the specialization icons.
-				local specs = group.specs;
-				if specs and #specs > 0 then
-					table.sort(specs);
-					for i,spec in ipairs(specs) do
-						local id, name, description, icon, role, class = GetSpecializationInfoByID(spec);
-						if class == app.Class then right = "|T" .. icon .. ":0|t " .. right; end
-					end
-				end
-				
 				-- Insert into the display.
-				local o = { prefix = indent, left = group.text or RETRIEVING_DATA, right = right };
-				if o.left == RETRIEVING_DATA or o.left:find("%[]") then o.working = true; end
-				if group.u then o.left = o.left .. " |T" .. L["UNOBTAINABLE_ITEM_TEXTURES"][L["UNOBTAINABLE_ITEM_REASONS"][group.u][1]] .. ":0|t"; end
-				if group.icon then o.prefix = o.prefix .. "|T" .. group.icon .. ":0|t "; end
+				local o = { prefix = indent, group = group, right = right };
+				if group.u then o.prefix = string.sub(o.prefix, 4) .. "|T" .. L["UNOBTAINABLE_ITEM_TEXTURES"][L["UNOBTAINABLE_ITEM_REASONS"][group.u][1]] .. ":0|t "; end
 				tinsert(entries, o);
 				
 				-- Only go down one more level.
@@ -1953,14 +2421,14 @@ local function GetCachedSearchResults(search, method, paramA, paramB, ...)
 					end
 				end
 				
-				-- If the item is a relic, then let's compare against equipped relics.
-				if IsArtifactRelicItem(itemID) and app.Settings:GetTooltipSetting("Progress") then
+				if app.Settings:GetTooltipSetting("Progress") and IsArtifactRelicItem(itemID) then
+					-- If the item is a relic, then let's compare against equipped relics.
 					local relicType = select(3, C_ArtifactUI.GetRelicInfoByItemID(itemID));
 					local myArtifactData = GetTempDataMember("ArtifactRelicItemLevels");
 					if myArtifactData then
 						local progress, total = 0, 0;
 						local relicItemLevel = select(1, GetDetailedItemLevelInfo(search)) or 0;
-						for itemID,artifactData in pairs(myArtifactData) do
+						for relicID,artifactData in pairs(myArtifactData) do
 							local infoString;
 							for relicSlotIndex,relicData in pairs(artifactData) do
 								if relicData.relicType == relicType then
@@ -1979,7 +2447,7 @@ local function GetCachedSearchResults(search, method, paramA, paramB, ...)
 								end
 							end
 							if infoString then
-								local itemLink = select(2, GetItemInfo(itemID));
+								local itemLink = select(2, GetItemInfo(relicID));
 								tinsert(info, 1, { 
 									left = itemLink and ("   " .. itemLink) or RETRIEVING_DATA, 
 									right = L["iLvl"] .. " " .. infoString,
@@ -1987,14 +2455,10 @@ local function GetCachedSearchResults(search, method, paramA, paramB, ...)
 							end
 						end
 						if total > 0 then
-							group.total = total;
-							group.progress = progress;
-							group.g = {};
+							tinsert(group, { itemID=itemID, total=total, progress=progress});
 							tinsert(info, 1, { left = L["ARTIFACT_RELIC_COMPLETION"], right = L[progress == total and "TRADEABLE" or "NOT_TRADEABLE"] });
 						end
 					else
-						group.collectible = true;
-						group.collected = false;
 						tinsert(info, 1, { left = L["ARTIFACT_RELIC_CACHE"], wrap = true, color = "ff66ccff" });
 					end
 				end
@@ -2063,11 +2527,15 @@ local function GetCachedSearchResults(search, method, paramA, paramB, ...)
 				local symbolicLink = ResolveSymbolicLink(group);
 				if symbolicLink then
 					if group.g and #group.g >= 0 then
-						for i,o in ipairs(group.g) do
-							MergeObject(symbolicLink, CreateObject(o));
+						for j=1,#symbolicLink,1 do
+							MergeObject(group.g, CreateObject(symbolicLink[j]));
 						end
+					else
+						for j=#symbolicLink,1,-1 do
+							symbolicLink[j] = CreateObject(symbolicLink[j]);
+						end
+						group.g = symbolicLink;
 					end
-					group.g = symbolicLink;
 				end
 			else
 				for i,o in ipairs(merged) do
@@ -2075,19 +2543,23 @@ local function GetCachedSearchResults(search, method, paramA, paramB, ...)
 					if symbolicLink then
 						o.symbolized = true;
 						if o.g and #o.g >= 0 then
-							for j,k in ipairs(o.g) do
-								MergeObject(symbolicLink, CreateObject(k));
+							for j=1,#symbolicLink,1 do
+								MergeObject(o.g, CreateObject(symbolicLink[j]));
 							end
+						else
+							for j=#symbolicLink,1,-1 do
+								symbolicLink[j] = CreateObject(symbolicLink[j]);
+							end
+							o.g = symbolicLink;
 						end
-						o.g = symbolicLink;
 					end
 				end
 				group = CreateObject({ [paramA] = paramB });
 				group.g = merged;
 			end
 			
-			group.progress = 0;
-			group.total = 0;
+			group.total = (group.total or 0);
+			group.progress = (group.progress or 0);
 			app.UpdateGroups(group, group.g);
 			if group.collectible then
 				group.total = group.total + 1;
@@ -2097,11 +2569,12 @@ local function GetCachedSearchResults(search, method, paramA, paramB, ...)
 			end
 		end
 		
-		if group.description and app.Settings:GetTooltipSetting("Descriptions") and not group.encounterID and not (paramA == "achievementID" or paramA == "titleID") then
+		if group.description and app.Settings:GetTooltipSetting("Descriptions") and not (group.speciesID or group.encounterID or paramA == "achievementID" or paramA == "titleID") then
 			tinsert(info, 1, { left = group.description, wrap = true, color = "ff66ccff" });
 		end
 		
 		if group.g and #group.g > 0 then
+			--[[
 			if app.Settings:GetTooltipSetting("Descriptions") and not (paramA == "achievementID" or paramA == "titleID") then
 				for i,j in ipairs(group.g) do
 					if j.description and ((j[paramA] and j[paramA] == paramB) or (paramA == "itemID" and group.key == j.key)) then
@@ -2109,21 +2582,48 @@ local function GetCachedSearchResults(search, method, paramA, paramB, ...)
 					end
 				end
 			end
+			]]--
 			if app.Settings:GetTooltipSetting("SummarizeThings") then
-				local entries = {};
+				local entries, left, right = {};
 				BuildContainsInfo(group.g, entries, paramA, paramB, "  ", app.noDepth and 99 or 1);
 				if #entries > 0 then
 					tinsert(info, { left = "Contains:" });
 					if #entries < 25 then
 						for i,item in ipairs(entries) do
-							tinsert(info, { left = item.prefix .. item.left, right = item.right });
-							if item.working then working = true; end
+							left = item.group.text or RETRIEVING_DATA;
+							if left == RETRIEVING_DATA or left:find("%[]") then working = true; end
+							if item.group.icon then item.prefix = item.prefix .. "|T" .. item.group.icon .. ":0|t "; end
+							
+							-- If this group has specialization requirements, let's attempt to show the specialization icons.
+							right = item.right;
+							local specs = item.group.specs;
+							if specs and #specs > 0 then
+								table.sort(specs);
+								for i,spec in ipairs(specs) do
+									local id, name, description, icon, role, class = GetSpecializationInfoByID(spec);
+									if class == app.Class then right = "|T" .. icon .. ":0|t " .. right; end
+								end
+							end
+							tinsert(info, { left = item.prefix .. left, right = right });
 						end
 					else
 						for i=1,math.min(25, #entries) do
 							local item = entries[i];
-							tinsert(info, { left = item.prefix .. item.left, right = item.right });
-							if item.working then working = true; end
+							left = item.group.text or RETRIEVING_DATA;
+							if left == RETRIEVING_DATA or left:find("%[]") then working = true; end
+							if item.group.icon then item.prefix = item.prefix .. "|T" .. item.group.icon .. ":0|t "; end
+							
+							-- If this group has specialization requirements, let's attempt to show the specialization icons.
+							right = item.right;
+							local specs = item.group.specs;
+							if specs and #specs > 0 then
+								table.sort(specs);
+								for i,spec in ipairs(specs) do
+									local id, name, description, icon, role, class = GetSpecializationInfoByID(spec);
+									if class == app.Class then right = "|T" .. icon .. ":0|t " .. right; end
+								end
+							end
+							tinsert(info, { left = item.prefix .. left, right = right });
 						end
 						local more = #entries - 25;
 						if more > 0 then tinsert(info, { left = "And " .. more .. " more..." }); end
@@ -2353,9 +2853,15 @@ fieldConverters = {
 	end,
 };
 CacheFields = function(group)
+	local n = 0;
+	local clone = {};
 	for key,value in pairs(group) do
-		_cache = rawget(fieldConverters, key);
-		if _cache then _cache(group, value); end
+		n = n + 1
+		rawset(clone, n, key);
+	end
+	for i=1,n,1 do
+		_cache = rawget(fieldConverters, rawget(clone, i));
+		if _cache then _cache(group, rawget(group, rawget(clone, i))); end
 	end
 end
 end)();
@@ -2443,6 +2949,14 @@ local function SearchForLink(link)
 					end
 					if #onlyMatchingModIDs > 0 then
 						return onlyMatchingModIDs;
+					else
+						local g = {};
+						for i,o in ipairs(_) do
+							o = CreateObject(o);
+							o.modID = modID;
+							MergeObject(g, o);
+						end
+						return g;
 					end
 				end
 				return _;
@@ -2462,6 +2976,8 @@ local function SearchForLink(link)
 		--print(string.gsub(string.gsub(link, "|c", "c"), "|h", "h"));
 		if kind == "itemid" then
 			return SearchForField("itemID", id);
+		elseif kind == "sourceid" or kind == "s" then
+			return SearchForField("s", id);
 		elseif kind == "questid" or kind == "quest" then
 			return SearchForField("questID", id);
 		elseif kind == "creatureid" or kind == "npcid" then
@@ -2912,6 +3428,23 @@ local function RefreshMountCollection()
 		wipe(searchCache);
 	end);
 end
+local function SortAlphabetically(group)
+	if group.visible and group.g then
+		local txtA, txtB;
+		table.sort(group.g, function(a, b)
+			txtA = a.name;
+			txtB = b.name;
+			if txtA then
+				if txtB then return txtA < txtB; end
+				return true;
+			end
+			return false;
+		end);
+		for i,o in ipairs(group.g) do
+			SortAlphabetically(o);
+		end
+	end
+end
 app.GetCurrentMapID = function()
 	local uiMapID = C_Map_GetBestMapForUnit("player");
 	
@@ -2945,20 +3478,23 @@ local function AttachTooltipRawSearchResults(self, group)
 	if group then
 		-- If there was info text generated for this search result, then display that first.
 		if group.info then
+			local left, right;
 			for i,entry in ipairs(group.info) do
-				if entry.right then
-					self:AddDoubleLine(entry.left or " ", entry.right);
+				left = entry.left;
+				right = entry.right;
+				if right then
+					self:AddDoubleLine(left or " ", right);
 				elseif entry.r then
 					if entry.wrap then
-						self:AddLine(entry.left, entry.r / 255, entry.g / 255, entry.b / 255, 1);
+						self:AddLine(left, entry.r / 255, entry.g / 255, entry.b / 255, 1);
 					else
-						self:AddLine(entry.left, entry.r / 255, entry.g / 255, entry.b / 255);
+						self:AddLine(left, entry.r / 255, entry.g / 255, entry.b / 255);
 					end
 				else
 					if entry.wrap then
-						self:AddLine(entry.left, nil, nil, nil, 1);
+						self:AddLine(left, nil, nil, nil, 1);
 					else
-						self:AddLine(entry.left);
+						self:AddLine(left);
 					end
 				end
 			end
@@ -4077,15 +4613,24 @@ end)();
 			elseif key == "collectible" then
 				return app.CollectibleFlightPaths;
 			elseif key == "collected" then
+				local isCollected;
 				if app.AccountWideFlightPaths then
 					if GetDataSubMember("CollectedFlightPaths", t.flightPathID) then
-						return 1;
+						isCollected = 1;
 					end
 				else
 					if GetTempDataSubMember("CollectedFlightPaths", t.flightPathID) then
-						return 1;
+						isCollected = 1;
 					end
 				end
+				if isCollected ~= 1 and t.altQuests then
+					for i,questID in ipairs(t.altQuests) do
+						if IsQuestFlaggedCompleted(questID) then
+							isCollected = 1;
+						end
+					end
+				end
+				return isCollected;
 			elseif key == "text" then
 				return t.info.name or "Visit the Flight Master to cache.";
 			elseif key == "u" then
@@ -4896,7 +5441,7 @@ local itemFields = {
 					itemLink = string.format("item:%d:::::::::::::", itemLink);
 				end
 			else
-				bonusID = rawget(t, "modID");
+				bonusID = rawget(t, "modID") or 1;
 				if bonusID then
 					itemLink = string.format("item:%d:::::::::::%d:1:3524", itemLink, bonusID);
 				end
@@ -4993,7 +5538,7 @@ local appearanceFields = {
 					itemLink = string.format("item:%d:::::::::::::", itemLink);
 				end
 			else
-				bonusID = rawget(t, "modID");
+				bonusID = rawget(t, "modID") or 1;
 				if bonusID then
 					itemLink = string.format("item:%d:::::::::::%d:1:3524", itemLink, bonusID);
 				end
@@ -6004,6 +6549,8 @@ app.BaseVignette = {
 			return t.isDaily or t.isWeekly or t.isYearly;
 		elseif key == "saved" then
 			return IsQuestFlaggedCompletedForObject(t);
+		elseif key == "isVignette" then
+			return true;
 		else
 			-- Something that isn't dynamic.
 			return table[key];
@@ -7403,6 +7950,26 @@ local function CreateMiniListForGroup(group)
 				["g"] = g,
 				["hideText"] = true
 			};
+		elseif group.sym then
+			popout.data = CloneData(group);
+			popout.data.collectible = true;
+			popout.data.visible = true;
+			popout.data.progress = 0;
+			popout.data.total = 0;
+			if not popout.data.g then
+				local resolved = ResolveSymbolicLink(group);
+				if resolved then
+					for i=#resolved,1,-1 do
+						resolved[i] = CreateObject(resolved[i]);
+					end
+					popout.data.g = resolved;
+				end
+			else
+				local resolved = ResolveSymbolicLink(group);
+				if resolved then
+					MergeObjects(popout.data.g, resolved);
+				end
+			end
 		elseif group.g then
 			-- This is already a container with accurate numbers.
 			popout.data = group;
@@ -7427,14 +7994,10 @@ local function CreateMiniListForGroup(group)
 		UpdateGroups(popout.data, popout.data.g);
 		table.insert(app.RawData, popout.data);
 	end
-	if IsAltKeyDown() then
-		AddTomTomWaypoint(popout.data, false);
-	else
-		if not popout.data.expanded then
-			ExpandGroupsRecursively(popout.data, true, true);
-		end
-		popout:Toggle(true);
+	if not popout.data.expanded then
+		ExpandGroupsRecursively(popout.data, true, true);
 	end
+	popout:Toggle(true);
 end
 local function ClearRowData(self)
 	self.ref = nil;
@@ -7712,48 +8275,128 @@ local function RowOnClick(self, button)
 			return true;
 		end
 		
-		if IsShiftKeyDown() then
-			-- If we're at the Auction House
-			if AuctionFrame and AuctionFrame:IsShown() then
-				-- Auctionator Support
-				if Atr_SearchAH then
-					if reference.g and #reference.g > 0 then
-						local missingItems = SearchForMissingItemNames(reference);					
-						if #missingItems > 0 then
-							Atr_SelectPane(3);
-							Atr_SearchAH(L["TITLE"], missingItems, LE_ITEM_CLASS_ARMOR);
-							return true;
-						end
-						app.print("No cached items found in search. Expand the group and view the items to cache the names and try again. Only Bind on Equip items will be found using this search.");
+		-- All non-Shift Right Clicks open a mini list or the settings.
+		if button == "RightButton" then
+			if IsAltKeyDown() then
+				AddTomTomWaypoint(reference, false);
+			elseif IsShiftKeyDown() then
+				app.print("Sorting selection...");
+				SortAlphabetically(reference);
+				app.print("Finished Sorting.");
+			else
+				if self.index > 0 then
+					CreateMiniListForGroup(reference);
+				else
+					-- Open the Settings Menu
+					if InterfaceOptionsFrame:IsVisible() then
+						InterfaceOptionsFrame_Show();
 					else
-						local name = reference.name;
-						if name then
-							Atr_SelectPane(3);
-							--Atr_SearchAH(name, { name });
-							Atr_SetSearchText (name);
-							Atr_Search_Onclick ();
+						InterfaceOptionsFrame_OpenToCategory(app:GetName());
+						InterfaceOptionsFrame_OpenToCategory(app:GetName());
+					end
+				end
+			end
+		else
+			if IsShiftKeyDown() then
+				-- If we're at the Auction House
+				if AuctionFrame and AuctionFrame:IsShown() then
+					-- Auctionator Support
+					if Atr_SearchAH then
+						if reference.g and #reference.g > 0 then
+							local missingItems = SearchForMissingItemNames(reference);					
+							if #missingItems > 0 then
+								Atr_SelectPane(3);
+								Atr_SearchAH(L["TITLE"], missingItems, LE_ITEM_CLASS_ARMOR);
+								return true;
+							end
+							app.print("No cached items found in search. Expand the group and view the items to cache the names and try again. Only Bind on Equip items will be found using this search.");
+						else
+							local name = reference.name;
+							if name then
+								Atr_SelectPane(3);
+								--Atr_SearchAH(name, { name });
+								Atr_SetSearchText (name);
+								Atr_Search_Onclick ();
+								return true;
+							end
+							app.print("Only Bind on Equip items can be found using this search.");
+						end
+						return true;
+					elseif TSMAPI and TSMAPI.Auction then
+						if reference.g and #reference.g > 0 then
+							local missingItems = SearchForMissingItems(reference);					
+							if #missingItems > 0 then
+								local itemList, search = {};
+								for i,group in ipairs(missingItems) do
+									search = group.tsm or TSMAPI.Item:ToItemString(group.link or group.itemID);
+									if search then itemList[search] = BuildSourceTextForTSM(group, 0); end
+								end
+								app:ShowPopupDialog("Running this command can potentially destroy your existing TSM settings by reassigning items to the " .. L["TITLE"] .. " preset.\n\nWe recommend that you use a different profile when using this feature.\n\nDo you want to proceed anyways?",
+								function()
+									TSMAPI.Groups:CreatePreset(itemList);
+									app.print("Updated the preset successfully.");
+									if not TSMAPI.Operations:GetFirstByItem(search, "Shopping") then
+										print("The preset is missing a 'Shopping' Operation assignment.");
+										print("Type '/tsm operations' to create or assign one.");
+									end
+								end);
+								return true;
+							end
+							app.print("No cached items found in search. Expand the group and view the items to cache the names and try again. Only Bind on Equip items will be found using this search.");
+						else
+							-- Attempt to search manually with the link.
+							local link = reference.link or reference.silentLink;
+							if link and HandleModifiedItemClick(link) then
+								AuctionFrameBrowse_Search();
+								return true;
+							end
+						end
+						return true;
+					else
+						if reference.g and #reference.g > 0 and not reference.link then
+							app.print("Group-based searches are only supported using Auctionator.");
+							return true;
+						else
+							-- Attempt to search manually with the link.
+							local link = reference.link or reference.silentLink;
+							if link and HandleModifiedItemClick(link) then
+								AuctionFrameBrowse_Search();
+								return true;
+							end
+						end
+					end
+				elseif TSMAPI_FOUR and false then
+					if reference.g and #reference.g > 0 then
+						if true then
+							app.print("TSM4 not compatible with ATT yet. If you know how to create Presets like we used to do in TSM3, please whisper Crieve on Discord!");
 							return true;
 						end
-						app.print("Only Bind on Equip items can be found using this search.");
-					end
-					return true;
-				elseif TSMAPI and TSMAPI.Auction then
-					if reference.g and #reference.g > 0 then
 						local missingItems = SearchForMissingItems(reference);					
 						if #missingItems > 0 then
-							local itemList, search = {};
-							for i,group in ipairs(missingItems) do
-								search = group.tsm or TSMAPI.Item:ToItemString(group.link or group.itemID);
-								if search then itemList[search] = BuildSourceTextForTSM(group, 0); end
-							end
 							app:ShowPopupDialog("Running this command can potentially destroy your existing TSM settings by reassigning items to the " .. L["TITLE"] .. " preset.\n\nWe recommend that you use a different profile when using this feature.\n\nDo you want to proceed anyways?",
 							function()
-								TSMAPI.Groups:CreatePreset(itemList);
-								app.print("Updated the preset successfully.");
-								if not TSMAPI.Operations:GetFirstByItem(search, "Shopping") then
-									print("The preset is missing a 'Shopping' Operation assignment.");
-									print("Type '/tsm operations' to create or assign one.");
+								local itemString, groupPath;
+								groupPath = BuildSourceTextForTSM(app:GetWindow("Prime").data, 0);
+								if TSMAPI_FOUR.Groups.Exists(groupPath) then
+									TSMAPI_FOUR.Groups.Remove(groupPath);
 								end
+								TSMAPI_FOUR.Groups.AppendOperation(groupPath, "Shopping", operation)
+								for i,group in ipairs(missingItems) do
+									if (not group.spellID and not group.achID) or group.itemID then
+										itemString = group.tsm;
+										if itemString then
+											groupPath = BuildSourceTextForTSM(group, 0);
+											TSMAPI_FOUR.Groups.Create(groupPath);
+											if TSMAPI_FOUR.Groups.IsItemInGroup(itemString) then
+												TSMAPI_FOUR.Groups.MoveItem(itemString, groupPath)
+											else
+												TSMAPI_FOUR.Groups.AddItem(itemString, groupPath)
+											end
+											if i > 10 then break; end
+										end
+									end
+								end
+								app.print("Updated the preset successfully.");
 							end);
 							return true;
 						end
@@ -7768,133 +8411,62 @@ local function RowOnClick(self, button)
 					end
 					return true;
 				else
-					if reference.g and #reference.g > 0 and not reference.link then
-						app.print("Group-based searches are only supported using Auctionator.");
-						return true;
-					else
-						-- Attempt to search manually with the link.
-						local link = reference.link or reference.silentLink;
-						if link and HandleModifiedItemClick(link) then
-							AuctionFrameBrowse_Search();
-							return true;
-						end
-					end
-				end
-			elseif TSMAPI_FOUR and false then
-				if reference.g and #reference.g > 0 then
-					if true then
-						app.print("TSM4 not compatible with ATT yet. If you know how to create Presets like we used to do in TSM3, please whisper Crieve on Discord!");
-						return true;
-					end
-					local missingItems = SearchForMissingItems(reference);					
-					if #missingItems > 0 then
-						app:ShowPopupDialog("Running this command can potentially destroy your existing TSM settings by reassigning items to the " .. L["TITLE"] .. " preset.\n\nWe recommend that you use a different profile when using this feature.\n\nDo you want to proceed anyways?",
-						function()
-							local itemString, groupPath;
-							groupPath = BuildSourceTextForTSM(app:GetWindow("Prime").data, 0);
-							if TSMAPI_FOUR.Groups.Exists(groupPath) then
-								TSMAPI_FOUR.Groups.Remove(groupPath);
-							end
-							TSMAPI_FOUR.Groups.AppendOperation(groupPath, "Shopping", operation)
-							for i,group in ipairs(missingItems) do
-								if (not group.spellID and not group.achID) or group.itemID then
-									itemString = group.tsm;
-									if itemString then
-										groupPath = BuildSourceTextForTSM(group, 0);
-										TSMAPI_FOUR.Groups.Create(groupPath);
-										if TSMAPI_FOUR.Groups.IsItemInGroup(itemString) then
-											TSMAPI_FOUR.Groups.MoveItem(itemString, groupPath)
-										else
-											TSMAPI_FOUR.Groups.AddItem(itemString, groupPath)
-										end
-										if i > 10 then break; end
-									end
-								end
-							end
-							app.print("Updated the preset successfully.");
-						end);
-						return true;
-					end
-					app.print("No cached items found in search. Expand the group and view the items to cache the names and try again. Only Bind on Equip items will be found using this search.");
-				else
-					-- Attempt to search manually with the link.
-					local link = reference.link or reference.silentLink;
-					if link and HandleModifiedItemClick(link) then
-						AuctionFrameBrowse_Search();
-						return true;
-					end
-				end
-				return true;
-			else
-			
-				-- Not at the Auction House
-				-- If this reference has a link, then attempt to preview the appearance or write to the chat window.
-				local link = reference.link or reference.silentLink;
-				if (link and HandleModifiedItemClick(link)) or ChatEdit_InsertLink(link or BuildSourceTextForChat(reference, 0)) then return true; end
 				
-				-- If you're looking at the Profession Window, Shift Clicking will replace the search string instead.
-				if app:GetWindow("Tradeskills"):IsShown() then
+					-- Not at the Auction House
+					-- If this reference has a link, then attempt to preview the appearance or write to the chat window.
+					local link = reference.link or reference.silentLink;
+					if (link and HandleModifiedItemClick(link)) or ChatEdit_InsertLink(link or BuildSourceTextForChat(reference, 0)) then return true; end
 					
-				elseif button == "LeftButton" then
-					-- Default behaviour is to Refresh Collections.
-					RefreshCollections(reference);
-				end
-				return true;
-			end
-		end
-		
-		-- Control Click Expands the Groups
-		if IsControlKeyDown() then
-			-- Illusions are a nasty animal that need to be displayed a special way.
-			if reference.illusionID then
-				DressUpVisual(DressUpOutfitMixin:GetSlotSourceID("MAINHANDSLOT", LE_TRANSMOG_TYPE_APPEARANCE), 16, reference.illusionID);
-			else
-				-- If this reference has a link, then attempt to preview the appearance.
-				local link = reference.link or reference.silentLink;
-				if link and HandleModifiedItemClick(link) then
+					-- If you're looking at the Profession Window, Shift Clicking will replace the search string instead.
+					if app:GetWindow("Tradeskills"):IsShown() then
+						
+					elseif button == "LeftButton" then
+						-- Default behaviour is to Refresh Collections.
+						RefreshCollections(reference);
+					end
 					return true;
 				end
 			end
 			
-			-- If this reference is anything else, expand the groups.
-			if reference.g then
-				if self.index < 1 and #reference.g > 0 then
-					ExpandGroupsRecursively(reference, not reference.g[1].expanded, true);
+			-- Control Click Expands the Groups
+			if IsControlKeyDown() then
+				-- Illusions are a nasty animal that need to be displayed a special way.
+				if reference.illusionID then
+					DressUpVisual(DressUpOutfitMixin:GetSlotSourceID("MAINHANDSLOT", LE_TRANSMOG_TYPE_APPEARANCE), 16, reference.illusionID);
 				else
-					ExpandGroupsRecursively(reference, not reference.expanded, true);
+					-- If this reference has a link, then attempt to preview the appearance.
+					local link = reference.link or reference.silentLink;
+					if link and HandleModifiedItemClick(link) then
+						return true;
+					end
 				end
-				app:UpdateWindows();
-				return true;
+				
+				-- If this reference is anything else, expand the groups.
+				if reference.g then
+					if self.index < 1 and #reference.g > 0 then
+						ExpandGroupsRecursively(reference, not reference.g[1].expanded, true);
+					else
+						ExpandGroupsRecursively(reference, not reference.expanded, true);
+					end
+					app:UpdateWindows();
+					return true;
+				end
 			end
-		end
-		
-		-- All non-Shift Right Clicks open a mini list or the settings.
-		if button == "RightButton" then
 			if self.index > 0 then
-				CreateMiniListForGroup(self.ref);
+				reference.expanded = not reference.expanded;
+				self:GetParent():GetParent():Update();
+			elseif not reference.expanded then
+				reference.expanded = true;
+				self:GetParent():GetParent():Update();
 			else
-				-- Open the Settings Menu
-				if InterfaceOptionsFrame:IsVisible() then
-					InterfaceOptionsFrame_Show();
-				else
-					InterfaceOptionsFrame_OpenToCategory(app:GetName());
-					InterfaceOptionsFrame_OpenToCategory(app:GetName());
-				end
+				-- Allow the First Frame to move the parent.
+				local owner = self:GetParent():GetParent();
+				self:SetScript("OnMouseUp", function(self)
+					self:SetScript("OnMouseUp", nil);
+					StopMovingOrSizing(owner);
+				end);
+				StartMovingOrSizing(owner, true);
 			end
-		elseif self.index > 0 then
-			reference.expanded = not reference.expanded;
-			self:GetParent():GetParent():Update();
-		elseif not reference.expanded then
-			reference.expanded = true;
-			self:GetParent():GetParent():Update();
-		else
-			-- Allow the First Frame to move the parent.
-			local owner = self:GetParent():GetParent();
-			self:SetScript("OnMouseUp", function(self)
-				self:SetScript("OnMouseUp", nil);
-				StopMovingOrSizing(owner);
-			end);
-			StartMovingOrSizing(owner, true);
 		end
 	end
 end
@@ -8137,6 +8709,9 @@ local function RowOnEnter(self)
 		if reference.isWeekly then GameTooltip:AddLine("This can be completed weekly."); end
 		if reference.isYearly then GameTooltip:AddLine("This can be completed yearly."); end
 		if not GameTooltipModel:TrySetModel(reference) and reference.icon then
+			if app.Settings:GetTooltipSetting("iconPath") then
+				GameTooltip:AddDoubleLine("Icon", reference.icon);
+			end
 			GameTooltipIcon:SetSize(72,72);
 			GameTooltipIcon.icon:SetTexture(reference.preview or reference.icon);
 			local texcoord = reference.previewtexcoord or reference.texcoord;
@@ -8655,6 +9230,18 @@ function app:GetDataCache()
 			db.text = TRADE_SKILLS;
 			db.icon = "Interface\\ICONS\\INV_Scroll_04";
 			db.g = app.Categories.Professions;
+			db.collectible = false;
+			table.insert(g, db);
+		end
+		
+		-- Secrets
+		if app.Categories.Secrets then
+			db = {};
+			db.expanded = false;
+			db.description = "Naughty secrets...";
+			db.text = L["SECRETS_HEADER"];
+			db.icon = "Interface\\ICONS\\INV_Horse2Purple";
+			db.g = app.Categories.Secrets;
 			db.collectible = false;
 			table.insert(g, db);
 		end
@@ -9354,17 +9941,7 @@ app:GetWindow("Bounty", UIParent, function(self, force, got)
 					},
 				}),
 				app.CreateInstance(277, { 	-- Halls of Stone
-					['description'] = "The reward chest for completing the Tribunal of Ages Event in Halls of Stone is currently not interactable since 8.2. All items found within it are now considered Unobtainable.",
-					['g'] = {
-						app.CreateItemSource(17928, 37653),	-- Sword of Justice
-						app.CreateItemSource(17930, 37655),	-- Mantle of the Tribunal
-						app.CreateItemSource(16594, 35677),	-- Cosmos Vestments
-						app.CreateItemSource(16592, 35675),	-- Linked Armor of the Sphere
-						app.CreateItemSource(93759, 157564), 	-- Marbled Bracers
-						app.CreateItemSource(17931, 37656),	-- Raging Construct Bands
-						app.CreateItemSource(16593, 35676),	-- Constellation Leggings
-						app.CreateItemSource(17929, 37654),	-- Sabaton of the Ages
-					},
+					['description'] = "The reward chest for completing the Tribunal of Ages Event in Halls of Stone appears to be fixed! Please let us know if this is still a problem!",
 				}),
 			},
 		};
@@ -9984,9 +10561,7 @@ app:GetWindow("CurrentInstance", UIParent, function(self, force, got)
 					for u,temp in pairs(unlinked) do
 						local h = holidays[u];
 						if h then
-							for i,data in ipairs(temp) do
-								MergeObject(h.g, data);
-							end
+							MergeObjects(h.g, temp);
 						else
 							-- Attempt to scan for the main holiday header.
 							local done = false;
@@ -10002,9 +10577,7 @@ app:GetWindow("CurrentInstance", UIParent, function(self, force, got)
 								end
 							end
 							if not done then
-								for i,data in ipairs(temp) do
-									MergeObject(holiday, data);
-								end
+								MergeObjects(holiday, temp);
 							end
 						end
 					end
@@ -10810,6 +11383,7 @@ app:GetWindow("RaidAssistant", UIParent, function(self)
 			-- Setup Event Handlers and register for events
 			self:SetScript("OnEvent", function(self, e, ...) self:Update(); end);
 			self:RegisterEvent("PLAYER_LOOT_SPEC_UPDATED");
+			self:RegisterEvent("PLAYER_DIFFICULTY_CHANGED");
 			self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
 			self:RegisterEvent("CHAT_MSG_SYSTEM");
 			self:RegisterEvent("SCENARIO_UPDATE");
@@ -11511,6 +12085,7 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 						['text'] = "Update World Quests Now",
 						['icon'] = "Interface\\Icons\\INV_Misc_Map_01",
 						['description'] = "Sometimes the World Quest API is slow or fails to return new data. If you wish to forcibly refresh the data without changing zones, click this button now!",
+						['hash'] = "funUpdateWorldQuests",
 						['OnClick'] = function(data, button)
 							Push(self, "Rebuild", self.Rebuild);
 							return true;
@@ -11527,16 +12102,38 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 				{ app.FactionID == Enum.FlightPathFaction.Horde and 875 or 876, 895 },	-- Kul'Tiras or Zandalar, Stormsong Valley
 			};
 			local worldMapIDs = {
-				14,		-- Arathi Highlands
-				62,		-- Darkshore
-				875,	-- Zandalar
-				876,	-- Kul'Tiras
-				619,	-- The Broken Isles
-				885,	-- Antoran Wastes
-				830,	-- Krokuun
-				882,	-- Mac'Aree
-				1355,	-- Nazjatar
-				1462,	-- Mechagon
+				{ 14 },		-- Arathi Highlands
+				{ 62 },		-- Darkshore
+				{
+					875,	-- Zandalar
+					{
+						-- { 863, ???, { 54135, 54136 }},	-- Nazmir (Romp in the Swamp [H] / March on the Marsh [A])
+						{ 864, 5970, { 53885, 54134 }},	-- Voldun (Isolated Victory [H] / Many Fine Heroes [A])
+						-- { 862, ???, { 53883, 54138 }},	-- Zuldazar (Shores of Zuldazar [H] / Ritual Rampage [A])
+					}
+				},
+				{
+					876,	-- Kul'Tiras
+					{
+						-- { 896, ???, { 54137, 53701 }},	-- Drustvar (In Every Dark Corner [H] / A Drust Cause [A])
+						{ 942, 5966, { 54132, 51982 }},	-- Stormsong Valley (A Horde of Heroes [H] / Storm's Rage [A])
+						{ 895, 5896, { 53939, 53711 }},	-- Tiragarde Sound (Breaching Boralus [H] / A Sound Defense [A])
+					}
+				},	
+				{ 
+					619, -- Broken Isles
+					{
+						{ 630, 5175, { 47063 }},	-- Azsuna
+						{ 650, 5177, { 47063 }},	-- Highmountain
+						{ 634, 5178, { 47063 }},	-- Stormheim
+						{ 641, 5210, { 47063 }},	-- Val'Sharah
+					}
+				},
+				{ 885 },	-- Antoran Wastes
+				{ 830 },	-- Krokuun
+				{ 882 },	-- Mac'Aree
+				{ 1355 },	-- Nazjatar
+				-- { 1462 },	-- Mechagon does not need to be included as a separate mapID as it is contained in the the Kul Tiras mapID
 			};
 			local OnUpdateForItem = function(self)
 				for i,o in ipairs(self.g) do
@@ -11585,6 +12182,15 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 									end
 									if data.g then
 										for _,entry in ipairs(data.g) do
+											local resolved = ResolveSymbolicLink(entry);
+											if resolved then
+												entry = CreateObject(entry);
+												if entry.g then
+													MergeObjects(entry.g, resolved);
+												else
+													entry.g = resolved;
+												end
+											end
 											tinsert(questObject.g, entry);
 										end
 									end
@@ -11599,7 +12205,8 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 				end
 				
 				-- Acquire all of the world quests.
-				for _,mapID in ipairs(worldMapIDs) do
+				for _,pair in ipairs(worldMapIDs) do
+					local mapID = pair[1];
 					local mapObject = { mapID=mapID,g={},progress=0,total=0};
 					local cache = fieldCache["mapID"][mapID];
 					if cache then
@@ -11609,6 +12216,160 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 								mapObject.lvl = data.lvl;
 								mapObject.description = data.description;
 								break;
+							end
+						end
+					end
+					
+					-- Invasions
+					local mapIDPOIPairs = pair[2];
+					if mapIDPOIPairs then
+						for i,arr in ipairs(mapIDPOIPairs) do
+							for j,questID in ipairs(arr[3]) do
+								if not IsQuestFlaggedCompleted(questID) then
+									local timeLeft = C_AreaPoiInfo.GetAreaPOISecondsLeft(arr[2]);
+									if timeLeft and timeLeft > 0 then
+										local mapID = arr[1];
+										local subMapObject = { mapID=mapID,g={},progress=0,total=0};
+										local cache = fieldCache["mapID"][mapID];
+										if cache then
+											for _,data in ipairs(cache) do
+												if data.mapID and data.icon then
+													subMapObject.icon = data.icon;
+													subMapObject.lvl = data.lvl;
+													subMapObject.description = data.description;
+													break;
+												end
+											end
+										end
+										local questObject = {questID=questID,g={}};
+										cache = fieldCache["questID"][questObject.questID];
+										if cache then
+											for _,data in ipairs(cache) do
+												for key,value in pairs(data) do
+													if not (key == "g" or key == "parent") then
+														questObject[key] = value;
+													end
+												end
+												if data.isVignette then questObject.isVignette = true; end
+												if data.g then
+													for _,entry in ipairs(data.g) do
+														local resolved = ResolveSymbolicLink(entry);
+														if resolved then
+															entry = CreateObject(entry);
+															if entry.g then
+																MergeObjects(entry.g, resolved);
+															else
+																entry.g = resolved;
+															end
+														end
+														tinsert(questObject.g, entry);
+													end
+												end
+											end
+										end
+										
+										local numQuestRewards = GetNumQuestLogRewards (questObject.questID);
+										for j=1,numQuestRewards,1 do
+											local _, _, _, _, _, itemID, ilvl = GetQuestLogRewardInfo (j, questObject.questID);
+											if itemID then
+												if showCurrencies or (itemID ~= 116415 and itemID ~= 163036) then
+													QuestHarvester.AllTheThingsProcessing = true;
+													QuestHarvester:SetOwner(UIParent, "ANCHOR_NONE");
+													QuestHarvester:SetQuestLogItem("reward", j, questObject.questID);
+													local link = select(2, QuestHarvester:GetItem());
+													QuestHarvester.AllTheThingsProcessing = false;
+													QuestHarvester:Hide();
+													if link then
+														--print("TODO: Parse Link", link);
+														cache = SearchForLink(link);
+														if cache and #cache > 0 then
+															local _, itemID, enchantId, gemId1, gemId2, gemId3, gemId4, suffixId, uniqueId, linkLevel, specializationID, upgradeId, modID = strsplit(":", link);
+															for _,item in ipairs(cache) do
+																item = CreateObject(item);
+																item.link = link;
+																if modID then item.modID = tonumber(modID); end
+																MergeObject(questObject.g, item);
+															end
+														end
+													else
+														-- Take the best guess at what this is... No clue.
+														local modID = tagID == 137 and ((ilvl >= 370 and 23) or (ilvl >= 355 and 2)) or 1;
+														cache = fieldCache["itemID"][itemID];
+														local item = { ["itemID"] = itemID, ["expanded"] = false, };
+														if cache then
+															local ACKCHUALLY;
+															for _,data in ipairs(cache) do
+																if data.f then
+																	item.f = data.f;
+																end
+																if data.s then
+																	item.s = data.s;
+																	if data.modID == modID then
+																		ACKCHUALLY = data.s;
+																		item.modID = modID;
+																		if tagID == 137 then
+																			local parent = data.parent;
+																			while parent do
+																				if parent.instanceID then
+																					questObject.icon = parent.icon;
+																					break;
+																				end
+																				parent = parent.parent;
+																			end
+																		end
+																	end
+																end
+																if data.g and #data.g > 0 then
+																	if not item.g then
+																		item.g = {};
+																		item.progress = 0;
+																		item.total = 0;
+																	end
+																	MergeObjects(item.g, data.g);
+																end
+															end
+															if ACKCHUALLY then
+																item.s = ACKCHUALLY;
+															end
+														end
+														MergeObject(questObject.g, item);
+													end
+												end
+											else
+												return true;
+											end
+										end
+										
+										local description = BONUS_OBJECTIVE_TIME_LEFT:format(SecondsToTime(timeLeft * 60));
+										if timeLeft < 30 then
+											description = "|cFFFF0000" .. description .. "|r";
+										elseif timeLeft < 60 then
+											description = "|cFFFFFF00" .. description .. "|r";
+										end
+										if not questObject.description then
+											questObject.description = description;
+										else
+											questObject.description = questObject.description .. "\n\n" .. description;
+										end
+										
+										-- Resolve all symbolic links
+										if questObject.g and #questObject.g > 0 then
+											for j,item in ipairs(questObject.g) do
+												local resolved = ResolveSymbolicLink(item);
+												if resolved then
+													if item.g then
+														MergeObjects(item.g, resolved);
+													else
+														item.g = resolved;
+													end
+												end
+											end
+										end
+										
+										MergeObject(subMapObject.g, questObject);
+										MergeObject(mapObject.g, subMapObject);
+									end
+								end
 							end
 						end
 					end
@@ -11650,7 +12411,45 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 									end
 									if data.g then
 										for _,entry in ipairs(data.g) do
+											local resolved = ResolveSymbolicLink(entry);
+											if resolved then
+												entry = CreateObject(entry);
+												if entry.g then
+													MergeObjects(entry.g, resolved);
+												else
+													entry.g = resolved;
+												end
+											end
 											tinsert(questObject.g, entry);
+										end
+									end
+								end
+							end
+							
+							if questObject.qgs and #questObject.qgs == 1 then
+								for j,qg in ipairs(questObject.qgs) do
+									cache = fieldCache["creatureID"][qg];
+									if cache then
+										for _,data in ipairs(cache) do
+											for key,value in pairs(data) do
+												if not (key == "g" or key == "parent") then
+													questObject[key] = value;
+												end
+											end
+											if data.g then
+												for _,entry in ipairs(data.g) do
+													local resolved = ResolveSymbolicLink(entry);
+													if resolved then
+														entry = CreateObject(entry);
+														if entry.g then
+															MergeObjects(entry.g, resolved);
+														else
+															entry.g = resolved;
+														end
+													end
+													MergeObject(questObject.g, entry);
+												end
+											end
 										end
 									end
 								end
@@ -11660,54 +12459,86 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 							for j=1,numQuestRewards,1 do
 								local _, _, _, _, _, itemID, ilvl = GetQuestLogRewardInfo (j, questObject.questID);
 								if itemID then
-									local modID = tagID == 137 and ((ilvl >= 370 and 23) or (ilvl >= 355 and 2)) or 1;
 									if showCurrencies or (itemID ~= 116415 and itemID ~= 163036) then
-										-- QuestHarvester:SetQuestLogItem("reward", j, questObject.questID);
-										local item = { ["itemID"] = itemID, ["expanded"] = false, };
-										cache = fieldCache["itemID"][itemID];
-										if cache then
-											local ACKCHUALLY;
-											for _,data in ipairs(cache) do
-												if data.f then
-													item.f = data.f;
+										QuestHarvester.AllTheThingsProcessing = true;
+										QuestHarvester:SetOwner(UIParent, "ANCHOR_NONE");
+										QuestHarvester:SetQuestLogItem("reward", j, questObject.questID);
+										local link = select(2, QuestHarvester:GetItem());
+										QuestHarvester.AllTheThingsProcessing = false;
+										QuestHarvester:Hide();
+										if link then
+											--print("TODO: Parse Link", link);
+											cache = SearchForLink(link);
+											if cache and #cache > 0 then
+												local _, itemID, enchantId, gemId1, gemId2, gemId3, gemId4, suffixId, uniqueId, linkLevel, specializationID, upgradeId, modID = strsplit(":", link);
+												for _,item in ipairs(cache) do
+													item = CreateObject(item);
+													item.link = link;
+													if modID then item.modID = tonumber(modID); end
+													MergeObject(questObject.g, item);
 												end
-												if data.s then
-													item.s = data.s;
-													if data.modID == modID then
-														ACKCHUALLY = data.s;
-														item.modID = modID;
-														if tagID == 137 then
-															local parent = data.parent;
-															while parent do
-																if parent.instanceID then
-																	questObject.icon = parent.icon;
-																	break;
+											end
+										else
+											-- Take the best guess at what this is... No clue.
+											local modID = tagID == 137 and ((ilvl >= 370 and 23) or (ilvl >= 355 and 2)) or 1;
+											cache = fieldCache["itemID"][itemID];
+											local item = { ["itemID"] = itemID, ["expanded"] = false, };
+											if cache then
+												local ACKCHUALLY;
+												for _,data in ipairs(cache) do
+													if data.f then
+														item.f = data.f;
+													end
+													if data.s then
+														item.s = data.s;
+														if data.modID == modID then
+															ACKCHUALLY = data.s;
+															item.modID = modID;
+															if tagID == 137 then
+																local parent = data.parent;
+																while parent do
+																	if parent.instanceID then
+																		questObject.icon = parent.icon;
+																		break;
+																	end
+																	parent = parent.parent;
 																end
-																parent = parent.parent;
 															end
 														end
 													end
-												end
-												if data.g and #data.g > 0 then
-													if not item.g then
-														item.g = {};
-														item.progress = 0;
-														item.total = 0;
-														item.OnUpdate = OnUpdateForItem;
-													end
-													for __,subdata in ipairs(data.g) do
-														MergeObject(item.g, subdata);
+													if data.g and #data.g > 0 then
+														if not item.g then
+															item.g = {};
+															item.progress = 0;
+															item.total = 0;
+														end
+														MergeObjects(item.g, data.g);
 													end
 												end
+												if ACKCHUALLY then
+													item.s = ACKCHUALLY;
+												end
 											end
-											if ACKCHUALLY then
-												item.s = ACKCHUALLY;
-											end
+											MergeObject(questObject.g, item);
 										end
-										MergeObject(questObject.g, item);
 									end
 								else
 									return true;
+								end
+							end
+							
+							local timeRemaining = C_TaskQuest.GetQuestTimeLeftMinutes(questObject.questID);
+							if timeRemaining and timeRemaining > 0 then
+								local description = BONUS_OBJECTIVE_TIME_LEFT:format(SecondsToTime(timeRemaining * 60));
+								if timeRemaining < 30 then
+									description = "|cFFFF0000" .. description .. "|r";
+								elseif timeRemaining < 60 then
+									description = "|cFFFFFF00" .. description .. "|r";
+								end
+								if not questObject.description then
+									questObject.description = description;
+								else
+									questObject.description = questObject.description .. "\n\n" .. description;
 								end
 							end
 							
@@ -11731,9 +12562,7 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 															item.total = 0;
 															item.OnUpdate = OnUpdateForItem;
 														end
-														for __,subdata in ipairs(data.g) do
-															MergeObject(item.g, subdata);
-														end
+														MergeObjects(item.g, data.g);
 													end
 												end
 											end
@@ -11750,6 +12579,21 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 									end
 								end
 							end
+							
+							-- Resolve all symbolic links
+							if questObject.g and #questObject.g > 0 then
+								for j,item in ipairs(questObject.g) do
+									local resolved = ResolveSymbolicLink(item);
+									if resolved then
+										if not item.g then
+											item.g = resolved;
+										else
+											MergeObjects(item.g, resolved);
+										end
+									end
+								end
+							end
+							
 							--print(i, ": ", mapID, " ", poi.mapID, ", ", questObject.questID, timeRemaining);
 							--print(tagID, tagName, worldQuestType, rarity, isElite, tradeskillLineIndex, displayTimeLeft);
 							if poi.mapID ~= mapID then
@@ -11772,6 +12616,46 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 							end
 						end
 						table.sort(mapObject.g, self.Sort);
+					end
+					if #mapObject.g > 0 then
+						MergeObject(temp, mapObject);
+					end
+				end
+				
+				-- Heroic Deeds
+				if not (CompletedQuests[32900] or CompletedQuests[32901]) then
+					local mapObject = { mapID=424,g={},progress=0,total=0};
+					local cache = fieldCache["mapID"][424];
+					if cache then
+						for _,data in ipairs(cache) do
+							if data.mapID and data.icon then
+								mapObject.icon = data.icon;
+								mapObject.lvl = data.lvl;
+								mapObject.description = data.description;
+								break;
+							end
+						end
+					end
+					cache = fieldCache["questID"][app.FactionID == Enum.FlightPathFaction.Alliance and 32900 or 32901];
+					if cache then
+						for _,data in ipairs(cache) do
+							data = CreateObject(data);
+							if data.g then
+								for _,entry in ipairs(data.g) do
+									local resolved = ResolveSymbolicLink(entry);
+									if resolved then
+										entry = CreateObject(entry);
+										if entry.g then
+											MergeObjects(entry.g, resolved);
+										else
+											entry.g = resolved;
+										end
+									end
+									MergeObject(data.g, entry);
+								end
+							end
+							MergeObject(mapObject.g, data);
+						end
 					end
 					if #mapObject.g > 0 then
 						MergeObject(temp, mapObject);
@@ -11830,9 +12714,7 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 													item.total = 0;
 													item.OnUpdate = OnUpdateForItem;
 												end
-												for __,subdata in ipairs(data.g) do
-													MergeObject(item.g, subdata);
-												end
+												MergeObjects(item.g, data.g);
 											end
 										end
 									end
@@ -11859,9 +12741,7 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 														item.total = 0;
 														item.OnUpdate = OnUpdateForItem;
 													end
-													for __,subdata in ipairs(data.g) do
-														MergeObject(item.g, subdata);
-													end
+													MergeObjects(item.g, data.g);
 												end
 											end
 										end
@@ -11890,6 +12770,7 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 					MergeObject(self.data.g, CreateObject(o));
 				end
 				if not no then self:Update(); end
+				collectgarbage();
 			end
 			self.Sort = function(a, b)
 				if a.isRaid then
@@ -12730,6 +13611,7 @@ app:RegisterEvent("COMPANION_LEARNED");
 app:RegisterEvent("COMPANION_UNLEARNED");
 app:RegisterEvent("NEW_PET_ADDED");
 app:RegisterEvent("PET_JOURNAL_PET_DELETED");
+app:RegisterEvent("PLAYER_DIFFICULTY_CHANGED");
 app:RegisterEvent("TRANSMOG_COLLECTION_SOURCE_ADDED");
 app:RegisterEvent("TRANSMOG_COLLECTION_SOURCE_REMOVED");
 app:RegisterEvent("HEIRLOOMS_UPDATED");
@@ -13208,6 +14090,9 @@ app.events.PET_BATTLE_CLOSE = function(...)
 		app:ToggleMainList() 
 		app.mainVis = false;
 	end
+end
+app.events.PLAYER_DIFFICULTY_CHANGED = function()
+	wipe(searchCache);
 end
 app.events.TOYS_UPDATED = function(itemID, new)
 	if itemID and not GetDataSubMember("CollectedToys", itemID) then

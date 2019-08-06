@@ -1,40 +1,16 @@
-lightweight tag a87b37a4d3cc8e2a81670472af3d4d23404553cb v80200-1.0.4
+lightweight tag 4d7570c47bd5515b052ef4ab5b985541c9262d67 v80200-1.0.5
 Author:	Ludovicus <ludovicus.maior@gmail.com>
-Date:	Wed Jul 24 12:51:45 2019 -0400
+Date:	Thu Aug 1 15:23:51 2019 -0400
 
-commit a87b37a4d3cc8e2a81670472af3d4d23404553cb
+commit 4d7570c47bd5515b052ef4ab5b985541c9262d67
 Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Wed Jul 24 12:51:45 2019 -0400
+Date:   Thu Aug 1 15:23:51 2019 -0400
 
-    Update to ACE3 r1214 (probably 3 days before the next update).
+    Update to ACE3 Release r1224
 
-commit 5f896fbe7dd82e85422fd78a637e3889dd4934f2
+commit c1b2500f756080971750921781a55c973489e511
 Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Wed Jul 24 06:26:37 2019 -0400
+Date:   Wed Jul 31 07:06:31 2019 -0400
 
-    Update to HereBeDragons 2.02-release
-
-commit 88345558b578643de2e0c3b1be9c21d786f99e58
-Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Wed Jul 24 06:19:20 2019 -0400
-
-    One last update for .TGA files.
-
-commit e5e5def26c1fc7ea4038885575a8b7163c1dac96
-Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Wed Jul 24 06:18:21 2019 -0400
-
-    Update .gitignore for png files
-
-commit bd52e0502dbb3bb92193b00d4894ee7e14de3787
-Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Sat Jul 20 16:58:16 2019 -0400
-
-    CF#448: Protect RemoveWaypoint() from non-table inputs.
-
-commit cbae8ba3b6afb96f69b9a82da18a05208d6b8672
-Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Sat Jul 20 16:52:25 2019 -0400
-
-    Update .pkgmeta to exlude unneeded files.
+    Save window positions in profile and do not use layout-local.txt
 
