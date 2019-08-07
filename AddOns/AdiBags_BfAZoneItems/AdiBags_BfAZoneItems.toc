@@ -6,11 +6,14 @@
 ## Title: AdiBags - Zone Items
 ## Notes: AdiBags filters for Nazjatar and Mechagon items
 ## Author: Eek - Earthen Ring
-## Version: 1.01
+## Version: 1.05
 ## X-Date: 2019-06-26
 ## X-License: GPL v3
 ## X-Category: Bags & Inventory
 ## Dependencies: AdiBags
 
+ZoneItemData.lua
 AdiBags_BfAZoneItems.lua
+
+
 

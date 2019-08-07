@@ -3,178 +3,146 @@ AdiBags_PriorExpansions - Seperates items from current expansion from those from
 Copyright 2019 Ggreg Taylor
 All rights reserved.
 --]]
+
 local addon = LibStub('AceAddon-3.0'):GetAddon('AdiBags')
 local L = setmetatable({}, {__index = addon.L})
 
 local kCategory = 'Zone Item'
-local kPfx = '|cff00ffff'
+local kPfx = '|cff00ffff' 
 local kSfx = '|r'
-local arrZoneItems = {
-    '166846:麦卡贡',
-    '166970:麦卡贡',
-    '166971:麦卡贡',
-    '166973:麦卡贡',
-    '167012:纳沙塔尔',
-    '167077:纳沙塔尔',
-    '167562:麦卡贡',
-    '167649:麦卡贡',
-    '167893:纳沙塔尔',
-    '167896:纳沙塔尔',
-    '167902:纳沙塔尔',
-    '167902:纳沙塔尔',
-    '167903:纳沙塔尔',
-    '167903:纳沙塔尔',
-    '167904:纳沙塔尔',
-    '167905:纳沙塔尔',
-    '167906:纳沙塔尔',
-    '167907:纳沙塔尔',
-    '167908:纳沙塔尔',
-    '167909:纳沙塔尔',
-    '167910:纳沙塔尔',
-    '167911:纳沙塔尔',
-    '167912:纳沙塔尔',
-    '167913:纳沙塔尔',
-    '167914:纳沙塔尔',
-    '167915:纳沙塔尔',
-    '167916:纳沙塔尔',
-    '167923:纳沙塔尔',
-    '168045:麦卡贡',
-    '168161:纳沙塔尔',
-    '168213:麦卡贡',
-    '168215:麦卡贡',
-    '168216:麦卡贡',
-    '168217:麦卡贡',
-    '168233:麦卡贡',
-    '168261:纳沙塔尔',
-    '168262:麦卡贡',
-    '168327:麦卡贡',
-    '168832:麦卡贡',
-    '168950:麦卡贡',
-    '168951:麦卡贡',
-    '168952:麦卡贡',
-    '168961:麦卡贡',
-    '169218:麦卡贡',
-    '169332:纳沙塔尔',
-    '169333:纳沙塔尔',
-    '169334:纳沙塔尔',
-    '169477:Benthic',
-    '169478:Benthic',
-    '169479:Benthic',
-    '169480:Benthic',
-    '169481:Benthic',
-    '169482:Benthic',
-    '169483:Benthic',
-    '169484:Benthic',
-    '169485:Benthic',
-    '169610:麦卡贡',
-    '169674:麦卡贡',
-    '169675:麦卡贡',
-    '169780:纳沙塔尔',
-    '169781:纳沙塔尔',
-    '169782:纳沙塔尔',
-    '169783:纳沙塔尔',
-    '169868:麦卡贡',
-    '169872:麦卡贡',
-    '169873:麦卡贡',
-    '169878:麦卡贡',
-    '170100:纳沙塔尔',
-    '170180:纳沙塔尔',
-    '170186:纳沙塔尔',
-    '170189:纳沙塔尔',
-    '170191:纳沙塔尔',
-    '170472:纳沙塔尔',
-    '170512:纳沙塔尔',
-    '170547:纳沙塔尔'
-}
 local Ggbug = false
 
-local tooltip
-local function create()
-    local tip, leftTip = CreateFrame('GameTooltip'), {}
-    for x = 1, 6 do
-        local L, R = tip:CreateFontString(), tip:CreateFontString()
-        L:SetFontObject(GameFontNormal)
-        R:SetFontObject(GameFontNormal)
-        tip:AddFontStrings(L, R)
-        leftTip[x] = L
-    end
-    tip.leftTip = leftTip
-    return tip
-end
+local addonName2, addon2 = ...
+local ZONE_ITEMS = addon2.ZONE_ITEMS 
 
-local setFilter = addon:RegisterFilter('ZoneItems', 47, 'ABEvent-1.0')
+local setFilter = addon:RegisterFilter("ZoneItems", 47, 'ABEvent-1.0')
 setFilter.uiName = L['Zone Specific Items']
 setFilter.uiDesc = L['Group zone specific items together.']
 
-function setFilter:OnInitialize()
-    self.db =
-        addon.db:RegisterNamespace(
-        'ZoneItems',
-        {
-            profile = {enable = true},
-            char = {}
-        }
-    )
+function setFilter:OnInitialize(b)
+  self.db = addon.db:RegisterNamespace('ZoneItems', {
+    profile = { enable = true },
+    char = {  },
+  })
 end
 
 function setFilter:Update()
-    self:SendMessage('AdiBags_FiltersChanged')
+  self:SendMessage('AdiBags_FiltersChanged')
 end
 function setFilter:OnEnable()
-    addon:UpdateFilters()
+  addon:UpdateFilters()
 end
 function setFilter:OnDisable()
-    addon:UpdateFilters()
+  addon:UpdateFilters()
 end
 
 local setNames = {}
 
 function setFilter:GetOptions()
-    return {
-        enableZoneItem = {
-            name = L['Enable Zone Item groups'],
-            desc = L['Check this if you want to automatically seperate Nazjatar and Mechagon items.'],
-            type = 'toggle',
-            order = 25
-        },
+  return {
+    enableZoneItem = {
+      name = L['Enable Zone Item groups'],
+      desc = L['Check this if you want to automatically seperate Nazjatar and Mechagon items.'],
+      type = 'toggle',
+      order = 25,
+    },
+    groupSetZoneItemSubgroups = {
+      name = L['Further Zone Item Sub-Grouping Options'],
+      type = L['group'],
+      inline = true,
+      order = 26,
+      args = {
+        _desc = {
+          name = L['Select optional additional sub-groupings.'],
+          type = 'description',
+          order = 10,
+        }, 
         groupBenthic = {
-            name = L['Group Benthic BoA gear'],
-            desc = L['Check this if you want group Benthic Bind on Account not Soulbound, items.'],
-            type = 'toggle',
-            order = 26
-        }
-    }, addon:GetOptionHandler(
-        self,
-        false,
-        function()
-            return self:Update()
-        end
-    )
+          name = L['Benthic BoA Items'],
+          desc = L['Group Benthic Bind on Account gear tokens seperately.'],
+          type = 'toggle',
+          order = 27,
+        },
+        groupRepItems = {
+          name = L['Reputation Items'],
+          desc = L['Group Reputation on-use and repeatable turn-in items seperately.'],
+          type = 'toggle',
+          order = 28,
+        },
+        groupEssences = {
+          name = L['Heart Essences'],
+          desc = L['Group Heart of Azeroth essences seperately.'],
+          type = 'toggle',
+          order = 29,
+        },
+        zonePriority = {
+          name = L['Current Zone First'],
+          desc = L['Group current zone\'s items first in bags.'],
+          type = 'toggle',
+          order = 29,
+        },
+      }
+    },
+  }, addon:GetOptionHandler(self, false, function() return self:Update() end)
 end
 
+-----------------------
 function setFilter:Filter(slotData)
+  local currZoneName = GetRealZoneText()
+  if self.db.profile.groupEssences then
+    addon:SetCategoryOrder('Essence',110)
+  end
+  if self.db.profile.groupRepItems then
+    addon:SetCategoryOrder('Current Rep Item',105)
+  end
+  if self.db.profile.zonePriority then
+    addon:SetCategoryOrder('Current Zone Item',103)
+  end
     -- Exit if profile not enabled
-    if (self.db.profile.enableZoneItem == false) or (slotData.itemId == false) then
-        return
-    end
-
-    local item = Item:CreateFromBagAndSlot(slotData.bag, slotData.slot)
-    --Check for slotData.itemId in the array
-    local currCategory, currSubCategory, currID, currVal, delim
-    for index, value in ipairs(arrZoneItems) do
-        delim = string.find(value, ':')
-        currID = tonumber(string.sub(value, 1, delim - 1))
-        currVal = string.sub(value, delim + 1)
-        if slotData.itemId == currID then
-            if (self.db.profile.groupBenthic) and (currVal == 'Benthic') then
-                currCategory = 'Zone Items'
-                currSubCategory = 'Benthic'
-                return kPfx .. currSubCategory .. kSfx, currCategory
-            elseif currVal ~= 'Benthic' then
-                currCategory = 'Zone Items'
-                currSubCategory = currVal
-                return kPfx .. currSubCategory .. kSfx, currCategory
-            end
+  if (self.db.profile.enableZoneItem == false) or (slotData.itemId == false) then 
+    return
+  end
+  local ziID, ziZone, ziSubcat, ziName, currSubCategory, bagItemID
+  bagItemID = tonumber(slotData.itemId)
+  -- Check if Heart of Azeroth Essence
+  local item = Item:CreateFromBagAndSlot(slotData.bag, slotData.slot)
+  local _,_, itemRarity, _,_, itemType, itemSubType, _,_,_,_,_,_,_,_ = GetItemInfo(slotData.itemId)
+  if (self.db.profile.groupEssences) and (itemType == 'Consumable' and itemSubType == 'Other' and itemRarity == 6) then
+    return kPfx .. 'Heart Essence'.. kSfx, 'Essence'
+  else
+  -- load array category/subcat values
+    for x = 1, #ZONE_ITEMS do
+      local currSubset = {}
+      local currZoneItem = ZONE_ITEMS[x]
+      local index = 1
+      for w in currZoneItem:gmatch('([^^]+)') do 
+        currSubset[index]  = w 
+        index = index +1
+      end
+      --169478^BfA^Benthic^Benthic Bracers (Exampleb)
+      ziID = tonumber(currSubset[1])
+      ziZone = currSubset[2]
+      ziSubcat = currSubset[3]
+      ziName = currSubset[4]
+      if bagItemID == ziID then
+        --check Benthic
+        if ziZone == 'BfA' and ziSubcat == 'Benthic' and  (self.db.profile.groupBenthic) then
+          currSubCategory = 'Benthic'
+          return kPfx .. currSubCategory.. kSfx, kCategory
+        elseif ziZone == 'Nazjatar'  or ziZone == 'Mechagon' then
+          if (self.db.profile.groupRepItems) and ziSubcat=='Reputation' then
+            currSubCategory = 'Reputation'
+            return kPfx .. currSubCategory.. kSfx, 'Current Rep Item'
+          end
+          currSubCategory = ziZone
+          if self.db.profile.zonePriority and ziZone == currZoneName then
+            return kPfx .. currSubCategory.. kSfx, 'Current Zone Item'
+          else
+            return kPfx .. currSubCategory.. kSfx, kCategory
+          end
         end
+      end
     end
+  end
 end
+
