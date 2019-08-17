@@ -1,3 +1,5 @@
+if not WeakAuras.IsCorrectVersion() then return end
+
 local WeakAuras = WeakAuras
 local L = WeakAuras.L
 local GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, C_Timer, Spell = GetSpellInfo, tinsert, GetItemInfo, GetSpellDescription, C_Timer, Spell
@@ -1063,6 +1065,43 @@ templates.class.HUNTER = {
 }
 
 templates.class.ROGUE = {
+  ["classic"] = {
+    [1] = {
+      title = L["Buffs"],
+      args = {
+        { spell = 14177, type = "buff", unit = "player"}, -- Cold Blood
+        { spell = 14149, type = "buff", unit = "player"}, -- Remorseless
+        { spell = 14278, type = "buff", unit = "player"}, -- Ghostly Strike
+      },
+      icon = 132290
+    },
+    [2] = {
+      title = L["Debuffs"],
+      args = {
+        { spell = 14251, type = "debuff", unit = "target"}, -- Riposte
+        { spell = 11198, type = "debuff", unit = "target"}, -- Expose Armor
+        { spell = 18425, type = "debuff", unit = "target"}, -- Kick - Silenced
+        { spell = 17348, type = "debuff", unit = "target"}, -- Hemorrhage
+        { spell = 14183, type = "debuff", unit = "target"}, -- Premeditation
+      },
+      icon = 132302
+    },
+    [3] = {
+      title = L["Abilities"],
+      args = {
+        { spell = 11198, type = "ability", requiresTarget = true, usable = true, debuff = true}, -- Expose Armor
+        { spell = 6774, type = "ability", requiresTarget = true, usable = true, buff = true}, -- Slice and Dice
+        { spell = 14177, type = "ability", buff = true}, -- Cold Blood
+        { spell = 14251, type = "ability", requiresTarget = true, usable = true, debuff = true}, -- Riposte
+        { spell = 17348, type = "ability", requiresTarget = true, debuff = true}, -- Hemorrhage
+        { spell = 14185, type = "ability"}, -- Preparation
+        { spell = 921, type = "ability", requiresTarget = true, usable = true}, -- Pick Pocket
+        { spell = 14183, type = "ability", requiresTarget = true, debuff = true}, -- Premeditation
+        { spell = 14278, type = "ability", requiresTarget = true, buff = true}, -- Ghostly Strike
+      },
+      icon = 132350
+    },
+  },
   [1] = { -- Assassination
     [1] = {
       title = L["Buffs"],
@@ -1081,7 +1120,7 @@ templates.class.ROGUE = {
         { spell = 185311, type = "buff", unit = "player"}, -- Crimson Vial
         { spell = 270070, type = "buff", unit = "player", talent = 20}, -- Hidden Blades
         { spell = 256735, type = "buff", unit = "player", talent = 6}, -- Master Assassin
-        { spell = 1966, type = "buff", unit = "player"}, -- Feint
+        { spell = 1966, type = "buff", unit = "player", classic = false}, -- Feint
         { spell = 1784, type = "buff", unit = "player"}, -- Stealth
         { spell = 31224, type = "buff", unit = "player"}, -- Cloak of Shadows
         { spell = 11327, type = "buff", unit = "player"}, -- Vanish
@@ -1095,7 +1134,7 @@ templates.class.ROGUE = {
       title = L["Debuffs"],
       args = {
         { spell = 137619, type = "debuff", unit = "target", talent = 9}, -- Marked for Death
-        { spell = 1330, type = "debuff", unit = "target"}, -- Garrote - Silence
+        { spell = 1330, type = "debuff", unit = "target", classic = false}, -- Garrote - Silence
         { spell = 256148, type = "debuff", unit = "target", talent = 14}, -- Iron Wire
         { spell = 154953, type = "debuff", unit = "target", talent = 13}, -- Internal Bleeding
         { spell = 1833, type = "debuff", unit = "target"}, -- Cheap Shot
@@ -1110,7 +1149,7 @@ templates.class.ROGUE = {
         { spell = 121411, type = "debuff", unit = "target", talent = 21}, -- Crimson Tempest
         { spell = 79140, type = "debuff", unit = "target"}, -- Vendetta
         { spell = 1943, type = "debuff", unit = "target"}, -- Rupture
-        { spell = 8680, type = "debuff", unit = "target"}, -- Wound Poison
+        { spell = 8680, type = "debuff", unit = "target", classic = false}, -- Wound Poison
         { spell = 45181, type = "debuff", unit = "player", talent = 11 }, -- Cheated Death
       },
       icon = 132302
@@ -1192,7 +1231,7 @@ templates.class.ROGUE = {
         { spell = 199754, type = "buff", unit = "player"}, -- Riposte
         { spell = 185311, type = "buff", unit = "player"}, -- Crimson Vial
         { spell = 2983, type = "buff", unit = "player"}, -- Sprint
-        { spell = 1966, type = "buff", unit = "player"}, -- Feint
+        { spell = 1966, type = "buff", unit = "player", classic = false}, -- Feint
         { spell = 193538, type = "buff", unit = "player", talent = 17}, -- Alacrity
         { spell = 1784, type = "buff", unit = "player"}, -- Stealth
         { spell = 31224, type = "buff", unit = "player"}, -- Cloak of Shadows
@@ -1298,7 +1337,7 @@ templates.class.ROGUE = {
         { spell = 257506, type = "buff", unit = "player"}, -- Shot in the Dark
         { spell = 185311, type = "buff", unit = "player"}, -- Crimson Vial
         { spell = 277925, type = "buff", unit = "player", talent = 21}, -- Shuriken Tornado
-        { spell = 1966, type = "buff", unit = "player"}, -- Feint
+        { spell = 1966, type = "buff", unit = "player", classic = false}, -- Feint
         { spell = 193538, type = "buff", unit = "player", talent = 17}, -- Alacrity
         { spell = 1784, type = "buff", unit = "player"}, -- Stealth
         { spell = 31224, type = "buff", unit = "player"}, -- Cloak of Shadows
@@ -4638,23 +4677,25 @@ end
 
 if WeakAuras.IsClassic() then
   -- consolidate talents from all specs in a new dummy "classic" spec, indexed by spell or title for no duplicate
-  for className, class in pairs(templates.class) do
+  for _, class in pairs(templates.class) do
     class["classic"] = class["classic"] or {}
     for specIndex, spec in pairs(class) do
-      for sectionIndex, section in pairs(spec) do
-        if not class["classic"][sectionIndex] then
-          class["classic"][sectionIndex] = {
-            icon = section.icon,
-            title = section.title,
-            args = {}
-          }
-        end
-        local args = class["classic"][sectionIndex].args
-        for itemIndex, item in pairs(section.args or {}) do
-          if item.spell then
-            args[item.spell] = item
-          else
-            args[itemIndex] = item
+      if specIndex ~= "classic" then
+        for sectionIndex, section in pairs(spec) do
+          if not class["classic"][sectionIndex] then
+            class["classic"][sectionIndex] = {
+              icon = section.icon,
+              title = section.title,
+              args = {}
+            }
+          end
+          local args = class["classic"][sectionIndex].args
+          for itemIndex, item in pairs(section.args or {}) do
+            if item.spell then
+              args[item.spell] = item
+            else
+              args[itemIndex] = item
+            end
           end
         end
       end

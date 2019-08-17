@@ -1,3 +1,9 @@
+08/10/2019 version 4.9.11
+- Added Postmaster Malown to Stratholme targets.
+- Removed random backline pets from Stratholme targets.
+- Removed debug 'Showing' text when Rematch shown with right combination of options.
+- Fix for missing icons at the top of notes, ability card and win record card.
+
 06/26/2019 version 4.9.10
 - toc updated for 8.2 client.
 

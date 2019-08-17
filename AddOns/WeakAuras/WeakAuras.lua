@@ -86,6 +86,10 @@ end
 
 SLASH_WEAKAURAS1, SLASH_WEAKAURAS2 = "/weakauras", "/wa";
 function SlashCmdList.WEAKAURAS(msg)
+  if not WeakAuras.IsCorrectVersion() then
+    prettyPrint(WeakAuras.wrongTargetMessage)
+    return
+  end
   msg = string.lower(msg)
   if msg then
     if msg == "pstart" then
@@ -107,6 +111,7 @@ function SlashCmdList.WEAKAURAS(msg)
   end
   WeakAuras.OpenOptions(msg);
 end
+if not WeakAuras.IsCorrectVersion() then return end
 
 function WeakAuras.ApplyToDataOrChildData(data, func, ...)
   if data.controlledChildren then
@@ -168,6 +173,8 @@ local in_loading_screen = false;
 local loadFuncs = {};
 -- Load functions for the Options window that ignore various load options
 local loadFuncsForOptions = {};
+-- Mapping of events to ids, contains true if a aura should be checked for a certain event
+local loadEvents = {}
 
 -- Check Conditions Functions, keyed on id
 local checkConditions = {};
@@ -532,6 +539,7 @@ function WeakAuras.ConstructFunction(prototype, trigger, skipOptional)
   local required = {};
   local tests = {};
   local debug = {};
+  local events = {}
   local init;
   if(prototype.init) then
     init = prototype.init(trigger);
@@ -634,6 +642,13 @@ function WeakAuras.ConstructFunction(prototype, trigger, skipOptional)
           else
             tinsert(tests, test);
           end
+
+          if test and arg.events then
+            for index, event in ipairs(arg.events) do
+              events[event] = true
+            end
+          end
+
           if(arg.debug) then
             tinsert(debug, arg.debug:format(trigger[name]));
           end
@@ -654,7 +669,7 @@ function WeakAuras.ConstructFunction(prototype, trigger, skipOptional)
   end
   ret = ret.."return true else return false end end";
 
-  return ret;
+  return ret, events;
 end
 
 function WeakAuras.GetActiveConditions(id, cloneId)
@@ -1585,7 +1600,13 @@ loadedFrame:SetScript("OnEvent", function(self, event, addon)
 
       WeakAuras.UpdateCurrentInstanceType();
       WeakAuras.SyncParentChildRelationships();
-
+      local isFirstUIDValidation = db.history == nil;
+      WeakAuras.ValidateUniqueDataIds(isFirstUIDValidation);
+      db.history = db.history or {};
+      if db.clearOldHistory ~= false and type(db.clearOldHistory) ~= "number" then
+        db.clearOldHistory = 30
+      end
+      WeakAuras.LoadHistory(db.history, db.clearOldHistory);
       db.minimap = db.minimap or { hide = false };
       LDBIcon:Register("WeakAuras", Broker_WeakAuras, db.minimap);
     end
@@ -1841,10 +1862,13 @@ end
 
 local toLoad = {}
 local toUnload = {};
-local function scanForLoadsImpl(self, event, arg1, ...)
+local function scanForLoadsImpl(toCheck, event, arg1, ...)
   if (WeakAuras.IsOptionsProcessingPaused()) then
     return;
   end
+
+  toCheck = toCheck or loadEvents[event or "SCAN_ALL"]
+
   -- PET_BATTLE_CLOSE fires twice at the end of a pet battle. IsInBattle evaluates to TRUE during the
   -- first firing, and FALSE during the second. I am not sure if this check is necessary, but the
   -- following IF statement limits the impact of the PET_BATTLE_CLOSE event to the second one.
@@ -1865,6 +1889,10 @@ local function scanForLoadsImpl(self, event, arg1, ...)
   elseif (event == "ENCOUNTER_END") then
     encounter_id = 0
     WeakAuras.DestroyEncounterTable()
+  end
+
+  if toCheck == nil or next(toCheck) == nil then
+    return
   end
 
   local player, realm, spec, zone = UnitName("player"), GetRealmName(), WeakAuras.IsClassic() and 1 or GetSpecialization(), GetRealZoneText();
@@ -1923,7 +1951,6 @@ local function scanForLoadsImpl(self, event, arg1, ...)
     group = "solo";
   end
 
-
   local affixes, warmodeActive, effectiveLevel = 0, false, 0
   if not WeakAuras.IsClassic() then
     effectiveLevel = UnitEffectiveLevel("player")
@@ -1935,13 +1962,15 @@ local function scanForLoadsImpl(self, event, arg1, ...)
   local shouldBeLoaded, couldBeLoaded;
   wipe(toLoad);
   wipe(toUnload);
-  for id, data in pairs(db.displays) do
+
+  for id in pairs(toCheck) do
+    local data = WeakAuras.GetData(id)
     if (data and not data.controlledChildren) then
       local loadFunc = loadFuncs[id];
       local loadOpt = loadFuncsForOptions[id];
       if WeakAuras.IsClassic() then
-        shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", incombat, inencounter, group, player, realm, class, spec, race, faction, playerLevel, zone, size);
-        couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   incombat, inencounter, group, player, realm, class, spec, race, faction, playerLevel, zone, size);
+        shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", incombat, inencounter, group, player, realm, class, race, faction, playerLevel, zone, size);
+        couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   incombat, inencounter, group, player, realm, class, race, faction, playerLevel, zone, size);
       else
         shouldBeLoaded = loadFunc and loadFunc("ScanForLoads_Auras", incombat, inencounter, warmodeActive, inpetbattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, effectiveLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, role, affixes);
         couldBeLoaded =  loadOpt and loadOpt("ScanForLoads_Auras",   incombat, inencounter, warmodeActive, inpetbattle, vehicle, vehicleUi, group, player, realm, class, spec, specId, race, faction, playerLevel, effectiveLevel, zone, zoneId, zonegroupId, encounter_id, size, difficulty, role, affixes);
@@ -1997,11 +2026,11 @@ local function scanForLoadsImpl(self, event, arg1, ...)
   wipe(toUnload)
 end
 
-function WeakAuras.ScanForLoads(self, event, arg1, ...)
+function WeakAuras.ScanForLoads(toCheck, event, arg1, ...)
   if not WeakAuras.IsLoginFinished() then
     return
   end
-  scanForLoadsImpl(self, event, arg1, ...)
+  scanForLoadsImpl(toCheck, event, arg1, ...)
 end
 
 local loadFrame = CreateFrame("FRAME");
@@ -2032,6 +2061,8 @@ loadFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
 loadFrame:RegisterEvent("SPELLS_CHANGED");
 loadFrame:RegisterEvent("GROUP_JOINED");
 loadFrame:RegisterEvent("GROUP_LEFT");
+loadFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
+loadFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 
 local unitLoadFrame = CreateFrame("FRAME");
 WeakAuras.loadFrame = unitLoadFrame;
@@ -2044,16 +2075,16 @@ if not WeakAuras.IsClassic() then
 end
 
 function WeakAuras.RegisterLoadEvents()
-  loadFrame:SetScript("OnEvent", function(...)
+  loadFrame:SetScript("OnEvent", function(frame, ...)
     WeakAuras.StartProfileSystem("load");
-    WeakAuras.ScanForLoads(...)
+    WeakAuras.ScanForLoads(nil, ...)
     WeakAuras.StopProfileSystem("load");
   end);
 
-  unitLoadFrame:SetScript("OnEvent", function(s, e, arg1, ...)
+  unitLoadFrame:SetScript("OnEvent", function(frame, e, arg1, ...)
     WeakAuras.StartProfileSystem("load");
     if (arg1 == "player") then
-      WeakAuras.ScanForLoads(...)
+      WeakAuras.ScanForLoads(nil, e, arg1, ...)
     end
     WeakAuras.StopProfileSystem("load");
   end);
@@ -2159,6 +2190,16 @@ function WeakAuras.FinishLoadUnload()
   end
 end
 
+-- transient cache of uid => id
+-- eventually, the database will be migrated to index by uid
+-- and this mapping will become redundant
+-- this cache is loaded lazily via pAdd()
+local UIDtoID = {}
+
+function WeakAuras.GetDataByUID(uid)
+  return WeakAuras.GetData(UIDtoID[uid])
+end
+
 function WeakAuras.Delete(data)
   local id = data.id;
   if(data.parent) then
@@ -2176,6 +2217,7 @@ function WeakAuras.Delete(data)
     end
   end
 
+  UIDtoID[data.uid] = nil
   if(data.controlledChildren) then
     for index, childId in pairs(data.controlledChildren) do
       local childData = db.displays[childId];
@@ -2214,6 +2256,9 @@ function WeakAuras.Delete(data)
   loaded[id] = nil;
   loadFuncs[id] = nil;
   loadFuncsForOptions[id] = nil;
+  for event, eventData in pairs(loadEvents) do
+    eventData[id] = nil
+  end
   checkConditions[id] = nil;
   conditionChecksTimers.recheckTime[id] = nil;
   if (conditionChecksTimers.recheckHandle[id]) then
@@ -2269,6 +2314,7 @@ function WeakAuras.Rename(data, newid)
     end
   end
 
+  UIDtoID[data.uid] = newid
   regions[newid] = regions[oldid];
   regions[oldid] = nil;
   regions[newid].region.id = newid;
@@ -2284,6 +2330,11 @@ function WeakAuras.Rename(data, newid)
 
   loadFuncsForOptions[newid] = loadFuncsForOptions[oldid]
   loadFuncsForOptions[oldid] = nil;
+
+  for event, eventData in pairs(loadEvents) do
+    eventData[newid] = eventData[oldid]
+    eventData[oldid] = nil
+  end
 
   checkConditions[newid] = checkConditions[oldid];
   checkConditions[oldid] = nil;
@@ -3368,51 +3419,116 @@ function WeakAuras.Modernize(data)
   data.internalVersion = max(data.internalVersion or 0, internalVersion);
 end
 
+function WeakAuras.ValidateUniqueDataIds(silent)
+  -- ensure that there are no duplicated uids anywhere in the database
+  local seenUIDs = {}
+  for _, data in pairs(db.displays) do
+    if type(data.uid) == "string" then
+      if seenUIDs[data.uid] then
+        if not silent then
+          prettyPrint("duplicate uid \""..data.uid.."\" detected in saved variables between \""..data.id.."\" and \""..seenUIDs[data.uid].id.."\".")
+        end
+        data.uid = WeakAuras.GenerateUniqueID()
+        seenUIDs[data.uid] = data
+      else
+        seenUIDs[data.uid] = data
+      end
+    elseif data.uid ~= nil then
+      if not silent then
+        prettyPrint("invalid uid detected in saved variables for \""..data.id.."\"")
+      end
+      data.uid = WeakAuras.GenerateUniqueID()
+      seenUIDs[data.uid] = data
+    end
+  end
+  for uid, data in pairs(seenUIDs) do
+    UIDtoID[uid] = data.id
+  end
+end
+
 function WeakAuras.SyncParentChildRelationships(silent)
-  local childToParent = {};
-  local parentToChild = {};
+  -- 1. Find all auras where data.parent ~= nil or data.controlledChildren ~= nil
+  --    If an aura has both, then remove data.parent
+  --    If an aura has data.parent which doesn't exist, then remove data.parent
+  --    If an aura has data.parent which doesn't have data.controledChildren, then remove data.parent
+  -- 2. For each aura with data.controlledChildren, iterate through the list of children and remove entries where:
+  --    The child doesn't exist in the database
+  --    The child ID is duplicated in data.controlledChildren (only the first will be kept)
+  --    The child's data.parent points to a different parent
+  --    Otherwise, mark the child as having a valid parent relationship
+  -- 3. For each aura with data.parent, remove data.parent if it was not marked to have a valid relationship in 2.
+  local parents = {}
+  local children = {}
+  local childHasParent = {}
   for id, data in pairs(db.displays) do
-    if(data.parent) then
-      if(data.controlledChildren) then
-        if not(silent) then
-          print("|cFF8800FFWeakAuras|r detected desynchronization in saved variables:", id, "has both child and parent");
+    if data.parent then
+      if data.controlledChildren then
+        if not silent then
+          prettyPrint("detected corruption in saved variables: "..id.." is a group that thinks it's a parent.")
         end
         -- A display cannot have both children and a parent
-        data.parent = nil;
-      elseif(db.displays[data.parent] and db.displays[data.parent].controlledChildren) then
-        childToParent[id] = data.parent;
-        parentToChild[data.parent] = parentToChild[data.parent] or {};
-        parentToChild[data.parent][id] = true;
-      else
+        data.parent = nil
+        parents[id] = data
+      elseif not db.displays[data.parent] then
         if not(silent) then
-          print("|cFF8800FFWeakAuras|r detected desynchronization in saved variables:", id, "has a nonexistent parent");
+          prettyPrint("detected corruption in saved variables: "..id.." has a nonexistent parent.")
         end
-        data.parent = nil;
+        data.parent = nil
+      elseif not db.displays[data.parent].controlledChildren then
+        if not silent then
+          prettyPrint("detected corruption in saved variables: "..id.." thinks "..data.parent..
+                      " controls it, but "..data.parent.." is not a group.")
+        end
+        data.parent = nil
+      else
+        children[id] = data
+      end
+    elseif data.controlledChildren then
+      parents[id] = data
+    end
+  end
+
+  for id, data in pairs(parents) do
+    local groupChildren = {}
+    local childrenToRemove = {}
+    for index, childID in ipairs(data.controlledChildren) do
+      local child = children[childID]
+      if not child then
+        if not silent then
+          prettyPrint("detected corruption in saved variables: "..id.." thinks it controls "..childID.." which doesn't exist.")
+        end
+        childrenToRemove[index] = true
+      elseif child.parent ~= id then
+        if not silent then
+          prettyPrint("detected corruption in saved variables: "..id.." thinks it controls "..childID.." which it does not.")
+        end
+        childrenToRemove[index] = true
+      elseif groupChildren[childID] then
+        if not silent then
+          prettyPrint("detected corruption in saved variables: "..id.." has "..childID.." as a child in multiple positions.")
+        end
+        childrenToRemove[index] = true
+      else
+        groupChildren[childID] = index
+        childHasParent[childID] = true
+      end
+    end
+    if next(childrenToRemove) ~= nil then
+      for i = #data.controlledChildren, 1, -1 do
+        if childrenToRemove[i] then
+          tremove(data.controlledChildren, i)
+        end
       end
     end
   end
 
-  for id, data in pairs(db.displays) do
-    if(data.controlledChildren) then
-      for index, childId in pairs(data.controlledChildren) do
-        if not(childToParent[childId] and childToParent[childId] == id) then
-          if not(silent) then
-            print("|cFF8800FFWeakAuras|r detected desynchronization in saved variables:", id, "thinks it controls", childId, "but does not");
-          end
-          tremove(data.controlledChildren, index);
-        end
+  for id, data in pairs(children) do
+    if not childHasParent[id] then
+      if not silent then
+        prettyPrint("detected corruption in saved variables: "..id.." should be controlled by "..data.parent.." but isn't.")
       end
-
-      if(parentToChild[id]) then
-        for childId, _ in pairs(parentToChild[id]) do
-          if not(tContains(data.controlledChildren, childId)) then
-            if not(silent) then
-              print("|cFF8800FFWeakAuras|r detected desynchronization in saved variables:", id, "does not control", childId, "but should");
-            end
-            tinsert(data.controlledChildren, childId);
-          end
-        end
-      end
+      local parent = parents[data.parent]
+      tinsert(parent.controlledChildren, id)
     end
   end
 end
@@ -3787,6 +3903,17 @@ local function pAdd(data)
   end
 
   db.displays[id] = data;
+
+  data.uid = data.uid or WeakAuras.GenerateUniqueID()
+  local otherID = UIDtoID[data.uid]
+  if not otherID then
+    UIDtoID[data.uid] = id
+  elseif otherID ~= id then
+    -- duplicate uid
+    data.uid = WeakAuras.GenerateUniqueID()
+    UIDtoID[data.uid] = id
+  end
+
   WeakAuras.ClearAuraEnvironment(id);
   if data.parent then
     WeakAuras.ClearAuraEnvironment(data.parent);
@@ -3798,12 +3925,21 @@ local function pAdd(data)
       data.triggers.activeTriggerMode = WeakAuras.trigger_modes.first_active;
     end
 
-
     for _, triggerSystem in pairs(triggerSystems) do
       triggerSystem.Add(data);
     end
 
-    local loadFuncStr = WeakAuras.ConstructFunction(load_prototype, data.load);
+    local loadFuncStr, events = WeakAuras.ConstructFunction(load_prototype, data.load);
+    for event, eventData in pairs(loadEvents) do
+      eventData[id] = nil
+    end
+    for event in pairs(events) do
+      loadEvents[event] = loadEvents[event] or {}
+      loadEvents[event][id] = true
+    end
+    loadEvents["SCAN_ALL"] = loadEvents["SCAN_ALL"] or {}
+    loadEvents["SCAN_ALL"][id] = true
+
     local loadForOptionsFuncStr = WeakAuras.ConstructFunction(load_prototype, data.load, true);
     local loadFunc = WeakAuras.LoadFunction(loadFuncStr);
     local loadForOptionsFunc = WeakAuras.LoadFunction(loadForOptionsFuncStr);
@@ -3857,7 +3993,7 @@ local function pAdd(data)
 
     if not(paused) then
       region:Collapse();
-      WeakAuras.ScanForLoads();
+      WeakAuras.ScanForLoads({[id] = true});
     end
   end
 
@@ -4978,8 +5114,7 @@ function WeakAuras.ApplyFrameLevel(region, frameLevel)
   region:SetFrameLevel(frameLevel)
   if region.subRegions then
     for index, subRegion in pairs(region.subRegions) do
-      -- The +5 is the right magic so that e.g. texts appear in front of progress bars
-      subRegion:SetFrameLevel(frameLevel + index + 5)
+      subRegion:SetFrameLevel(frameLevel + index + 1)
     end
   end
 end

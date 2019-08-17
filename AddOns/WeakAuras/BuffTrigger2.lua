@@ -56,6 +56,7 @@ Returns the tooltip text for additional properties.
 GetTriggerConditions(data, triggernum)
 Returns the potential conditions for a trigger
 ]]--
+if not WeakAuras.IsCorrectVersion() then return end
 
 -- Lua APIs
 local tinsert, wipe = table.insert, wipe
@@ -1072,10 +1073,6 @@ local function UpdateTriggerState(time, id, triggernum)
     end
   end
 
-  if updated then
-    WeakAuras.UpdatedTriggerState(id)
-  end
-
   if nextCheck then
     if triggerInfo.nextScheduledCheck ~= nextCheck then
       if triggerInfo.nextScheduledCheckHandle then
@@ -1089,6 +1086,8 @@ local function UpdateTriggerState(time, id, triggernum)
     triggerInfo.nextScheduledCheckHandle = nil
     triggerInfo.nextScheduledCheck = nil
   end
+
+  return updated
 end
 
 recheckTriggerInfo = function(triggerInfo)
@@ -1110,7 +1109,7 @@ local function PrepareMatchData(unit, filter)
 
       -- If we are on classic try to get duration from LibClassicDurations
       if LCD then
-        local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster)
+        local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
         if duration == 0 and durationNew then
             duration = durationNew
             expirationTime = expirationTimeNew
@@ -1210,7 +1209,7 @@ local function ScanUnitWithFilter(matchDataChanged, time, unit, filter,
 
     -- If we are on classic try to get duration from LibClassicDurations
     if LCD then
-      local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster)
+      local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
       if duration == 0 and durationNew then
           duration = durationNew
           expirationTime = expirationTimeNew
@@ -1247,8 +1246,12 @@ end
 local function UpdateStates(matchDataChanged, time)
   for id, auraData in pairs(matchDataChanged) do
     WeakAuras.StartProfileAura(id)
+    local updated = false
     for triggernum in pairs(auraData) do
-      UpdateTriggerState(time, id, triggernum)
+      updated = UpdateTriggerState(time, id, triggernum) or updated
+    end
+    if updated then
+      WeakAuras.UpdatedTriggerState(id)
     end
     WeakAuras.StopProfileAura(id)
   end
@@ -2342,7 +2345,7 @@ function BuffTrigger.GetTriggerConditions(data, triggernum)
   local result = {}
 
   result["debuffClass"] = {
-    display = WeakAuras.newFeatureString .. L["Debuff Type"],
+    display = L["Debuff Type"],
     type = "select",
     values = WeakAuras.debuff_class_types
   }
@@ -2853,7 +2856,7 @@ local function AugmentMatchDataMulti(matchData, unit, filter, sourceGUID, nameKe
 
     -- If we are on classic try to get duration from LibClassicDurations
     if LCD then
-      local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster)
+      local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
       if duration == 0 and durationNew then
           duration = durationNew
           expirationTime = expirationTimeNew
@@ -2953,7 +2956,7 @@ local function CheckAurasMulti(base, unit, filter)
 
     -- If we are on classic try to get duration from LibClassicDurations
     if LCD then
-      local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster)
+      local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellId, unitCaster, name)
       if duration == 0 and durationNew then
           duration = durationNew
           expirationTime = expirationTimeNew

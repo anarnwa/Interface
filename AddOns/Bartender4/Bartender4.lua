@@ -8,9 +8,11 @@ _G.Bartender4 = Bartender4
 
 local L = LibStub("AceLocale-3.0"):GetLocale("Bartender4")
 
+local WoWClassic = select(4, GetBuildInfo()) < 20000
+
 local LDB = LibStub("LibDataBroker-1.1", true)
 local LDBIcon = LibStub("LibDBIcon-1.0", true)
-local LibDualSpec = LibStub("LibDualSpec-1.0", true)
+local LibDualSpec = (not WoWClassic) and LibStub("LibDualSpec-1.0", true)
 
 local _G = _G
 local type, pairs, hooksecurefunc = type, pairs, hooksecurefunc
@@ -122,6 +124,7 @@ function Bartender4:HideBlizzard()
 	UIPARENT_MANAGED_FRAME_POSITIONS["MainMenuBar"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["StanceBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["PossessBarFrame"] = nil
+	UIPARENT_MANAGED_FRAME_POSITIONS["MultiCastActionBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["PETACTIONBAR_YPOS"] = nil
 
 	--MainMenuBar:UnregisterAllEvents()
@@ -167,14 +170,37 @@ function Bartender4:HideBlizzard()
 		PossessBarFrame:SetParent(UIHider)
 	end
 
+	if MultiCastActionBarFrame then
+		MultiCastActionBarFrame:UnregisterAllEvents()
+		MultiCastActionBarFrame:Hide()
+		MultiCastActionBarFrame:SetParent(UIHider)
+	end
+
 	PetActionBarFrame:UnregisterAllEvents()
 	PetActionBarFrame:Hide()
 	PetActionBarFrame:SetParent(UIHider)
 
-	if PlayerTalentFrame then
-		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-	else
-		hooksecurefunc("TalentFrame_LoadUI", function() PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end)
+	if not WoWClassic then
+		if PlayerTalentFrame then
+			PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+		else
+			hooksecurefunc("TalentFrame_LoadUI", function() PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end)
+		end
+	end
+
+	if MainMenuBarPerformanceBarFrame then
+		MainMenuBarPerformanceBarFrame:Hide()
+		MainMenuBarPerformanceBarFrame:SetParent(UIHider)
+	end
+
+	if MainMenuExpBar then
+		MainMenuExpBar:Hide()
+		MainMenuExpBar:SetParent(UIHider)
+	end
+
+	if ReputationWatchBar then
+		ReputationWatchBar:Hide()
+		ReputationWatchBar:SetParent(UIHider)
 	end
 
 	self:RegisterPetBattleDriver()

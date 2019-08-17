@@ -1,3 +1,5 @@
+if not WeakAuras.IsCorrectVersion() then return end
+
 local SharedMedia = LibStub("LibSharedMedia-3.0");
 local MSQ = LibStub("Masque", true);
 local LCG = LibStub("LibCustomGlow-1.0")
@@ -69,28 +71,28 @@ local properties = {
     default = 32
   },
   glow = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Show Glow"], true },
+    display = { L["Glow"], L["Show Glow"], true },
     setter = "SetGlow",
     type = "bool"
   },
   glowType = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Type"] },
+    display = { L["Glow"], L["Type"] },
     setter = "SetGlowType",
     type = "list",
     values = WeakAuras.glow_types,
   },
   useGlowColor = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Use Custom Color"] },
+    display = { L["Glow"], L["Use Custom Color"] },
     setter = "SetUseGlowColor",
     type = "bool"
   },
   glowColor = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Color"]},
+    display = { L["Glow"], L["Color"]},
     setter = "SetGlowColor",
     type = "color"
   },
   glowLines = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Lines & Particles"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["Lines & Particles"]},
     setter = "SetGlowLines",
     type = "number",
     min = 1,
@@ -99,7 +101,7 @@ local properties = {
     default = 4
   },
   glowFrequency = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Frequency"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["Frequency"]},
     setter = "SetGlowFrequency",
     type = "number",
     softMin = -2,
@@ -108,7 +110,7 @@ local properties = {
     default = 0.25
   },
   glowLength = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Length"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["Length"]},
     setter = "SetGlowLength",
     type = "number",
     min = 1,
@@ -117,7 +119,7 @@ local properties = {
     default = 10
   },
   glowThickness = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Thickness"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["Thickness"]},
     setter = "SetGlowThickness",
     type = "number",
     min = 1,
@@ -126,7 +128,7 @@ local properties = {
     default = 1
   },
   glowScale = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Scale"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["Scale"]},
     setter = "SetGlowScale",
     type = "number",
     min = 0.05,
@@ -136,12 +138,12 @@ local properties = {
     isPercent = true
   },
   glowBorder = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Border"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["Border"]},
     setter = "SetGlowBorder",
     type = "bool"
   },
   glowXOffset = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["X-Offset"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["X-Offset"]},
     setter = "SetGlowXOffset",
     type = "number",
     softMin = -100,
@@ -150,7 +152,7 @@ local properties = {
     default = 0
   },
   glowYOffset = {
-    display = { WeakAuras.newFeatureString .. L["Glow"], L["Y-Offset"]},
+    display = { L["Glow"], WeakAuras.newFeatureString .. L["Y-Offset"]},
     setter = "SetGlowYOffset",
     type = "number",
     softMin = -100,
@@ -169,12 +171,12 @@ local properties = {
     type = "bool"
   },
   cooldownSwipe = {
-    display = {WeakAuras.newFeatureString .. L["Cooldown"], L["Swipe"], true},
+    display = { L["Cooldown"], L["Swipe"], true},
     setter = "SetCooldownSwipe",
     type = "bool",
   },
   cooldownEdge = {
-    display = {WeakAuras.newFeatureString .. L["Cooldown"], L["Edge"]},
+    display = { L["Cooldown"], L["Edge"]},
     setter = "SetCooldownEdge",
     type = "bool",
   },

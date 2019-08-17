@@ -1,22 +1,19 @@
-lightweight tag 534d651646e9e8b3f3f384d7bb140012e7e0c615 v2.6.3
+lightweight tag e6e9ea473a72a571bae3ed40e9a7b06bd1481196 v2.7.5
 Author:	Nnogga <27819512+nnogga@users.noreply.github.com>
-Date:	Wed Jul 3 05:34:58 2019 +0200
+Date:	Wed Aug 14 19:10:02 2019 +0200
 
-commit 534d651646e9e8b3f3f384d7bb140012e7e0c615
+commit e6e9ea473a72a571bae3ed40e9a7b06bd1481196
 Author: Nnogga <27819512+nnogga@users.noreply.github.com>
-Date:   Wed Jul 3 05:34:58 2019 +0200
+Date:   Wed Aug 14 19:10:02 2019 +0200
 
-    version update
+    - MDI mode now hides freehold selector
+    - MDI selector position changed to top right
+    - share function now uses "+" as seperator, should work for all languages and realms
+    - beguiling arcane configurations added - still missing: siege of boralus
 
-commit 20207def29f88afb08f4aa26647dcba1ab6bf1fb
+commit b87b0dfae7caef05ebe0e5d390cdc189d8b28270
 Author: Nnogga <27819512+nnogga@users.noreply.github.com>
-Date:   Wed Jul 3 05:34:44 2019 +0200
+Date:   Wed Aug 14 19:08:40 2019 +0200
 
-    fix teeming check
-
-commit fd0c14e53e314c676ac528156250f61aaea25c9c
-Author: Nnogga <27819512+nnogga@users.noreply.github.com>
-Date:   Wed Jul 3 05:34:12 2019 +0200
-
-    removed ritualist teeming tentacle pack
+    beguiling arcane week updates
 

@@ -1,58 +1,14 @@
 ------------------------------------------------------------------------
-r1223 | nevcairiel | 2019-08-01 12:51:41 +0000 (Thu, 01 Aug 2019) | 1 line
+r1226 | nevcairiel | 2019-08-12 09:31:28 +0000 (Mon, 12 Aug 2019) | 1 line
 Changed paths:
    M /trunk/changelog.txt
 
 Update changelog
 ------------------------------------------------------------------------
-r1222 | funkydude | 2019-07-26 22:14:43 +0000 (Fri, 26 Jul 2019) | 1 line
+r1225 | nevcairiel | 2019-08-06 13:37:52 +0000 (Tue, 06 Aug 2019) | 1 line
 Changed paths:
    M /trunk/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua
 
-AceConfigDialog-3.0: Make the popup not block keyboard input.
-------------------------------------------------------------------------
-r1221 | nevcairiel | 2019-07-20 18:23:00 +0000 (Sat, 20 Jul 2019) | 1 line
-Changed paths:
-   M /trunk/AceGUI-3.0/AceGUI-3.0.lua
-
-AceGUI-3.0: Clear the points before re-anchoring in Fill layout (Ticket #512)
-------------------------------------------------------------------------
-r1220 | funkydude | 2019-07-18 16:47:58 +0000 (Thu, 18 Jul 2019) | 1 line
-Changed paths:
-   M /trunk/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua
-
-AceConfigDialog: Make sure to hide the popup after it's created
-------------------------------------------------------------------------
-r1219 | funkydude | 2019-07-18 14:35:16 +0000 (Thu, 18 Jul 2019) | 1 line
-Changed paths:
-   M /trunk/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua
-
-AceConfigDialog: Replace the StaticPopup with our own custom made popup.
-------------------------------------------------------------------------
-r1218 | nevcairiel | 2019-07-15 08:29:52 +0000 (Mon, 15 Jul 2019) | 1 line
-Changed paths:
-   M /trunk/AceGUI-3.0/AceGUI-3.0.lua
-
-AceGUI-3.0: Hide the widget early in the release process, so that OnLeave callbacks have a chance to fire (Fixes #505)
-------------------------------------------------------------------------
-r1217 | funkydude | 2019-07-11 03:06:18 +0000 (Thu, 11 Jul 2019) | 1 line
-Changed paths:
-   M /trunk/AceDB-3.0/AceDB-3.0.lua
-
-AceDB-3.0: Improve errors to provide more information.
-------------------------------------------------------------------------
-r1216 | funkydude | 2019-07-10 02:36:51 +0000 (Wed, 10 Jul 2019) | 1 line
-Changed paths:
-   M /trunk/AceConfig-3.0/AceConfigDialog-3.0/AceConfigDialog-3.0.lua
-   M /trunk/AceGUI-3.0/AceGUI-3.0.lua
-   M /trunk/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua
-
-Create our own tooltip instead of re-using the GameTooltip.
-------------------------------------------------------------------------
-r1215 | funkydude | 2019-07-09 04:52:59 +0000 (Tue, 09 Jul 2019) | 1 line
-Changed paths:
-   M /trunk/AceGUI-3.0/widgets/AceGUIContainer-TreeGroup.lua
-
-AceGUI-3.0/widgets/AceGUIContainer-TreeGroup: Make sure to :ClearAllPoints() after changing the width using the drag handler.
+AceConfigDialog-3.0: Add an alternate backdrop for classic, since the DialogBorderDarkTemplate does not exist there
 ------------------------------------------------------------------------
 

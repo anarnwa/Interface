@@ -1,3 +1,5 @@
+if not WeakAuras.IsCorrectVersion() then return end
+
 local WeakAuras = WeakAuras
 local SharedMedia = LibStub("LibSharedMedia-3.0")
 
@@ -1051,7 +1053,7 @@ local function modify(parent, region, data)
           newPositions[index] = nil
         end
       end
-      region:DoPositionChildrenPerFrame(self, newPositions)
+      region:DoPositionChildrenPerFrame("", newPositions)
     else
       for frame, positions in pairs(newPositions) do
         region:DoPositionChildrenPerFrame(frame, positions)

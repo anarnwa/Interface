@@ -1,7 +1,7 @@
 ## Interface: 80200
 ## Title: WeakAuras 2
 ## Author: Mirrored and the WeakAuras Team
-## Version: 2.14.0-beta1-7-g1ad4e21
+## Version: 2.14.0-beta5-16-ge384546
 ## Notes: A powerful, comprehensive utility for displaying graphics and information based on buffs, debuffs, and other triggers.
 ## Notes-esES: Potente y completa aplicación que te permitirá mostrar por pantalla múltiples diseños, basados en beneficios, perjuicios y otros activadores.
 ## Notes-deDE: Ein leistungsfähiges, umfassendes Addon zur grafischen Darstellung von Informationen von Auren, Cooldowns, Timern und vielem mehr.
@@ -17,23 +17,28 @@
 ## SavedVariables: WeakAurasSaved
 ## OptionalDeps: Ace3, LibCompress, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, Masque, GTFO, LibButtonGlow-1.0, LibSpellRange-1.0, LibRangeCheck-2.0, LibDBIcon-1.0, LibClassicDurations, LibClassicCast-1.0, LibGetFrame-1.0
 
-embeds.xml
-Init.lua
-
-locales.xml
-
 # If you add files here, you have to add them to babelfish.lua as well
 
+# external code + initialization
+embeds.xml
+Init.lua
+locales.xml
+
+# core files
 Prototypes.lua
 Types.lua
 Profiling.lua
 WeakAuras.lua
+History.lua
 Transmission.lua
+
+# trigger systems
 BuffTrigger.lua
 BuffTrigger2.lua
 GenericTrigger.lua
 AuraEnvironment.lua
 
+# region support
 RegionTypes\RegionPrototype.lua
 RegionTypes\ProgressTexture.lua
 RegionTypes\Texture.lua

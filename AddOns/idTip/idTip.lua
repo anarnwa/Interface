@@ -6,7 +6,7 @@ local hooksecurefunc, select, UnitBuff, UnitDebuff, UnitAura, UnitGUID,
 local kinds = {
   spell = "SpellID",
   item = "ItemID",
-  unit = "NPCID",
+  unit = "NPC ID",
   quest = "QuestID",
   talent = "TalentID",
   achievement = "AchievementID",
@@ -126,7 +126,7 @@ hooksecurefunc("SetItemRef", function(link, ...)
 end)
 
 GameTooltip:HookScript("OnTooltipSetSpell", function(self)
-  local id = select(3, self:GetSpell())
+  local id = select(2, self:GetSpell())
   addLine(self, id, kinds.spell)
 end)
 

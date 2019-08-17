@@ -1,7 +1,7 @@
 ## Author: Allara
 ## Interface: 80200
 ## Title: Rarity
-## Version: 1.0 (r690-release-2)
+## Version: 1.0 (r691-release)
 
 ## Notes: Tracks rare drops, including companions and mounts
 ## Notes-frFR: Traque les butins rares, y compris les mascottes et montures

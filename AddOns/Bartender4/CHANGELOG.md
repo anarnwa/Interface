@@ -1,25 +1,25 @@
 # Bartender4
 
-## [4.8.3](https://github.com/Nevcairiel/Bartender4/tree/4.8.3) (2019-06-26)
-[Full Changelog](https://github.com/Nevcairiel/Bartender4/compare/4.8.2...4.8.3)
+## [4.8.4](https://github.com/Nevcairiel/Bartender4/tree/4.8.4) (2019-08-10)
+[Full Changelog](https://github.com/Nevcairiel/Bartender4/compare/4.8.3...4.8.4)
 
-- Update TOC for 8.2  
-- Fix MicroMenu issues in vehicles  
-- Fix micro button layout on retail  
-- Fixup LuaCheck  
-- Preliminary WoW Classic support, not fully complete yet  
-- Use short-url form for LibStub external  
-- Use read\_globals for most global variables in luacheck  
-- Fix LibStub tag URL  
-- Update pkgmeta to new-style repo URLs  
-- Change how travis executes tasks  
-- Run LuaCheck in travis  
-- Add luacheckrc  
-- Cleanup warnings and style  
-- Remove pre-8.0 frame hiding code  
-- Remove pre-8.0 compat code in MicroMenu  
-- Update pkgmeta file ignores  
-- Fix script some more  
-- More locale work  
-- Play with better locale import  
-- Add travis-ci metadata  
+- Add another classic guard for LibDualSpec  
+- Another attempt  
+- Try disabling wowi upload for classic  
+- Build classic version first, so that the retail version is seen as "more recent"  
+- Add Classic support to Double-Wide and Tripple-Stacked presets  
+- Tweak bag bar position on classic  
+- Fix default page for warrior beserker stance, and only use on Classic  
+- Remove support for ButtonFacade, its been dead for years  
+- Don't use LibDualSpec at all on classic  
+- Avoid loading LibDualSpec on classic  
+- Build a classic version  
+- Add TOC version for classic  
+- Handle XP/Rep bar on classic  
+- Fix LuaCheck  
+- Handle the MainMenuBarPerformanceBarFrame on classic  
+- Improve positioning of micromenu and bag bar on classic (and Blizzard preset)  
+- Warrior stances for classic  
+- Disable talent frame hook on classic  
+- Hide the MultiCastActionBar  
+- Check if SpellFlyout actually exists  

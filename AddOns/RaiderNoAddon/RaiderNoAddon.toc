@@ -1,0 +1,7 @@
+## Interface: 80200
+## Title: 大秘境避雷针
+## Author: 花菜炒肉
+## Version: 0.2.6
+
+embeds.xml
+main.lua

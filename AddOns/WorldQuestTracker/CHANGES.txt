@@ -1,10 +1,10 @@
-lightweight tag b5c9d0741b50afa50b4c6db1fd2e97ea4dac8ea7 v8.2.0.379
+lightweight tag 67cf662682a9639acdd14bb170bba9f544de74c4 v8.2.0.380
 Author:	Tercioo <terciob19@hotmail.com>
-Date:	Sat Aug 3 17:15:53 2019 -0300
+Date:	Sat Aug 10 13:40:49 2019 -0300
 
-commit b5c9d0741b50afa50b4c6db1fd2e97ea4dac8ea7
+commit 67cf662682a9639acdd14bb170bba9f544de74c4
 Author: Tercioo <terciob19@hotmail.com>
-Date:   Sat Aug 3 17:15:53 2019 -0300
+Date:   Sat Aug 10 13:40:49 2019 -0300
 
-    Added an option to ignore filters on new zones
+    Added total pet quests in the status bar.
 

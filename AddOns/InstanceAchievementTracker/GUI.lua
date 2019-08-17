@@ -30,7 +30,7 @@ AchievementTrackerOptions = {}
 
 -- Purpose:         Information about the current release. This is mianly used to detect which addon should output messages to chat to avoid spam
 Config.majorVersion = 2						--Addon with a higher major version change have priority over a lower major version
-Config.minorVersion = 52    				--Addon with a minor version change have prioirty over a lower minor version
+Config.minorVersion = 54    				--Addon with a minor version change have prioirty over a lower minor version
 Config.revisionVersion = 0					--Addon with a revision change have the same priorty as a lower revision verison
 Config.releaseType = ""                     --Release type (Alpha, Beta, Release)
 
@@ -1663,14 +1663,19 @@ function IATInfoFrame:SetSubHeading1(text)
     -- end
 end
 
-function IATInfoFrame:SetText1(text,size,colour)
+function IATInfoFrame:SetText1(text,size,colour,width)
     if InfoFrame.setText1 == nil then
         if size == nil then
             InfoFrame.setText1 = InfoFrame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
         else
             InfoFrame.setText1 = InfoFrame:CreateFontString(nil, "BACKGROUND", size)        
         end 
-    end                        
+    end     
+    
+    if width ~= nil then
+        InfoFrame.setText1:SetWidth(width)
+    end
+    
     InfoFrame.setText1:SetText(text)
     InfoFrame.setText1:SetHeight(InfoFrame.setText1:GetStringHeight())
     InfoFrame.setText1:SetPoint("TOPLEFT", InfoFrame.subHeading1, "BOTTOMLEFT", 0, -5) 

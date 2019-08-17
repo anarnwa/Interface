@@ -213,7 +213,7 @@ L["This bar will be hidden whenever you are not in combat."] = "此快捷列脫�
 L["Three bars stacked"] = "三個快捷列重疊"
 L["Toggle actions on key press instead of release"] = "按下按鍵而不是釋放時切換動作"
 L[ [=[Toggle Button Zoom
-For more style options you need to install ButtonFacade]=] ] = [=[切換按鈕縮放
+For more style options you need to install Masque]=] ] = [=[切換按鈕縮放
 如需更多風格選項，你需要安裝 ButtonFacade]=]
 L["Toggle the button grid."] = "切換空按鈕"
 L["Toggle the use of the modifier-based focus-cast functionality."] = "切換焦點施法的關聯鍵。"

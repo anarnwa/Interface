@@ -1,3 +1,5 @@
+if not WeakAuras.IsCorrectVersion() then return end
+
 local WeakAuras = WeakAuras;
 local L = WeakAuras.L;
 
@@ -45,7 +47,7 @@ WeakAuras.group_sort_types = {
   descending = L["Descending"],
   hybrid = L["Hybrid"],
   none = L["None"],
-  custom = WeakAuras.newFeatureString .. L["Custom"]
+  custom = L["Custom"]
 }
 
 WeakAuras.group_hybrid_position_types = {
@@ -1218,8 +1220,8 @@ WeakAuras.grow_types = {
   ["VERTICAL"] = L["Centered Vertical"],
   ["CIRCLE"] = L["Counter Clockwise"],
   ["COUNTERCIRCLE"] = L["Clockwise"],
-  ["GRID"] = WeakAuras.newFeatureString .. L["Grid"],
-  ["CUSTOM"] = WeakAuras.newFeatureString .. L["Custom"],
+  ["GRID"] = L["Grid"],
+  ["CUSTOM"] = L["Custom"],
 }
 
 -- horizontal types: R (right), L (left)
@@ -1945,6 +1947,7 @@ WeakAuras.author_option_fields = {
     default = "",
     useLength = false,
     length = 10,
+    multiline = false,
   },
   toggle = {
     default = false,
@@ -2163,6 +2166,7 @@ if WeakAuras.IsClassic() then
     845, 7369, 11608, 11609, 20569, -- Cleave
     2973, 14260, 14261, 14262, 14263, 14264, 14265, 14266, -- Raptor Strike
     6807, 6808, 6809, 8972, 9745, 9880, 9881, -- Maul
+    20549, -- War Stomp
   }
   for i, spellid in ipairs(reset_swing_spell_list) do
     WeakAuras.reset_swing_spells[spellid] = true

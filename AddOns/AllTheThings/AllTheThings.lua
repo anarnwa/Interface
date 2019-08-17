@@ -477,7 +477,8 @@ GameTooltipModel.SetCreatureID = function(self, creatureID)
 	if creatureID > 0 then
 		self.Model:SetUnit("none");
 		self.Model:SetCreature(creatureID);
-		if not self.Model:GetModelFileID() then
+		local displayID = self.Model:GetDisplayInfo();
+		if not displayID then
 			Push(app, "SetCreatureID", function()
 				if self.lastModel == creatureID then
 					self:SetCreatureID(creatureID);
@@ -540,7 +541,7 @@ GameTooltipModel.TrySetModel = function(self, reference)
 				displayInfos = {};
 				local markedKeys = {};
 				for i,creatureID in ipairs(reference.qgs) do
-					local displayID = app.NPCDB[creatureID];
+					local displayID = app.NPCDisplayIDFromID[creatureID];
 					if displayID and not markedKeys[displayID] then
 						tinsert(displayInfos, displayID);
 						markedKeys[displayID] = 1;
@@ -550,7 +551,7 @@ GameTooltipModel.TrySetModel = function(self, reference)
 					return true;
 				end
 			else
-				local displayID = app.NPCDB[reference.qgs[1]];
+				local displayID = app.NPCDisplayIDFromID[reference.qgs[1]];
 				if displayID then
 					self.Model:SetFacing(reference.modelRotation and ((reference.modelRotation * math.pi) / 180) or MODELFRAME_DEFAULT_ROTATION);
 					self.Model:SetCamDistanceScale(reference.modelScale or 1);
@@ -942,14 +943,14 @@ local function GetDisplayID(data)
 	if data.displayID then
 		return data.displayID;
 	elseif data.creatureID then
-		local displayID = app.NPCDB[data.creatureID];
+		local displayID = app.NPCDisplayIDFromID[data.creatureID];
 		if displayID then
 			return displayID;
 		end
 	end
 	
 	if data.qgs and #data.qgs > 0 then
-		return app.NPCDB[data.qgs[1]];
+		return app.NPCDisplayIDFromID[data.qgs[1]];
 	end
 end
 local function SetPortraitIcon(self, data, x)
@@ -1059,7 +1060,7 @@ local DirtyQuests = {};
 local CompletedQuests = setmetatable({}, {__newindex = function (t, key, value)
 	if value then
 		rawset(t, key, value);
-		DirtyQuests[key] = true;
+		rawset(DirtyQuests, key, true);
 		SetDataSubMember("CollectedQuests", key, 1);
 		SetTempDataSubMember("CollectedQuests", key, 1);
 		if app.Settings:GetTooltipSetting("Report:CompletedQuests") then
@@ -1083,7 +1084,7 @@ local IsQuestFlaggedCompletedForObject = function(t)
 	if IsQuestFlaggedCompleted(t.questID) or IsQuestFlaggedCompleted(t.altQuestID) then
 		return 1;
 	end
-	if not t.repeatable and app.Settings:Get("AccountWide:Quests") then
+	if not t.repeatable and app.AccountWideQuests then
 		if t.questID and GetDataSubMember("CollectedQuests", t.questID) then
 			return 2;
 		end
@@ -1101,34 +1102,53 @@ local IsQuestFlaggedCompletedForObject = function(t)
 end
 
 -- Quest Name Harvesting Lib (http://www.wowinterface.com/forums/showthread.php?t=46934)
+local questRetries = {};
 local QuestHarvester = CreateFrame("GameTooltip", "AllTheThingsQuestHarvester", UIParent, "GameTooltipTemplate");
 local QuestTitleFromID = setmetatable({}, { __index = function(t, id)
 	QuestHarvester:SetOwner(UIParent, "ANCHOR_NONE");
 	QuestHarvester:SetHyperlink("quest:"..id);
-	local title = AllTheThingsQuestHarvesterTextLeft1:GetText();
+	local title = AllTheThingsQuestHarvesterTextLeft1:GetText() or C_QuestLog.GetQuestInfo(id);
 	QuestHarvester:Hide()
 	if title and title ~= RETRIEVING_DATA then
-		t[id] = title
+		rawset(questRetries, id, nil);
+		rawset(t, id, title);
 		return title
+	else
+		local retries = rawget(questRetries, id);
+		if retries and retries > 120 then
+			title = "Quest #" .. id .. "*";
+			rawset(questRetries, id, nil);
+			rawset(t, id, title);
+			return title;
+		else
+			rawset(questRetries, id, (retries or 0) + 1);
+		end
+		return RETRIEVING_DATA;
 	end
 end })
 
 -- NPC & Title Name Harvesting Lib (https://us.battle.net/forums/en/wow/topic/20758497390?page=1#post-4, Thanks Gello!)
 local NPCTitlesFromID = {};
+local NPCHarvester = CreateFrame("GameTooltip", "AllTheThingsNPCHarvester", UIParent, "GameTooltipTemplate");
 local NPCNameFromID = setmetatable({}, { __index = function(t, id)
-	QuestHarvester:SetOwner(UIParent,"ANCHOR_NONE")
-	QuestHarvester:SetHyperlink(format("unit:Creature-0-0-0-0-%d-0000000000",id))
-	local title = AllTheThingsQuestHarvesterTextLeft1:GetText();
-	if title and QuestHarvester:NumLines() > 2 then
-		-- title = title .. " <" .. AllTheThingsQuestHarvesterTextLeft2:GetText() .. ">";
-		NPCTitlesFromID[id] = AllTheThingsQuestHarvesterTextLeft2:GetText();
-	end
-	QuestHarvester:Hide();
-	if title and title ~= RETRIEVING_DATA then
-		t[id] = title
+	if id > 0 then
+		NPCHarvester:SetOwner(UIParent,"ANCHOR_NONE")
+		NPCHarvester:SetHyperlink(format("unit:Creature-0-0-0-0-%d-0000000000",id))
+		local title = AllTheThingsNPCHarvesterTextLeft1:GetText();
+		if title and NPCHarvester:NumLines() > 2 then
+			rawset(NPCTitlesFromID, id, AllTheThingsNPCHarvesterTextLeft2:GetText());
+		end
+		NPCHarvester:Hide();
+		if title and title ~= RETRIEVING_DATA then
+			rawset(t, id, title);
+			return title;
+		end
+	else
+		local title = L["NPC_ID_NAMES"][id];
+		rawset(t, id, title);
 		return title;
 	end
-end })
+end});
 
 -- Search Caching
 local searchCache, CreateObject, MergeObject, MergeObjects = {};
@@ -1379,25 +1399,71 @@ local ResolveSymbolicLink;
 (function()
 local subroutines;
 subroutines = {
-	["pvp_cata_gladiator_base"] = function(headerID, classID)
+	["pvp_gear_base"] = function(headerID1, headerID2, headerID3)
 		return {
-			{"select", "npcID", -9979 },	-- Select the "Cataclysm" header
-			{"pop"},	-- Discard the "Cataclysm" header and acquire the children.
-			{"where", "npcID", headerID },	-- Select the Gladiator header
-			{"pop"},	-- Discard the Gladiator header and acquire the children.
-			{"where", "npcID", -661 },	-- Select the "Gladiator PvP Gear" header
-			{"pop"},	-- Discard the "Gladiator PvP Gear" header and acquire the children.
+			{"select", "npcID", headerID1 },	-- Select the Expansion header
+			{"pop"},	-- Discard the Expansion header and acquire the children.
+			{"where", "npcID", headerID2 },	-- Select the Season header
+			{"pop"},	-- Discard the Season header and acquire the children.
+			{"where", "npcID", headerID3 },	-- Select the Set header
+		};
+	end,
+	["pvp_gear_faction_base"] = function(headerID1, headerID2, headerID3, headerID4)
+		return {
+			{"select", "npcID", headerID1 },	-- Select the Expansion header
+			{"pop"},	-- Discard the Expansion header and acquire the children.
+			{"where", "npcID", headerID2 },	-- Select the Season header
+			{"pop"},	-- Discard the Season header and acquire the children.
+			{"where", "npcID", headerID3 },	-- Select the Faction header
+			{"pop"},	-- Discard the Faction header and acquire the children.
+			{"where", "npcID", headerID4 },	-- Select the Set header
+		};
+	end,
+	-- Set Gear	
+	["pvp_set_ensemble"] = function(headerID1, headerID2, headerID3, classID)
+		return {
+			{"select", "npcID", headerID1 },	-- Select the Expansion header
+			{"pop"},	-- Discard the Expansion header and acquire the children.
+			{"where", "npcID", headerID2 },	-- Select the Season header
+			{"pop"},	-- Discard the Season header and acquire the children.
+			{"where", "npcID", headerID3 },	-- Select the Set header
+			{"pop"},	-- Discard the Set header and acquire the children.
 			{"where", "classID", classID },	-- Select all the class header.
 			{"pop"},	-- Discard the class header and acquire the children.
 			{"is", "itemID"},
 			{"is", "f"},	-- If it has a filterID, keep it, otherwise throw it away.
 		};
 	end,
-	["pvp_ruthless_gladiator"] = function(classID)
-		return { ["sym"] = { {"sub", "pvp_cata_gladiator_base", -673, classID }, }, };
+		["pvp_set_faction_ensemble"] = function(headerID1, headerID2, headerID3, headerID4, classID)
+		return {
+			{"select", "npcID", headerID1 },	-- Select the Expansion header
+			{"pop"},	-- Discard the Expansion header and acquire the children.
+			{"where", "npcID", headerID2 },	-- Select the Season header
+			{"pop"},	-- Discard the Season header and acquire the children.
+			{"where", "npcID", headerID3 },	-- Select the Faction header
+			{"pop"},	-- Discard the Season header and acquire the children.
+			{"where", "npcID", headerID4 },	-- Select the Set header
+			{"pop"},	-- Discard the Set header and acquire the children.
+			{"where", "classID", classID },	-- Select all the class header.
+			{"pop"},	-- Discard the class header and acquire the children.
+			{"is", "itemID"},
+			{"is", "f"},	-- If it has a filterID, keep it, otherwise throw it away.
+		};
 	end,
-	["pvp_vicious_gladiator"] = function(classID)
-		return { ["sym"] = { {"sub", "pvp_cata_gladiator_base", -672, classID }, }, };
+	-- Weapons
+	["pvp_weapons_ensemble"] = function(headerID1, headerID2, headerID3)
+		return {
+			{"select", "npcID", headerID1 },	-- Select the Expansion header
+			{"pop"},	-- Discard the Expansion header and acquire the children.
+			{"where", "npcID", headerID2 },	-- Select the Season header
+			{"pop"},	-- Discard the Season header and acquire the children.
+			{"where", "npcID", headerID3 },	-- Select the Set header
+			{"pop"},	-- Discard the Set header and acquire the children.
+			{"where", "npcID", -319 },	-- Select the "Weapons" header.
+			{"pop"},	-- Discard the class header and acquire the children.
+			{"is", "itemID"},
+			{"is", "f"},	-- If it has a filterID, keep it, otherwise throw it away.
+		};
 	end,
 	["legion_relinquished_base"] = function()
 		return {
@@ -4613,24 +4679,22 @@ end)();
 			elseif key == "collectible" then
 				return app.CollectibleFlightPaths;
 			elseif key == "collected" then
-				local isCollected;
 				if app.AccountWideFlightPaths then
 					if GetDataSubMember("CollectedFlightPaths", t.flightPathID) then
-						isCollected = 1;
+						return 1;
 					end
 				else
 					if GetTempDataSubMember("CollectedFlightPaths", t.flightPathID) then
-						isCollected = 1;
+						return 1;
 					end
 				end
-				if isCollected ~= 1 and t.altQuests then
+				if t.altQuests then
 					for i,questID in ipairs(t.altQuests) do
 						if IsQuestFlaggedCompleted(questID) then
-							isCollected = 1;
+							return 1;
 						end
 					end
 				end
-				return isCollected;
 			elseif key == "text" then
 				return t.info.name or "Visit the Flight Master to cache.";
 			elseif key == "u" then
@@ -5218,7 +5282,7 @@ local function GetHolidayCache()
 				if numEvents > 0 then
 					for index=1,numEvents,1 do
 						local event = C_Calendar.GetDayEvent(0, day, index)
-						if event and event.calendarType == "HOLIDAY" and event.sequenceType == "START" then
+						if event and event.calendarType == "HOLIDAY" and (not event.sequenceType or event.sequenceType == "" or event.sequenceType == "START") then
 							if event.iconTexture then
 								local t = cache[event.iconTexture];
 								if not t then
@@ -5428,7 +5492,7 @@ local itemFields = {
 		return t.saved;
 	end,
 	["icon"] = function(t)
-		return "Interface\\Icons\\INV_Misc_QuestionMark";
+		return select(5, GetItemInfoInstant(t.itemID));
 	end,
 	["link"] = function(t)
 		local itemLink = t.itemID;
@@ -5721,19 +5785,13 @@ app.BaseMusicRoll = {
 		elseif key == "collectible" or key == "trackable" then
 			return app.CollectibleMusicRolls;
 		elseif key == "collected" or key == "saved" then
-			if app.AccountWideMusicRolls then
-				if GetDataSubMember("CollectedMusicRolls", t.questID) then
-					return 1;
-				end
-			else
-				if GetTempDataSubMember("CollectedMusicRolls", t.questID) then
-					return 1;
-				end
-			end
 			if IsQuestFlaggedCompleted(t.questID) then
-				SetTempDataSubMember("CollectedMusicRolls", t.questID, 1);
-				SetDataSubMember("CollectedMusicRolls", t.questID, 1);
 				return 1;
+			end
+			if app.AccountWideMusicRolls then
+				if t.questID and GetDataSubMember("CollectedQuests", t.questID) then
+					return 2;
+				end
 			end
 		elseif key == "lvl" then
 			return 100;
@@ -5765,6 +5823,23 @@ end
 
 -- NPC Lib
 (function()
+-- NPC Model Harvester (also acquires the displayID)
+local npcModelHarvester = CreateFrame("DressUpModel", nil, UIParent);
+npcModelHarvester:SetPoint("TOPRIGHT", UIParent, "BOTTOMRIGHT", 0, 0);
+npcModelHarvester:SetSize(1, 1);
+npcModelHarvester:Hide();
+local NPCDisplayIDFromID = setmetatable({}, { __index = function(t, id)
+	if id > 0 then
+		npcModelHarvester:SetDisplayInfo(0);
+		npcModelHarvester:SetUnit("none");
+		npcModelHarvester:SetCreature(id);
+		local displayID = npcModelHarvester:GetDisplayInfo();
+		if displayID and displayID ~= 0 then
+			rawset(t, id, displayID);
+			return displayID;
+		end
+	end
+end});
 local npcFields = {
 	["key"] = function(t) return "npcID"; end,
 	["achievementID"] = function(t)
@@ -5781,6 +5856,7 @@ local npcFields = {
 		return IsQuestFlaggedCompletedForObject(t);
 	end,
 	["creatureID"] = function(t) return t.npcID; end,
+	["displayID"] = function(t) return NPCDisplayIDFromID[t.npcID]; end,
 	["icon"] = function(t)
 		return L["NPC_ID_ICONS"][t.npcID] 
 			or (t.achievementID and select(10, GetAchievementInfo(t.achievementID))) 
@@ -5814,6 +5890,7 @@ local npcFields = {
 	end,
 };
 npcFields.saved = npcFields.collected;
+app.NPCDisplayIDFromID = NPCDisplayIDFromID;
 app.BaseNPC = {
 	__index = function(t, key)
 		_cache = rawget(npcFields, key);
@@ -5964,20 +6041,18 @@ app.BaseQuest = {
 			return questName;
 		elseif key == "questName" then
 			local questID = t.altQuestID and app.FactionID == Enum.FlightPathFaction.Horde and t.altQuestID or t.questID;
-			local questName = QuestTitleFromID[questID];
-			if questName then
-				t.retries = nil;
-				t.title = nil;
-				return "[" .. questName .. "]";
-			end
-			if t.retries and t.retries > 120 then
-				return "[Quest #" .. questID .. "*]";
-			else
-				t.retries = (t.retries or 0) + 1;
-			end
+			return QuestTitleFromID[questID];
 		elseif key == "link" then
 			return "quest:" .. (t.altQuestID and app.FactionID == Enum.FlightPathFaction.Horde and t.altQuestID or t.questID);
 		elseif key == "icon" then
+			if t.isDaily or t.isWeekly then
+				return "Interface\\GossipFrame\\DailyQuestIcon";
+			elseif t.repeatable then
+				return "Interface\\GossipFrame\\DailyActiveQuestIcon";
+			else
+				return "Interface\\GossipFrame\\AvailableQuestIcon";
+			end
+		elseif key == "preview" then
 			return "Interface\\Icons\\Achievement_Quests_Completed_08";
 		elseif key == "trackable" then
 			return true;
@@ -6067,50 +6142,36 @@ app.BaseSelfieFilter = {
 		if key == "key" then
 			return "questID";
 		elseif key == "text" then
-			if t.npcID then
-				if t.npcID > 0 then
-					return t.npcID > 0 and NPCNameFromID[t.npcID];
-				else
-					return L["NPC_ID_NAMES"][t.npcID];
-				end
-			end
-			return t.questName;
-		elseif key == "questName" then
-			local questID = t.questID;
-			local questName = QuestTitleFromID[questID];
-			if questName then
-				t.retries = nil;
-				t.title = nil;
-				return "[" .. questName .. "]";
-			end
-			if t.retries and t.retries > 120 then
-				return "[Quest #" .. questID .. "*]";
-			else
-				t.retries = (t.retries or 0) + 1;
-			end
+			return select(1, GetSpellLink(t.spellID));
 		elseif key == "link" then
 			return "quest:" .. t.questID;
 		elseif key == "icon" then
-			return "Interface\\Icons\\INV_Misc_ SelfieCamera_02";
+			return select(3, GetSpellInfo(t.spellID));
 		elseif key == "trackable" then
 			return true;
 		elseif key == "collectible" then
 			return app.CollectibleSelfieFilters;
 		elseif key == "saved" or key == "collected" then
-			if app.AccountWideSelfieFilters then
-				if GetDataSubMember("CollectedSelfieFilters", t.questID) then
-					return 1;
-				end
-			else
-				if GetTempDataSubMember("CollectedSelfieFilters", t.questID) then
-					return 1;
-				end
-			end
 			if IsQuestFlaggedCompleted(t.questID) then
-				SetTempDataSubMember("CollectedSelfieFilters", t.questID, 1);
-				SetDataSubMember("CollectedSelfieFilters", t.questID, 1);
 				return 1;
 			end
+			if app.AccountWideSelfieFilters then
+				if t.questID and GetDataSubMember("CollectedQuests", t.questID) then
+					return 2;
+				end
+				if t.altQuestID and GetDataSubMember("CollectedQuests", t.altQuestID) then
+					return 2;
+				end
+			end
+		elseif key == "description" then
+			if t.crs and #t.crs > 0 then
+				for i,id in ipairs(t.crs) do
+					return "Take a selfie using your " .. select(2, GetItemInfo(122674)) .. " with |cffff8000" .. (NPCNameFromID[id] or "???")
+					.. "|r" .. (t.maps and (" in |cffff8000" .. (app.GetMapName(t.maps[1]) or "???") .. "|r.") or ".");
+				end
+			end
+		elseif key == "lvl" then
+			return 100;
 		else
 			-- Something that isn't dynamic.
 			return table[key];
@@ -6525,18 +6586,7 @@ app.BaseVignette = {
 			end
 			return t.questName;
 		elseif key == "questName" then
-			local questID = t.altQuestID and app.FactionID == Enum.FlightPathFaction.Horde and t.altQuestID or t.questID;
-			local questName = QuestTitleFromID[questID];
-			if questName then
-				t.retries = nil;
-				t.title = nil;
-				return "[" .. questName .. "]";
-			end
-			if t.retries and t.retries > 120 then
-				return "[Quest #" .. questID .. "*]";
-			else
-				t.retries = (t.retries or 0) + 1;
-			end
+			return QuestTitleFromID[t.altQuestID and app.FactionID == Enum.FlightPathFaction.Horde and t.altQuestID or t.questID];
 		elseif key == "link" then
 			return "quest:" .. (t.altQuestID and app.FactionID == Enum.FlightPathFaction.Horde and t.altQuestID or t.questID);
 		elseif key == "icon" then
@@ -8721,25 +8771,27 @@ local function RowOnEnter(self)
 				GameTooltipIcon.icon:SetTexCoord(0, 1, 0, 1);
 			end
 			GameTooltipIcon:Show();
-		elseif reference.displayID or reference.modelID or reference.model then
-			if app.Settings:GetTooltipSetting("fileID") then
-				GameTooltip:AddDoubleLine("File ID", GameTooltipModel.Model:GetModelFileID());
-			end
-			if app.Settings:GetTooltipSetting("displayID") then
-				if reference.displayID or reference.modelID then
-					GameTooltip:AddDoubleLine("Display ID", reference.displayID);
-				end
-				if reference.modelID then
-					GameTooltip:AddDoubleLine("Model ID", reference.modelID);
-				end
-			end
+		end
+		if reference.displayID and app.Settings:GetTooltipSetting("displayID") then
+			GameTooltip:AddDoubleLine("Display ID", reference.displayID);
+		end
+		if reference.modelID and app.Settings:GetTooltipSetting("displayID") then
+			GameTooltip:AddDoubleLine("Model ID", reference.modelID);
 		end
 		if reference.cost then
-			local cost = tostring(reference.cost);
-			if reference.parent and (reference.parent.currencyID or reference.parent.itemID) then
-				cost = (reference.parent.icon and ("|T" .. reference.parent.icon .. ":0|t") or "") .. (reference.parent.text or "???") .. " x" .. cost;
+			if type(reference.cost) == "table" then
+				for k,v in pairs(reference.cost) do
+					local name, icon, _;
+					if v[1] == "i" then
+						_,name,_,_,_,_,_,_,_,icon = GetItemInfo(v[2])
+					elseif v[1] == "c" then
+						name,_,icon = GetCurrencyInfo(v[2])
+					end
+					GameTooltip:AddDoubleLine(k == 1 and "Cost" or " ", (icon and ("|T" .. icon .. ":0|t") or "") .. (name or "???") .. " x" .. v[3]);
+				end
+			else
+				GameTooltip:AddDoubleLine("Cost", GetCoinTextureString(reference.cost));
 			end
-			GameTooltip:AddDoubleLine("Cost", cost); 
 		end
 		if reference.criteriaID and reference.achievementID then
 			GameTooltip:AddDoubleLine("Criteria for", GetAchievementLink(reference.achievementID));
@@ -9246,6 +9298,15 @@ function app:GetDataCache()
 			table.insert(g, db);
 		end
 		
+		-- Selfie Filters
+		if app.Categories.SelfieFilters then
+			db = app.CreateItem(122674, app.Categories.SelfieFilters);
+			db.expanded = false;
+			db.text = L["SELFIE_FILTERS_HEADER"];
+			db.lvl = 100;
+			table.insert(g, db);
+		end
+		
 		-- Gear Sets
 		if app.Categories.GearSets then
 			db = app.CreateAchievement(11761, app.Categories.GearSets);
@@ -9642,82 +9703,6 @@ function app:GetDataCache()
 		BuildGroups(allData, allData.g);
 		app:GetWindow("Unsorted").data = allData;
 		CacheFields(allData);
-		
-		-- Uncomment this section if you need to Harvest Display IDs:
-		--[[
-		local displayData = {};
-		displayData.visible = true;
-		displayData.expanded = true;
-		displayData.progress = 0;
-		displayData.total = 0;
-		displayData.icon = "Interface\\Icons\\Spell_Warlock_HarvestofLife";
-		displayData.text = "Harvesting All Display IDs";
-		displayData.description = "If you're seeing this window outside of Git, please yell loudly in Crieve's ear.";
-		displayData.g = {};
-		for i=1,78092,1 do
-			tinsert(displayData.g, {["displayID"] = i,["text"] = "Model #" .. i});
-		end
-		displayData.rows = displayData.g;
-		BuildGroups(displayData, displayData.g);
-		UpdateGroups(displayData, displayData.g);
-		
-		-- Assign the missing data table to the harvester.
-		local popout = app:GetWindow("DisplayIDs");
-		popout.data = displayData;
-		popout.ScrollBar:SetValue(1);
-		popout:SetVisible(true);
-		popout.fileIDs = {};
-		popout.UpdateDone = function(self)
-			print("UpdateDone");
-			local progress = 0;
-			local total = 0;
-			local tries = 0;
-			for i,group in ipairs(displayData.g) do
-				total = total + 1;
-				if not group.fileID then
-					if tries < 10 and (not group.tries or group.tries < 5) then
-						tries = tries + 1;
-						group.tries = (group.tries or 0) + 1;
-						if GameTooltipModel:TrySetModel(group) then
-							group.fileID = GameTooltipModel.Model:GetModelFileID();
-						end
-					end
-				end
-				
-				if group.fileID then
-					if group.displayID then
-						popout.fileIDs[group.fileID] = group.displayID;
-					elseif popout.fileIDs[group.fileID] then
-						group.displayID = popout.fileIDs[group.fileID];
-					end
-				end
-				
-				if not group.displayID or not group.fileID then
-					group.visible = true;
-					group.saved = false;
-					group.trackable = true;
-				else
-					group.saved = true;
-					group.trackable = true;
-					if group.model then
-						group.visible = true;
-					else
-						group.visible = false;
-					end
-					progress = progress + 1;
-				end
-			end
-			if self.rowData then
-				local count = #self.rowData;
-				if count > 1 then
-					self.rowData[1].progress = progress;
-					self.rowData[1].total = total;
-				end
-				self.processingLinks = false;
-			end
-			UpdateVisibleRowData(self);
-		end
-		]]--
 	end
 	return allData;
 end
@@ -9799,7 +9784,7 @@ function app:GetWindow(suffix, parent, onUpdate)
 				local pos = C_Map.GetPlayerMapPosition(mapID, "player");
 				if pos then
 					local px, py = pos:GetXY();
-					info.coord = { px * 100, py * 100 };
+					info.coord = { px * 100, py * 100, mapID };
 				end
 				repeat
 					mapInfo = C_Map.GetMapInfo(mapID);
@@ -10167,10 +10152,9 @@ app:GetWindow("Debugger", UIParent, function(self)
 						for i=1,numItems,1 do
 							local link = GetMerchantItemLink(i);
 							if link then
-								local parent = rawGroups;
 								local name, texture, cost, quantity, numAvailable, isPurchasable, isUsable, extendedCost = GetMerchantItemInfo(i);
-								-- print(link, cost, extendedCost);
 								if extendedCost then
+									cost = {};
 									local itemCount = GetMerchantItemCostInfo(i);
 									for j=1,itemCount,1 do
 										local itemTexture, itemValue, itemLink = GetMerchantItemCostItem(i, j);
@@ -10178,42 +10162,18 @@ app:GetWindow("Debugger", UIParent, function(self)
 											-- print("  ", itemValue, itemLink, gsub(itemLink, "\124", "\124\124"));
 											local m = itemLink:match("currency:(%d+)");
 											if m then
-												-- Parse as a CURRENCY LINK.
-												parent = MergeObject(parent, {["currencyID"] = tonumber(m), ["g"] = {}}).g;
-												cost = itemValue;
+												-- Parse as a CURRENCY.
+												tinsert(cost, {"c", tonumber(m), itemValue});
 											else
-												-- Parse as an ITEM LINK.
-												m = itemLink:match("item:(%d+)");
-												if m then
-													cost = itemValue;
-													parent = MergeObject(parent, {["itemID"] = tonumber(m), ["g"] = {}}).g;
-												end
+												-- Parse as an ITEM.
+												tinsert(cost, {"i", tonumber(itemLink:match("item:(%d+)")), itemValue});
 											end
 										end
 									end
 								end
 								
 								-- Parse as an ITEM LINK.
-								m = link:match("item:(%d+)");
-								if m then
-									m = tonumber(m);
-									local found = false;
-									local searchResults = SearchForField("itemID", m);
-									if searchResults and #searchResults > 0 then
-										for j,k in ipairs(searchResults) do
-											if k.parent and (k.parent.creatureID == npc_id or (k.parent.parent and k.parent.parent.creatureID == npc_id)) then
-												found = true;
-											end
-										end
-									end
-									if not found then
-										table.insert(parent, {["itemID"] = m, ["cost"] = cost});
-									end
-								end
-								--[===[
-								local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(link);
-								print(" ", itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice);
-								]===]--
+								table.insert(rawGroups, {["itemID"] = tonumber(link:match("item:(%d+)")), ["cost"] = cost});
 							end
 						end
 						
@@ -12431,23 +12391,25 @@ app:GetWindow("WorldQuests", UIParent, function(self)
 									cache = fieldCache["creatureID"][qg];
 									if cache then
 										for _,data in ipairs(cache) do
-											for key,value in pairs(data) do
-												if not (key == "g" or key == "parent") then
-													questObject[key] = value;
-												end
-											end
-											if data.g then
-												for _,entry in ipairs(data.g) do
-													local resolved = ResolveSymbolicLink(entry);
-													if resolved then
-														entry = CreateObject(entry);
-														if entry.g then
-															MergeObjects(entry.g, resolved);
-														else
-															entry.g = resolved;
-														end
+											if GetRelativeField(group, "npcID", -16) then	-- Rares only!
+												for key,value in pairs(data) do
+													if not (key == "g" or key == "parent") then
+														questObject[key] = value;
 													end
-													MergeObject(questObject.g, entry);
+												end
+												if data.g then
+													for _,entry in ipairs(data.g) do
+														local resolved = ResolveSymbolicLink(entry);
+														if resolved then
+															entry = CreateObject(entry);
+															if entry.g then
+																MergeObjects(entry.g, resolved);
+															else
+																entry.g = resolved;
+															end
+														end
+														MergeObject(questObject.g, entry);
+													end
 												end
 											end
 										end
@@ -13685,9 +13647,7 @@ app.events.VARIABLES_LOADED = function()
 	GetDataMember("CollectedFactions", {});
 	GetDataMember("CollectedFlightPaths", {});
 	GetDataMember("CollectedFollowers", {});
-	GetDataMember("CollectedMusicRolls", {});
 	GetDataMember("CollectedQuests", {});
-	GetDataMember("CollectedSelfieFilters", {});
 	GetDataMember("CollectedSpells", {});
 	GetDataMember("CollectedTitles", {});
 	GetDataMember("SeasonalFilters", {});
@@ -13771,21 +13731,6 @@ app.events.VARIABLES_LOADED = function()
 		SetTempDataMember("CollectedFollowers", myFollowers);
 	end
 	
-	-- Cache your character's music roll data.
-	local musicRolls = GetDataMember("CollectedMusicRollsPerCharacter", {});
-	local myMusicRolls = GetTempDataMember("CollectedMusicRolls", musicRolls[app.GUID]);
-	if not myMusicRolls then
-		myMusicRolls = {};
-		musicRolls[app.GUID] = myMusicRolls;
-		SetTempDataMember("CollectedMusicRolls", myMusicRolls);
-		SetDataMember("WipedCollectedMusicRollsPerCharacter", 1);
-	elseif not GetDataMember("WipedCollectedMusicRollsPerCharacter") then
-		SetDataMember("WipedCollectedMusicRollsPerCharacter", 1);
-		wipe(myMusicRolls);
-		wipe(musicRolls);
-		musicRolls[app.GUID] = myMusicRolls;
-	end
-	
 	-- Cache your character's quest data.
 	local quests = GetDataMember("CollectedQuestsPerCharacter", {});
 	local myQuests = GetTempDataMember("CollectedQuests", quests[app.GUID]);
@@ -13816,15 +13761,6 @@ app.events.VARIABLES_LOADED = function()
 				end
 			end
 		end
-	end
-	
-	-- Cache your character's selfie filters data.
-	local selfieFilters = GetDataMember("CollectedSelfieFiltersPerCharacter", {});
-	local mySelfieFilters = GetTempDataMember("CollectedSelfieFilters", selfieFilters[app.GUID]);
-	if not mySelfieFilters then
-		mySelfieFilters = {};
-		selfieFilters[app.GUID] = mySelfieFilters;
-		SetTempDataMember("CollectedSelfieFilters", mySelfieFilters);
 	end
 	
 	-- Cache your character's title data.
@@ -13864,9 +13800,7 @@ app.events.VARIABLES_LOADED = function()
 		CleanData(factions, myfactions);
 		CleanData(followers, myFollowers);
 		CleanData(lockouts, myLockouts);
-		CleanData(musicRolls, myMusicRolls);
 		CleanData(recipes, myRecipes);
-		CleanData(selfieFilters, mySelfieFilters);
 		CleanData(titles, myTitles);
 		characters[app.GUID] = app.Me;
 	end
@@ -13898,12 +13832,8 @@ app.events.VARIABLES_LOADED = function()
 		"CollectedFlightPaths",
 		"CollectedFlightPathsPerCharacter",
 		"CollectedIllusions",
-		"CollectedMusicRolls",
-		"CollectedMusicRollsPerCharacter",
 		"CollectedQuests",
 		"CollectedQuestsPerCharacter",
-		"CollectedSelfieFilters",
-		"CollectedSelfieFiltersPerCharacter",
 		"CollectedSources",
 		"CollectedSpells",
 		"CollectedSpellsPerCharacter",
@@ -13923,8 +13853,7 @@ app.events.VARIABLES_LOADED = function()
 		"UnobtainableItemFilters",
 		"WaypointFilters",
 		"EnableTomTomWaypointsOnTaxi",
-		"TomTomIgnoreCompletedObjects",
-		"WipedCollectedMusicRollsPerCharacter"
+		"TomTomIgnoreCompletedObjects"
 	}) do
 		rawset(oldsettings, key, rawget(AllTheThingsAD, key));
 	end

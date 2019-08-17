@@ -216,7 +216,7 @@ L["This bar will be hidden whenever you are not in combat."] = "전투가 종료
 L["Three bars stacked"] = "세 개의 바 (위로)"
 L["Toggle actions on key press instead of release"] = "버튼을 누름과 동시에 행동을 취함"
 L[ [=[Toggle Button Zoom
-For more style options you need to install ButtonFacade]=] ] = "버튼 확대를 전환합니다./n다양한 스타일 옵션을 사용하기 위해 ButtonFacade 애드온을 설치하세요."
+For more style options you need to install Masque]=] ] = "버튼 확대를 전환합니다./n다양한 스타일 옵션을 사용하기 위해 ButtonFacade 애드온을 설치하세요."
 L["Toggle the button grid."] = "버튼 격자를 사용합니다."
 L["Toggle the use of the modifier-based focus-cast functionality."] = "기능키에 의한 주시 대상 시전 기능을 사용합니다."
 L["Toggle the use of the modifier-based self-cast functionality."] = "기능키에 의한 자신에게 시전 기능을 사용합니다."
