@@ -8,12 +8,14 @@ local _
 local FL = LibStub("LibFishing-1.0");
 
 local GSB = FishingBuddy.GetSettingBool;
+local PLANS = FishingBuddy.FishingPlans
 
 local CurLoc = GetLocale();
 
 local RAFT_RESET_TIME = 30
 local RAFT_ID = 85500;
 local BERG_ID = 107950;
+local BOARD_ID = 166461;
 
 local RaftItems = {};
 RaftItems[RAFT_ID] = {
@@ -27,12 +29,28 @@ RaftItems[BERG_ID] = {
     spell = 152421,
     setting = "UseBobbingBerg",
 };
+RaftItems[BOARD_ID] = {
+    ["enUS"] = "Gnarlwood Waveboard",
+    spell = 288758,
+    setting = "UseWaveboard",
+    toy = 1
+}
+
+
+local function HaveRaftBuff()
+    return FL:HasBuff(RaftItems[RAFT_ID].spell);
+end
+
+local function HaveBergBuff()
+    return FL:HasBuff(RaftItems[BERG_ID].spell);
+end
+
+local function HaveBoardBuff()
+    return FL:HasBuff(RaftItems[BOARD_ID].spell);
+end
 
 local function HasRaftBuff()
-	local hasberg = FL:HasBuff(RaftItems[BERG_ID].spell);
-	local hasraft = FL:HasBuff(RaftItems[RAFT_ID].spell);
-
-	return RaftItems[BERG_ID].spell, RaftItems[RAFT_ID].spell, hasberg, hasraft
+    return HaveRaftBuff() or HaveBergBuff() or HaveBoardBuff()
 end
 FishingBuddy.HasRaftBuff = HasRaftBuff
 
@@ -43,34 +61,36 @@ local function HasPandarianFishing()
     return skill > 0;
 end
 
+local function HaveRaft()
+    return PlayerHasToy(RAFT_ID) and HasPandarianFishing();
+end
+
+local function HaveWaveboard()
+    return PlayerHasToy(BOARD_ID);
+end
+
+local function HaveBerg()
+    return GetItemCount(BERG_ID) > 0;
+end
+
 local function HaveRafts()
-    local haveRaft = PlayerHasToy(RAFT_ID) and HasPandarianFishing();
-    local haveBerg = GetItemCount(BERG_ID) > 0;
-    return (haveRaft or haveBerg), haveRaft, haveBerg
+    local haveRaft = HaveRaft();
+    local haveBoard = HaveWaveboard();
+    local haveBerg = HaveBerg();
+    return (haveRaft or haveBerg or haveBoard), haveRaft, haveBoard, haveBerg
 end
 
 local function SetupRaftOptions()
-    local haveAny, haveRaft, haveBerg = HaveRafts();
+    local haveAny = HaveRafts();
     local options = {};
     -- if we have both, be smarter about rafts
     options["UseRaft"] = {
         ["tooltip"] = FBConstants.CONFIG_USERAFTS_INFO,
         ["tooltipd"] = FBConstants.CONFIG_USERAFTS_INFOD,
         ["text"] = FBConstants.CONFIG_USERAFTS_ONOFF,
-        ["enabled"] = HaveRafts;
+        ["enabled"] = haveAny;
         ["v"] = 1,
         ["default"] = true
-    };
-    options["UseBobbingBerg"] = {
-        ["text"] = FBConstants.CONFIG_BOBBINGBERG_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_BOBBINGBERG_INFO,
-        ["enabled"] = function()
-            local _, _, berg = HaveRafts();
-            return berg;
-        end;
-        ["v"] = 1,
-        ["default"] = true,
-        ["parents"] = { ["UseRaft"] = "d", },
     };
 
     options["BergMaintainOnly"] = {
@@ -105,11 +125,11 @@ local function RaftBergUsable()
 end
 
 local function RaftingPlan(queue)
-    local haveAny, haveRaft, haveBerg = HaveRafts()
+    local haveAny, haveRaft, haveBoard, haveBerg = HaveRafts()
     if (haveAny and RaftBergUsable()) then
-        local bergbuff, raftbuff, hasberg, hasraft = HasRaftBuff();
+        local hasraftbuff = HasRaftBuff();
 
-        local need = not (hasberg or hasraft);
+        local need = not hasraftbuff;
 
         -- if we need it, but we're maintaining only, skip it
         if (GSB("BergMaintainOnly") and need) then
@@ -118,23 +138,29 @@ local function RaftingPlan(queue)
 
         local buff, itemid, name;
         buff = nil
-        if (haveBerg and GSB("UseBobbingBerg")) then
-            buff = bergbuff;
+        if (haveBerg) then
             itemid = BERG_ID;
-            name = RaftItems[itemid][CurLoc];
+        elseif (haveBoard and haveRaft) then
+            if math.random(100) < 50 then
+                itemid = BOARD_ID;
+            else
+                itemid = RAFT_ID;
+            end
+        elseif (haveBoard) then
+            itemid = BOARD_ID;
         elseif (haveRaft) then
-            buff = raftbuff;
-            _, itemid = C_ToyBox.GetToyInfo(RAFT_ID)
-            name = RaftItems[RAFT_ID][CurLoc];
+            itemid = RAFT_ID;
+        end
+        buff = RaftItems[itemid].spell;
+        name = RaftItems[itemid][CurLoc];
+        if RaftItems[itemid].toy then
+            _, itemid = C_ToyBox.GetToyInfo(BOARD_ID)
         end
         if buff then
-            local et = select(6, FL:GetBuff(buff));
+            local _, et = FL:HasAnyBuff(RaftItems)
             et = (et or 0) - GetTime();
             if (need or et <= RAFT_RESET_TIME) then
-                tinsert(queue, {
-                    ["itemid"] = itemid,
-                    ["name"] = name,
-                })
+                PLANS:AddEntry(itemid, name)
             end
         end
     end
@@ -147,7 +173,7 @@ RaftEvents[FBConstants.FIRST_UPDATE_EVT] = function()
     FishingBuddy.raftoptions = options
     if options then
         FishingBuddy.AddFluffOptions(options);
-        FishingBuddy.FishingPlans:RegisterPlan(RaftingPlan)
+        PLANS:RegisterPlan(RaftingPlan)
     end
 end
 

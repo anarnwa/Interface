@@ -273,25 +273,3 @@ FishingBuddy.OutfitManager.RegisterManager(EQUIPMENT_MANAGER,
 															 function(useme) end,
 															 GearManagerSwitch);
 
-if ( FishingBuddy.Debugging ) then
-	FishingBuddy.Commands["checkset"] = {};
-	FishingBuddy.Commands["checkset"].func =
-		function(what)
-			local Debug = FishingBuddy.Debug;
-			local icon, setId = GetEquipmentSetInfoByName(self.name);
-			local set = GetEquipmentSetItemIDs(setId);
-			for slot, item in ipairs(set) do
-				if ( item == EQUIPMENT_SET_IGNORED_SLOT ) then
-					Debug("Ignored slot "..slot);
-				end
-			end
-			return true;
-		end
-
-	FishingBuddy.Commands["newset"] = {};
-	FishingBuddy.Commands["newset"].func =
-		function(what)
-			GearManagerInitialize(true);
-			return true;
-		end
-end

@@ -211,11 +211,3 @@ end
 
 FishingBuddy.RegisterHandlers(MacroEvents);
 
-if ( FishingBuddy.Debugging ) then
-    FishingBuddy.Commands["macrotest"] = {};
-    FishingBuddy.Commands["macrotest"].func =
-        function()
-            CreateFishingMacro();
-            return true;
-        end
-end

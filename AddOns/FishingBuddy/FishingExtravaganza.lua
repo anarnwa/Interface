@@ -392,32 +392,3 @@ end
 FishingBuddy.Extravaganza.MiniMap_OnEnter = function(self)
 end
 
-FishingBuddy.Commands[FBConstants.TIMER] = {};
-FishingBuddy.Commands[FBConstants.TIMER].help = FBConstants.TIMERRESET_HELP;
-FishingBuddy.Commands[FBConstants.TIMER].func =
-	function(what)
-		if ( what == FBConstants.RESET ) then
-			FishingExtravaganzaFrame:ClearAllPoints();
-			FishingExtravaganzaFrame:SetPoint("CENTER", "UIParent", "CENTER", 0, 0);
-			IsTime(true);
-		end
-		return true;
-	end;
-
-if ( FishingBuddy.Debugging ) then
-	FishingBuddy.Commands["contest"] = {};
-	FishingBuddy.Commands["contest"].func =
-		function(day, hour, zone, continent)
-			FishingBuddy.Debug("Contest debug: %q %q %s %s", continent, zone, day, hour);
-			-- Contests[1].zone = zone;
-			-- Contests[1].continent = continent;
-			-- Contests[1].day = day;
-			-- Contests[1].hour = hour;
-			-- Contests[1].kind = nil;
-			-- Contests[2].day = day;
-			-- Contests[2].hour = hour;
-			-- Contests[2].kind = nil;
-			IsTime(true);
-			return true;
-		end;
-end

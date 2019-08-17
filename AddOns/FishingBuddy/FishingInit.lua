@@ -634,8 +634,6 @@ FishingInit.InitSortHelpers = function()
 				end
 				table.sort(FishingBuddy.SortedByZone[zone]);
             end
-        elseif FishingBuddy.Debugging then
-			print("missing", mapId, name)
 		end
 	end
 	table.sort(FishingBuddy.SortedZones);

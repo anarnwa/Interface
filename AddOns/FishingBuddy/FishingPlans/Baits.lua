@@ -8,6 +8,7 @@ local _
 local FL = LibStub("LibFishing-1.0");
 
 local GSB = FishingBuddy.GetSettingBool;
+local PLANS = FishingBuddy.FishingPlans
 
 local CurLoc = GetLocale();
 
@@ -161,13 +162,10 @@ local function CurrentSpecialBait()
     -- return nil
 end
 
-local function CheckBait(baitid, queue)
+local function CheckBait(baitid)
     local baitinfo = Maintainable[baitid];
     if (GetItemCount(baitid) > 0 and not FL:HasBuff(baitinfo.spell)) then
-        tinsert(queue, {
-            ["itemid"] = baitinfo.id,
-            ["name"] = baitinfo[CurLoc],
-        })
+        PLANS:AddEntry(baitinfo.id, baitinfo[CurLoc])
         return true
     end
 end
@@ -186,7 +184,7 @@ local function SpecialBaitPlan(queue)
                     return
                 end
 
-                if LastSpecialBait and CheckBait(LastSpecialBait, queue) then
+                if LastSpecialBait and CheckBait(LastSpecialBait) then
                     return
                 end
 
@@ -196,11 +194,11 @@ local function SpecialBaitPlan(queue)
                     if not info.mapId or mapId == info.mapId then
                         if info.override and overrides[info.override] then
                             local check = overrides[info.override];
-                            if (check[mapId] and check[mapId][subzone] and CheckBait(info.override, queue)) then
+                            if (check[mapId] and check[mapId][subzone] and CheckBait(info.override)) then
                                 return
                             end
                         end
-                        if CheckBait(baitid, queue) then
+                        if CheckBait(baitid) then
                             return
                         end
                     end
@@ -236,7 +234,7 @@ BaitEvents["VARIABLES_LOADED"] = function(started)
         end
     end
     FishingBuddy.SetupSpecialItems(Maintainable, false, true, true)
-    FishingBuddy.FishingPlans:RegisterPlan(SpecialBaitPlan)
+    PLANS:RegisterPlan(SpecialBaitPlan)
 end
 
 FishingBuddy.RegisterHandlers(BaitEvents);

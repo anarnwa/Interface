@@ -8,6 +8,7 @@ local _
 local FL = LibStub("LibFishing-1.0");
 
 local GSB = FishingBuddy.GetSettingBool;
+local PLANS = FishingBuddy.FishingPlans
 
 local CurLoc = GetLocale();
 
@@ -48,7 +49,7 @@ CoinLures[138958] = {
 
 -- We always want to drink, so let's skip LibFishing's "lure when we need it"
 -- and leave that for FishingAce!
-local function CoinPlan(queue)
+local function CoinPlan()
     if GSB("DalaranLures") then
         local lure_id = nil
         local lure_info = nil
@@ -62,10 +63,7 @@ local function CoinPlan(queue)
             end
         end
         if lure_id then
-            tinsert(queue, {
-                    ["itemid"] = id,
-                    ["name"] = lure_info[CurLoc],
-                })
+            PLANS:AddEntry(id, lure_info[CurLoc])
             FL:WaitForBuff(lure_info.spell)
             return
         end
@@ -75,7 +73,7 @@ end
 local ItemsEvents = {}
 ItemsEvents["VARIABLES_LOADED"] = function(started)
     FishingBuddy.SetupSpecialItems(CoinLures, false, true, true)
-    FishingBuddy.FishingPlans:RegisterPlan(CoinPlan)
+    PLANS:RegisterPlan(CoinPlan)
 end
 
 FishingBuddy.RegisterHandlers(ItemsEvents);

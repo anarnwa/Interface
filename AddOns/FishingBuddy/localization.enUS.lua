@@ -164,6 +164,8 @@ FishingTranslations["enUS"] = {
 
     CONFIG_BOBBINGBERG_ONOFF  = "Use Bipsi's Berg",
     CONFIG_BOBBINGBERG_INFO   = "If enabled, use the bobbing berg.",
+    CONFIG_WAVEBOARD_ONOFF    = "Use Waveboard",
+    CONFIG_WAVEBOARD_INFO     = "If enabled, use the Gnarlwood Waveboard.",
     CONFIG_MAINTAINRAFT_INFO  = "If enabled, do not use the raft item, only maintain it if it is already being used.",
     CONFIG_MAINTAINRAFTBERG_ONOFF = "Maintain only",
     CONFIG_OVERWALKING_ONOFF  = "Always Raft",

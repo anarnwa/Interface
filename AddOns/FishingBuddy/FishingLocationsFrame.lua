@@ -529,9 +529,6 @@ FishingBuddy.Locations.Update = function(self, forced)
                     end
                     UpdateLocLine(i, j, leveloffset, c, e, text, append, texture);
                     lastlevel = level;
-                    if ( FishingBuddy.Debugging) then
-                        tinsert(locButton.tooltip, { "LocationLines["..j.."] = "..info, FBConstants.RED });
-                    end
                 else
                     locButton:Hide();
                     locButton.id = nil;

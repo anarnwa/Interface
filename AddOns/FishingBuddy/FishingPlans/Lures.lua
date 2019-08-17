@@ -9,6 +9,7 @@ local _
 local FL = LibStub("LibFishing-1.0");
 
 local GSB = FishingBuddy.GetSettingBool;
+local PLANS = FishingBuddy.FishingPlans
 
 local CurLoc = GetLocale();
 
@@ -90,7 +91,7 @@ local SalmonLure = {
 local function PickLure()
     -- only apply a lure if we're actually fishing with a "real" pole
     if (FL:IsFishingPole()) then
-        if FishingBuddy.FishingPlans:CanUseFishingItem(SALMON_LURE_ID, SalmonLure) then
+        if PLANS:CanUseFishingItem(SALMON_LURE_ID, SalmonLure) then
             return true, SALMON_LURE_ID, SalmonLure[CurLoc]
         end
 
@@ -149,11 +150,7 @@ local function LurePlan(queue)
 
     local doit, id, name = PickLure()
     if doit then
-        tinsert(queue, {
-            ["itemid"] = id,
-            ["name"] = name,
-            ["targetid"] = nil
-        })
+        PLANS:AddEntry(id, name)
     end
 end
 
@@ -161,7 +158,7 @@ local LuringEvents = {}
 LuringEvents["VARIABLES_LOADED"] = function(started)
     FishingBuddy.SetupSpecialItems({ [SALMON_LURE_ID] = SalmonLure }, false, true, true)
     FishingBuddy.UpdateFluffOption(SALMON_LURE_ID, SalmonLure)
-    FishingBuddy.FishingPlans:RegisterPlan(LurePlan)
+    PLANS:RegisterPlan(LurePlan)
 end
 
 LuringEvents["UNIT_SPELLCAST_CHANNEL_START"] = function(unit, lineid, spellid)

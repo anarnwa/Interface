@@ -608,46 +608,4 @@ end
 
 FishingBuddy.RegisterHandlers(RaidEvents);
 
-
-if ( FishingBuddy.Debugging ) then
-	FishingBuddy.FBR = FBR
-    FishingBuddy.Commands["action"] = {};
-	FishingBuddy.Commands["action"].func =
-		function(id)
-			id = id or 133703
-			for _,info in ipairs(RaidBosses) do
-				local cname = GetItemInfo(info.currency)
-				local fname = GetItemInfo(info.fish.id)
-				-- print(info.boss, info.area, GetMapNameByID(info.area), cname, RaidCurrency[info.currency].enUS, info.fish.id, fname, info.fish.enUS)
-			end
-			print("Before", FishingActionButton:IsShown())
-			local boss = CurrentBoss();
-			if boss then
-				if GetItemCount(boss.fish.id) == 0 then
-					boss.fish.id = id
-				end
-				RaidEvents[FBConstants.INVENTORY_EVT]()
-			end
-			print("After", FishingActionButton:IsShown())
-			return true
-        end
-		FishingBuddy.Commands["toggle"] = {};
-		FishingBuddy.Commands["toggle"].func =
-			function()
-				print("Before", FishingActionButton:IsShown())
-				FBR:FishingAction_Toggle()
-				print("After", FishingActionButton:IsShown())
-				return true
-			end
-		FishingBuddy.Commands["boss"] = {};
-		FishingBuddy.Commands["boss"].func =
-			function()
-				local bosses = {}
-				for _, boss in ipairs(RaidBosses) do
-					boss['area'] = FishingBuddy.GetNewMapId(boss['area'])
-					tinsert(bosses, boss)
-				end
-				FishingBuddy_Info['RaidBosses'] = bosses
-				return true
-			end
-	end
+	

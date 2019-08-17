@@ -8,6 +8,7 @@ local _
 local FL = LibStub("LibFishing-1.0");
 
 local GSB = FishingBuddy.GetSettingBool;
+local PLANS = FishingBuddy.FishingPlans
 
 local CurLoc = GetLocale();
 
@@ -48,7 +49,7 @@ local function WWJD()
     end
 end
 
-local function TuskarrPlan(queue)
+local function TuskarrPlan()
     if (not GSB(TuskarrItem.setting) or IsMounted()) then
         return
     end
@@ -59,6 +60,7 @@ local function TuskarrPlan(queue)
     end
 
     local main = FL:GetMainHandItem(true);
+    local pole = FL:IsFishingPole();
     if (main ~= TuskarrItem.id) then
         -- Only use this if we're not using the Legendary pole (Surface Tension)
         if (not TuskarrItem.tension) then
@@ -72,43 +74,19 @@ local function TuskarrPlan(queue)
         end
     end
 
-    if (main == TuskarrItem.id or not FL:HasBuff(TuskarrItem.spell)) then
+    if (pole and not FL:HasBuff(TuskarrItem.spell)) then
         local s,_,_ = GetItemCooldown(TuskarrItem.id);
-        local pole = FL:IsFishingPole();
-        if (s == 0 and pole) then
-            tinsert(queue, {
-                ["itemid"] = TuskarrItem.id,
-                ["name"] = TuskarrItem[CurLoc],
-            })
-        end
-        if (pole or main == TuskarrItem.id) then
-            if (s == 0) then
-                tinsert(queue, {
-                    ["itemid"] = TuskarrItem.id,
-                    ["name"] = TuskarrItem[CurLoc],
-                })
-            end
-            if (main == TuskarrItem.id) then
-                local item = FL:GetBestFishingItem(INVSLOT_MAINHAND)
-                if item then
-                    local name;
-                    _, main, name, _ = FL:SplitLink(item.link, true);
-                    tinsert(queue, {
-                        ["itemid"] = main,
-                        ["name"] = name
-                    })
-                end
-            elseif (not pole) then
-                tinsert(queue, {
-                    ["itemid"] = main,
-                    ["name"] = "fishing pole"
-                })
+        if (s == 0) then
+            if not PLANS:HaveEntry(TuskarrItem.id) then
+                PLANS:AddEntry(TuskarrItem.id, TuskarrItem[CurLoc])
+                PLANS:AddEntry(TuskarrItem.id, TuskarrItem[CurLoc])
+                PLANS:AddEntry(main, name)
             end
         end
     end
 end
 
-local function TrawlerPlan(queue)
+local function TrawlerPlan()
     if (not GSB(TrawlerTotem.setting) or IsMounted()) then
         return
     end
@@ -120,10 +98,7 @@ local function TrawlerPlan(queue)
             local et = (start + duration) - GetTime();
             if (et <= 0) then
                 local _, itemid =  C_ToyBox.GetToyInfo(TRAWLER_ID);
-                tinsert(queue, {
-                    ["itemid"] = itemid,
-                    ["name"] = TrawlerTotem[CurLoc],
-                })
+                PLANS:AddEntry(itemid, TrawlerTotem[CurLoc])
             end
         end
     end
@@ -136,13 +111,10 @@ local LagerItem =  {
 
 -- We always want to drink, so let's skip LibFishing's "lure when we need it"
 -- and leave that for FishingAce!
-local function LagerPlan(queue)
+local function LagerPlan()
     if GSB("FishingFluff") and GSB("DrinkHeavily") then
         if (GetItemCount(LagerItem.id) > 0 and not FL:HasBuff(LagerItem.spell)) then
-            tinsert(queue, {
-                ["itemid"] = LagerItem.id,
-                ["name"] = LagerItem[CurLoc],
-            })
+            PLANS:AddEntry(LagerItem.id, LagerItem[CurLoc])
             FL:WaitForBuff(LagerItem.spell)
         end
     end
@@ -150,7 +122,6 @@ end
 
 local ItemsEvents = {}
 ItemsEvents["VARIABLES_LOADED"] = function(started)
-    local PLANS = FishingBuddy.FishingPlans
     FishingBuddy.SetupSpecialItems({ [TUSKARR_ID] = TuskarrItem }, false, true, true)
     FishingBuddy.SetupSpecialItems({ [TRAWLER_ID] = TrawlerTotem }, false, true, true)
     FishingBuddy.UpdateFluffOption(TUSKARR_ID, TuskarrItem)

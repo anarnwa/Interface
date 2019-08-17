@@ -577,6 +577,3 @@ LS:Embed(f);
 f:SetScript("OnShow", OptionsFrame_OnShow);
 f:SetScript("OnHide", function (self) self:HideTabs(); end);
 
-if ( FishingBuddy.Debugging ) then
-    FishingBuddy.FBOptionsTable = FBOptionsTable;
-end

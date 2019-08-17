@@ -1,6 +1,6 @@
 ## Interface: 80200
 ## Title: Fishing Buddy
-## Version: 1.10.3
+## Version: 1.10.4
 ## Notes: Help with fishing related tasks -- clothing, fish information, etc.
 ## Notes-deDE: Erleichtert das Angeln - Ausrüstung und Fish-Infos
 ## Notes-frFR: Vous facilite la vie de pecheur. Informations sur les poissons, changement d'habits, etc.
@@ -14,10 +14,10 @@
 ## X-Curse-Project-ID: 15093
 ## X-WoWI-ID: 4239
 Libs\Libs.xml
-localization.lua
-localization.de.lua
-localization.es.lua
-localization.fr.lua
+localization.enUS.lua
+localization.deDE.lua
+localization.esES.lua
+localization.frFR.lua
 localization.itIT.lua
 localization.koKR.lua
 localization.ptBR.lua

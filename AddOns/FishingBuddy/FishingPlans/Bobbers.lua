@@ -158,7 +158,7 @@ local function unwind(table)
 	return unwound
 end
 
-local function SpecialBobberPlan(queue)
+local function SpecialBobberPlan()
 	if GSB(BigBobbers[136377].setting) then
 		for id,bobber in pairs(BigBobbers) do
 			if FL:HasBuff(bobber.spell) then
@@ -168,11 +168,7 @@ local function SpecialBobberPlan(queue)
 			local itemid, canuse = UseThisBobber(id, bobber);
 			if canuse then
 				ClearSpecialBobberBuffs()
-				tinsert(queue, {
-					["itemid"] = itemid,
-					["name"] = bobber[CurLoc],
-					["targetid"] = nil
-				})
+				PLANS:AddEntry(itemid, bobber[CurLoc])
 				return
 			end
 		end
@@ -187,10 +183,7 @@ local function SpecialBobberPlan(queue)
 
 		local itemid = PickRandomBobber(bobbersetting);
 		if ( itemid ) then
-			tinsert(queue, {
-				["itemid"] = itemid,
-				["targetid"] = nil
-			})
+			PLANS:AddEntry(itemid)
 		end
 	end
 end
@@ -234,7 +227,7 @@ local BobberEvents = {}
 BobberEvents["VARIABLES_LOADED"] = function(started)
 	FishingBuddy.SetupSpecialItems(BigBobbers, true, true, true)
     FishingBuddy.SetupSpecialItems(Bobbers, false, true, true)
-	FishingBuddy.FishingPlans:RegisterPlan(SpecialBobberPlan)
+	PLANS:RegisterPlan(SpecialBobberPlan)
 
 	local FSF = FishingBuddy.FSF
 	local simple = {}

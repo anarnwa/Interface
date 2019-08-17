@@ -69,6 +69,29 @@ function FishingPlans:HavePlans()
     return #self.planqueue > 0
 end
 
+function FishingPlans:HaveEntry(itemid, name, targetid)
+    if itemid then
+        for _, plan in ipairs(self.planqueue) do
+            if (not itemid or plan.itemid == itemid) and
+            (not name or plan.name == name) and
+            (not targetid or plan.targetid == targetid) then
+                return true
+            end
+        end
+    end
+    return nil
+end
+
+function FishingPlans:AddEntry(itemid, name, targetid)
+    if itemid then
+        tinsert(self.planqueue, {
+            ["itemid"] = itemid,
+            ["name"] = name,
+            ["targetid"] = targetid
+        })
+    end
+end
+
 function FishingPlans:GetPlan()
     if self:HavePlans() then
         local head = table.remove(self.planqueue, 1)
@@ -95,12 +118,3 @@ end
 
 FishingBuddy.RegisterHandlers(PlanEvents);
 
-if ( FishingBuddy.Debugging ) then
-	FishingBuddy.Commands["plans"] = {};
-	FishingBuddy.Commands["plans"].func =
-        function(what)
-            FishingPlans:ExecutePlans(what);
-            FishingBuddy.Dump(planqueue)
-			return true;
-		end
-end

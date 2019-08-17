@@ -10,7 +10,7 @@ Licensed under a Creative Commons "Attribution Non-Commercial Share Alike" Licen
 local _
 
 local MAJOR_VERSION = "LibFishing-1.0"
-local MINOR_VERSION = 91012
+local MINOR_VERSION = 91013
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 
@@ -538,7 +538,7 @@ function FishLib:HasBuff(buffId, skipWait)
     if ( buffId ) then
         -- if we're waiting, assume we're going to have it
         if ( not skipWait and BuffWatch[buffId] ) then
-            return true
+            return true, GetTime() + 10
         else
             for i=1,40 do
                 local info = {UnitBuff("player", i)}
@@ -546,12 +546,23 @@ function FishLib:HasBuff(buffId, skipWait)
                 if current_buff then
                     local spellid = select(10, unpack(info));
                     if (buffId == spellid) then
-                        return true;
+                        local et = select(6, unpack(info));
+                        return true, et;
                     end
                 else
-                    return nil
+                    return nil, nil
                 end
             end
+        end
+    end
+    -- return nil
+end
+
+function FishLib:HasAnyBuff(buffs)
+    for _, buff in pairs(buffs) do
+        local has, et = self:HasBuff(buff.spell)
+        if has then
+            return has, et
         end
     end
     -- return nil

@@ -813,35 +813,3 @@ FishingBuddy.Commands[FBConstants.UPDATEDB].func =
 		return true;
 	end;
 
-local resetfishdata = false;
-FishingBuddy.Commands[FBConstants.FISHDATA] = {};
-FishingBuddy.Commands[FBConstants.FISHDATA].help = FBConstants.FISHDATARESETHELP;
-FishingBuddy.Commands[FBConstants.FISHDATA].func =
-	function()
-		if (resetfishdata) then
-			FishingBuddy_Info["FishTotals"] = {};
-			FishingBuddy_Info["FishingHoles"] = {};
-			FishingBuddy_Info["FishingSkill"] = {};
-			FishingBuddy.RunHandlers(FBConstants.RESET_FISHDATA_EVT);
-			FishingBuddy.Print(FBConstants.FISHDATARESET_MSG);
-			resetfishdata = false;
-		else
-			FishingBuddy.Print(FBConstants.FISHDATARESETMORE_MSG);
-			resetfishdata = true;
-		end
-		return true;
-	end;
-
-if ( FishingBuddy.Debugging ) then
-	FishingBuddy.Commands["makeopen"] = {};
-	FishingBuddy.Commands["makeopen"].func =
-		function(id)
-			id = id or 7973;
-			QuestItems[id] = { open = true, };
-			FishingBuddy_Info["Fishies"][id].canopen = nil;
-			local name, _, _, _, _, _, _, _,_, _ = GetItemInfo(id) ;
-			FishingBuddy.Debug("Make "..name.." openable ("..GetItemCount(id)..")");
-			table.insert(FishingBuddy.OpenThisFishId, id);
-			return true;
-		end
-end

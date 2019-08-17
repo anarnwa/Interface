@@ -1141,7 +1141,7 @@ local function AutoPoleCheck(self, ...)
             self.x, self.y, self.instanceID = HBD:GetPlayerWorldPosition();
         elseif (self.x) then
             if (self.moving) then
-                if not FishingBuddy.HasRaftBuff() then
+                if not FishingBuddy.HaveRafts() then
                     local x, y, instanceID = HBD:GetPlayerWorldPosition();
                     local _, distance = HBD:GetWorldVector(instanceId, self.x, self.y, x, y);
                     if instanceID ~= self.instanceID or distance > 10 then
@@ -1727,47 +1727,3 @@ FishingBuddy.Testing = function(line)
     tinsert(FishingBuddy_Info["Testing"], line);
 end
 
-if ( FishingBuddy.Debugging ) then
-    FishingBuddy.Commands["poles"] = {};
-    FishingBuddy.Commands["poles"].func =
-        function()
-            local _,_,_,_,fp_itemtype,fp_subtype,_,_,_,_ = FL:GetItemInfo(6256);
-            FishingBuddy.Debug("'"..fp_itemtype.."' '"..fp_subtype.."'");
-            for name,item in pairs(POLES) do
-                local link = "item:"..item;
-                if ( not FL:IsLinkableItem(item) ) then
-                    FishingBuddy.Debug(link);
-                    -- fetch the data (may disconnect)
-                    FishingBuddyTooltip:SetHyperlink(link);
-                end
-                -- now that we have it in our cache, get the name
-                local nm,li,ra,ml,it,st,sc,el,tx,il = FL:GetItemInfo(link);
-                if ( nm ) then
-                    FishingBuddy.Debug("		'"..it.."' '"..st.."'");
-                end
-            end
-            return true;
-        end
-
-    FishingBuddy.Commands["showopen"] = {};
-    FishingBuddy.Commands["showopen"].func =
-        function()
-            -- FishingBuddy_Info["Fishies"][id].canopen
-            for id,info in pairs(FishingBuddy_Info["Fishies"]) do
-                if (FishingBuddy_Info["Fishies"][id].canopen) then
-                    FishingBuddy.Debug("Id: %d Name: %s", id, info[CurLoc]);
-                end
-            end
-            return true;
-        end
-
-    FishingBuddy.Commands["nowopen"] = {};
-    FishingBuddy.Commands["nowopen"].func =
-        function()
-            -- 58856
-            for idx,info in pairs(OpenThisFishId) do
-                FishingBuddy.Debug(idx, info);
-            end
-            return true;
-        end
-end
