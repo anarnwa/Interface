@@ -80,7 +80,7 @@ local defaults = {
         },
         questlevels = false,
         tooltipHint = true,
-        diskey = 3,  --用Shift键  1=Alt   2=Ctrl   3=Shift
+        diskey = 1,  --用Shift键  1=Alt   2=Ctrl   3=Shift
         record = 0,
         recorddate = nil,
         dateformat = "%Y.%m.%d",
