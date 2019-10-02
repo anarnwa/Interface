@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "GatherMate2",
+    "localName": "GatherMate2",
+    "version": "1.45.5",
+    "fileName": "gathermate2",
+    "addonsMap": [
+        "GatherMate2"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "GatherMate2",
+    "gameVersion": ""
+}

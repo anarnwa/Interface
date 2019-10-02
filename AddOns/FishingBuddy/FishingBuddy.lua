@@ -6,9 +6,8 @@
 local _
 
 local FL = LibStub("LibFishing-1.0");
+local HBD = FL.HBD;
 local LO = LibStub("LibOptionsFrame-1.0");
-local LEW = LibStub("LibEventWindow-1.0");
-local HBD = LibStub("HereBeDragons-2.0")
 
 local CurLoc = GetLocale();
 local PLANS = FishingBuddy.FishingPlans;
@@ -60,19 +59,9 @@ local GeneralOptions = {
         ["tooltip"] = FBConstants.CONFIG_SORTBYPERCENT_INFO,
         ["v"] = 1,
         ["default"] = true },
-    ["DingQuestFish"] = {
-        ["text"] = FBConstants.CONFIG_DINGQUESTFISH_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_DINGQUESTFISH_INFO,
-        ["v"] = 1,
-        ["default"] = true, },
     ["ShowBanner"] = {
         ["text"] = FBConstants.CONFIG_SHOWBANNER_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_SHOWBANNER_INFO,
-        ["v"] = 1,
-        ["default"] = true, },
-    ["SetupSkills"] = {
-        ["text"] = FBConstants.CONFIG_TRADESKILL_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_TRADESKILL_INFO,
         ["v"] = 1,
         ["default"] = true, },
     ["EnhanceFishingSounds"] = {
@@ -109,6 +98,18 @@ local GeneralOptions = {
         ["default"] = false,
         ["parents"] = { ["EnhanceFishingSounds"] = "d" },
     },
+    ["DingQuestFish"] = {
+        ["text"] = FBConstants.CONFIG_DINGQUESTFISH_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_DINGQUESTFISH_INFO,
+        ["v"] = 1,
+        ["default"] = true,
+    },
+    ["SetupSkills"] = {
+        ["text"] = FBConstants.CONFIG_TRADESKILL_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_TRADESKILL_INFO,
+        ["v"] = 1,
+        ["default"] = true,
+    }
 };
 
 -- x87bliss has implemented IsFishWardenEnabled as a public function, so
@@ -159,13 +160,6 @@ local CastingOptions = {
         ["parents"] = { ["EasyCast"] = "d", },
         ["active"] = function(i, s, b) return not IsMounted() or b end,
         ["default"] = false },
-    ["FlyingCast"] = {
-        ["text"] = FBConstants.CONFIG_FLYINGCAST_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_FLYINGCAST_INFO,
-        ["v"] = 1,
-        ["parents"] = { ["EasyCast"] = "d", },
-        ["active"] = function(i, s, b) return (not IsFlying()) or b end,
-        ["default"] = false },
     ["AutoLoot"] = {
         ["text"] = FBConstants.CONFIG_AUTOLOOT_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_AUTOLOOT_INFO,
@@ -178,7 +172,7 @@ local CastingOptions = {
         ["v"] = 1,
         ["m"] = 1,
         ["p"] = 1,
-        ["parents"] = { ["EasyCast"] = "d", ["EasyCast"] = IsWardenEnabled },
+        ["parents"] = { ["EasyCast"] = IsWardenEnabled },
         ["default"] = false },
     ["AutoOpen"] = {
         ["text"] = FBConstants.CONFIG_AUTOOPEN_ONOFF,
@@ -226,26 +220,6 @@ local CastingOptions = {
         ["primary"] = "ContestSupport",
         ["parents"] = { ["ContestSupport"] = "d", ["EasyCast"] = "d" }
     },
-    ["EasyCastKeys"] = {
-        ["default"] = FBConstants.KEYS_NONE,
-        ["button"] = "FBEasyKeys",
-        ["tooltipd"] = FBConstants.CONFIG_EASYCASTKEYS_INFO,
-        ["parents"] = { ["EasyCast"] = "h" },
-        ["init"] = function(o, b) b.InitMappedMenu(o,b); end,
-        ["setup"] =
-            function(button)
-                local gs = FishingBuddy.GetSetting;
-                FBEasyKeys.menu:SetMappedValue("EasyCastKeys", gs("EasyCastKeys"));
-            end,
-    },
-    ["KeepOnTruckin"] = {
-        ["text"] = FBConstants.CONFIG_KEEPONTRUCKIN_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_KEEPONTRUCKIN_INFO,
-        ["v"] = 1,
-        ["active"] = function(i, s, b) return b and AreWeFishing() end,
-        ["parents"] = { ["EasyCast"] = "d" },
-        ["default"] = true
-    },
     ["MouseEvent"] = {
         ["default"] = "RightButtonUp",
         ["button"] = "FBMouseEvent",
@@ -280,40 +254,73 @@ local CastingOptions = {
         ["m"] = 1,
         ["parents"] = { ["EasyLures"] = "d" },
         ["default"] = false },
-    ["BigDraenor"] = {
-        ["text"] = FBConstants.CONFIG_BIGDRAENOR_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_BIGDRAENOR_INFO,
-        ["v"] = 1,
-        ["m"] = 1,
-        ["parents"] = { ["EasyLures"] = "d" },
-        ["default"] = true },
     ["LastResort"] = {
         ["text"] = FBConstants.CONFIG_LASTRESORT_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_LASTRESORT_INFO,
         ["v"] = 1,
         ["parents"] = { ["EasyLures"] = "d" },
-        ["default"] = false },
+        ["default"] = false
+    },
+    ["FlyingCast"] = {
+        ["text"] = FBConstants.CONFIG_FLYINGCAST_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_FLYINGCAST_INFO,
+        ["v"] = 1,
+        ["parents"] = { ["EasyCast"] = "d", },
+        ["active"] = function(i, s, b) return (not IsFlying()) or b end,
+        ["default"] = false
+    },
+    ["EasyCastKeys"] = {
+        ["default"] = FBConstants.KEYS_NONE,
+        ["button"] = "FBEasyKeys",
+        ["tooltipd"] = FBConstants.CONFIG_EASYCASTKEYS_INFO,
+        ["parents"] = { ["EasyCast"] = "h" },
+        ["init"] = function(o, b) b.InitMappedMenu(o,b); end,
+        ["setup"] =
+            function(button)
+                local gs = FishingBuddy.GetSetting;
+                FBEasyKeys.menu:SetMappedValue("EasyCastKeys", gs("EasyCastKeys"));
+            end,
+    },
+    ["KeepOnTruckin"] = {
+        ["text"] = FBConstants.CONFIG_KEEPONTRUCKIN_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_KEEPONTRUCKIN_INFO,
+        ["v"] = 1,
+        ["active"] = function(i, s, b) return b and AreWeFishing() end,
+        ["parents"] = { ["EasyCast"] = "d" },
+        ["default"] = true
+    },
     ["DraenorBait"] = {
         ["text"] = FBConstants.CONFIG_DRAENORBAIT_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_DRAENORBAIT_INFO,
         ["v"] = 1,
         ["m"] = 1,
         ["primary"] = "EasyLures",
-        ["parents"] = { ["EasyLures"] = "d", ["EasyLures"] = "d" },
-        ["default"] = true },
+        ["parents"] = { ["EasyLures"] = "d", },
+        ["default"] = true
+    },
     ["DraenorBaitMaintainOnly"] = {
         ["text"] = FBConstants.CONFIG_DRAENORBAITMAINTAIN_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_DRAENORBAITMAINTAIN_INFO,
         ["v"] = 1,
         ["primary"] = "EasyLures",
         ["parents"] = {  ["DraenorBait"] = "d", ["EasyLures"] = "d", },
-        ["default"] = true },
+        ["default"] = true
+    },
+    ["BigDraenor"] = {
+        ["text"] = FBConstants.CONFIG_BIGDRAENOR_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_BIGDRAENOR_INFO,
+        ["v"] = 1,
+        ["m"] = 1,
+        ["parents"] = { ["EasyLures"] = "d" },
+        ["default"] = true
+    },
     ["DalaranLures"] = {
         ["text"] = FBConstants.CONFIG_DALARANLURES_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_DALARANLURES_INFO,
         ["v"] = 1,
         ["parents"] = { ["EasyLures"] = "d", },
-        ["default"] = true },
+        ["default"] = true
+    },
 };
 
 local InvisibleOptions = {
@@ -452,8 +459,6 @@ FishingBuddy.SortedFishies = nil;
 
 FishingBuddy.StartedFishing = nil;
 
-local CastingNow = false;
-
 local OpenThisFishId = {};
 local DoAutoOpenLoot = nil;
 
@@ -489,9 +494,10 @@ bagupdateframe:Hide();
 local InventoryEvents = {
     ["BAG_UPDATE"] = true,
     ["PLAYER_EQUIPMENT_CHANGED"] = true,
-    ["EQUIPMENT_SWAP_FINISHED"] = true,
-    ["WEAR_EQUIPMENT_SET"] = true,
 }
+
+InventoryEvents["EQUIPMENT_SWAP_FINISHED"] = true
+InventoryEvents["WEAR_EQUIPMENT_SET"] = true
 
 function bagupdateframe:StartInventory()
     for event,_ in pairs(InventoryEvents) do
@@ -621,26 +627,6 @@ local function ClearTooltipText()
 end
 FishingBuddy.ClearTooltipText = ClearTooltipText;
 
--- build a list of zones where a given fish can be found
-local function FishZoneList(fishid)
-    if ( FishingBuddy.ByFishie[fishid] ) then
-        local slist = {};
-        for idx,count in pairs(FishingBuddy.ByFishie[fishid]) do
-            local zidx, sidx = zmex(idx);
-            if ( sidx > 0 ) then
-                slist[idx] = 1;
-            end
-        end
-        local names = {};
-        for idx,_ in pairs(slist) do
-            tinsert(names, FishingBuddy_Info["SubZones"][idx]);
-        end
-        table.sort(names);
-        return FishingBuddy.EnglishList(names);
-    end
-    -- return nil;
-end
-
 -- handle option keys for enabling casting
 local key_actions = {
     [FBConstants.KEYS_NONE] = function(mouse) return mouse ~= "RightButtonUp"; end,
@@ -656,6 +642,13 @@ local function CastingKeys()
     else
         return true;
     end
+end
+
+local function CheckCastingKeys()
+    if FishingBuddy.ReadyForFishing() then
+        return FL:IsClassic() or (CastingKeys() or FishingBuddy.ActiveSetting("KeepOnTruckin") or ReadyForFishing());
+    end
+    return False
 end
 
 local QuestLures = {};
@@ -682,7 +675,8 @@ AutoFishingItems[GOGGLES_ID] = {
     ["enUS"] = "Secret Fishing Goggles",
     spell = 293671,
     setting = "UseSecretGoggles",
-    ["tooltip"] = FBConstants.CONFIG_SECRET_FISHING_GOGGES_INFO,
+    ["tooltip"] = FBConstants.CONFIG_SECRET_FISHING_GOGGLES_INFO,
+    ["usable"] = function() return not FishingBuddy.ReadyForFishing(); end,
     ["default"] = false,
 }
 
@@ -761,18 +755,6 @@ local function GetFishieRaw(fishid)
             fi.quest;
 end
 FishingBuddy.GetFishieRaw = GetFishieRaw;
-
-local function OnNatPagleQuest()
-    local i = 1;
-    while GetQuestLogTitle(i) do
-        local questTitle, level, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(i)
-        if ( questID == 36611) then
-            return true;
-        end
-        i = i + 1;
-    end
-    -- return nil;
-end
 
 local function GetUpdateLure()
     local GSB = FishingBuddy.GetSettingBool;
@@ -918,7 +900,6 @@ local function ReadyForFishing()
 end
 FishingBuddy.ReadyForFishing = ReadyForFishing;
 
-
 local function NormalHijackCheck()
     local GSB = FishingBuddy.GetSettingBool;
     local GSA = FishingBuddy.ActiveSetting;
@@ -926,7 +907,7 @@ local function NormalHijackCheck()
     if ( not LSM:GetLastLure() and
          not CheckCombat() and GSA("FlyingCast") and GSA("MountedCast") and
          not IsFishingAceEnabled() and
-         GSB("EasyCast") and (CastingKeys() or GSA("KeepOnTruckin") or ReadyForFishing()) ) then
+         GSB("EasyCast") and CheckCastingKeys() ) then
         return true;
     end
 end
@@ -987,7 +968,6 @@ local SavedWFOnMouseDown;
 local function WF_OnMouseDown(...)
     -- Only steal 'right clicks' (self is arg #1!)
     local button = select(2, ...);
-
     if ( HijackCheck() ) then
         PLANS:ExecutePlans()
         if ( FL:CheckForDoubleClick(button) ) then
@@ -1143,7 +1123,7 @@ local function AutoPoleCheck(self, ...)
             if (self.moving) then
                 if not FishingBuddy.HaveRafts() then
                     local x, y, instanceID = HBD:GetPlayerWorldPosition();
-                    local _, distance = HBD:GetWorldVector(instanceId, self.x, self.y, x, y);
+                    local _, distance = HBD:GetWorldVector(instanceID, self.x, self.y, x, y);
                     if instanceID ~= self.instanceID or distance > 10 then
                         LastCastTime = GetTime() - FISHINGSPAN - 1
                     end
@@ -1371,24 +1351,6 @@ FishingBuddy.EnhanceFishingSounds = function(doit, logout)
 end
 
 local IsZoning;
-local ZoneEvents;
-local function TrackZoneEvents(evt)
-    if ( IsZoning ) then
-        if ( not ZoneEvents ) then
-            ZoneEvents = {};
-        end
-        if ( ZoneEvents[evt] ) then
-            ZoneEvents[evt] = ZoneEvents[evt] + 1;
-        else
-            ZoneEvents[evt] = 1;
-        end
-    end
-end
-
-local function DumpZoneEvents()
-    FishingBuddy.Dump(ZoneEvents);
-    ZoneEvents = nil;
-end
 
 -- Return true if we might be looting from a barrel.
 local function LegionBarrel()
@@ -1404,13 +1366,14 @@ FishingBuddy.OnEvent = function(self, event, ...)
 --	  FishingBuddy.Debug(line);
     local arg1 = ...;
 
--- TrackZoneEvents(event);
+
     if ( event == "PLAYER_EQUIPMENT_CHANGED" or
           event == "WEAR_EQUIPMENT_SET" or
           event == "EQUIPMENT_SWAP_FINISHED") then
         FishingMode();
         RunHandlers(FBConstants.INVENTORY_EVT)
     elseif (event == "BAG_UPDATE" ) then
+        local lootcount, lootcheck = FishingBuddy.GetLootState();
         if (lootcheck) then
             if (lootcount > 0) then
                 lootcount = lootcount - 1;
@@ -1423,21 +1386,21 @@ FishingBuddy.OnEvent = function(self, event, ...)
         FishingMode();
         RunHandlers(FBConstants.INVENTORY_EVT)
     elseif ( event == "LOOT_OPENED" ) then
+        local autoLoot = ...;
+        local doautoloot = false;
+        if autoLoot or (autoLoot == nil and GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE"))  then
+            doautoloot = true
+        else
+            doautoloot = FishingBuddy.GetSettingBool("AutoLoot")
+        end
+
         if ( IsFishingLoot() or LegionBarrel() ) then
-            local autoLoot = ...;
-            local doautoloot = false;
             local poolhint = nil;
 
             -- How long ago did the achievement fire?
             local elapsedtime = GetTime() - trackedtime;
             if ( elapsedtime < TRACKING_DELAY ) then
                 poolhint = true;
-            end
-
-            if autoLoot or (autoLoot == nil and GetCVarBool("autoLootDefault") ~= IsModifiedClick("AUTOLOOTTOGGLE"))  then
-                doautoloot = true
-            else
-                doautoloot = FishingBuddy.GetSettingBool("AutoLoot")
             end
 
             -- if we want to autoloot, and Blizz isn't, let's grab stuff
@@ -1508,7 +1471,6 @@ FishingBuddy.OnEvent = function(self, event, ...)
         RunHandlers(event, ...);
     elseif ( event == "PLAYER_ENTERING_WORLD" ) then
         IsZoning = nil;
---		DumpZoneEvents();
         bagupdateframe:Show();
 
         if (FishingBuddy.StartedFishing and not handlerframe:IsShown()) then
@@ -1540,7 +1502,9 @@ FishingBuddy.OnEvent = function(self, event, ...)
             handlerframe:Hide();
         end
     end
-    FishingBuddy.Extravaganza.IsTime(true);
+    if FishingBuddy.Extravaganza then
+        FishingBuddy.Extravaganza.IsTime(true);
+    end
 end
 
 FishingBuddy.OnLoad = function(self)
@@ -1569,10 +1533,12 @@ FishingBuddy.OnLoad = function(self)
             self:StartInventory()
             self:Hide();
             if not self.firsttime then
-                if C_Calendar.OpenCalendar then
-                    C_Calendar.OpenCalendar()
-                else
-                    OpenCalendar()
+                if not FL:IsClassic() then
+                    if C_Calendar.OpenCalendar then
+                        C_Calendar.OpenCalendar()
+                    else
+                        OpenCalendar()
+                    end
                 end
                 RunHandlers(FBConstants.FIRST_UPDATE_EVT);
                 FishingBuddy.WatchUpdate();

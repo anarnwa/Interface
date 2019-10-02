@@ -1,3 +1,19 @@
+### Changes in 80200.63-Release:
+
+- Fixed: Errors on initial logins in Classic
+
+### Changes in 80200.62-Release:
+
+- Fixed: Enchanting not being recognized in Classic
+
+### Changes in 80200.61-Release:
+
+- Fixed: Regression resulting in nil table lookups
+
+### Changes in 80200.60-Release:
+
+- Added: Support for Classic
+
 ### Changes in 80200.59-Release:
 
 - Added: Support for 8.2 ores, herbs and lockboxes

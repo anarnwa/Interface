@@ -28,6 +28,8 @@ local LFD_RANDOM_REWARD_EXPLANATION2 = LFD_RANDOM_REWARD_EXPLANATION2
 local INSTANCE_SAVED, TRANSFER_ABORT_TOO_MANY_INSTANCES, NO_RAID_INSTANCES_SAVED =
   INSTANCE_SAVED, TRANSFER_ABORT_TOO_MANY_INSTANCES, NO_RAID_INSTANCES_SAVED
 
+local IsQuestFlaggedCompleted = C_QuestLog and C_QuestLog.IsQuestFlaggedCompleted or IsQuestFlaggedCompleted
+
 local ALREADY_LOOTED = ERR_LOOT_GONE:gsub("%(.*%)","")
 ALREADY_LOOTED = ALREADY_LOOTED:gsub("（.*）","") -- fix on zhCN and zhTW
 
@@ -2551,7 +2553,7 @@ end
 function core:OnInitialize()
   local versionString = GetAddOnMetadata(addonName, "version")
   --[===[@debug@
-  if versionString == "8.2.2" then
+  if versionString == "8.2.3" then
     versionString = "Dev"
   end
   --@end-debug@]===]
@@ -4057,7 +4059,6 @@ function core:ShowTooltip(anchorframe)
               end
             end
           end
-          addColumns(columns, toon, tooltip)
         end
       end
 
@@ -4095,9 +4096,13 @@ function core:ShowTooltip(anchorframe)
                       text = text .. "/" .. addon.db.Emissary.Expansion[expansionLevel][day].questNeed
                     end
                   end
-                  tooltip:SetCell(line, col, text, "CENTER", 1)
-                  tooltip:SetCellScript(line, col, "OnEnter", hoverTooltip.ShowEmissaryTooltip, {expansionLevel, day, toon})
-                  tooltip:SetCellScript(line, col, "OnLeave", CloseTooltips)
+                  if col then
+                    -- check if current toon is showing
+                    -- don't add columns
+                    tooltip:SetCell(line, col, text, "CENTER", 1)
+                    tooltip:SetCellScript(line, col, "OnEnter", hoverTooltip.ShowEmissaryTooltip, {expansionLevel, day, toon})
+                    tooltip:SetCellScript(line, col, "OnLeave", CloseTooltips)
+                  end
                 end
               end
             end
@@ -4149,9 +4154,13 @@ function core:ShowTooltip(anchorframe)
                         text = text .. "/" .. addon.db.Emissary.Expansion[expansionLevel][day].questNeed
                       end
                     end
-                    tooltip:SetCell(line, col, text, "CENTER", maxcol)
-                    tooltip:SetCellScript(line, col, "OnEnter", hoverTooltip.ShowEmissaryTooltip, {expansionLevel, day, toon})
-                    tooltip:SetCellScript(line, col, "OnLeave", CloseTooltips)
+                    if col then
+                      -- check if current toon is showing
+                      -- don't add columns
+                      tooltip:SetCell(line, col, text, "CENTER", maxcol)
+                      tooltip:SetCellScript(line, col, "OnEnter", hoverTooltip.ShowEmissaryTooltip, {expansionLevel, day, toon})
+                      tooltip:SetCellScript(line, col, "OnLeave", CloseTooltips)
+                    end
                   end
                 end
               end
@@ -4194,7 +4203,6 @@ function core:ShowTooltip(anchorframe)
       if count then
         toonbonus[toon] = count
         show = true
-        addColumns(columns, toon, tooltip)
       end
     end
     if show then
@@ -4208,9 +4216,13 @@ function core:ShowTooltip(anchorframe)
         local col = columns[toon..1]
         local str = toonbonus[toon]
         if str > 0 then str = "+"..str end
-        tooltip:SetCell(show, col, ClassColorise(t.Class,str), "CENTER",maxcol)
-        tooltip:SetCellScript(show, col, "OnEnter", hoverTooltip.ShowBonusTooltip, toon)
-        tooltip:SetCellScript(show, col, "OnLeave", CloseTooltips)
+        if col then
+          -- check if current toon is showing
+          -- don't add columns
+          tooltip:SetCell(show, col, ClassColorise(t.Class,str), "CENTER",maxcol)
+          tooltip:SetCellScript(show, col, "OnEnter", hoverTooltip.ShowBonusTooltip, toon)
+          tooltip:SetCellScript(show, col, "OnLeave", CloseTooltips)
+        end
       end
     end
   end

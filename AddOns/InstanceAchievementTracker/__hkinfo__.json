@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Instance Achievement Tracker",
+    "localName": "InstanceAchievementTracker",
+    "version": "V2.60.0",
+    "fileName": "instance-achievement-tracker",
+    "addonsMap": [
+        "InstanceAchievementTracker"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Instance Achievement Tracker",
+    "gameVersion": ""
+}

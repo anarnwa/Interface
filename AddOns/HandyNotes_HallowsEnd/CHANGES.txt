@@ -1,52 +1,14 @@
-Changes since tag v1.4.3
+tag 515f08b26d711a3f5494b3c49bfa75a6ab0e5b52 v1.4.3
+Author:	Ethan Centaurai <ethancentaurai@outlook.com>
+Date:	Mon Oct 29 18:16:06 2018 +0000
 
-commit a38054e0cf625046333eaee6410ceca13884a773
+Tagging as v1.4.3.
+
+commit 5a3d2b52771e490ec531a35cbed337a237f3b095
 Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Sat Jun 29 19:52:15 2019 +0100
+Date:   Fri Oct 26 18:41:12 2018 +0100
 
-    Set theme jekyll-theme-slate
-
-commit e7ad2f9909e893ab708ebb697fcb1820dbac884c
-Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Sat Jun 29 19:50:35 2019 +0100
-
-    Create FUNDING.yml
-
-commit 17e1e73c08691ea16ffda17bb82bfff2c0c7ef0d
-Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Mon Feb 11 19:38:37 2019 +0000
-
-    Use server time instead of local time.
+    Added a missing bucket to Stonetalon Mountains.
     
-    Local time causes more problems than it solves.
-
-commit 4f0033d12f504c3ee8e3b54d869f895ac8b846b0
-Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Mon Jan 28 23:38:33 2019 +0000
-
-    Brackets.
-
-commit e1ea4fac53b86e98073e4cdffac11e0c42a6b452
-Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Mon Jan 28 23:38:17 2019 +0000
-
-    Don't create multiple waypoints when ctrl-clicking a marker.
-
-commit e4e6e9f28b99e4bc7671d9dec1cbec8157f3ccc4
-Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Thu Nov 1 17:40:16 2018 +0000
-
-    Added a few more notes.
-
-commit 7008f40dc8a2c3a6681fe465c748d9d165993749
-Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Thu Nov 1 17:13:54 2018 +0000
-
-    Whoops.
-
-commit aa086ecf2dc4ee1d2e9c897ffaf4c2e2c9668b0b
-Author: Ethan Centaurai <ethancentaurai@outlook.com>
-Date:   Thu Nov 1 17:03:22 2018 +0000
-
-    Use local time instead of server time.
+    Thank you Stoorma on CurseForge for the find!
 

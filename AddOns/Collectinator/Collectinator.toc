@@ -12,7 +12,7 @@
 #@non-debug@
 ## Notes: Collectinator is an addon which will scan your pets and mounts and provide information on how to obtain them.
 ## Notes-frFR: Collectinator est un addon qui analyse vos mascottes et vos montures et vous fournit des informations sur comment en obtenir d'autres.
-## Notes-deDE: Collectinator ist ein Addon, welches Haustiere und Reittiere abfragt und Informationen bietet, wie man sie bekommt.
+## Notes-deDE: Collectinator ist ein Addon, das deine Haustiere und Reittiere scannt und Informationen darüber gibt, wie du sie erhalten kannst.
 ## Notes-itIT: Collectinator è un addon che scansiona i tuoi famigli e le cavalcature e mostra le informazioni su come ottenerle.
 ## Notes-ruRU: Описание
 #@end-non-debug@
@@ -23,10 +23,10 @@
 ## Author: Ackis, Torhal, Pompy, Ressy
 ## X-Donate: http://www.wowace.com/addons/collectinator/
 
-## Interface: 80200
-## Version: 8.2.0.1
-## X-Revision: 3c640e0
-## X-Date: 2019-06-25T17:59:51Z
+## Interface: 80205
+## Version: 8.2.5.1
+## X-Revision: f45cfab
+## X-Date: 2019-09-24T12:00:50Z
 
 ## X-Category: Tradeskill
 ## X-Localizations: enUS, frFR, zhCN, zhTW, deDE, itIT, koKR, esES, esMX, ruRU, ptBR

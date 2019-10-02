@@ -1,0 +1,14 @@
+{
+    "addonsMap": [
+        "TinyTooltip"
+    ],
+    "children": [],
+    "fileName": "tinytooltip",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "TinyTooltip",
+    "name": "TinyTooltip",
+    "searchName": "TinyTooltip",
+    "target": "curse",
+    "version": "8.2.1__2019-08-08 18:18:17"
+}

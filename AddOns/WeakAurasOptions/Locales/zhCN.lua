@@ -13,48 +13,28 @@ local L = WeakAuras.L
 	L["% of Progress"] = "% 进度"
 	L["%i auras selected"] = "%i 个光环被选中"
 	L["%i Matches"] = "%i 符合"
-	--[[Translation missing --]]
-	L["%s - Option #%i has the key %s. Please choose a different option key."] = "%s - Option #%i has the key %s. Please choose a different option key."
-	--[[Translation missing --]]
-	L["%s %s, Lines: %d, Frequency: %0.2f, Length: %d, Thickness: %d"] = "%s %s, Lines: %d, Frequency: %0.2f, Length: %d, Thickness: %d"
-	--[[Translation missing --]]
-	L["%s %s, Particles: %d, Frequency: %0.2f, Scale: %0.2f"] = "%s %s, Particles: %d, Frequency: %0.2f, Scale: %0.2f"
-	--[[Translation missing --]]
-	L["%s Alpha: %d%%"] = "%s Alpha: %d%%"
+	L["%s - Option #%i has the key %s. Please choose a different option key."] = "%s - 选项 #%i 已经使用了键 %s，请选择一个其他的键。"
+	L["%s %s, Lines: %d, Frequency: %0.2f, Length: %d, Thickness: %d"] = "%s %s，行数：%d，频率：%0.2f，长度：%d，粗细：%d"
+	L["%s %s, Particles: %d, Frequency: %0.2f, Scale: %0.2f"] = "%s %s，粒子数：%d，频率：%0.2f，缩放：%0.2f"
+	L["%s Alpha: %d%%"] = "%s 透明度：%d%%"
 	L["%s Color"] = "%s 颜色"
-	--[[Translation missing --]]
-	L["%s Default Alpha, Zoom, Icon Inset, Aspect Ratio"] = "%s Default Alpha, Zoom, Icon Inset, Aspect Ratio"
-	--[[Translation missing --]]
-	L["%s Inset: %d%%"] = "%s Inset: %d%%"
-	--[[Translation missing --]]
-	L["%s is not a valid SubEvent for COMBAT_LOG_EVENT_UNFILTERED"] = "%s is not a valid SubEvent for COMBAT_LOG_EVENT_UNFILTERED"
-	--[[Translation missing --]]
-	L["%s Keep Aspect Ratio"] = "%s Keep Aspect Ratio"
+	L["%s Default Alpha, Zoom, Icon Inset, Aspect Ratio"] = "%s 默认透明度，缩放，内嵌图标，宽高比"
+	L["%s Inset: %d%%"] = "%s 内嵌：%d%%"
+	L["%s is not a valid SubEvent for COMBAT_LOG_EVENT_UNFILTERED"] = "%s 不是 COMBAT_LOG_EVENT_UNFILTERED 有效的子事件"
+	L["%s Keep Aspect Ratio"] = "%s 保持宽高比"
 	L["%s total auras"] = "%s 所有的光环"
-	--[[Translation missing --]]
-	L["%s Zoom: %d%%"] = "%s Zoom: %d%%"
-	--[[Translation missing --]]
-	L["%s, Border"] = "%s, Border"
-	--[[Translation missing --]]
-	L["%s, Offset: %0.2f;%0.2f"] = "%s, Offset: %0.2f;%0.2f"
-	L["%s, offset: %0.2f;%0.2f"] = "%s, 偏移: %0.2f;%0.2f"
+	L["%s Zoom: %d%%"] = "%s 缩放：%d%%"
+	L["%s, Border"] = "%s，边框"
+	L["%s, Offset: %0.2f;%0.2f"] = "%s，偏移：%0.2f; %0.2f"
+	L["%s, offset: %0.2f;%0.2f"] = "%s，偏移：%0.2f; %0.2f"
 	L["|c%02x%02x%02x%02xColor|r"] = "|c%02x%02x%02x%02x颜色|r"
-	--[[Translation missing --]]
-	L["|cFFA9A9A9--Please Create an Entry--"] = "|cFFA9A9A9--Please Create an Entry--"
-	--[[Translation missing --]]
-	L["|cFFffcc00Anchors:|r Anchored |cFFFF0000%s|r to frame's |cFFFF0000%s|r"] = "|cFFffcc00Anchors:|r Anchored |cFFFF0000%s|r to frame's |cFFFF0000%s|r"
-	--[[Translation missing --]]
-	L["|cFFffcc00Anchors:|r Anchored |cFFFF0000%s|r to frame's |cFFFF0000%s|r with offset |cFFFF0000%s/%s|r"] = "|cFFffcc00Anchors:|r Anchored |cFFFF0000%s|r to frame's |cFFFF0000%s|r with offset |cFFFF0000%s/%s|r"
-	--[[Translation missing --]]
-	L["|cFFffcc00Anchors:|r Anchored to frame's |cFFFF0000%s|r"] = "|cFFffcc00Anchors:|r Anchored to frame's |cFFFF0000%s|r"
-	--[[Translation missing --]]
-	L["|cFFffcc00Anchors:|r Anchored to frame's |cFFFF0000%s|r with offset |cFFFF0000%s/%s|r"] = "|cFFffcc00Anchors:|r Anchored to frame's |cFFFF0000%s|r with offset |cFFFF0000%s/%s|r"
-	--[[Translation missing --]]
-	L["|cFFffcc00Extra Options:|r"] = "|cFFffcc00Extra Options:|r"
-	--[[Translation missing --]]
-	L["|cFFffcc00Font Flags:|r |cFFFF0000%s|r and shadow |c%sColor|r with offset |cFFFF0000%s/%s|r %s"] = "|cFFffcc00Font Flags:|r |cFFFF0000%s|r and shadow |c%sColor|r with offset |cFFFF0000%s/%s|r %s"
-	--[[Translation missing --]]
-	L["|cFFffcc00Font:|r %s %s"] = "|cFFffcc00Font:|r %s %s"
+	L["|cFFA9A9A9--Please Create an Entry--"] = "|cFFA9A9A9--请创建一条新条目--"
+	L["|cFFffcc00Anchors:|r Anchored |cFFFF0000%s|r to frame's |cFFFF0000%s|r"] = "|cFFffcc00Anchors:|r 冒点为 |cFFFF0000%s|r 框架的 |cFFFF0000%s|r"
+	L["|cFFffcc00Anchors:|r Anchored |cFFFF0000%s|r to frame's |cFFFF0000%s|r with offset |cFFFF0000%s/%s|r"] = "|cFFffcc00锚点：|r 锚点为 |cFFFF0000%s|r 框架的 |cFFFF0000%s|r 且便宜为 |cFFFF0000%s/%s|r"
+	L["|cFFffcc00Anchors:|r Anchored to frame's |cFFFF0000%s|r"] = "|cFFffcc00锚点：|r 锚点为框架的 |cFFFF0000%s|r"
+	L["|cFFffcc00Anchors:|r Anchored to frame's |cFFFF0000%s|r with offset |cFFFF0000%s/%s|r"] = "|cFFffcc00锚点：|r 锚点为框架的 |cFFFF0000%s|r 且偏移为 |cFFFF0000%s/%s|r"
+	L["|cFFffcc00Extra Options:|r"] = "|cFFffcc00额外选项：|r"
+	L["|cFFffcc00Font Flags:|r |cFFFF0000%s|r and shadow |c%sColor|r with offset |cFFFF0000%s/%s|r%s%s"] = "|cFFffcc00字体标记：|r |cFFFF0000%s|r 且阴影为 |c%s颜色|r ，偏移为 |cFFFF0000%s/%s|r%s%s"
 	L["1 Match"] = "1符合"
 	L["A 20x20 pixels icon"] = "一个20x20像素图标"
 	L["A 32x32 pixels icon"] = "一个32x32像素图标"
@@ -64,19 +44,15 @@ local L = WeakAuras.L
 	L["A group that dynamically controls the positioning of its children"] = "一个可以动态控制子元素的位置的群组"
 	L["A Unit ID (e.g., party1)."] = "单位 ID（例如 party1）"
 	L["Actions"] = "动作"
-	--[[Translation missing --]]
-	L["Add %s"] = "Add %s"
+	L["Add %s"] = "添加 %s"
 	L["Add a new display"] = "添加一个新的显示"
 	L["Add Condition"] = "添加条件"
-	--[[Translation missing --]]
-	L["Add Entry"] = "Add Entry"
-	--[[Translation missing --]]
-	L["Add Extra Elements"] = "Add Extra Elements"
+	L["Add Entry"] = "添加条目"
+	L["Add Extra Elements"] = "添加额外元素"
 	L["Add Option"] = "添加选项"
 	L["Add Overlay"] = "添加覆盖层"
 	L["Add Property Change"] = "添加属性修改"
-	--[[Translation missing --]]
-	L["Add Sub Option"] = "Add Sub Option"
+	L["Add Sub Option"] = "添加子选项"
 	L["Add to group %s"] = "添加到组％s"
 	L["Add to new Dynamic Group"] = "新增动态群组"
 	L["Add to new Group"] = "新增群组"
@@ -85,6 +61,7 @@ local L = WeakAuras.L
 	L["Addons"] = "插件"
 	L["Advanced"] = "高级"
 	L["Align"] = "对齐"
+	L["Alignment"] = "对齐"
 	L["All of"] = "全部"
 	L["Allow Full Rotation"] = "允许完全旋转"
 	L["Alpha"] = "透明度"
@@ -92,6 +69,10 @@ local L = WeakAuras.L
 	L["Anchor Point"] = "锚点指向"
 	L["Anchored To"] = "附着于"
 	L["And "] = "和"
+	L["and aligned left"] = "并且左对齐"
+	L["and aligned right"] = "并且右对齐"
+	L["and rotated left"] = "并且向左旋转"
+	L["and rotated right"] = "并且向右旋转"
 	L["and Trigger %s"] = "和触发器 %s"
 	L["Angle"] = "角度"
 	L["Animate"] = "动画"
@@ -119,28 +100,28 @@ local L = WeakAuras.L
 	L["Auto"] = "自动"
 	L["Auto-Clone (Show All Matches)"] = "自动克隆（显示所有符合条件的）"
 	L["Auto-cloning enabled"] = "启用自动克隆"
-	--[[Translation missing --]]
-	L["Automatic"] = "Automatic"
+	L["Automatic"] = "自动"
 	L["Automatic Icon"] = "自动显示图标"
 	L["Backdrop Color"] = "背景颜色"
 	L["Backdrop in Front"] = "背景在前"
 	L["Backdrop Style"] = "背景图案类型 "
+	L["Background"] = "背景"
 	L["Background Color"] = "背景色"
 	L["Background Offset"] = "背景偏移"
 	L["Background Texture"] = "背景材质"
-	--[[Translation missing --]]
-	L["Bar"] = "Bar"
+	L["Bar"] = "条"
 	L["Bar Alpha"] = "条透明度"
 	L["Bar Color"] = "条颜色"
 	L["Bar Color Settings"] = "图标条颜色设置"
-	--[[Translation missing --]]
-	L["Bar Inner"] = "Bar Inner"
+	L["Bar Inner"] = "条的内部"
 	L["Bar Texture"] = "条材质"
 	L["Big Icon"] = "大图标"
 	L["Blend Mode"] = "混合模式"
 	L["Blue Rune"] = "蓝色符文"
 	L["Blue Sparkle Orb"] = "蓝色闪光球"
 	L["Border"] = "边框"
+	L["Border %s"] = "边框 %s"
+	L["Border Anchor"] = "边框锚点"
 	L["Border Color"] = "边框颜色"
 	L["Border in Front"] = "边框在前"
 	L["Border Inset"] = "插入边框"
@@ -148,19 +129,16 @@ local L = WeakAuras.L
 	L["Border Settings"] = "边框设置"
 	L["Border Size"] = "边框大小 "
 	L["Border Style"] = "边框风格"
-	--[[Translation missing --]]
-	L["Bottom"] = "Bottom"
-	--[[Translation missing --]]
-	L["Bottom Left"] = "Bottom Left"
-	--[[Translation missing --]]
-	L["Bottom Right"] = "Bottom Right"
+	L["Bottom"] = "底部"
+	L["Bottom Left"] = "左下"
+	L["Bottom Right"] = "右下"
 	L["Bracket Matching"] = "括号自动匹配"
 	L["Button Glow"] = "按钮发光"
-	L["Can be a name or a UID (e.g., party1). A name only works on friendly players in your group."] = "可以是玩家名字或者 UID (例如：小队1)。只能使用你的团队中友方玩家的名字。"
 	L["Can be a Name or a Unit ID (e.g. party1). A name only works on friendly players in your group."] = "可以是名字或单位 ID（例如 party1），只有在团队中的友方玩家名字是有效的。"
-	L["Cancel"] = "取消"
 	--[[Translation missing --]]
-	L["Center"] = "Center"
+	L["Can be a UID (e.g., party1)."] = "Can be a UID (e.g., party1)."
+	L["Cancel"] = "取消"
+	L["Center"] = "中间"
 	L["Channel Number"] = "频道索引"
 	L["Chat Message"] = "聊天讯息"
 	L["Check On..."] = "检查..."
@@ -169,6 +147,7 @@ local L = WeakAuras.L
 	L["Choose Trigger"] = "选择触发器"
 	L["Choose whether the displayed icon is automatic or defined manually"] = "选择显示的图示是自动显示还是手动定义"
 	L["Clip Overlays"] = "覆盖遮罩"
+	L["Clipped by Progress"] = "被进度条遮挡"
 	L["Clone option enabled dialog"] = [=[
 你已经启用|cFFFF0000自动复制|r。
 |cFFFF0000自动复制|r 会让一个图示自动重复来显示多目标的讯息。
@@ -178,21 +157,19 @@ local L = WeakAuras.L
 	L["Collapse"] = "折叠"
 	L["Collapse all loaded displays"] = "折叠所有载入的图示"
 	L["Collapse all non-loaded displays"] = "折叠所有未载入的图示"
-	--[[Translation missing --]]
-	L["Collapsible Group"] = "Collapsible Group"
+	L["Collapsible Group"] = "可折叠的组"
 	L["color"] = "颜色"
 	L["Color"] = "颜色"
 	L["Column Height"] = "行高度"
 	L["Column Space"] = "行空间"
 	L["Combinations"] = "组合"
 	L["Combine Matches Per Unit"] = "组合每个单位满足条件的"
-	--[[Translation missing --]]
-	L["Common Text"] = "Common Text"
+	L["Common Text"] = "一般文本"
 	L["Compare against the number of units affected."] = "比较受影响的单位数量"
 	L["Compress"] = "压缩"
 	L["Condition %i"] = "条件 %i"
 	L["Conditions"] = "条件"
-	L["Configure what options appear on this pannel."] = "配置那些选项在此面板上显示。"
+	L["Configure what options appear on this panel."] = "配置哪些选项出现在此面板中"
 	L["Constant Factor"] = "常数因子"
 	L["Control-click to select multiple displays"] = "按住 Control 并点击来选择多种显示"
 	L["Controls the positioning and configuration of multiple displays at the same time"] = "同时控制多个图示的位置和设定"
@@ -201,8 +178,7 @@ local L = WeakAuras.L
 	L["Cooldown Edge"] = "冷却边缘"
 	L["Cooldown Settings"] = "冷却设置"
 	L["Cooldown Swipe"] = "冷却旋转动画"
-	--[[Translation missing --]]
-	L["Copy"] = "Copy"
+	L["Copy"] = "拷贝"
 	L["Copy settings..."] = "拷贝设置"
 	L["Copy to all auras"] = "拷贝至所有的光环"
 	L["Copy URL"] = "复制 URL"
@@ -213,12 +189,10 @@ local L = WeakAuras.L
 	L["Crop X"] = "裁剪X"
 	L["Crop Y"] = "裁剪Y"
 	L["Custom"] = "自定义"
-	--[[Translation missing --]]
-	L["Custom Anchor"] = "Custom Anchor"
+	L["Custom Anchor"] = "自定义锚点"
 	L["Custom Code"] = "自定义代码"
 	L["Custom Configuration"] = "自定义设置"
-	--[[Translation missing --]]
-	L["Custom Frames"] = "Custom Frames"
+	L["Custom Frames"] = "自定义框架"
 	L["Custom Function"] = "自定义功能"
 	L["Custom Grow"] = "自定义增长"
 	L["Custom Options"] = "自定义选项"
@@ -243,13 +217,11 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Delete"] = "删除"
 	L["Delete all"] = "删除所有"
 	L["Delete children and group"] = "删除子节点和组"
-	--[[Translation missing --]]
-	L["Delete Entry"] = "Delete Entry"
+	L["Delete Entry"] = "删除条目"
 	L["Delete Trigger"] = "删除触发器"
 	L["Desaturate"] = "褪色"
 	L["Description Text"] = "描述文本"
-	--[[Translation missing --]]
-	L["Determines how many entries can be in the table."] = "Determines how many entries can be in the table."
+	L["Determines how many entries can be in the table."] = "决定表格中可以有多少条目"
 	L["Differences"] = "差异"
 	L["Disable Import"] = "禁用导入"
 	L["Disabled"] = "禁用"
@@ -284,22 +256,18 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 |cFFFF0000%i|r - 图标 - 图示关连的显标
 |cFFFF0000%s|r - 堆叠 - 光环堆叠数量(通常)
 |cFFFF0000%c|r - 自定义 - 允许你自定义一个Lua函数并返回一个用于显示的字符串]=]
-	--[[Translation missing --]]
-	L["Edge"] = "Edge"
+	L["Edge"] = "边缘"
 	L["Enabled"] = "启用"
 	L["End Angle"] = "结束角度"
-	--[[Translation missing --]]
-	L["End of %s"] = "End of %s"
+	L["End of %s"] = "%s 的结尾"
 	L["Enter a Spell ID"] = "输入一个法术 ID"
 	L["Enter an aura name, partial aura name, or spell id"] = "键入一个法术名，或者法术ID"
 	L["Enter an Aura Name, partial Aura Name, or Spell ID. A Spell ID will match any spells with the same name."] = "输入一个光环名称，部分光环名称或法术 ID。如果输入一个法术 ID 则会匹配所有相同名字的法术。"
 	L["Enter Author Mode"] = "进入作者模式"
 	L["Enter User Mode"] = "进入用户模式"
 	L["Enter user mode."] = "进入到使用者的模式。"
-	--[[Translation missing --]]
-	L["Entry %i"] = "Entry %i"
-	--[[Translation missing --]]
-	L["Entry limit"] = "Entry limit"
+	L["Entry %i"] = "条目 %i"
+	L["Entry limit"] = "条目限制"
 	L["Event"] = "事件"
 	L["Event Type"] = "事件类型"
 	L["Event(s)"] = "事件（复数）"
@@ -323,11 +291,12 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Fire Orb"] = "火焰宝珠"
 	L["Font"] = "字体"
 	L["Font Size"] = "字体大小"
+	L["Foreground"] = "前景"
 	L["Foreground Color"] = "前景色"
 	L["Foreground Texture"] = "前景材质"
 	L["Frame"] = "框架"
 	L["Frame Strata"] = "框架层级"
-	L["Frequency"] = "动画速度"
+	L["Frequency"] = "频率"
 	L["From Template"] = "从模板"
 	L["From version "] = "自版本"
 	L["Global Conditions"] = "全局条件"
@@ -349,26 +318,21 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 |cFF00CC00小于等于 0.8|r 会在小于80%%的人受影响时触发
 |cFF00CC00大于 1/2|r 会在超过一半以上的人受影响时触发
 |cFF00CC00大于等于 0|r 总是触发.]=]
-	--[[Translation missing --]]
-	L["Group by Frame"] = "Group by Frame"
+	L["Group by Frame"] = "根据框架分组"
 	L["Group contains updates from Wago"] = "包含 Wago 更新的群组"
-	--[[Translation missing --]]
-	L["Group Icon"] = "Group Icon"
-	--[[Translation missing --]]
-	L["Group key"] = "Group key"
+	L["Group Icon"] = "组图标"
+	L["Group key"] = "组键值"
 	L["Group Member Count"] = "队伍或团队成员数"
 	L["Group Role"] = "团队职责"
 	L["Group Scale"] = "组缩放"
 	L["Group Settings"] = "群组设置"
-	--[[Translation missing --]]
-	L["Group Type"] = "Group Type"
+	L["Group Type"] = "组类别"
 	L["Grow"] = "生长"
 	L["Hawk"] = "鹰"
 	L["Height"] = "高度"
 	L["Hide"] = "隐藏"
 	L["Hide Cooldown Text"] = "隐藏冷却文本"
-	--[[Translation missing --]]
-	L["Hide Extra Options"] = "Hide Extra Options"
+	L["Hide Extra Options"] = "隐藏额外选项"
 	L["Hide on"] = "隐藏于"
 	L["Hide this group's children"] = "隐藏此组的子节点"
 	L["Hide When Not In Group"] = "不在队伍时隐藏"
@@ -380,16 +344,12 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Icon"] = "图标"
 	L["Icon Info"] = "图标信息"
 	L["Icon Inset"] = "项目插入"
-	--[[Translation missing --]]
-	L["Icon Position"] = "Icon Position"
+	L["Icon Position"] = "图标位置"
 	L["Icon Settings"] = "图标设置"
 	L["If"] = "如果"
-	--[[Translation missing --]]
-	L["If checked, then the user will see a multi line edit box. This is useful for inputting large amounts of text."] = "If checked, then the user will see a multi line edit box. This is useful for inputting large amounts of text."
-	--[[Translation missing --]]
-	L["If checked, then this option group can be temporarily collapsed by the user."] = "If checked, then this option group can be temporarily collapsed by the user."
-	--[[Translation missing --]]
-	L["If checked, then this option group will start collapsed."] = "If checked, then this option group will start collapsed."
+	L["If checked, then the user will see a multi line edit box. This is useful for inputting large amounts of text."] = "勾选后用户可以看见一个多行的输入框，在输入大量文本时很有用。"
+	L["If checked, then this option group can be temporarily collapsed by the user."] = "勾选后选项组可以临时被用户折叠"
+	L["If checked, then this option group will start collapsed."] = "勾选后选项组将会在打开时折叠"
 	L["If checked, then this separator will include text. Otherwise, it will be just a horizontal line."] = "如果选中，则此分隔符将会包含文本，否则就只是一条横线。"
 	L["If checked, then this space will span across multiple lines."] = "如果勾选，此空白区域将横跨多行。"
 	L["If this option is enabled, you are no longer able to import auras."] = "如果启用此选项，你将不再能够导入光环设置。"
@@ -402,8 +362,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Ignored"] = "被忽略"
 	L["Import"] = "导入"
 	L["Import a display from an encoded string"] = "从字串导入一个图示"
-	--[[Translation missing --]]
-	L["Inner"] = "Inner"
+	L["Inner"] = "内部"
 	L["Invalid Item Name/ID/Link"] = "无效的物品名称/ID/链接"
 	L["Invalid Spell ID"] = "无效的法术 ID"
 	L["Invalid Spell Name/ID/Link"] = "无效的法术名称/ID/链接"
@@ -412,17 +371,15 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Is Stealable"] = "可偷取"
 	L["Justify"] = "对齐"
 	L["Keep Aspect Ratio"] = "保持比例不变"
-	--[[Translation missing --]]
-	L["Large Input"] = "Large Input"
+	L["Large Input"] = "大输入框"
 	L["Leaf"] = "叶子"
-	--[[Translation missing --]]
-	L["Left"] = "Left"
+	L["Left"] = "左方"
 	L["Left 2 HUD position"] = "左侧第二 HUD 位置"
 	L["Left HUD position"] = "左侧 HUD 位置"
 	L["Legacy Aura Trigger"] = "传统光环触发器"
 	L["Length"] = "长度"
 	L["Limit"] = "限制"
-	L["Lines & Particles"] = "线条&粒子数量"
+	L["Lines & Particles"] = "线条和粒子"
 	L["Load"] = "载入"
 	L["Loaded"] = "已载入"
 	L["Loop"] = "循环"
@@ -440,18 +397,14 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Min"] = "最小"
 	L["Mirror"] = "镜像"
 	L["Model"] = "模型"
+	L["Model %s"] = "模型 %s"
 	L["Model Settings"] = "模型设置"
-	--[[Translation missing --]]
-	L["Move Above Group"] = "Move Above Group"
-	--[[Translation missing --]]
-	L["Move Below Group"] = "Move Below Group"
+	L["Move Above Group"] = "移动上方的组"
+	L["Move Below Group"] = "移动下方的组"
 	L["Move Down"] = "向下移"
-	--[[Translation missing --]]
-	L["Move Entry Up"] = "Move Entry Up"
-	--[[Translation missing --]]
-	L["Move Into Above Group"] = "Move Into Above Group"
-	--[[Translation missing --]]
-	L["Move Into Below Group"] = "Move Into Below Group"
+	L["Move Entry Up"] = "将条目上移"
+	L["Move Into Above Group"] = "移动到上方的组"
+	L["Move Into Below Group"] = "移动到下方的组"
 	L["Move this display down in its group's order"] = "在组内将此显示内容下移"
 	L["Move this display up in its group's order"] = "在组内将此显示内容上移"
 	L["Move Up"] = "向上移"
@@ -466,8 +419,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Name Info"] = "名称讯息"
 	L["Name Pattern Match"] = "名称规则匹配"
 	L["Name(s)"] = "名称"
-	--[[Translation missing --]]
-	L["Nameplates"] = "Nameplates"
+	L["Nameplates"] = "姓名板"
 	L["Negator"] = "不"
 	L["Never"] = "从不"
 	L["New"] = "新增"
@@ -478,10 +430,8 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["None"] = "无"
 	L["Not all children have the same value for this option"] = "并非所有子元素都拥有相同的此选项的值"
 	L["Not Loaded"] = "未载入"
-	--[[Translation missing --]]
-	L["Number of Entries"] = "Number of Entries"
-	--[[Translation missing --]]
-	L["Offer a guided way to create auras for your character"] = "Offer a guided way to create auras for your character"
+	L["Number of Entries"] = "条目数"
+	L["Offer a guided way to create auras for your character"] = "提供为角色创建光环的指导"
 	L["Okay"] = "好"
 	L["On Hide"] = "图示隐藏时触发"
 	L["On Init"] = "于初始时"
@@ -500,8 +450,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["or Trigger %s"] = "或触发器 %s"
 	L["Orange Rune"] = "橙色符文"
 	L["Orientation"] = "方向"
-	--[[Translation missing --]]
-	L["Outer"] = "Outer"
+	L["Outer"] = "外部"
 	L["Outline"] = "轮廓"
 	L["Overflow"] = "溢出"
 	L["Overlay %s Info"] = "覆盖层 %s 信息"
@@ -545,8 +494,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Required for Activation"] = "激活需要的条件"
 	L["Reset all options to their default values."] = "重置所有选项为默认值"
 	L["Reset to Defaults"] = "重置为默认"
-	--[[Translation missing --]]
-	L["Right"] = "Right"
+	L["Right"] = "右方"
 	L["Right 2 HUD position"] = "右侧第二 HUD 位置"
 	L["Right HUD position"] = "右侧 HUD 位置"
 	L["Right-click for more options"] = "右键点击获得更多选项"
@@ -554,10 +502,6 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Rotate In"] = "旋转进入"
 	L["Rotate Out"] = "旋转退出"
 	L["Rotate Text"] = "旋转文字"
-	--[[Translation missing --]]
-	L["rotated left"] = "rotated left"
-	--[[Translation missing --]]
-	L["rotated right"] = "rotated right"
 	L["Rotation"] = "旋转"
 	L["Rotation Mode"] = "旋转模式"
 	L["Row Space"] = "列空间"
@@ -570,42 +514,34 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Separator Text"] = "分隔符文本"
 	L["Separator text"] = "分隔符文本"
 	L["Set Parent to Anchor"] = "将父框架置于锚点"
-	--[[Translation missing --]]
-	L["Set Thumbnail Icon"] = "Set Thumbnail Icon"
+	L["Set Thumbnail Icon"] = "设置缩略图标"
 	L["Set tooltip description"] = "设置鼠标提示内容"
 	L["Sets the anchored frame as the aura's parent, causing the aura to inherit attributes such as visiblility and scale."] = "将锚点框架设置为光环的父框架，使得光环继承锚点框架的一些属性（例如：可见性和缩放）"
 	L["Settings"] = "设置"
-	--[[Translation missing --]]
-	L["Shadow Color"] = "Shadow Color"
-	--[[Translation missing --]]
-	L["Shadow X Offset"] = "Shadow X Offset"
-	--[[Translation missing --]]
-	L["Shadow Y Offset"] = "Shadow Y Offset"
+	L["Shadow Color"] = "阴影颜色"
+	L["Shadow X Offset"] = "阴影 X 轴偏移"
+	L["Shadow Y Offset"] = "阴影 Y 轴偏移"
 	L["Shift-click to create chat link"] = "按住 Shift 点击来生成聊天链接"
 	L["Show all matches (Auto-clone)"] = "列出所有符合的(自动复制)"
-	--[[Translation missing --]]
-	L["Show Border"] = "Show Border"
-	--[[Translation missing --]]
-	L["Show Cooldown"] = "Show Cooldown"
-	--[[Translation missing --]]
-	L["Show Extra Options"] = "Show Extra Options"
-	--[[Translation missing --]]
-	L["Show Glow"] = "Show Glow"
-	--[[Translation missing --]]
-	L["Show Icon"] = "Show Icon"
+	L["Show Border"] = "显示边框"
+	L["Show Cooldown"] = "显示冷却"
+	L["Show Extra Options"] = "显示额外选项"
+	L["Show Glow"] = "显示发光效果"
+	L["Show Icon"] = "显示图标"
 	L["Show If Unit Does Not Exist"] = "如果单位不存在时显示"
 	L["Show If Unit Is Invalid"] = "当单位无效时显示"
 	L["Show Matches for"] = "为下列项显示匹配项"
 	L["Show Matches for Units"] = "为单位显示匹配项"
+	L["Show Model"] = "显示模型"
 	L["Show model of unit "] = "显示该单位的模型"
 	L["Show On"] = "当此条件满足时显示"
-	--[[Translation missing --]]
-	L["Show Spark"] = "Show Spark"
-	--[[Translation missing --]]
-	L["Show Text"] = "Show Text"
+	L["Show Spark"] = "显示闪光效果"
+	L["Show Text"] = "显示文本"
 	L["Show this group's children"] = "显示此组的子物件"
 	L["Shows a 3D model from the game files"] = "显示游戏文件中的3D模形"
+	L["Shows a border"] = "显示一个边框"
 	L["Shows a custom texture"] = "显示自定义材质"
+	L["Shows a model"] = "以模型显示"
 	L["Shows a progress bar with name, timer, and icon"] = "显示一个进度条组件, 它拥有 名称, 时间 和 图标"
 	L["Shows a spell icon with an optional cooldown overlay"] = "显示可选的法术图示有冷却时间重叠"
 	L["Shows a texture that changes based on duration"] = "显示一个随持续时间而变的材质"
@@ -643,21 +579,18 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Star"] = "星星"
 	L["Start"] = "开始"
 	L["Start Angle"] = "起始角度"
-	--[[Translation missing --]]
-	L["Start Collapsed"] = "Start Collapsed"
-	--[[Translation missing --]]
-	L["Start of %s"] = "Start of %s"
+	L["Start Collapsed"] = "打开时折叠"
+	L["Start of %s"] = "%s 的开始"
 	L["Status"] = "状态"
 	L["Stealable"] = "可偷取"
 	L["Step Size"] = "步进尺寸"
 	L["Stop ignoring Updates"] = "不再忽略更新"
 	L["Stop Sound"] = "停止播放声音"
-	--[[Translation missing --]]
-	L["Sub Option %i"] = "Sub Option %i"
+	L["Sub Elements"] = "子元素"
+	L["Sub Option %i"] = "子选项 %i"
 	L["Temporary Group"] = "模板群组"
 	L["Text"] = "文字"
-	--[[Translation missing --]]
-	L["Text %s"] = "Text %s"
+	L["Text %s"] = "文本 %s"
 	L["Text Color"] = "文字颜色"
 	L["Text Settings"] = "文本设置"
 	L["Texture"] = "材质"
@@ -668,7 +601,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["The duration of the animation in seconds. The finish animation does not start playing until after the display would normally be hidden."] = "动画时长秒时。直到显示内容被正常隐藏之后结束动画才会播放。"
 	L["The type of trigger"] = "触发器类型"
 	L["Then "] = "然后"
-	L["Thickness"] = "线条粗细"
+	L["Thickness"] = "粗细"
 	L["This adds %tooltip, %tooltip1, %tooltip2, %tooltip3 as text replacements."] = "这将替换 %tooltip, %tooltip1, %tooltip2, %tooltip3 的文本。"
 	L["This aura has legacy aura trigger(s). Convert them to the new system to benefit from enhanced performance and features"] = "这个光环使用了传统光环触发器，将它们转换到新版来获得更好的体验和更多的功能。"
 	L["This display is currently loaded"] = "此显示内容已加载"
@@ -691,13 +624,10 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Tooltip Text"] = "鼠标提示文本"
 	L["Tooltip Value"] = "鼠标提示值"
 	L["Tooltip Value #"] = "鼠标提示值 #"
-	--[[Translation missing --]]
-	L["Top"] = "Top"
+	L["Top"] = "上方"
 	L["Top HUD position"] = "顶部 HUD 位置"
-	--[[Translation missing --]]
-	L["Top Left"] = "Top Left"
-	--[[Translation missing --]]
-	L["Top Right"] = "Top Right"
+	L["Top Left"] = "左上"
+	L["Top Right"] = "右上"
 	L["Total Time Precision"] = "总的时间精度"
 	L["Trigger"] = "触发"
 	L["Trigger %d"] = "触发器 %d"
@@ -706,18 +636,16 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Type"] = "类型"
 	L["Ungroup"] = "不分组"
 	L["Unit"] = "单位"
-	--[[Translation missing --]]
-	L["Unit %s is not a valid unit for RegisterUnitEvent"] = "Unit %s is not a valid unit for RegisterUnitEvent"
+	L["Unit %s is not a valid unit for RegisterUnitEvent"] = "单位 %s 并不是 RegisterUnitEvent 的有效单位"
 	L["Unit Count"] = "单位计数"
-	--[[Translation missing --]]
-	L["Unit Frames"] = "Unit Frames"
+	L["Unit Frames"] = "单位框架"
 	L["Unlike the start or finish animations, the main animation will loop over and over until the display is hidden."] = "不同于开始或结束动画，主动画将不停循环，直到图示被隐藏。"
 	L["Up"] = "上"
 	L["Update "] = "更新"
 	L["Update Custom Text On..."] = "更新自定义文字于"
 	L["Update in Group"] = "更新群组内所有项"
 	L["Update this Aura"] = "更新此光环"
-	L["Use Display Info Id"] = "使用显示信息ID"
+	L["Use Display Info Id"] = "使用显示信息 ID"
 	L["Use Full Scan (High CPU)"] = "使用完整扫描(高CPU)"
 	L["Use nth value from tooltip:"] = "使用来自鼠标提示的值的顺序："
 	L["Use SetTransform"] = "使用 SetTransform 方法"
@@ -733,8 +661,7 @@ UNIT_POWER, UNIT_AURA PLAYER_TARGET_CHANGED]=]
 	L["Vertical Bar"] = "垂直条"
 	L["View"] = "视图"
 	L["Wago Update"] = "Wago.io 更新"
-	--[[Translation missing --]]
-	L["Whole Area"] = "Whole Area"
+	L["Whole Area"] = "整个区域"
 	L["Width"] = "宽度"
 	L["X Offset"] = "X 偏移"
 	L["X Rotation"] = "X旋转"

@@ -5,8 +5,8 @@ enUS localization strings for Collectinator
 ************************************************************************
 File date: 2012-09-12T1:10:19Z 
 File revision: 5ba9799caf14e633944aab5775e188f66ae4206a 
-Project revision: 3c640e0bf38df3d1a487c9415b7a7e6d275a5e85
-Project version: 8.2.0.1
+Project revision: f45cfab18405a793e117bfcf473e664c3f401439
+Project version: 8.2.5.1
 ************************************************************************
 Translation credits: http://www.wowace.com/addons/collectinator/localization/translators/
 
@@ -254,6 +254,7 @@ L["EXCLUDECOUNT_DESC"] = "Include excluded collectables in the count of total co
 L["EXPANDALL_DESC"] = "Maximize all collectables listed below."
 L["EXPANSION_DESC_FORMAT"] = "Show collectables released in %s."
 L["EXPANSION_FILTER_FORMAT"] = "Shows a selection of %s reputations to include in the scan."
+L["FABIOUS"] = "Use the S.E.L.F.I.E. Camera MkII found in the toybox, and take a selfie with Fabious in the background."
 L["FACTION_DESC_FORMAT"] = "Include collectables which must first be obtained by %s players."
 L["FALCOSAUR"] = "Involved chain. See guide: https://www.wowhead.com/falcosaur-guide"
 L["Faldoc Stonefaith"] = true
@@ -355,6 +356,8 @@ L["Historian Ju'pa"] = true
 L["Historian Llore"] = true
 L["Hoarder Jena"] = true
 L["Honest Jim"] = true
+L["Honey Smasher"] = true
+L["HONEYBACK_HIVE"] = "Available randomly from farming Jelly for Honeyback Hive rep."
 L["Horrific Apparition"] = true
 L["Houndmaster Kerrax"] = true
 L["Huggalon the Heart Watcher"] = true
@@ -506,6 +509,7 @@ L["Naron Bloomthistle"] = true
 L["Narzak"] = true
 L["NAT_PAGLE"] = "Available from Nat Pagle in the Fishing Shack."
 L["Natal'hakata"] = true
+L["NAZJATAR_BODYGUARDS"] = "Available from leveling up Nazjatar Bodyguards."
 L["N'chala the Egg Thief"] = true
 L["Necrolord Sipe"] = true
 L["Needlespine"] = true
@@ -543,6 +547,7 @@ L["Ordon Candlekeeper"] = true
 L["Orix the All-Seer"] = true
 L["Orumo the Observer"] = true
 L["Orwell Stevenson"] = true
+L["Otela"] = true
 L["Overseer Krix"] = true
 L["OVERWATCHCE"] = "Available from Overwatch's CE."
 L["Pascal-K1N6"] = true
@@ -594,6 +599,7 @@ L["Ransa Greyfeather"] = true
 L["Ravenspeaker Skeega"] = true
 L["Ravika"] = true
 L["Ray'ma"] = true
+L["REC_RIG"] = "Available from Normal and Hard Mode Reclamation Rig Event."
 L["RECRUIT"] = "Available via Recruit-A-Friend."
 L["Remnant of the Blood Moon"] = true
 L["Reset Window Position"] = true
@@ -726,6 +732,7 @@ L["The Kleptoboss"] = true
 L["The Lanticore"] = true
 L["The Mad Merchant"] = true
 L["The Many-Faced Devourer"] = true
+L["The Rusty Prince"] = true
 L["Thelar Moonstrike"] = true
 L["Thistleheart"] = true
 L["Thomas Yance"] = true

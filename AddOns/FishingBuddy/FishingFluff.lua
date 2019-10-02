@@ -164,6 +164,7 @@ FishingItems[85973] = {
             local C, _ = FL:GetCurrentMapContinent();
             return (C == FBConstants.PANDARIA);
         end,
+    ["toy"] = 1,
     ["default"] = true,
 };
 FishingItems[122742] = {
@@ -171,7 +172,7 @@ FishingItems[122742] = {
     ["spell"] = 182226,
     setting = "UseBladeboneHook",
     visible = function(option)
-            return true;
+            return not FL:IsClassic();
         end,
     usable = function(item)
             -- only usable in Draenor
@@ -380,16 +381,17 @@ local function ItemInit(option, button)
     end
 end
 
-local function ItemVisible(option)
-    return GetItemCount(option.id) > 0;
+local function ItemCountVisible(option)
+    return FishingBuddy.FishingPlans:HaveThing(option.id, option)
 end
 
 local function UpdateItemOption(id, info)
     info.id = id;
     if (info.setting and not info.ignore) then
-        local option = {};
+        local option = {}; 
 
         option.id = id;
+        option.toy = info.toy;
         option.enUS = info.enUS;
 
         if (info.visible) then
@@ -445,7 +447,12 @@ end
 FishingBuddy.SetupSpecialItems = SetupSpecialItems
 
 local function AddFluffOptions(options)
-    FishingBuddy.OptionsFrame.HandleOptions(FBConstants.CONFIG_FISHINGFLUFF_ONOFF, "Interface\\Icons\\inv_misc_food_164_fish_seadog", options);
+    if FL:IsClassic() then
+        local _, name = FL:GetFishingSkillInfo();
+        FishingBuddy.OptionsFrame.HandleOptions(name, "Interface\\Icons\\INV_Fishingpole_02", options);
+    else
+        FishingBuddy.OptionsFrame.HandleOptions(FBConstants.CONFIG_FISHINGFLUFF_ONOFF, "Interface\\Icons\\inv_misc_food_164_fish_seadog", options);
+    end
 end
 FishingBuddy.AddFluffOptions = AddFluffOptions
 

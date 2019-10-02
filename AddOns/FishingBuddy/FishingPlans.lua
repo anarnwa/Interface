@@ -15,7 +15,7 @@ local FishingPlans = {}
 
 function FishingPlans:HaveThing(itemid, info)
     if (info.toy) then
-        return PlayerHasToy(itemid)
+        return PlayerHasToy(itemid) and C_ToyBox.IsToyUsable(itemid)
     else
         return GetItemCount(itemid) > 0;
     end

@@ -1,6 +1,8 @@
 local addonName, addonTable = ...
 
 -- Set up shared constants (for ease of use, mainly)
+-- Note: Don't change the string values, refactoring is only partially complete (search all files to see)
+-- They were originally hardcoded EVERYWHERE and are also used directly as keys in the DB...
 addonTable.constants = addonTable.constants or {}
 
 local C = addonTable.constants
@@ -33,6 +35,32 @@ C.ITEM_TYPES = {
 	MOUNT = "MOUNT",
 	PET = "PET",
 	ITEM = "ITEM",
+}
+
+-- Types of different detection methods
+C.DETECTION_METHODS = {
+	NPC = "NPC",
+	BOSS = "BOSS",
+	ZONE = "ZONE",
+	USE = "USE",
+	FISHING = "FISHING",
+	ARCH = "ARCH",
+	SPECIAL = "SPECIAL",
+	MINING = "MINING",
+	COLLECTION = "COLLECTION",
+}
+
+-- Categories (expansions-based, with some special types of items)
+C.ITEM_CATEGORIES = {
+	CLASSIC = "BASE",
+	TBC = "TBC",
+	WOTLK = "WOTLK",
+	CATA = "CATA",
+	MOP = "MOP",
+	WOD = "WOD",
+	LEGION = "LEGION",
+	BFA = "BFA",
+	HOLIDAY = "HOLIDAY",
 }
 
 -- Instance difficulties

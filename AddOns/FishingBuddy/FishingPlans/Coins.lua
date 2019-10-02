@@ -63,7 +63,7 @@ local function CoinPlan()
             end
         end
         if lure_id then
-            PLANS:AddEntry(id, lure_info[CurLoc])
+            PLANS:AddEntry(lure_id, lure_info[CurLoc])
             FL:WaitForBuff(lure_info.spell)
             return
         end

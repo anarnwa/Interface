@@ -1,3 +1,12 @@
+**r692:**
+
+> Added defeat detection for all relevant rares in Nazjatar and Mechagon Island
+
+> Fixed tracking for the Timewalking version of the Ozumat encounter (Throne of the Tides)
+<br>Fixed waypoint coordinates for Rukhmar and Sha of Anger (courtesy of divinemaiden)
+
+-----
+
 **r691:**
 
 > Added tracking for collectibles obtained in Nazjatar and Mechagon Island
@@ -35,12 +44,3 @@ Developer Notes:
 
 > Resolved some display issues for faction-specific mounts that can be obtained from Darkshore rares
 <br>Fixed tracking for Spawn of Garalon
-
------
-
-**r687:**
-
-> Added tracking for the Great Sea Ray mount (courtesy of ZaruthEU)
-<br>Added tracking for Raiding with Leashes VI: Pets of Pandaria
-
-> Improved defeat detection for the G.M.O.D. mount (still somewhat experimental)

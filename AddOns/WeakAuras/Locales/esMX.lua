@@ -52,6 +52,8 @@ L["/wa pstart - Start profiling"] = "/wa pstart - Start profiling"
 --[[Translation missing --]]
 L["/wa pstop - Finish profiling"] = "/wa pstop - Finish profiling"
 --[[Translation missing --]]
+L["/wa repair - Repair tool"] = "/wa repair - Repair tool"
+--[[Translation missing --]]
 L["|cffeda55fLeft-Click|r to toggle showing the main window."] = "|cffeda55fLeft-Click|r to toggle showing the main window."
 --[[Translation missing --]]
 L["|cffeda55fMiddle-Click|r to toggle the minimap icon on or off."] = "|cffeda55fMiddle-Click|r to toggle the minimap icon on or off."
@@ -164,13 +166,14 @@ L["Autocast Shine"] = "Autocast Shine"
 --[[Translation missing --]]
 L["Auto-Clone (Show all Matches)"] = "Auto-Clone (Show all Matches)"
 L["Automatic"] = "Automático"
+--[[Translation missing --]]
+L["Automatic Repair Confirmation Dialog"] = "Automatic Repair Confirmation Dialog"
 L["Automatic Rotation"] = "Rotación automática"
 --[[Translation missing --]]
 L["Avoidance (%)"] = "Avoidance (%)"
 --[[Translation missing --]]
 L["Avoidance Rating"] = "Avoidance Rating"
 L["Back and Forth"] = "De atrás hacia adelante"
-L["Backdrop Color"] = "Color de fondo"
 L["Background Color"] = "Color de fondo"
 L["Bar Color"] = "Color de la barra"
 L["Battle.net Whisper"] = "Mensaje de Battle.net"
@@ -208,6 +211,8 @@ L["Buff"] = "Beneficio"
 L["Buffed/Debuffed"] = "Buffed/Debuffed"
 --[[Translation missing --]]
 L["Can be used for e.g. checking if \"boss1target\" is the same as \"player\"."] = "Can be used for e.g. checking if \"boss1target\" is the same as \"player\"."
+--[[Translation missing --]]
+L["Cancel"] = "Cancel"
 L["Cast"] = "Lanzar hechizo"
 --[[Translation missing --]]
 L["Cast Bar"] = "Cast Bar"
@@ -254,6 +259,8 @@ L["Combat Log"] = "Registro de combate"
 L["Combine all matches"] = "Combine all matches"
 L["Conditions"] = "Condiciones"
 L["Contains"] = "Contiene"
+--[[Translation missing --]]
+L["Continue Without Repairing"] = "Continue Without Repairing"
 --[[Translation missing --]]
 L["Cooldown"] = "Cooldown"
 L["Cooldown Progress (Equipment Slot)"] = "Recarga en proceso (Equipamiento)"
@@ -351,6 +358,12 @@ L["Emphasized"] = "Emphasized"
 L["Emphasized option checked in BigWigs's spell options"] = "Emphasized option checked in BigWigs's spell options"
 L["Empty"] = "Vacío"
 --[[Translation missing --]]
+L["Enchant Found"] = "Enchant Found"
+--[[Translation missing --]]
+L["Enchant Missing"] = "Enchant Missing"
+--[[Translation missing --]]
+L["Enchant Name or ID"] = "Enchant Name or ID"
+--[[Translation missing --]]
 L["Encounter ID(s)"] = "Encounter ID(s)"
 L["Energize"] = "Vigorizar"
 L["Enrage"] = "Enfurecer"
@@ -384,7 +397,7 @@ L["Fade Out"] = "Difuminar"
 L["Fail Alert"] = "Alerta de error"
 L["False"] = "Falso"
 --[[Translation missing --]]
-L["Filter messages with format < message >"] = "Filter messages with format < message >"
+L["Filter messages with format <message>"] = "Filter messages with format <message>"
 --[[Translation missing --]]
 L["Fire Resistance"] = "Fire Resistance"
 --[[Translation missing --]]
@@ -401,6 +414,8 @@ L["Flex Raid"] = "Banda flexible"
 L["Flip"] = "Voltear"
 L["Focus"] = "Foco"
 L["Font Size"] = "Tamaño de fuente"
+--[[Translation missing --]]
+L["Foreground"] = "Foreground"
 L["Foreground Color"] = "Color frontal"
 L["Form"] = "Forma"
 --[[Translation missing --]]
@@ -571,6 +586,8 @@ L["Main Stat"] = "Main Stat"
 L["Make sure you can trust the person who sent it!"] = "Make sure you can trust the person who sent it!"
 --[[Translation missing --]]
 L["Malformed WeakAuras link"] = "Malformed WeakAuras link"
+--[[Translation missing --]]
+L["Manual Repair Confirmation Dialog"] = "Manual Repair Confirmation Dialog"
 L["Manual Rotation"] = "Rotación manual"
 L["Marked First"] = "Señalado primero"
 L["Marked Last"] = "Señalado último"
@@ -607,6 +624,8 @@ L["Miss"] = "Fallo"
 L["Miss Type"] = "Tipo de fallo"
 L["Missed"] = "Fallado"
 L["Missing"] = "Ausente"
+--[[Translation missing --]]
+L["Model"] = "Model"
 L["Monochrome"] = "Monocromático"
 L["Monochrome Outline"] = "Borde monocromático"
 L["Monochrome Thick Outline"] = "Borde monocromático ancho"
@@ -681,7 +700,7 @@ L["Option Group"] = "Option Group"
 --[[Translation missing --]]
 L["Options will finish loading after combat ends."] = "Options will finish loading after combat ends."
 --[[Translation missing --]]
-L["Options will finish loading after the login process has completed."] = "Options will finish loading after the login process has completed."
+L["Options will open after the login process has completed."] = "Options will open after the login process has completed."
 L["Orbit"] = "Orbitar"
 --[[Translation missing --]]
 L["Orientation"] = "Orientation"
@@ -725,6 +744,8 @@ L["Player Name"] = "Nombre del jugador"
 L["Player Race"] = "Raza del jugador"
 L["Player(s) Affected"] = "Jugador(es) afectado(s)"
 L["Player(s) Not Affected"] = "Jugador(es) no afectado(s)"
+--[[Translation missing --]]
+L["Please upgrade your Masque version"] = "Please upgrade your Masque version"
 L["Poison"] = "Veneno"
 L["Power"] = "Poder"
 L["Power (%)"] = "Poder (%)"
@@ -795,6 +816,8 @@ L["Rotate Left"] = "Rotar hacia la izquierda"
 L["Rotate Right"] = "Rotar hacia la derecha"
 --[[Translation missing --]]
 L["Run Custom Code"] = "Run Custom Code"
+--[[Translation missing --]]
+L["Run the repair tool"] = "Run the repair tool"
 L["Rune"] = "Runa"
 L["Rune #1"] = "Runa #1"
 L["Rune #2"] = "Runa #2"
@@ -835,6 +858,8 @@ L["Show all Matches"] = "Show all Matches"
 --[[Translation missing --]]
 L["Show all Matches from all Units"] = "Show all Matches from all Units"
 --[[Translation missing --]]
+L["Show Border"] = "Show Border"
+--[[Translation missing --]]
 L["Show CD of Charge"] = "Show CD of Charge"
 L["Show Code"] = "Mostrar código"
 --[[Translation missing --]]
@@ -856,6 +881,8 @@ L["Show lowest time left"] = "Show lowest time left"
 L["Show lowest time left over all units"] = "Show lowest time left over all units"
 --[[Translation missing --]]
 L["Show lowest time left per unit"] = "Show lowest time left per unit"
+--[[Translation missing --]]
+L["Show On"] = "Show On"
 L["Shrink"] = "Encoger"
 --[[Translation missing --]]
 L["Simple"] = "Simple"
@@ -917,6 +944,8 @@ L["Spell Usable"] = "Spell Usable"
 L["Spin"] = "Girar"
 L["Spiral"] = "Espiral"
 L["Spiral In And Out"] = "Espiral hacia adentro y afuera"
+--[[Translation missing --]]
+L["Stack Count"] = "Stack Count"
 L["Stacks"] = "Acumulaciones"
 --[[Translation missing --]]
 L["Stagger Scale"] = "Stagger Scale"
@@ -962,6 +991,8 @@ L["Targeted"] = "Targeted"
 L["Text"] = "Text"
 --[[Translation missing --]]
 L["The effective level differs from the level in e.g. Time Walking dungeons."] = "The effective level differs from the level in e.g. Time Walking dungeons."
+--[[Translation missing --]]
+L["The trigger number is optional, and uses the trigger providing dynamic information if not specified."] = "The trigger number is optional, and uses the trigger providing dynamic information if not specified."
 --[[Translation missing --]]
 L["There are %i updates to your auras ready to be installed!"] = "There are %i updates to your auras ready to be installed!"
 L["Thick Outline"] = "Thick Outline"

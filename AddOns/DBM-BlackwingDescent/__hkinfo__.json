@@ -1,0 +1,25 @@
+{
+    "target": "curse",
+    "searchName": "Deadly Boss Mods (DBM) - Cataclysm mods",
+    "localName": "DBM-BlackwingDescent",
+    "version": "r203",
+    "fileName": "deadly-boss-mods-cataclysm-mods",
+    "addonsMap": [
+        "DBM-DragonSoul",
+        "DBM-BaradinHold",
+        "DBM-BastionTwilight",
+        "DBM-BlackwingDescent",
+        "DBM-Firelands",
+        "DBM-ThroneFourWinds"
+    ],
+    "interfaceMap": [],
+    "children": [
+        "DBM-DragonSoul",
+        "DBM-BaradinHold",
+        "DBM-BastionTwilight",
+        "DBM-Firelands",
+        "DBM-ThroneFourWinds"
+    ],
+    "name": "Deadly Boss Mods (DBM) - Cataclysm mods",
+    "gameVersion": ""
+}

@@ -1,10 +1,11 @@
 ## Interface: 80200
 ## Title: MTG
 ## Author: JANY
-## Version: 8.2.0
-## Notes: 搬运Mrrl's trade game
-## SavedVariables: MTGDB,j_BuyRareItemOption,j_BuyItemOption,j_Markersize,j_CheckTacoFirst
+## Version: v4.0.2-42-20190819
+## Notes: 渔人兑换(搬运Mrrl's trade game)
+## SavedVariables: MTGDB,j_BuyRareItemOption,j_BuyItemOption,j_Markersize,j_CheckTacoFirst,MTGsettingDB
 
 localization.lua
 MTG.lua
+
 

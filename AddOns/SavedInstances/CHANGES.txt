@@ -1,48 +1,57 @@
-tag d448ee4d2ba908653e8952f32c402c3d31952119 8.2.2
+tag 656ff63fc1b83dbaaedbb5c0c27ff08e29bfb7cd 8.2.3
 Author:	Benjamin Staneck <staneck@gmail.com>
-Date:	Wed Jul 10 16:25:20 2019 +0200
+Date:	Tue Sep 24 17:20:27 2019 +0200
 
-Tagging as 8.2.2
+Tagging as 8.2.3
 
-commit 729fe539914202610ce8228ba79d5bb24e121c0e
+commit f33ba0480350e45b9b3e0e1709f2d95825df7a06
+Author: Benjamin Staneck <staneck@gmail.com>
+Date:   Tue Sep 24 17:19:05 2019 +0200
+
+    Update TOC for Patch 8.2.5
+
+commit 6f101ff997384fb5bf14cb428f46bac248d659c9
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Wed Jul 10 21:12:47 2019 +0800
+Date:   Mon Sep 23 14:21:29 2019 +0800
 
-    fixes #296
+    Don't use deprecated functions
 
-commit 84ecc51a7927b596557e363a791e64bd5e1a0717
+commit 19138c41dfa34da1dc8f8fbd1104dc0aca3360ea
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Tue Jul 9 11:00:54 2019 +0800
+Date:   Wed Jul 31 11:42:18 2019 +0800
 
-    Cache `type`
+    Track Ancient Reefwalker Bark
 
-commit c6ab9bd9ef506c778e5f61baadfbd287567c77d0
+commit 11c362bb96ae17176f7be4fbec96ca36371231fe
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Tue Jul 9 10:50:38 2019 +0800
+Date:   Wed Jul 31 11:26:00 2019 +0800
 
-    Update M+ Key Rendering
+    Emissary and Bonus Roll no longer mark "saved"
+    closes #302
 
-commit ae20444dcec3c04b2de66678d43ef4a78319bf68
+commit 2ec9a6d488a9b0172719ec22965906cee753b916
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Tue Jul 9 10:47:09 2019 +0800
+Date:   Wed Jul 31 11:24:04 2019 +0800
 
-    Prepare to support Heroic Warfront Scenario
+    Track The Laboratory of Mardivas
 
-commit 6449c643a9721950d10c41d596446b938fa1c979
+commit 7fe257f3cd477487dfc1bc0698c719bf2cb43652
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Wed Jul 3 09:16:34 2019 +0800
+Date:   Tue Jul 23 15:51:37 2019 +0800
 
-    fixes #293
+    Fix Spell Cast Tracking & Update Tradeskill  List
+    fixes #294
 
-commit 18c378f98c0d10b8c9108b24781ae6d24894496e
+commit 036f0fcc203980c72030cc14b4fa2710e9d5e011
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Sun Jun 30 02:04:56 2019 +0800
+Date:   Thu Jul 11 09:30:45 2019 +0800
 
-    Ignore Even More Recycling
+    Update Heroic Warfront Quest ID
 
-commit 4079eb61ead045f83d343e02108d01fd8a7c522f
+commit 9919c8abd1cda1918338ae36e1da4147c6c779b5
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Sun Jun 30 00:16:17 2019 +0800
+Date:   Thu Jul 11 09:29:32 2019 +0800
 
-    Fix Blingtron 7000 in ShowQuestTooltip
+    Update Nazjatar World Bosses
+    closes #298
 

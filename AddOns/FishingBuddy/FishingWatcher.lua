@@ -16,6 +16,7 @@ local zmex = FishingBuddy.ZoneMarkerEx;
 
 local ZoneFishingTime = 0;
 local TotalTimeFishing = nil;
+local CurLoc = GetLocale();
 
 local FL = LibStub("LibFishing-1.0");
 local LW = LibStub("LibWindow-1.1");
@@ -32,65 +33,75 @@ local WatcherOptions = {
         ["v"] = 1,
         ["m"] = 1,
         ["p"] = 1,
-        ["default"] = true },
+        ["default"] = true
+    },
     ["WatchCurrentSkill"] = {
         ["text"] = FBConstants.CONFIG_FISHWATCHSKILL_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_FISHWATCHSKILL_INFO,
         ["v"] = 1,
         ["default"] = true,
-        ["parents"] = { ["WatchFishies"] = "d" } },
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
     ["WatchOnlyWhenFishing"] = {
         ["text"] = FBConstants.CONFIG_FISHWATCHONLY_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_FISHWATCHONLY_INFO,
         ["v"] = 1,
         ["m1"] = 1,
         ["default"] = true,
-        ["parents"] = { ["WatchFishies"] = "d" } },
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
     ["WatchCurrentZone"] = {
         ["text"] = FBConstants.CONFIG_FISHWATCHZONE_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_FISHWATCHZONE_INFO,
         ["v"] = 1,
         ["m"] = 1,
         ["default"] = false,
-        ["parents"] = { ["WatchFishies"] = "d" } },
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
     ["WatchFishPercent"] = {
         ["text"] = FBConstants.CONFIG_FISHWATCHPERCENT_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_FISHWATCHPERCENT_INFO,
         ["v"] = 1,
         ["m"] = 1,
         ["default"] = true,
-        ["parents"] = { ["WatchFishies"] = "d" } },
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
     ["WatchElapsedTime"] = {
         ["text"] = FBConstants.CONFIG_FISHWATCHTIME_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_FISHWATCHTIME_INFO,
         ["v"] = 1,
         ["m"] = 1,
         ["default"] = false,
-        ["parents"] = { ["WatchFishies"] = "d" } },
-    ["WatchPagleFish"] = {
-        ["text"] = FBConstants.CONFIG_FISHWATCHPAGLE_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_FISHWATCHPAGLE_INFO,
-        ["v"] = 1,
-        ["default"] = true,
-        ["parents"] = { ["WatchFishies"] = "d" } },
-    ["WatchWorldQuests"] = {
-        ["text"] = FBConstants.CONFIG_FISHWATCHWORLD_ONOFF,
-        ["tooltip"] = FBConstants.CONFIG_FISHWATCHWORLD_INFO,
-        ["v"] = 1,
-        ["default"] = true,
-        ["parents"] = { ["WatchFishies"] = "d" } },
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
     ["WatchCurrentOnly"] = {
         ["text"] = FBConstants.CONFIG_FISHWATCHCURRENT_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_FISHWATCHCURRENT_INFO,
         ["v"] = 1,
         ["default"] = false,
-        ["parents"] = { ["WatchFishies"] = "d" } },
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
     ["WatchHideTrash"] = {
         ["text"] = FBConstants.CONFIG_FISHWATCHTRASH_ONOFF,
         ["tooltip"] = FBConstants.CONFIG_FISHWATCHNOGREYS_INFO,
         ["v"] = 1,
         ["default"] = false,
-        ["parents"] = { ["WatchFishies"] = "d" } },
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
+    ["WatchPagleFish"] = {
+        ["text"] = FBConstants.CONFIG_FISHWATCHPAGLE_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_FISHWATCHPAGLE_INFO,
+        ["v"] = 1,
+        ["default"] = true,
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
+    ["WatchWorldQuests"] = {
+        ["text"] = FBConstants.CONFIG_FISHWATCHWORLD_ONOFF,
+        ["tooltip"] = FBConstants.CONFIG_FISHWATCHWORLD_INFO,
+        ["v"] = 1,
+        ["default"] = true,
+        ["parents"] = { ["WatchFishies"] = "d" }
+    },
 --    ["WatchWarnFishing"] = {
 --        ["text"] = FBConstants.CONFIG_FISHWARNFISHING_ONOFF,
 --        ["tooltip"] = FBConstants.CONFIG_FISHWARNFISHING_INFO,
@@ -110,7 +121,7 @@ FWF.First = {}
 FWF.Last = {}
 
 function FWF:RegisterLineHandler(renderline, priority, first, last)
-    handler = {}
+    local handler = {}
     handler.first = first
     handler.last = last
     handler.render = renderline
@@ -192,7 +203,7 @@ function FWF:DisplayFishLine(fish, label, area)
         if info.area then
             here = info.area == area;
         else
-            here = not info.zone or zone == info.zone;
+            here = not info.zone;
         end
         if here and info.subzone then
             here = info.subzone == subzone
@@ -343,6 +354,10 @@ end
 -- Handle legion fountain coins
 local _achievement_pattern = "|c%x+|Hachievement:[^|]+|h%[(.*)%]|h|r"
 local function SetupLegionCoinCount()
+    if FL:IsClassic() then
+        legion_coins = {}
+        return
+    end
     local wishid = 10722
     if not wish_remover["text"] then
         local link = GetAchievementLink(wishid)
@@ -429,7 +444,7 @@ end
 
 local lastContinent = 0;
 local function DisplaySkillWarning()
-    if False and GSB("WatchWarnFishing") then
+    if false and GSB("WatchWarnFishing") then
         local continent, _ = FL:GetCurrentMapContinent();
         if continent ~= lastContinent then
             local skill, modx, skillmax, lure = FL:GetContinentSkill(continent);
@@ -443,7 +458,7 @@ local function DisplaySkillWarning()
     end
 end
 
-local function HandleZoneChange(self, event, ...)
+local function HandleZoneChange(self, _, ...)
     if ( not FishingBuddy.IsLoaded() ) then
         return;
     end
@@ -623,8 +638,8 @@ local legionmaps = {
     [1096] = "Eye of Azshara",
 }
 
-function DisplayFishingWorldQuests()
-    if not GSB("WatchWorldQuests") then
+local function DisplayFishingWorldQuests()
+    if FL:IsClassic() or not GSB("WatchWorldQuests") then
         return nil
     end
 
@@ -912,13 +927,19 @@ local function TimerUpdate()
     end
 end
 
+local function TimerEvent(_, ...)
+end
+
 local WatWin = {}
 function WatWin:OnLoad()
+    local _, _, _, classic = FL:WOWVersion();
     timerframe = CreateFrame("FRAME");
     timerframe:Hide();
     timerframe:SetScript("OnUpdate", TimerUpdate);
     timerframe:SetScript("OnEvent", TimerEvent);
-    timerframe:RegisterEvent("CALENDAR_UPDATE_EVENT_LIST")
+    if not classic then
+        timerframe:RegisterEvent("CALENDAR_UPDATE_EVENT_LIST");
+    end
 
     -- since we can leave this open all the time, register these against the window itself
     self:RegisterEvent("ZONE_CHANGED");
@@ -1021,7 +1042,7 @@ local function WatchMenu_Initialize()
         local ff = FishingBuddy_Info["Fishies"];
         for fishid in pairs(fz[zidm]) do
             local info = {};
-            info.text = ff[fishid][loc];
+            info.text = ff[fishid][CurLoc];
             info.func = WatcherMakeToggle(fishid);
             info.checked = ( not FishingBuddy_Info["HiddenFishies"][fishid] );
             info.keepShownOnClick = 1;

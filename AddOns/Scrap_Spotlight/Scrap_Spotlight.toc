@@ -6,6 +6,6 @@
 ## X-Category: Inventory
 ## X-License: GNU General Public License Version 3
 ## Dependencies: Scrap
-## Version: 8.2.0
+## Version: 13.19
 
 Scrap_Spotlight.lua

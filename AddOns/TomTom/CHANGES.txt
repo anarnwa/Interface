@@ -1,16 +1,10 @@
-lightweight tag 4d7570c47bd5515b052ef4ab5b985541c9262d67 v80200-1.0.5
+lightweight tag c6371e3429199a96ffe41cd99f02a5b11671e650 v80205-1.0.7
 Author:	Ludovicus <ludovicus.maior@gmail.com>
-Date:	Thu Aug 1 15:23:51 2019 -0400
+Date:	Tue Sep 24 17:49:38 2019 -0400
 
-commit 4d7570c47bd5515b052ef4ab5b985541c9262d67
+commit c6371e3429199a96ffe41cd99f02a5b11671e650
 Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Thu Aug 1 15:23:51 2019 -0400
+Date:   Tue Sep 24 17:49:38 2019 -0400
 
-    Update to ACE3 Release r1224
-
-commit c1b2500f756080971750921781a55c973489e511
-Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Wed Jul 31 07:06:31 2019 -0400
-
-    Save window positions in profile and do not use layout-local.txt
+    Update interface to 8.2.5
 

@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "New Openables",
+    "localName": "NOP",
+    "version": "nop-r0916.zip",
+    "fileName": "new-openables",
+    "addonsMap": [
+        "NOP"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "New Openables",
+    "gameVersion": "8.1.0"
+}

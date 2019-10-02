@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "idTip",
+    "localName": "idTip",
+    "version": "idTip-8.2.1",
+    "fileName": "idtip",
+    "addonsMap": [
+        "idTip"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "idTip",
+    "gameVersion": "8.2.0"
+}

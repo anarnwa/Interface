@@ -6,7 +6,7 @@ local C, L, G = unpack(ecf)
 local _G = _G
 local format, ipairs, max, min, next, pairs, tconcat, tonumber, tremove = format, ipairs, max, min, next, pairs, table.concat, tonumber, tremove
 -- WoW
-local Ambiguate, BNGetGameAccountInfoByGUID, C_Item_GetItemQualityByID, C_Timer_After, ChatTypeInfo, GetAchievementLink, GetPlayerInfoByGUID, GetTime, C_FriendList_IsFriend, IsGUIDInGroup, IsGuildMember, RAID_CLASS_COLORS = Ambiguate, BNGetGameAccountInfoByGUID, C_Item.GetItemQualityByID, C_Timer.After, ChatTypeInfo, GetAchievementLink, GetPlayerInfoByGUID, GetTime, C_FriendList.IsFriend, IsGUIDInGroup, IsGuildMember, RAID_CLASS_COLORS
+local Ambiguate, C_BattleNet_GetGameAccountInfoByGUID, C_Item_GetItemQualityByID, C_Timer_After, ChatTypeInfo, GetAchievementLink, GetPlayerInfoByGUID, GetTime, C_FriendList_IsFriend, IsGUIDInGroup, IsGuildMember, RAID_CLASS_COLORS = Ambiguate, C_BattleNet.GetGameAccountInfoByGUID, C_Item.GetItemQualityByID, C_Timer.After, ChatTypeInfo, GetAchievementLink, GetPlayerInfoByGUID, GetTime, C_FriendList.IsFriend, IsGUIDInGroup, IsGuildMember, RAID_CLASS_COLORS
 
 -- GLOBALS: NUM_CHAT_WINDOWS
 
@@ -26,7 +26,7 @@ local UTF8Symbols = {
 	['【']='',['】']='',['『']='',['』']='',['《']='',['》']='',['（']='',['）']='',['〔']='',
 	['〕']='',['〈']='',['〉']='',['＇']='',['＂']='',['’']='',['‘']='',['“']='',['”']='',
 	['≈']='',['︾']='',['．']='',["∴"]='',['灬']='',['━']='',['↑']='',['↓']='',['→']='',['←']='',
-	['▲']='',['丨'] = '',['〡']='',['▇']='',
+	['▲']='',['丨'] = '',['〡']='',['▇']='',['√']='',
 	['|']='',['@']='',['!']='',['/']='',['<']='',['>']='',['"']='',['`']='',['_']='',["'"]='',
 	['#']='',['&']='',[';']='',[':']='',['~']='',['\\']='',['=']='',
 	["\t"]='',["\n"]='',["\r"]='',[" "]='',
@@ -217,7 +217,7 @@ local function preECFfilter(self,event,msg,player,_,_,_,flags,_,_,_,_,lineID,gui
 		player = Ambiguate(player, "none")
 		local IsMyFriend, good
 		if guid then
-			IsMyFriend = BNGetGameAccountInfoByGUID(guid) or C_FriendList_IsFriend(guid)
+			IsMyFriend = C_BattleNet_GetGameAccountInfoByGUID(guid) or C_FriendList_IsFriend(guid)
 			good = IsMyFriend or IsGuildMember(guid) or IsGUIDInGroup(guid)
 		end
 		filterResult = ECFfilter(chatEvents[event],msg,player,flags,IsMyFriend,good)
@@ -257,18 +257,26 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_MONSTER_EMOTE", monsterFilter)
 --SystemMessage
 local SystemFilterTag = {
 	-- !!! Always add parentheses since gsub() has two return values !!!
-	(ERR_LEARN_ABILITY_S:gsub("%%s","(.*)")),
-	(ERR_LEARN_SPELL_S:gsub("%%s","(.*)")),
-	(ERR_SPELL_UNLEARNED_S:gsub("%%s","(.*)")),
-	(ERR_LEARN_PASSIVE_S:gsub("%%s","(.*)")),
-	(ERR_PET_SPELL_UNLEARNED_S:gsub("%%s","(.*)")),
-	(ERR_PET_LEARN_ABILITY_S:gsub("%%s","(.*)")),
-	(ERR_PET_LEARN_SPELL_S:gsub("%%s","(.*)")),
+	(AZERITE_ISLANDS_XP_GAIN:gsub("%%.-s",".+"):gsub("%%.-d","%%d+")), -- Azerite gain in islands
 }
+if UnitLevel("player") == GetMaxPlayerLevel() then -- spell learn, only when max level
+	local SSFilterStrings = {
+		(ERR_LEARN_ABILITY_S:gsub("%%s","(.*)")),
+		(ERR_LEARN_SPELL_S:gsub("%%s","(.*)")),
+		(ERR_SPELL_UNLEARNED_S:gsub("%%s","(.*)")),
+		(ERR_LEARN_PASSIVE_S:gsub("%%s","(.*)")),
+		(ERR_PET_SPELL_UNLEARNED_S:gsub("%%s","(.*)")),
+		(ERR_PET_LEARN_ABILITY_S:gsub("%%s","(.*)")),
+		(ERR_PET_LEARN_SPELL_S:gsub("%%s","(.*)")),
+	}
+	local i = #SystemFilterTag
+	for j, s in ipairs(SSFilterStrings) do SystemFilterTag[i+j] = s end
+end
+
 local function systemMsgFilter(self,_,msg)
 	for _, s in ipairs(SystemFilterTag) do if msg:find(s) then return true end end
 end
-if UnitLevel("player") == GetMaxPlayerLevel() then ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", systemMsgFilter) end
+ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", systemMsgFilter)
 
 --AchievementFilter
 local achievements = {}

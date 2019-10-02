@@ -120,11 +120,6 @@ NOP.T_RECIPES = { -- [ItemId] = {{count_to_use,priority}, "gsub regex" | tooltip
 }
 NOP.T_ITEMS = { -- [itemID] = {{count_to_use,priority},{"sub-Zone",...},{[mapID]=true,...},auraID}, table for opening/use item by itemID, when is no possible to check for any common text
   [166999] = {{1,PRI_OPEN},nil,nil}, -- [Treasure Map]
-  [167743] = {{1,PRI_OPEN},nil,nil}, -- 希拉斯的兴盛药水
-  [156631] = {{1,PRI_OPEN},nil,nil}, -- 希拉斯的转化之球
-  [156634] = {{1,PRI_OPEN},nil,nil}, -- 希拉斯的延继治疗之瓶
-  [167742] = {{1,PRI_OPEN},nil,nil}, -- 希拉斯的伪装滗析器
-  [156632] = {{1,PRI_OPEN},nil,nil}, -- 希拉斯的运输之球
   [ 47030] = {{1,PRI_OPEN},nil,nil}, -- [Huge Seaforium Bombs]
   [ 46847] = {{1,PRI_OPEN},nil,nil}, -- [Huge Seaforium Bombs]
   [146328] = {{1,PRI_OPEN},nil,nil}, -- Petrified Wyrmtongue

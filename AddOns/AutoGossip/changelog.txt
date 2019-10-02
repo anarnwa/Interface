@@ -1,5 +1,14 @@
-v8.2:
+v8.2.5:
 - TOC update
+
+v8.2.2:
+- Updated multiple exceptions for NPC Sean Wilkers target id inside Statholme Pet Dungeon
+
+v8.2.1:
+- Added exception for NPC Sean Wilkers inside Statholme Pet Dungeon
+
+v8.2:
+- TOC update for patch 8.2
 
 v8.1.5
 - Added Jeeves

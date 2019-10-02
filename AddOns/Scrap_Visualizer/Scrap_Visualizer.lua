@@ -25,7 +25,7 @@ local List = {}
 function Visualizer:Startup()
 	self.tab1:SetText(L.Junk)
 	self.tab2:SetText(L.NotJunk)
-	
+
 	PanelTemplates_TabResize(self.tab1, 0)
 	PanelTemplates_TabResize(self.tab2, 0)
 	PanelTemplates_SetNumTabs(self, 2)
@@ -33,13 +33,13 @@ function Visualizer:Startup()
 	self.TitleText:SetText('Scrap')
 	self.portrait:SetTexture('Interface\\Addons\\Scrap\\Art\\Enabled Icon')
 	self.loading:SetText(L.Loading)
-	
+
 	self:SetScript('OnUpdate', self.QueryItems)
 	self:SetScript('OnShow', self.OnShow)
 	self:SetScript('OnHide', self.OnHide)
 	self:UpdateButton()
 	self:SetTab(1)
-	
+
 	local portraitBack = self:CreateTexture(nil, 'BORDER')
 	portraitBack:SetPoint('TOPRIGHT', self.portrait, -5, -5)
 	portraitBack:SetPoint('BOTTOMLEFT', self.portrait, 6, 5)
@@ -48,7 +48,7 @@ end
 
 function Visualizer:SetTab(i)
 	PanelTemplates_SetTab(self, i)
-	self:UpdateList()	
+	self:UpdateList()
 end
 
 
@@ -70,10 +70,10 @@ function Visualizer:QueryItems()
 	if self:QueryList(Scrap.Junk) then
 		return
 	end
-	
-	HybridScrollFrame_CreateButtons(self.scroll, 'ScrapVisualizer_ButtonTemplate', 1, -2, 'TOPLEFT', 'TOPLEFT', 0, -TOKEN_BUTTON_OFFSET)
+
+	HybridScrollFrame_CreateButtons(self.scroll, 'ScrapVisualizer_ButtonTemplate', 1, -2, 'TOPLEFT', 'TOPLEFT', 0, -3)
 	hooksecurefunc(Scrap, 'ToggleJunk', function() self:UpdateList() end)
-	
+
 	self.Startup, self.QueryItems, self.QueryList = nil
 	self:SetScript('OnUpdate', nil)
 	self.loading:Hide()
@@ -94,29 +94,29 @@ end
 function Visualizer:UpdateList()
 	if not self.QueryItems and self:IsShown() then
 		List = {}
-		
+
 		local showJunk = self.selectedTab == 1
 		for itemID, itemType in pairs(Scrap.Junk) do
 			if itemType == showJunk then
 				tinsert(List, itemID)
 			end
 		end
-		
+
 		sort(List, function(A, B)
 			if not A then
 				return true
 			elseif not B or A == B then
 				return nil
 			end
-			
+
 			local nameA, _ , qualityA = GetItemInfo(A)
 			local nameB, _ , qualityB = GetItemInfo(B)
 			return qualityA > qualityB or (qualityA == qualityB and nameA < nameB)
 		end)
-		
+
 		self.scroll:update()
 	end
-	
+
 	self:UpdateButton()
 end
 
@@ -127,7 +127,7 @@ function Visualizer:UpdateButton()
 	else
 		self.button:Disable()
 	end
-	
+
 	self.button:SetText(tab == 1 and L.Remove or L.Add)
 	self.button:SetWidth(self.button:GetTextWidth() + 20)
 end
@@ -138,11 +138,11 @@ function Visualizer.scroll:update()
 	local offset = HybridScrollFrame_GetOffset(self)
 	local width = #List > 18 and 296 or 318
 	local focus = GetMouseFocus()
-	
+
 	for i, button in ipairs(self.buttons) do
 		local index = i + offset
 		local itemID = List[index]
-		
+
 		if itemID then
 			local name, link, quality = GetItemInfo(itemID)
 			button.text:SetTextColor(GetItemQualityColor(quality))
@@ -152,17 +152,17 @@ function Visualizer.scroll:update()
 			button.item = itemID
 			button.link = link
 			button:Show()
-			
+
 			if itemID == selection then
 				button:LockHighlight()
 			else
 				button:UnlockHighlight()
 			end
-			
+
 			if focus == button then
 				button:GetScript('OnEnter')(button)
 			end
-			
+
 			if mod(index, 2) == 0 then
 				button.stripe:Show()
 			else
@@ -172,7 +172,7 @@ function Visualizer.scroll:update()
 			button:Hide()
 		end
 	end
-	
+
 	HybridScrollFrame_Update(self, #List * 20 + 2, #self.buttons * 18)
 	self:SetWidth(width + 5)
 end

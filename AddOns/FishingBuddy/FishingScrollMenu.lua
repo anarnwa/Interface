@@ -309,7 +309,7 @@ function FSF:CreateMenuChoices(scrollmenu, simple, complex)
     local needbreak = false
     if (simple) then
         for _,entry in ipairs(simple) do
-            choice = {
+            local choice = {
                 ["name"] = entry.name,
                 ["entry"] = entry,
                 ["menutext"] = entry.menutext
@@ -349,7 +349,7 @@ function FSF:CreateMenuChoices(scrollmenu, simple, complex)
             if (needbreak) then
                 tinsert(choices, { ["name"] = "--------------", ["disabled"] = true})
             end
-            map = mapping[table.setting]
+            local map = mapping[table.setting]
             if (not map) then
                 map = {}
                 mapping[table.setting] = map
@@ -361,7 +361,7 @@ function FSF:CreateMenuChoices(scrollmenu, simple, complex)
             local unsorted = {}
             for _,entry in ipairs(table.value) do
                 entry["table"] = true
-                choice = {
+                local choice = {
                     ["name"] = entry.name,
                     ["entry"] = entry
                 }
@@ -370,7 +370,7 @@ function FSF:CreateMenuChoices(scrollmenu, simple, complex)
             sort(unsorted, function(a,b) return a.name<b.name; end)
             for _,choice in ipairs(unsorted) do
                 tinsert(choices, choice)
-                entry = { ["value"] = choice.entry.value, ["index"] = #choices }
+                local entry = { ["value"] = choice.entry.value, ["index"] = #choices }
                 tinsert(map["table"], entry)
             end
             needbreak = true

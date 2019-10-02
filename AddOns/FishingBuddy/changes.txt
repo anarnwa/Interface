@@ -1,4 +1,15 @@
-﻿Version 1.10.4
+Version 1.10.7
+- Classic support changes
+- Fix more Lua issues (unsed code and globals, etc.) -- thanks Globe!
+
+Version 1.10.6
+- Fix Ancient Pandaren Charm support now that it's a toy
+- Fix a bunch of Lua errors (misspelled variables, bad globals, etc.)
+
+Version 1.10.5
+- Fix missing reference for raft support
+
+Version 1.10.4
 -- Update localization information using CurseForge
 -- Support the Gnarlwood Waveboard
 -- Rewrite to make item and lure handling cleaner

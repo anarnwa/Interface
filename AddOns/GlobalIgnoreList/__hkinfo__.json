@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Global Ignore List and Chat Spam Filter",
+    "localName": "GlobalIgnoreList",
+    "version": "8.2.5",
+    "fileName": "global-ignore-list",
+    "addonsMap": [
+        "GlobalIgnoreList"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Global Ignore List and Chat Spam Filter",
+    "gameVersion": ""
+}

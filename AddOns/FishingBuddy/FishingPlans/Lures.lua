@@ -68,7 +68,7 @@ end
 
 function LureStateManager:ClearLastLure(checktime)
     if self.LastLure then
-        if not checktime or not LastLure.time then
+        if not checktime or not self.LastLure.time then
             self.LastLure = nil;
             self.AddingLure = false;
         end

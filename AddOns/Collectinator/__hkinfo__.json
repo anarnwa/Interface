@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Collectinator",
+    "localName": "Collectinator",
+    "version": "8.2.5.1",
+    "fileName": "collectinator",
+    "addonsMap": [
+        "Collectinator"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Collectinator",
+    "gameVersion": ""
+}

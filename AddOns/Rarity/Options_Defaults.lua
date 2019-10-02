@@ -12,9 +12,9 @@ local GetItemInfo = function(id) return nil end
 local GetInstanceInfo = GetInstanceInfo
 
 -- Types of items
-local MOUNT = "MOUNT"
-local PET = "PET"
-local ITEM = "ITEM"
+local MOUNT = CONSTANTS.ITEM_TYPES.MOUNT
+local PET =  CONSTANTS.ITEM_TYPES.PET
+local ITEM =  CONSTANTS.ITEM_TYPES.ITEM -- Actually: Toy or item (but mostly toys...)
 
 R.string_types = {
  [MOUNT] = L["Mount"],
@@ -23,15 +23,15 @@ R.string_types = {
 }
 
 -- Categories of origin
-local BASE = "BASE"
-local TBC = "TBC"
-local WOTLK = "WOTLK"
-local CATA = "CATA"
-local MOP = "MOP"
-local WOD = "WOD"
-local LEGION = "LEGION"
-local BFA = "BFA"
-local HOLIDAY = "HOLIDAY"
+local BASE = CONSTANTS.ITEM_CATEGORIES.CLASSIC
+local TBC = CONSTANTS.ITEM_CATEGORIES.TBC
+local WOTLK = CONSTANTS.ITEM_CATEGORIES.WOTLK
+local CATA = CONSTANTS.ITEM_CATEGORIES.CATA
+local MOP = CONSTANTS.ITEM_CATEGORIES.MOP
+local WOD = CONSTANTS.ITEM_CATEGORIES.WOD
+local LEGION = CONSTANTS.ITEM_CATEGORIES.LEGION
+local BFA = CONSTANTS.ITEM_CATEGORIES.BFA
+local HOLIDAY = CONSTANTS.ITEM_CATEGORIES.HOLIDAY
 
 -- Holiday calendar textures
 local CALENDAR_WINTERVEIL = "Calendar_WinterVeil"
@@ -50,15 +50,15 @@ local CALENDAR_FIREWORKS = "calendar_fireworks"
 local CALENDAR_PIRATESDAY = "Calendar_PiratesDay"
 
 -- Methods of obtaining
-local NPC = "NPC"
-local BOSS = "BOSS"
-local ZONE = "ZONE"
-local USE = "USE"
-local FISHING = "FISHING"
-local ARCH = "ARCH"
-local SPECIAL = "SPECIAL"
-local MINING = "MINING"
-local COLLECTION = "COLLECTION"
+local NPC = CONSTANTS.DETECTION_METHODS.NPC
+local BOSS = CONSTANTS.DETECTION_METHODS.BOSS
+local ZONE = CONSTANTS.DETECTION_METHODS.ZONE
+local USE = CONSTANTS.DETECTION_METHODS.USE
+local FISHING = CONSTANTS.DETECTION_METHODS.FISHING
+local ARCH = CONSTANTS.DETECTION_METHODS.ARCH
+local SPECIAL = CONSTANTS.DETECTION_METHODS.SPECIAL
+local MINING = CONSTANTS.DETECTION_METHODS.MINING
+local COLLECTION = CONSTANTS.DETECTION_METHODS.COLLECTION
 
 R.string_methods = {
  [NPC] = L["Drops from NPC(s)"],
@@ -661,7 +661,32 @@ function R:PrepareDefaults()
 		 ["Reins of the Astral Cloud Serpent"] =             { cat = MOP, type = MOUNT, method = BOSS, name = L["Reins of the Astral Cloud Serpent"], spellId = 127170, itemId = 87777, npcs = { 99999 }, tooltipNpcs = { 60410 }, instanceDifficulties = { [CONSTANTS.INSTANCE_DIFFICULTIES.RAID_10_NORMAL] = true, [CONSTANTS.INSTANCE_DIFFICULTIES.RAID_25_NORMAL] = true, [CONSTANTS.INSTANCE_DIFFICULTIES.RAID_10_HEROIC] = true, [CONSTANTS.INSTANCE_DIFFICULTIES.RAID_25_HEROIC] = true, }, chance = 100, statisticId = { 6797, 6798, 7924, 7923, }, sourceText = L["Dropped by Elegon in Mogu'shan Vaults (all raid formats except Raid Finder)"], blackMarket = true, lockBossName = "Elegon", coords = { {m=471,x=21.7,y=51.1,i=true} }, },
 		 ["Reins of the Bone-White Primal Raptor"] =         { cat = MOP, type = MOUNT, method = COLLECTION, name = L["Reins of the Bone-White Primal Raptor"], spellId = 138640, itemId = 94290, collectedItemId = 94288, chance = 9999, obtain = L["Dropped from dinosaurs on Isle of Giants"], tooltipNpcs = { 69992, 70013, 70012, 70015, 70014, 70006, 69925, 69993, 70004, 70005, 70007, 70020, 70016, 69983, 70017, 70019, 70018, 70011, 70009, 69991, 70021, 70010, 70008, }, sourceText = L["Earned by giving 9999 Giant Dinosaur Bones to Ku'ma on Isle of Giants. Giant Dinosaur bones drop from all dinosaurs and Zandalari Dinomancers on Isle of Giants."], coords = { {m=507} }, },
 		 ["Reins of the Cobalt Primordial Direhorn"] =       { cat = MOP, type = MOUNT, method = BOSS, name = L["Reins of the Cobalt Primordial Direhorn"], spellId = 138423, itemId = 94228, npcs = { 99999 }, tooltipNpcs = { 69161 }, questId = 32519, chance = 2000, equalOdds = true, statisticId = { 8147 }, enableCoin = true, worldBossFactionless = true, coords = { {m=507,x=50.6,y=54.4} }, },
-		 ["Reins of the Heavenly Onyx Cloud Serpent"] =      { cat = MOP, type = MOUNT, method = BOSS, name = L["Reins of the Heavenly Onyx Cloud Serpent"], spellId = 127158, itemId = 87771, npcs = { 99999 }, tooltipNpcs = { 60491 }, questId = 32099, chance = 2000, equalOdds = true, statisticId = { 6989 }, enableCoin = true, worldBossFactionless = true, blackMarket = true, coords = { {m=379} }, },
+
+		["Reins of the Heavenly Onyx Cloud Serpent"] = {
+			cat = MOP,
+			type = MOUNT,
+			method = BOSS,
+			name = L["Reins of the Heavenly Onyx Cloud Serpent"],
+			spellId = 127158,
+			itemId = 87771,
+			npcs = { 99999 },
+			tooltipNpcs = { 60491 },
+			questId = 32099,
+			chance = 2000,
+			equalOdds = true,
+			statisticId = { 6989 },
+			enableCoin = true,
+			worldBossFactionless = true,
+			blackMarket = true,
+			coords = {
+				{
+					m = 379,
+					x = 53.7,
+					y = 64.7
+				}
+			},
+		},
+
 		 ["Reins of the Jade Primordial Direhorn"] =         { cat = MOP, type = MOUNT, method = NPC, name = L["Reins of the Jade Primordial Direhorn"], spellId = 138426, itemId = 94231, npcs = { 69842 }, chance = 20, sourceText = L["The Warbringer will be riding the mount color he has a chance to drop."], coords = { {m=418,x=39.08,y=67.13},{m=422,x=47.47,y=61.32},{m=388,x=36.53,y=85.67},{m=379,x=75.09,y=67.65},{m=371,x=52.73,y=18.99}, }, },
 		 ["Reins of the Slate Primordial Direhorn"] =        { cat = MOP, type = MOUNT, method = NPC, name = L["Reins of the Slate Primordial Direhorn"], spellId = 138425, itemId = 94229, npcs = { 69769 }, chance = 20, sourceText = L["The Warbringer will be riding the mount color he has a chance to drop."], coords = { {m=418,x=39.08,y=67.13},{m=422,x=47.47,y=61.32},{m=388,x=36.53,y=85.67},{m=379,x=75.09,y=67.65},{m=371,x=52.73,y=18.99}, }, },
 		 ["Reins of the Thundering Cobalt Cloud Serpent"] =  { cat = MOP, type = MOUNT, method = BOSS, name = L["Reins of the Thundering Cobalt Cloud Serpent"], spellId = 139442, itemId = 95057, npcs = { 99999 }, tooltipNpcs = { 69099 }, questId = 32518, chance = 2000, equalOdds = true, statisticId = { 8146 }, enableCoin = true, worldBossFactionless = true, blackMarket = true, coords = { {m=504,x=60.5,y=37.3} }, },
@@ -933,7 +958,7 @@ function R:PrepareDefaults()
 			npcs = { 142437 },
 			chance = 33,
 			groupSize = 5,
-			equalOdds = 5,
+			equalOdds = true,
 			questId = { 53022, 53526 },
 			coords = {
 				{ m = CONSTANTS.UIMAPIDS.ARATHI_HIGHLANDS, x = 57.15, y = 45.75, n = L["Skullripper"] },
@@ -1306,7 +1331,28 @@ function R:PrepareDefaults()
 		 ["Felsteel Annihilator"] =                          { cat = WOD, type = MOUNT, method = BOSS, name = L["Felsteel Annihilator"], spellId = 182912, itemId = 123890, npcs = { 99999 }, tooltipNpcs = { 91331 }, chance = 100, wasGuaranteed = true, statisticId = { 10252 }, lockBossName = "Archimonde", coords = { {m=6610,x=58.4,y=53.3,i=true} }, },
 		 ["Garn Nighthowl"] =                                { cat = WOD, type = MOUNT, method = BOSS, name = L["Garn Nighthowl"], spellId = 171851, itemId = 116794, npcs = { 81001 }, chance = 1, coords = { {m=525,x=16,y=53.2} }, },
 		 ["Ironhoof Destroyer"] =                            { cat = WOD, type = MOUNT, method = BOSS, name = L["Ironhoof Destroyer"], spellId = 171621, itemId = 116660, npcs = { 99999 }, tooltipNpcs = { 77325 }, chance = 100, wasGuaranteed = true, statisticId = { 9365 }, lockBossName = "Blackhand", coords = { {m=600, x=48.4,y=34.5,i=true} }, },
-		 ["Solar Spirehawk"] =                               { cat = WOD, type = MOUNT, method = BOSS, name = L["Solar Spirehawk"], spellId = 171828, itemId = 116771, npcs = { 99999 }, tooltipNpcs = { 87493, 83746 }, chance = 500, statisticId = { 9279 }, worldBossFactionless = true, questId = 37464, coords = { {m=542,x=47.1,y=78.4} }, },
+
+		 ["Solar Spirehawk"] = {
+			cat = WOD, type = MOUNT,
+			method = BOSS,
+			name = L["Solar Spirehawk"],
+			spellId = 171828,
+			itemId = 116771,
+			npcs = { 99999 },
+			tooltipNpcs = { 87493, 83746 },
+			chance = 500,
+			statisticId = { 9279 },
+			worldBossFactionless = true,
+			questId = 37464,
+			coords = {
+				{
+					m = 542,
+					x = 34.98,
+					y = 38.65
+				}
+			},
+		},
+
 		 ["Reins of the Infinite Timereaver"] =              { cat = WOD, type = MOUNT, method = BOSS, name = L["Reins of the Infinite Timereaver"], spellId = 201098, itemId = 133543,
 		npcs = { -- NPCs marked with * can't be looted; they use a workaround and are detected via checking their achievement criteria. The entry here is mostly for the tooltip display....
 			-- TBC Dungeons
@@ -3438,6 +3484,7 @@ function R:PrepareDefaults()
 			chance = 1000,
 			creatureId = 154693,
 			groupSize = 3,
+			equalOdds = true,
 		},
 
 		["Ghostly Whelpling"] = {
@@ -3450,6 +3497,7 @@ function R:PrepareDefaults()
 			chance = 1000,
 			creatureId = 154165,
 			groupSize = 3,
+			equalOdds = true,
 		},
 
 	["Mindlost Bloodfrenzy"] ={
@@ -3620,8 +3668,21 @@ function R:PrepareDefaults()
 		spellId = 301034,
 		itemId = 169363,
 		creatureId = 154836,
-		questId = { 00000000000000000, 00000000000000000 },
+		questId = { 56268 }, -- 56615 ?
 		chance = 8,
+	},
+
+	["Pearlescent Glimmershell"] = {
+		cat = BFA,
+		type = PET,
+		method = NPC,
+		name = L["Pearlescent Glimmershell"],
+		npcs = { 152448 },
+		spellId = 301023,
+		itemId = 169352,
+		creatureId = 154825,
+		questId = { 56286 }, -- 57260, 56597?
+		chance = 100,
 	},
 
 	["Brinestone Algan"] = {
@@ -3649,7 +3710,7 @@ function R:PrepareDefaults()
 		spellId = 301045,
 		itemId = 169374,
 		creatureId = 154846,
-		questId = { 00000000000000000, 00000000000000000 },
+		questId = { 56291, 56917 }, -- Which one is it?
 		chance = 4,
 	},
 
@@ -3678,7 +3739,7 @@ function R:PrepareDefaults()
 		spellId = 301026,
 		itemId = 169355,
 		creatureId = 154828,
-		questId = { 00000000000000000, 00000000000000000 },
+		questId = { 56608, 56275 },-- Which one is it? Both completed upon killing it...
 		chance = 8,
 	},
 
@@ -3749,7 +3810,7 @@ function R:PrepareDefaults()
 		spellId = 301043,
 		itemId = 169372,
 		creatureId = 154821,
-		questId = { 00000000000000000, 00000000000000000 },
+		questId = { 56269, 56614 }, -- Which one is it? Hmm..
 		chance = 8,
 		coords = {
 			{ m = CONSTANTS.UIMAPIDS.NAZJATAR, x =  39.25, y = 77.35, n = L["Blindlight"] },
@@ -3862,7 +3923,7 @@ function R:PrepareDefaults()
 		spellId = 301037,
 		itemId = 169366,
 		creatureId = 154839,
-		questId = { 00000000000000000, 00000000000000000 },
+		questId = { 56274 },
 		chance = 9,
 	},
 
@@ -4034,7 +4095,7 @@ function R:PrepareDefaults()
 		spellId = 301162,
 		itemId = 169396,
 		creatureId = 154904,
-		questId = { 55847 }, -- Not sure which is correct: 55847, 57134, 57132, 56079 ?
+		questId = { 55847 }, -- Not sure which is correct: 55847, 57134, 57132, 56079 ? // 55847, 57132,
 		chance = 20, -- Blind guess (no data)
 		groupSize = 3,
 		equalOdds = true,
@@ -4653,9 +4714,11 @@ function R:PrepareDefaults()
 		chance = 100, -- Need more data. Until then, this is a blind guess...
 		groupSize = 25,
 		equalOdds = true,
+		requiresAlliance = true,
 		coords = {
 			{ m = CONSTANTS.UIMAPIDS.ARATHI_HIGHLANDS, x = 37.09, y = 39.21, n = L["Doom's Howl"] },
 		},
+		enableCoin = true,
 	},
 
 	["Toy War Machine"] = {
@@ -4670,9 +4733,11 @@ function R:PrepareDefaults()
 		chance = 100, -- Blind guess :|
 		groupSize = 25,
 		equalOdds = true,
+		requiresHorde = true,
 		coords = {
 			{ m = CONSTANTS.UIMAPIDS.ARATHI_HIGHLANDS, x = 37.09, y = 39.21, n = L["The Lion's Roar"] },
 		},
+		enableCoin = true,
 	},
 
 	-- 8.1 Toys

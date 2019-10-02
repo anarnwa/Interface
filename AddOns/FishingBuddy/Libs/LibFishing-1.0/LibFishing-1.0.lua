@@ -10,13 +10,38 @@ Licensed under a Creative Commons "Attribution Non-Commercial Share Alike" Licen
 local _
 
 local MAJOR_VERSION = "LibFishing-1.0"
-local MINOR_VERSION = 91013
+local MINOR_VERSION = 101071
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub") end
 
 local FishLib, lastVersion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not FishLib then
     return
+end
+
+local WOW = {};
+function FishLib:WOWVersion()
+    return WOW.major, WOW.minor, WOW.dot, WOW.classic;
+end
+
+function FishLib:IsClassic()
+    return WOW.classic;
+end
+
+if ( GetBuildInfo ) then
+    local v, b, d = GetBuildInfo();
+    WOW.build = b;
+    WOW.date = d;
+    local s,e,maj,min,dot = string.find(v, "(%d+).(%d+).(%d+)");
+    WOW.major = tonumber(maj);
+    WOW.minor = tonumber(min);
+    WOW.dot = tonumber(dot);
+    WOW.classic = (_G.WOW_PROJECT_ID == _G.WOW_PROJECT_CLASSIC)
+else
+    WOW.major = 1;
+    WOW.minor = 9;
+    WOW.dot = 0;
+    WOW.classic = true
 end
 
 -- Some code suggested by the author of LibBabble-SubZone so I don't have
@@ -36,17 +61,20 @@ local function FishLib_GetLocaleLibBabble(typ)
     return rettab;
 end
 
+local CBH = LibStub("CallbackHandler-1.0")
 local BSZ = FishLib_GetLocaleLibBabble("LibBabble-SubZone-3.0");
 local BSL = LibStub("LibBabble-SubZone-3.0"):GetBaseLookupTable();
 local BSZR = LibStub("LibBabble-SubZone-3.0"):GetReverseLookupTable();
 local HBD = LibStub("HereBeDragons-2.0")
-local CBH = LibStub("CallbackHandler-1.0")
+
+FishLib.HBD = HBD
 
 if not lastVersion then
     FishLib.caughtSoFar = 0;
     FishLib.gearcheck = true
     FishLib.hasgear = false;
     FishLib.PLAYER_SKILL_READY = "PlayerSkillReady"
+    FishLib.havedata = WOW.classic;
 end
 
 FishLib.registered = FishLib.registered or CBH:New(FishLib, nil, nil, false)
@@ -55,33 +83,28 @@ FishLib.registered = FishLib.registered or CBH:New(FishLib, nil, nil, false)
 local SABUTTONNAME = "LibFishingSAButton";
 FishLib.UNKNOWN = "UNKNOWN";
 
-local WOW = {};
-function FishLib:WOWVersion()
-    return WOW.major, WOW.minor, WOW.dot;
+-- support finding the fishing skill
+local function FindSpellID(thisone)
+    local id = 1;
+    local spellTexture = GetSpellTexture(id);
+    while (spellTexture) do
+        if (spellTexture and spellTexture == thisone) then
+            return id;
+        end
+        id = id + 1;
+        spellTexture = GetSpellTexture(id);
+    end
+    return nil;
 end
-
-if ( GetBuildInfo ) then
-    local v, b, d = GetBuildInfo();
-    WOW.build = b;
-    WOW.date = d;
-    local s,e,maj,min,dot = string.find(v, "(%d+).(%d+).(%d+)");
-    WOW.major = tonumber(maj);
-    WOW.minor = tonumber(min);
-    WOW.dot = tonumber(dot);
-else
-    WOW.major = 1;
-    WOW.minor = 9;
-    WOW.dot = 0;
-end
-
+ 
 function FishLib:GetFishingSkillInfo()
     local _, _, _, fishing, _, _ = GetProfessions();
     if ( fishing ) then
         local name, _, _, _, _, _, _ = GetProfessionInfo(fishing);
         -- is this always the same as PROFESSIONS_FISHING?
-        return true, name;
+        return fishing, name;
     end
-    return false, PROFESSIONS_FISHING;
+    return 0, PROFESSIONS_FISHING;
 end
 
 local DEFAULT_SKILL = { ["max"] = 300, ["skillid"] = 356, ["cat"] = 1100, ["rank"] = 0 }
@@ -186,6 +209,9 @@ end
 
 -- Go ahead and forcibly get the trade skill data
 function FishLib:GetTradeSkillData()
+    if self:IsClassic() then
+        return
+    end
     local btn = _G[SABUTTONNAME];
     if btn then
         if (not IsAddOnLoaded("Blizzard_TradeSkillUI")) then
@@ -196,8 +222,9 @@ function FishLib:GetTradeSkillData()
     end
 end
 
+
 function FishLib:UpdateFishingSkill()
-    local _, _, _, fishing, _, _ = GetProfessions();
+    local fishing, _ = self:GetFishingSkillInfo();
     if (fishing and self.havedata) then
         local continent, _ = self:GetCurrentMapContinent();
         local info = FishLib.continent_fishing[continent];
@@ -212,7 +239,7 @@ end
 
 -- get the fishing skill for the specified continent
 function FishLib:GetContinentSkill(continent)
-    local _, _, _, fishing, _, _ = GetProfessions();
+    local fishing, _ = self:GetFishingSkillInfo();
     if (fishing and self.havedata) then
         local info = FishLib.continent_fishing[continent];
         if (info) then
@@ -696,10 +723,10 @@ if ( not fishlibframe) then
     fishlibframe:RegisterEvent("UNIT_INVENTORY_CHANGED");
     fishlibframe:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
     fishlibframe:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
-    fishlibframe:RegisterEvent("EQUIPMENT_SWAP_FINISHED");
     fishlibframe:RegisterEvent("ITEM_LOCK_CHANGED");
     fishlibframe:RegisterEvent("TRADE_SKILL_DATA_SOURCE_CHANGED")
     fishlibframe:RegisterEvent("TRADE_SKILL_LIST_UPDATE")
+    fishlibframe:RegisterEvent("EQUIPMENT_SWAP_FINISHED");
 end
 
 fishlibframe.fl = FishLib;
@@ -936,7 +963,7 @@ function FishLib:GetSlotMap()
 end
 
 -- http://lua-users.org/wiki/CopyTable
-function shallowcopy(orig)
+local function shallowcopy(orig)
     local orig_type = type(orig)
     local copy
     if orig_type == 'table' then
@@ -1484,7 +1511,7 @@ function FishLib:GetCurrentMapContinent()
 end
 
 function FishLib:GetCurrentMapId()
-    if select(4, GetBuildInfo()) < 80000 then
+    if not self:IsClassic() and select(4, GetBuildInfo()) < 80000 then
         return GetCurrentMapAreaID()
     else
         local mapId, _ = HBD:GetPlayerZone()
@@ -1580,7 +1607,7 @@ function FishLib:GetCurrentFishingLevel()
 
     -- Let's just go with continent level skill for now, since
     -- subzone skill levels are now up in the air.
-    info = self.continent_fishing[continent] or DEFAULT_SKILL
+    local info = self.continent_fishing[continent] or DEFAULT_SKILL
     return info.max
     -- local _, subzone = self:GetZoneInfo()
     -- if (continent ~= 7 and subzoneskills[subzone]) then
@@ -1594,7 +1621,7 @@ end
 function FishLib:GetFishingSkillLine(join, withzone, isfishing)
     local part1 = "";
     local part2 = "";
-    local skill, mods, skillmax = self:GetCurrentSkill();
+    local skill, mods, skillmax, _ = self:GetCurrentSkill();
     local totskill = skill + mods;
     local subzone = GetSubZoneText();
     local zone = GetRealZoneText() or "Unknown";
@@ -1604,7 +1631,7 @@ function FishLib:GetFishingSkillLine(join, withzone, isfishing)
     end
     if not self.havedata then
         part1 = part1..self:Yellow("-- (0%)");
-    elseif ( self.havedata and  level ) then
+    elseif ( level ) then
          if ( level > 0 ) then
             local perc = totskill/level; -- no get aways
             if (perc > 1.0) then
@@ -2063,7 +2090,7 @@ function FishLib:FishingBonusPoints(item, inv)
     local points = 0;
     if ( item and item ~= "" ) then
         if ( not match ) then
-            local _,skillname = self:GetFishingSkillInfo(true);
+            local _, skillname = self:GetFishingSkillInfo();
             match = {};
             match[1] = "%+(%d+) "..skillname;
             match[2] = skillname.." %+(%d+)";
@@ -2149,7 +2176,8 @@ function FishLib:GetBestFishingItem(slotid)
     end
 
     -- this only gets items in bags, hence the check above for slots
-    local itemtable = {}
+    local itemtable = {};
+    local item = nil;
     itemtable = GetInventoryItemsForSlot(slotid, itemtable);
     for location,id in pairs(itemtable) do
         if (not ignore or not ignore[id]) then
@@ -2168,7 +2196,7 @@ function FishLib:GetBestFishingItem(slotid)
             end
         end
     end
-    return item
+    return item;
 end
 
 -- return a list of the best items we have for a fishing outfit
@@ -2254,7 +2282,7 @@ function FishLib:IsOpenable(item)
     for i=1,#lines do
         local line = lines[i];
         if ( line == _G.ITEM_OPENABLE ) then
-            openable = true;
+            canopen = true;
         elseif ( line == _G.LOCKED ) then
             locked = true;
         end
@@ -2407,10 +2435,12 @@ end
 
 -- addon message support
 function FishLib:RegisterAddonMessagePrefix(prefix)
-    if (WOW.major < 8) then
-        RegisterAddonMessagePrefix(prefix)
-    else
-        C_ChatInfo.RegisterAddonMessagePrefix(prefix)
+    if not self:IsClassic() then
+        if (WOW.major < 8) then
+            RegisterAddonMessagePrefix(prefix)
+        else
+            C_ChatInfo.RegisterAddonMessagePrefix(prefix)
+        end
     end
 end
 

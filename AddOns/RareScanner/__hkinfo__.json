@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "RareScanner",
+    "localName": "RareScanner",
+    "version": "RareScanner_5.6.5",
+    "fileName": "rarescanner",
+    "addonsMap": [
+        "RareScanner"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "RareScanner",
+    "gameVersion": ""
+}

@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "GlowFoSho",
+    "localName": "GlowFoSho",
+    "version": "r115",
+    "fileName": "glow-fo-sho",
+    "addonsMap": [
+        "GlowFoSho"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "GlowFoSho",
+    "gameVersion": ""
+}

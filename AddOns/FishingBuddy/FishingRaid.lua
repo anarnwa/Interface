@@ -253,7 +253,8 @@ local function CurrentBoss()
 		return RaidBosses[7]
 	else
 		-- Set initial time window to server reset time on 2018/01/01 for each region, or 00:00 UTC if unknown.
-		region = GetCurrentRegion()
+		local region = GetCurrentRegion()
+		local start_time
 		if region == 1 then
 			start_time = 1514818800    -- NA Realm; 2018/01/01 15:00 UTC
 		elseif region == 2 then
@@ -269,7 +270,7 @@ local function CurrentBoss()
 		end
 
 		-- Get number of whole days (rounded down) that have elapsed since the initial date/time above
-		days = math.floor((GetServerTime() - start_time) / 86400)
+		local days = math.floor((GetServerTime() - start_time) / 86400)
 
 		bossadex = (days % 6) + 1
 		if bossadex > 0 then
@@ -510,7 +511,7 @@ end
 
 -- Thanks bsmorgan!
 local minRarity = 2;		-- uncommon
-local function SilenceOfTheFishies(self, event, msg, author, ...)
+local function SilenceOfTheFishies(self, _, msg, author, ...)
 	if not IsInRaid() or not FishingBuddy.ReadyForFishing() or author == UnitName("player") or string.match(msg,'Hbattlepet') then
 		return false, msg, author, ...
 	else
@@ -526,12 +527,12 @@ local function SilenceOfTheFishies(self, event, msg, author, ...)
 	end
 end
 
-RaidEvents = {}
+local RaidEvents = {}
 RaidEvents["VARIABLES_LOADED"] = function(started)
     FishingBuddy.OptionsFrame.HandleOptions(GENERAL, nil, RaidOptions);
 	FWF:RegisterLineHandler(DisplayRaidFish, FWF.HEADER)
 
-	button = _G['FishingActionButton']
+	local button = _G['FishingActionButton']
 
 	for _,name in pairs(copyfuncs) do
 		button[name] = FBR[name];

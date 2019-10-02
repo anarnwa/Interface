@@ -119,6 +119,19 @@ This tag allows filters messages that contain Chinese/Japanese/Korean characters
 for those who play on English servers that have a strong native Asian speaking
 community
 
+**[words]**
+
+This tag allows filters to test that a line of text contains only a specific number
+of words.  For example: [words=2] would be true only if the text contained only two
+words.
+
+**[channel]**
+
+This tag allows filters to test that a line of text sourced from a specific channel
+number.  For example, channel 1 would be zone, 2 would be city/trade, and so on.  If
+you wanted a filter to apply only to trade chat you could do "[channel=2]" somewhere
+in your filter.
+
 **USING LOGICAL EVALUATION:**
 
 Chat filters can include some logical evaluations by enclosing tags within
@@ -171,6 +184,24 @@ The following commands are accessible by typing /gignore or /gi in the chat box:
 
 => VERSION HISTORY
 
+=> 8.2.5
+
+Updated for 8.2.5
+
+=> 8.2.2
+
+Swapped the create and remove filter button in the chat filter editor, and added a confirmation dialog box when a filter is requested to be removed
+
+Added the new "[words=#]" tag which can be used to compare the number of words in the chat text
+
+Added new "[channel=#]" tag which allows a filter to be applied only to a specific channel
+
+Added the ability to disable filtering of party chat.  This includes, party, raid, instance, and battleground channels.  This open is off by default.
+
+Added the ability to disable or enable filtering of private messages.  This option is on by default.
+
+Updated the default "Anal" spam filter to utilize the words count, to address people who do not link a spell or item and instead type the name
+
 => 8.2.1
 
 Added option to never apply spam filters to Guild chat.  This option is turned on by default in the options tab.
@@ -179,7 +210,7 @@ Added option to never apply spam filters to Guild chat.  This option is turned o
 
 Fixed a residual 8.1 issue that was causing GIL to fail to remove players on synchronization
 
-Updated to patch 8.2
+Updated to 8.2
 
 => 8.1.4
 

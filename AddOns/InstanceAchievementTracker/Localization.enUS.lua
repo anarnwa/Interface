@@ -176,6 +176,8 @@ local baseLocale = {
     ["Shared_HasDied"] = "has died",
     ["Shared_NOW"] = "NOW!",
     ["Shared_PlayersRunningAddon2"] = "For IAT to track this achievement accurately, players collecting items need to be running the addon",
+    ["Shared_Killed"] = "killed",
+    ["Shared_HasCaught"] ="has caught",
 
     -------------------------------------------------------
     --- Battle of Dazar'alor
@@ -189,23 +191,19 @@ local baseLocale = {
     ["AzsharasEternalPalace_BlackwaterBehemoth"] = "For this achievement you will have to assign a few people to swim around the entire zone and collect samples of sea life:\n -%s\n -%s\n -%s\n -%s\n\nOnce you have collected 50 samples, you can kill the boss and get the achievement. \n\nMake sure that the assigned players switch to tank specialization, that way they'll not get hit by %s. If you have druids in your group then they should be assigned collect the sea life since they'll swim fast due to their %s.\n\nNote that the assigned players should hit the boss once or else they might not get the achievement.",
     ["AzsharasEternalPalace_RadianceOfAzshara"] = "For this achievement you will have to run 6 consecutive complete laps without falling in the water. \n\nAfter running three laps you will get a debuff %s 'You're halfway there...' and after running three more laps you will get another debuff %s 'Completed a full distance Fun Run.'.\n\nThis achievement is personal achievement.\n\nMake sure to save all dps cooldowns for the %s add, if you kill it fast enough then you don't have to deal with the %s.\n\nAvoid getting hit by an %s at all costs since moving backwards may remove your current %s debuff. Tanks also have to be wary of %s and how they position so that they won't get knocked back into the water.",
     ["AzsharasEternalPalace_LadyAshvane"] = "For this achievement you have to make sure that every cast of %s goes through Lady Ashvane. If possible also try and position behind a %s to destroy it.\n\nOn normal difficulty this achievement is pretty easy to do and with enough dps you can skip the %s casts from the second Stage 2 (the second time the carapace is broken).",
-    ["AzsharasEternalPalace_Orgozoa"] = "For this achievement you will have to assign a person to to catch the baby %s during the intermission by standing on the edge of the platform outside of the boss room. The person who catches the egg will then have to get it down to the boss area while avoiding %s and %s along the way during the intermission. The person carrying the egg must not use any abilities or else they will drop the egg.\n\nMake sure NOT to interrupt %s early as the person carrying the egg will be late since they will be slowed by 30%% (%s). If you can have a priest in the group then you can assign that player to help out with %s and %s.\n\nAfter Phase Two begins make sure %s goes on the player carrying the egg and then defeat the boss.",
+    ["AzsharasEternalPalace_Orgozoa"] = "For this achievement you will have to assign a person to to catch the baby %s during the intermission by standing on the edge of the platform outside of the boss room. The person who catches the egg will then have to get it down to the boss area while avoiding %s and %s along the way during the intermission. The person carrying the egg must not use any abilities or else they will drop the egg.\n\nMake sure NOT to interrupt %s early as the person carrying the egg will be late since they will be slowed by 30%% (%s). If you can have a priest in the group then you can assign that player to help out with %s and %s.",
     ["AzsharasEternalPalace_TheQueensCourt"] = "To get %s you have to perform the correct rituals (emotes) during the fight when a certain decree is active:\n\n -%s - /salute\n -%s - /curtsey\n -%s - /applause\n -%s - /grovel\n -%s - /kneel\n\nThis achievement is personal achievement",
     ["AzsharasEternalPalace_ZaquiHarbingerOfNyalotha"] = "To open a portal to the secret cow level you have to power up the 6 'runes' on the ground. To do this players must stand on top of them in Phase 4, get afflicted by %s and then get dispelled. The %s on the ground will power up the runes.\n\nOnce all 6 runes have been powered up a portal will open in the middle of the room. Press the extra action button and you will be teleported to the secret cow level! From there you have a limited time to defeat 10 %s.",
     ["AzsharasEternalPalace_QueenAzshara"] = "To get this achievement you have to defeat %s with only one player alive and that player must have the %s buff on them.\n\nThe end of the fight should look something like this::\n -Bring the boss down to 500k health points.\n -Have everyone except the 2 tanks and 1 healer stay in Ancient Wards to get 10 stacks of %s and die.\n -The 3 remaining players now have to bring the boss down to 200k health points and stop all dps.\n -Use %s until one of the tanks (Tank 1) gets the %s buff.\n -Tank 2 and the healer now have to stay in Ancient Wards to die.\n -Once Tank 1 is the only player alive then they can kill the boss and get the achievement.",
 
     --Chat Output
     ["AzsharasEternalPalace_SamplesCollected"] = "Samples collected",
-    ["AzsharasEternalPalace_SaluteSelf"] = "You salute %s with respect.",
-    ["AzsharasEternalPalace_SaluteOther"] = "%s salutes %s with respect.",
-    ["AzsharasEternalPalace_CurtseySelf"] = "You curtsey before %s.",
-    ["AzsharasEternalPalace_CurtseyOther"] = "%s curtsies before %s.",
-    ["AzsharasEternalPalace_GrovelSelf"] = "You grovel before %s like a subservient peon.",
-    ["AzsharasEternalPalace_GrovelOther"] = "%s grovels before %s like a subservient peon.",
-    ["AzsharasEternalPalace_KneelSelfs"] = "You kneel before %s.",
-    ["AzsharasEternalPalace_KneelOther"] = "%s kneels before %s",
-    ["AzsharasEternalPalace_ApplauseSelf"] = "You applaud at %s. Bravo!",
-    ["AzsharasEternalPalace_ApplauseOther"] = "%s applauds at %s. Bravo!",
+    ["AzsharasEternalPalace_Salute"] = "Salute",
+    ["AzsharasEternalPalace_Curtsey"] = "Curtsey",
+    ["AzsharasEternalPalace_Grovel"] = "Grovel",
+    ["AzsharasEternalPalace_Kneel"] = "Kneel",
+    ["AzsharasEternalPalace_Applause"] = "Applause",
+    ["AzsharasEternalPalace_TargetAndPerformEmote"] = "Target %s and /%s NOW!",
 
     -------------------------------------------------------
     --- Crucible Of Storms
@@ -257,8 +255,8 @@ local baseLocale = {
     --- Operation: Mechagon
     -------------------------------------------------------
     --Tactics
-    ["OperationMechagon_KingGobbamak"] = "",
-    ["OperationMechagon_Gunker"] = "",
+    ["OperationMechagon_KingGobbamak"] = "To complete this achievement you must keep the %s behind %s charged at all times throughout the fight. To charge the %s, simply have a player run up to the gear when they have %s (which you get from %s) to charge the gear. The easiest way to do this is to have 2 players alternate charging the %s every 20 seconds.\n\nNote: Make sure that the players saving the %s debuff does not move close to the %s or %s.",
+    ["OperationMechagon_Gunker"] = "After pulling the boss 5 critters which look like cranes will spawn in the water around the boss. Simply pick them up and bring them over to a %s to cleanse them. After cleansing 5 critters you can kill the boss.",
     ["OperationMechagon_TussleTonks"] = "",
     ["OperationMechagon_MachinistsGarden"] = "",
     ["OperationMechagon_KingMechagon"] = "",
@@ -562,11 +560,10 @@ local baseLocale = {
     --- Highmaul
     -------------------------------------------------------
     --Tactics
-    ["Highmaul_TheButcher"] = "",
-    ["Highmaul_Tectus"] = "At 110, just nuke the boss down for the first and second split. On the third split wait for all 8 versions of the boss to spawn, then AOE them down within 10 seconds of one another.",
-    ["Highmaul_Brackenspore"] = "Before pulling the boss pick up the flamethrower fun. Damage the boss to below 50% health so that the green moss starts growing from the edges of the room. Once the room is full of green moss, start pressing the flamethrower button over the boss. Keep pressing the flamethrower button every time it comes off cooldown until you reach 15 stacks of Burning Infusion. Once you have 15 stacks you can kill the boss. The stacks do need to stay on you once you reach 15.",
-    ["Highmaul_TwinOgron"] = "At 110, you can simply nuke the bosses down. Make sure they are standing next to each other.",
-    ["Highmaul_ImperatorMargok"] = "",
+    ["Highmaul_TheButcher"] = "Throughout the fight %s will spawn around the room. To complete this achievement, move the boss in front of each %s and wait for the boss to kill it. Once 6 %s have been killed you can kill the boss.\n\n Note: The achievement requires at least 2 players or a player with a pet class due to the stacking %s debuff.",
+    ["Highmaul_Tectus"] = "For this achievement, simply kill %s. This will cause the boss to respawn as 2 %s. Again kill the 2 %s and the boss will respawn as 8 %s. Next wait for all 8 %s to stack then AOE them down within 10 seconds of each other to complete this achievement.",
+    ["Highmaul_Brackenspore"] = "Before pulling the boss have a player pick up the %s (%s). Next pull the boss and damage it to around 40-50%% health so that the %s starts growing from the edges of the room. Once the room is full of %s, have the player with the %s run over the %s while pressing the extra action button repeatedly. Once the player has reached 15 stacks of %s, you can kill the boss.",
+    ["Highmaul_ImperatorMargok"] = "To complete this achievement, DPS the boss down to 55%% health. At this point the boss will transition and 2 %s will spawn. Keep 1 of them alive and kill the other one.\n\n The %s that is kept alive needs to be moved into the cloud just left of the bosses throne in order to gain the %s buff. The easiest way to move the add to have a deathknight use his %s ability several times.\n\n Once the transition has finished, have the deathknight move the add just to the right of the bosses throne then DPS the boss down to 25%% health to start the second transition.\n\n Once the add has entered the second cloud on the right side of the bosses throne, it will gain the %s buff, at which point you can kill the add then the boss to complete this achievement.\n\n Note: It is also possible to complete this achievement solo without a deathknight. This is done by clicking on the %s which will reveal a red circle underneath him. You will need to stand in or near the edge of this circle then watch his cast bar. Once the %s has finished a cast, start running towards the cloud and the add should start to follow you. Rinse and repeat this until the add has reached each of the clouds.",
 
     --Chat Output
 
@@ -574,11 +571,10 @@ local baseLocale = {
     --- Blackrock Foundry
     -------------------------------------------------------
     --Tactics
-    ["BlackrockFoundry_BeastlordDarmac"] = "This achievement will take 3 kills to complete. The boss will mount the beast that is closest to him on pull, therefore on each attempt you will need to wait for the boss to be closet to a different beast.",
-    ["BlackrockFoundry_OperatorThogar"] = "Wait 10 seconds after pulling the boss then place Toy train set and then immediately after the wind up train wrecker on the first set of tracks as you enter the boss room. Achievement will be earned as soon as the requirements have been met.",
-    ["BlackrockFoundry_HansgarFranzok"] = "Nuke boss down as quick as possible without anyone in the group getting hit by a stamping press. The stamping press display an orange glow on the floor a few seconds before stamping.",
-    ["BlackrockFoundry_Kromog"] = "Requires atleast 10 players but more players makes achievement easier. Spread out around the room and wait for orange runes to spawn. When they spawn each player stand on their own rune. When hands spawn from runes and grab players nuke hands down as quickly as possible.",
-    ["BlackrockFoundry_Gruul"] = "1 player tank boss at entrance to room with boss facing into the center of the room. Everyone else stand underneath the ore which is positioned on the ceiling of the boss room. When boss casts overhead smash, players will be flung into the air. Click on the ore on the ceiling to collect it. Once all 3 ores have been collected you can nuke boss.",
+    ["BlackrockFoundry_BeastlordDarmac"] = "This achievement will take 3 kills to complete. On each attempt, pull the boss while he is closest to a different beast. It will take several seconds for the boss to mount the beast after pulling. Once he has mounted one of the beasts you can then kill the boss.",
+    ["BlackrockFoundry_OperatorThogar"] = "After pulling the boss wait 10 seconds then place a %s and then immediately after the %s on the first set of tracks as you enter the boss room. The achievement will be earned as soon as the train runs over the %s",
+    ["BlackrockFoundry_Kromog"] = "This achievement requires atleast 10 players to complete although more players will make the achievement easier.\n\n After pulling the boss spread out around the room and wait for %s to spawn. After the %s have spawned, each player will need to stand on their own rune and wait to be grabbed by a hand. Next wait for the boss to cast %s then have all players AOE down the hands within 5 seconds of one another.\n\n Note: If you kill the hands before %s has been cast, all players will be thrown into the air which may prevent some players recieving the achievement if they die from the fall and have not tagged the boss.",
+    ["BlackrockFoundry_Gruul"] = "",
     ["BlackrockFoundry_Oregorger"] = "",
     ["BlackrockFoundry_BlastFurnace"] = "Completed during phase 2. During phase 2, 4 random players will be targeted by slag elementals. If you have a slag elemental following you, run to one of the primal elementalists which doesn’t have a slag elemental already on. Once there is slag elemental on each primal elementalists you can nuke down the slag elemental then primal elementalists as quick as possible. Getting all 4 primal elementalists down within 10 seconds will reward this achievement.",
     ["BlackrockFoundry_Blackhand"] = "DPS the boss down to 30% to reach phase 3. Ashes will then start falling from the ceiling. Spread out around the platform and stand underneath the falling ashes until it lands on you. Once the group has collected 20 falling ashes you can nuke boss. The more players you have the easy this achievement is.",
@@ -1169,8 +1165,8 @@ local baseLocale = {
     -------------------------------------------------------
     --Tactics
     ["TrialOfTheCrusader_Icehowl"] = "At 110, you can simply just nuke the boss down. Make sure you don’t kill the Snobolds that fall of Gormok back after killing him.",
-    ["TrialOfTheCrusader_LordJaraxxus"] = "At 110, pull the boss then wait for two Mistresses of Pain to spawn. Once they have spawned, single target down the boss.",
-    ["TrialOfTheCrusader_Anubarak"] = "Pull the boss then wait for 25 Swarm Scarabs to spawn. Once enough adds have spawned. AOE them down. Be careful you don’t kill the boss first.",
+    ["TrialOfTheCrusader_LordJaraxxus"] = "To complete this achievement, pull the boss then wait for two %s to spawn before single targeting down the boss.",
+    ["TrialOfTheCrusader_Anubarak"] = "To complete this achievement, pull the boss then wait for 25 %s to spawn. Once enough adds have spawned, wait for %s to submerge then AOE the adds down. Once the adds are dead you can kill the boss.",
 
     --Chat Output
 
@@ -1280,7 +1276,7 @@ local baseLocale = {
     --- Violet Hold
     -------------------------------------------------------
     --Tactics
-    ["VioletHold_Cyanigosa"] = "For the achievement you must not use any of the red crystal around the room and none of the mobs can reach the entrance.",
+    ["VioletHold_Cyanigosa"] = "To complete this achievement simply kill all the mobs as soon as they spawn from their portals and do not activate any red crystals around the room.",
     ["VioletHold_Other"] = "This achievement will take multiple runs to complete since it’s random which bosses are going to spawn.",
 
     --Chat Output

@@ -101,10 +101,6 @@ local function HandlePetsUpdate()
 			FISHINGCREATURES[petid] = 1
 		end
     end
-
-	if (FishingBuddy.Debugging) then
-		FishingBuddy_Info["ourpets"] = ourpets;
-	end
 end
 
 local function DoPetReset(pet)
@@ -132,7 +128,7 @@ local function GetMenuData()
 	return simple, complex
 end
 
-function FishingPets_OnShow(scrollmenu)
+local function FishingPets_OnShow(scrollmenu)
 	local simple, complex = GetMenuData()
 	FSF:UpdateScrollMenu(scrollmenu, simple, complex)
 end

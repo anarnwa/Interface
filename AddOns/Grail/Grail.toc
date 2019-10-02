@@ -1,26 +1,9 @@
-## Interface: 80100
+## Interface: 80205
 ## Title: Grail
 ## Author: Scott M Harrison
 ## Notes: Knows about quests
-## Version: 099
+## Version: 102
 ## SavedVariables: GrailDatabase
 ## SavedVariablesPerCharacter: GrailDatabasePlayer
 
 Grail.lua
-
-Grail-Quests.lua
-
-Grail-NPCs.lua
-Grail-NPCs-enUS.lua
-Grail-NPCs-deDE.lua
-Grail-NPCs-esES.lua
-Grail-NPCs-esMX.lua
-Grail-NPCs-frFR.lua
-Grail-NPCs-itIT.lua
-Grail-NPCs-koKR.lua
-Grail-NPCs-ptBR.lua
-Grail-NPCs-ruRU.lua
-Grail-NPCs-zhCN.lua
-Grail-NPCs-zhTW.lua
-
-Grail-BuggedQuests.lua

@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Molinari",
+    "localName": "Molinari",
+    "version": "80200.63-Release",
+    "fileName": "molinari",
+    "addonsMap": [
+        "Molinari"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Molinari",
+    "gameVersion": ""
+}

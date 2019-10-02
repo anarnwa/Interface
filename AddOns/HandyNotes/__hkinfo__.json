@@ -1,0 +1,14 @@
+{
+    "addonsMap": [
+        "HandyNotes"
+    ],
+    "children": [],
+    "fileName": "handynotes",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "HandyNotes",
+    "name": "HandyNotes",
+    "searchName": "HandyNotes",
+    "target": "curse",
+    "version": "v1.5.7"
+}

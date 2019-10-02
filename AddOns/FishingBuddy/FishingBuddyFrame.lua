@@ -43,7 +43,7 @@ end
 local function ShowFrameGroup(self)
     self:HandleOnShow(self:GetSelected());
     local tabframe = self:GetSelected();
-    for _,group in ipairs(groups) do
+    for _,group in ipairs(self.groups) do
         if tabframe == group.frame.tabframe then
             group.frame:Show()
         end
@@ -52,7 +52,7 @@ end
 
 local function HideFrameGroup(self)
     self:HideTabs();
-    for _,group in ipairs(groups) do
+    for _,group in ipairs(self.groups) do
         group.frame:Hide()
     end
 end
@@ -120,7 +120,7 @@ function ToggleFishingBuddyFrame(target)
     FishingBuddyFrame:ToggleTab(target);
 end
 
-local function OnVariablesLoaded(self, event, ...)
+local function OnVariablesLoaded(self, _, ...)
     -- set up mappings
     for idx,info in pairs(FBFRAMES) do
         local tf = FishingBuddyFrame:MakeFrameTab(info.frame, info.name, info.tooltip, info.toggle);

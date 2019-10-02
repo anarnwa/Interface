@@ -1,12 +1,12 @@
 local mod	= DBM:NewMod(2361, "DBM-EternalPalace", nil, 1179)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20190816055831")
+mod:SetRevision("20190919151548")
 mod:SetCreatureID(152910)
 mod:SetEncounterID(2299)
 mod:SetZone()
 mod:SetUsedIcons(4, 3, 2, 1)
-mod:SetHotfixNoticeRev(20190715000000)--2019, 7, 15
+mod:SetHotfixNoticeRev(20190820000000)--2019, 8, 20
 --mod:SetMinSyncRevision(16950)
 --mod.respawnTime = 29--Respawn is near instant on ptr, boss requires clicking to engage, no body pulling anyways
 
@@ -38,6 +38,7 @@ mod:RegisterEventsInCombat(
 (ability.id = 297937 or ability.id = 297934 or ability.id = 298121 or ability.id = 297972 or ability.id = 298531 or ability.id = 300478 or ability.id = 299250 or ability.id = 299178 or ability.id = 300519 or ability.id = 303629 or ability.id = 297372 or ability.id = 301431 or ability.id = 300480 or ability.id = 307331 or ability.id = 307332 or ability.id = 299094 or ability.id = 302141 or ability.id = 303797 or ability.id = 303799) and type = "begincast"
  or (ability.id = 302208 or ability.id = 298014 or ability.id = 301078 or ability.id = 303657 or ability.id = 303629 or ability.id = 300492 or ability.id = 300743 or ability.id = 303980 or ability.id = 300334 or ability.id = 300768) and type = "cast"
  or type = "death" and (target.id = 153059 or target.id = 153060)
+ or ability.id = 300551 and type = "applybuff"
  or (ability.id = 303657) and type = "applydebuff"
 --]]
 --Ancient Wards (20)
@@ -102,8 +103,10 @@ local specWarnReversalofFortune			= mod:NewSpecialWarningSpell(297371, nil, nil,
 local specWarnArcaneBurst				= mod:NewSpecialWarningYouPos(303657, nil, nil, nil, 1, 2)
 local yellArcaneBurst					= mod:NewPosYell(303657)
 local yellArcaneBurstFades				= mod:NewIconFadesYell(303657)
+local specWarnAzsharasDevoted			= mod:NewSpecialWarningSwitch("ej20353", "Dps", nil, nil, 1, 2)
 local specWarnAzsharasIndomitable		= mod:NewSpecialWarningSwitchCount("ej20410", "Dps", nil, nil, 1, 2)
 --Stage Three: Song of the Tides
+local specWarnLoyalMyrmidon				= mod:NewSpecialWarningSwitchCount("ej20355", "Tank", nil, nil, 1, 2)
 local specWarnStaticShock				= mod:NewSpecialWarningMoveAway(300492, nil, nil, nil, 1, 8)
 local yellStaticShock					= mod:NewYell(300492)
 --Stage Four: My Palace Is a Prison
@@ -137,16 +140,17 @@ local timerBeckonCD						= mod:NewCDCountTimer(30.4, 299094, nil, nil, nil, 3)
 local timerDivideandConquerCD			= mod:NewCDTimer(65, 300478, nil, nil, nil, 3, nil, DBM_CORE_MYTHIC_ICON..DBM_CORE_DEADLY_ICON)
 --Intermission One: Queen's Decree
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20335))
-local timerQueensDecreeCD				= mod:NewCDTimer(30.4, 299250, nil, nil, nil, 3, nil, DBM_CORE_IMPORTANT_ICON)
 local timerNextPhase					= mod:NewPhaseTimer(30.4)
 --Stage Two: Hearts Unleashed
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20323))
 local timerArcaneDetonationCD			= mod:NewCDCountTimer(80, 300519, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON, nil, 1, 5)
 local timerReversalofFortuneCD			= mod:NewCDCountTimer(80, 297371, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON, nil, 2, 5)
 local timerArcaneBurstCD				= mod:NewCDCountTimer(58.2, 303657, nil, nil, nil, 3, nil, DBM_CORE_MAGIC_ICON)
+local timerAzsharasDevotedCD			= mod:NewCDTimer(95, "ej20353", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 local timerAzsharasIndomitableCD		= mod:NewCDTimer(100, "ej20410", nil, nil, nil, 1, 298531, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Song of the Tides
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20340))
+local timerLoyalMyrmidonCD				= mod:NewCDTimer(95, "ej20355", nil, nil, nil, 1, 301078, DBM_CORE_DAMAGE_ICON)
 local timerStageThreeBerserk			= mod:NewTimer(180, "timerStageThreeBerserk", 28131)
 --Stage Four: My Palace Is a Prison
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20361))
@@ -154,6 +158,7 @@ local timerGreaterReversalCD			= mod:NewCDCountTimer(70, 297372, 297371, nil, ni
 local timerVoidTouchedCD				= mod:NewCDTimer(6.9, 300743, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerNetherPortalCD				= mod:NewCDCountTimer(35, 303980, nil, nil, nil, 3)--35 unless delayed by spell queue
 local timerOverloadCD					= mod:NewCDCountTimer(54.9, 301431, nil, nil, nil, 5, nil, DBM_CORE_IMPORTANT_ICON)
+local timerMassiveEnergySpike			= mod:NewCastTimer(42, 301518, nil, nil, nil, 5, nil, DBM_CORE_DEADLY_ICON)
 local timerPiercingGazeCD				= mod:NewCDCountTimer(65, 300768, nil, nil, nil, 3)
 
 local berserkTimer						= mod:NewBerserkTimer(600)
@@ -181,19 +186,21 @@ mod.vb.arcaneDetonation = 0
 mod.vb.overloadCount = 0
 mod.vb.netherCount = 0
 mod.vb.piercingCount = 0
+mod.vb.controlledBurst = 0
 mod.vb.painfulMemoriesActive = false
 local drainedSoulStacks = {}
 local playerSoulDrained = false
 local shieldName = DBM:GetSpellInfo(300620)
 local seenAdds = {}
 local castsPerGUID = {}
+local text = ""
 local playerDecreeCount = 0
 local playerDecreeYell = 0--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 --Extend add timers to be by phase as well so P2 adds can be in it as well, if ever see more than one in a single difficulty, ever
 local AddTimers = {
 	["Normal"] = {42.6, 84.7},
 	["Heroic"] = {41.7, 59.6, 89.1, 44.8, 39.4},
-	["Mythic"] = {37.7, 64.4},
+	["Mythic"] = {37.7, 62.4},
 }
 local phase4LFROverloadTimers = {14, 69.8, 75, 65, 65, 60}
 local phase4LFRPiercingTimers = {0, 65, 65, 65, 60, 20}
@@ -373,6 +380,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	self:UnregisterShortTermEvents()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -423,11 +431,10 @@ function mod:SPELL_CAST_START(args)
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
 		warnGroundPound:Show(castsPerGUID[args.sourceGUID])
-	elseif (spellId == 300478 or spellId == 300480 or spellId == 307331 or spellId == 307332) and self:AntiSpam(4, 10) then
+	elseif (spellId == 300478 or spellId == 300480 or spellId == 307331 or spellId == 307332) and self:AntiSpam(10, 4) then
 		specWarnDivideandConquer:Show()
 		timerDivideandConquerCD:Start(self.vb.phase == 4 and 87.5 or self.vb.phase == 3 and 59.8 or 65)
 	elseif spellId == 299250 and self:AntiSpam(4, 5) then--In rare cases she stutter casts it, causing double warnings
-		playerDecreeCount = 0
 		warnQueensDecree:Show()
 	elseif spellId == 299178 and self.vb.phase < 2 then--Ward of Power
 		self.vb.phase = 2
@@ -439,12 +446,14 @@ function mod:SPELL_CAST_START(args)
 		warnPhase:Play("ptwo")
 		if self:IsHard() then
 			timerBeckonCD:Start(25, 1)--START
+			timerAzsharasDevotedCD:Start(35)--35-38.5
 			timerReversalofFortuneCD:Start(68.1, 1)
-			timerAzsharasIndomitableCD:Start(107)--107-110 (confirmed heroic AND mythic, same variation, 107-110)
+			timerAzsharasIndomitableCD:Start(self:IsMythic() and 115 or 105)--Confirmed they left heroic at 105, unable to confirm they ACTUALLY changed mythic to 115, but drycoding it anyways because that's what blizz said.
 			if self:IsMythic() then
 				timerDivideandConquerCD:Start(45.4)
 			end
 		else
+			timerAzsharasDevotedCD:Start(35)--35-38.5
 			timerBeckonCD:Start(self:IsLFR() and 55 or 60, 1)--START
 			timerAzsharasIndomitableCD:Start(98.1)--98.1-110?
 		end
@@ -456,6 +465,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnArcaneDetonation:Play("findshelter")
 		timerArcaneDetonationCD:Start(self:IsMythic() and 69.9 or self:IsHeroic() and 75 or 80, self.vb.arcaneDetonation+1)
 	elseif spellId == 301431 then
+		self.vb.controlledBurst = 0
 		self.vb.overloadCount = self.vb.overloadCount + 1
 		if self.Options.SpecWarn301431count then
 			specWarnOverload:Show(self.vb.overloadCount)
@@ -466,6 +476,9 @@ function mod:SPELL_CAST_START(args)
 		local timer = self:IsLFR() and phase4LFROverloadTimers[self.vb.overloadCount+1] or self:IsHeroic() and phase4HeroicOverloadTimers[self.vb.overloadCount+1] or self:IsNormal() and 54.9 or self:IsMythic() and 56
 		if timer then
 			timerOverloadCD:Start(timer, self.vb.overloadCount+1)--Mythic same as normal, heroic only one that's shorter (so far, LFR unknown)
+		end
+		if self:IsMythic() then
+			timerMassiveEnergySpike:Start()
 		end
 	elseif spellId == 299094 or spellId == 302141 or spellId == 303797 or spellId == 303799 then--299094 Phase 1, 302141 phase 2, 303797 phase 3, 303799 Phase 4
 		self.vb.beckonCast = self.vb.beckonCast + 1
@@ -612,13 +625,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnCrushingDepths:CombinedShow(1, args.destName)
 	--Suffer (soak Orb), Obey (don't soak orb), Stand Together (group up), Stand Alone (don't group up), March (keep moving), Stay (stop moving)
 	elseif spellId == 299249 or spellId == 299251 or spellId == 299254 or spellId == 299255 or spellId == 299252 or spellId == 299253 then
-		--Temp, remove if cast event works
 		if args:IsPlayer() then
 			if self:AntiSpam(10, 1) then
+				text = ""
 				playerDecreeCount = 0
 				playerDecreeYell = 0
 			end
-			local text = ""
 			if spellId == 299249 then--Soak Orbs
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "helpsoak")
 				if text == "" then
@@ -661,10 +673,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				playerDecreeYell = playerDecreeYell + 20--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			elseif spellId == 299253 then--Stop Moving
 				specWarnQueensDecree:ScheduleVoiceOverLap(0+playerDecreeCount, "stopmove")
-				if text then
-					text = text..", "..L.DontMove
-				else
+				if text == "" then
 					text = L.DontMove
+				else
+					text = text..", "..L.DontMove
 				end
 				playerDecreeYell = playerDecreeYell + 10--100s 2-Stack/1-Solo, 10s 2-Moving/1-Stay, 1s 2-Soak/1-NoSoak
 			end
@@ -723,13 +735,22 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif spellId == 304267 then
 		self.vb.painfulMemoriesActive = true
 	--Gaining Ward of Power Buff from Blue ward when entering fight
-	--This will only work on heroic/mythic. Adds don't gain buff on normal, only azshara does
+	--This will only work on heroic/mythic. Adds don't gain buff on normal/LFR, only azshara does
 	elseif spellId == 300551 and not seenAdds[args.destGUID] then
 		seenAdds[args.destGUID] = true
-		if self:GetCIDFromGUID(args.destGUID) == 155354 then--Azshara's Indomitable
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 155354 then--Azshara's Indomitable
 			self.vb.bigAddCount = self.vb.bigAddCount + 1
 			specWarnAzsharasIndomitable:Show(self.vb.bigAddCount)
 			specWarnAzsharasIndomitable:Play("bigmob")
+		elseif cid == 154240 and self:AntiSpam(10, 10) then--Azshara's Devoted
+			specWarnAzsharasDevoted:Show()
+			specWarnAzsharasDevoted:Play("killmob")
+			timerAzsharasDevotedCD:Start(95)
+		elseif cid == 154565 then--Loyal Myrmidon
+			specWarnLoyalMyrmidon:Show()
+			specWarnLoyalMyrmidon:Play("bigmob")
+			timerLoyalMyrmidonCD:Start(self:IsMythic() and 57.5 or 94.7)
 		end
 	end
 end
@@ -763,7 +784,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnArcaneBurst then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif spellId == 304267 and self:AntiSpam(3, 4) then
+	elseif spellId == 304267 and self:AntiSpam(3, 7) then
 		self.vb.painfulMemoriesActive = false
 		warnPainfulMemoriesOver:Show(DBM_CORE_RESTORE_LOS)
 		warnPainfulMemoriesOver:Play("moveboss")
@@ -788,8 +809,18 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId)
+	if spellId == 301425 and self:AntiSpam(2, 2) then
+		self.vb.controlledBurst = self.vb.controlledBurst + 1
+		if (self.vb.overloadCount == 1 and self.vb.controlledBurst == 3) or self.vb.controlledBurst == 4 then
+			timerMassiveEnergySpike:Stop()
+		end
+	end
+end
+mod.SPELL_MISSED = mod.SPELL_DAMAGE
+
 function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spellName)
-	if (spellId == 303981 or spellId == 297907) and destGUID == UnitGUID("player") and self:AntiSpam(2, 2) then
+	if (spellId == 303981 or spellId == 297907) and destGUID == UnitGUID("player") and self:AntiSpam(2, 8) then
 		specWarnGTFO:Show(spellName)
 		specWarnGTFO:Play("watchfeet")
 	end
@@ -811,7 +842,6 @@ do
 		timerBeckonCD:Stop()
 		timerDivideandConquerCD:Stop()
 		timerHulkSpawnCD:Stop()
-		timerQueensDecreeCD:Start(7.5)--SUCCESS
 		timerNextPhase:Start(27.3)--To Ward of Power cast start
 	end
 	function mod:UNIT_DIED(args)
@@ -871,7 +901,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnArcaneOrbs:Show(self.vb.arcaneOrbCount)
 		specWarnArcaneOrbs:Play("watchorb")
 		timerArcaneOrbsCD:Start(self:IsMythic() and 59.9 or (self.vb.arcaneOrbCount == 1 and 65 or 74.8), self.vb.arcaneOrbCount+1)
-	elseif msg:find("spell:300522") then--Divide and Conquer
+	elseif msg:find("spell:300522") and self:AntiSpam(10, 4) then--Divide and Conquer
 		specWarnDivideandConquer:Show()
 		timerDivideandConquerCD:Start(self.vb.phase == 4 and 87.5 or self.vb.phase == 3 and 59.8 or 65)
 	end
@@ -924,6 +954,7 @@ local function startIntermissionTwo(self)
 	timerArcaneBurstCD:Stop()
 	timerArcaneDetonationCD:Stop()
 	timerDivideandConquerCD:Stop()
+	timerAzsharasDevotedCD:Stop()
 	timerAzsharasIndomitableCD:Stop()
 	timerNextPhase:Start(29.9)--Time til P3 trigger, which is adds firing IEEU and becoming attackable
 	if self:IsMythic() then
@@ -974,7 +1005,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		--"<338.85 14:18:47> [UNIT_SPELLCAST_SUCCEEDED] Queen Azshara(Murdocc) -Adjure- [[boss1:Cast-3-3883-2164-252-302034-001924DA87:302034]]", -- [6299]
 		--"<343.15 14:18:51> [CHAT_MSG_MONSTER_YELL] Coax the power from these ancient wards! Rattle the chains that bind him!#Queen Azshara###Omegall##0#0##0#2192#nil#0#false#false#false#false", -- [6362]
 		self:Schedule(4.3, startIntermissionTwo, self)--Needed, because timers don't cancel until yell
-		timerQueensDecreeCD:Start(13.9)--SUCCESS (technically debuffs, is no start or success event here)
 	elseif spellId == 303982 then--Nether Portal
 		self.vb.netherCount = self.vb.netherCount + 1
 		warnNetherPortal:Show(self.vb.netherCount)
@@ -998,6 +1028,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		timerArcaneDetonationCD:Stop()
 		timerArcaneBurstCD:Stop()
 		timerDivideandConquerCD:Stop()
+		timerLoyalMyrmidonCD:Stop()
 
 		if not self:IsLFR() then
 			timerVoidTouchedCD:Start(12.9)
@@ -1010,6 +1041,11 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerPiercingGazeCD:Start(51.5, 1)
 			timerGreaterReversalCD:Start(64, 1)
 			timerBeckonCD:Start(72.8, 1)--START
+			--Register burst damage events for the massive energy spike tracking timer
+			self:RegisterShortTermEvents(
+				"SPELL_DAMAGE 301425",
+				"SPELL_MISSED 301425"
+			)
 		elseif self:IsHeroic() then
 			timerNetherPortalCD:Start(23.9, 1)
 			timerPiercingGazeCD:Start(43.9, 1)

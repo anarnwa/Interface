@@ -1,0 +1,14 @@
+{
+    "addonsMap": [
+        "HandyNotes_EphemeralCrystals"
+    ],
+    "children": [],
+    "fileName": "handynotes_ephemeralcrystals",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "HandyNotes_EphemeralCrystals",
+    "name": "HandyNotes_EphemeralCrystals",
+    "searchName": "HandyNotes_EphemeralCrystals",
+    "target": "curse",
+    "version": "v0.1"
+}

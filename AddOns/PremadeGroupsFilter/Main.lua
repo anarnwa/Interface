@@ -115,9 +115,48 @@ local roleRemainingKeyLookup = {
 };
 
 local function HasRemainingSlotsForLocalPlayerRole(lfgSearchResultID)
-    local roles = C_LFGList.GetSearchResultMemberCounts(lfgSearchResultID);
-    local playerRole = GetSpecializationRole(GetSpecialization());
-    return roles[roleRemainingKeyLookup[playerRole]] > 0;
+    local roles = C_LFGList.GetSearchResultMemberCounts(lfgSearchResultID)
+    local playerRole = GetSpecializationRole(GetSpecialization())
+    return roles[roleRemainingKeyLookup[playerRole]] > 0
+end
+
+function PGF.HasRemainingSlotsForLocalPlayerPartyRoles(lfgSearchResultID)
+    local numGroupMembers = GetNumGroupMembers()
+
+    if numGroupMembers == 0 then
+        -- not in a group
+        return HasRemainingSlotsForLocalPlayerRole(lfgSearchResultID)
+    end
+
+    local partyRoles = {["TANK"] = 0, ["HEALER"] = 0, ["DAMAGER"] = 0}
+
+    for i = 1, numGroupMembers do
+        local unit
+
+        if i == 1 then
+            unit = "player"
+        else
+            unit = "party" .. (i - 1)
+        end
+
+        local groupMemberRole = UnitGroupRolesAssigned(unit)
+
+        if groupMemberRole == "NONE" then
+            groupMemberRole = "DAMAGER"
+        end
+
+        partyRoles[groupMemberRole] = partyRoles[groupMemberRole] + 1
+    end
+
+    local roles = C_LFGList.GetSearchResultMemberCounts(lfgSearchResultID)
+
+    for role, remainingKey in pairs(roleRemainingKeyLookup) do
+        if roles[remainingKey] < partyRoles[role] then
+            return false
+        end
+    end
+
+    return true
 end
 
 function PGF.SortByFriendsAndAge(searchResultID1, searchResultID2)
@@ -142,32 +181,146 @@ function PGF.SortByFriendsAndAge(searchResultID1, searchResultID2)
     return searchResultInfo1.age < searchResultInfo2.age
 end
 
+--- Fetches Raider.IO metrics if installed and provides them in the filter environment
+--- @generic V
+--- @param env table<string, V> environment to be prepared
+--- @param leaderName string name of the group leader
 function PGF.PutRaiderIOMetrics(env, leaderName)
-    env.hasrio       = false
-    env.norio        = true
-    env.rio          = 0
-    env.riodps       = 0
-    env.rioheal      = 0
-    env.riotank      = 0
-    env.riomain      = 0
-    env.riokey5plus  = 0
-    env.riokey10plus = 0
-    env.riokey15plus = 0
-    env.riokeymax    = 0
+    env.hasrio            = false
+    env.norio             = true
+    env.rio               = 0
+    env.rioprev           = 0
+    env.riomain           = 0
+    env.riomainprev       = 0
+    env.riokey5plus       = 0
+    env.riokey10plus      = 0
+    env.riokey15plus      = 0
+    env.riokey20plus      = 0
+    env.riokeymax         = 0
+    env.rionormalprogress = 0
+    env.rioheroicprogress = 0
+    env.riomythicprogress = 0
+    env.riomainprogress   = 0
+    env.rionormalkills    = {}
+    env.rioheroickills    = {}
+    env.riomythickills    = {}
+    env.rioraidbosscount  = 0
+    setmetatable(env.rionormalkills, { __index = function() return 0 end })
+    setmetatable(env.rioheroickills, { __index = function() return 0 end })
+    setmetatable(env.riomythickills, { __index = function() return 0 end })
     if leaderName and RaiderIO and RaiderIO.HasPlayerProfile(leaderName) then
-        local result = RaiderIO.GetPlayerProfile(RaiderIO.ProfileOutput.MYTHICPLUS, leaderName)
-        if result and result.profile then
-            env.hasrio       = true
-            env.norio        = false
-            env.rio          = result.profile.mplusCurrent.score
-            env.rioprev      = result.profile.mplusPrevious.score
-            env.riomain      = result.profile.mplusMainCurrent.score
-            env.riomainprev  = result.profile.mplusMainPrevious.score
-            env.riokey5plus  = result.profile.keystoneFivePlus
-            env.riokey10plus = result.profile.keystoneTenPlus
-            env.riokey15plus = result.profile.keystoneFifteenPlus
-            env.riokey20plus = result.profile.keystoneTwentyPlus
-            env.riokeymax    = result.profile.maxDungeonLevel
+        local result = RaiderIO.GetPlayerProfile(RaiderIO.ProfileOutput.DATA, leaderName)
+        if result and type(result) == "table" then
+            for _, data in pairs(result) do
+                if data and data.dataType == RaiderIO.DataProvider.MYTHICPLUS and data.profile then
+                    env.hasrio       = true
+                    env.norio        = false
+                    env.rio          = data.profile.mplusCurrent.score
+                    env.rioprev      = data.profile.mplusPrevious.score
+                    env.riomain      = data.profile.mplusMainCurrent.score
+                    env.riomainprev  = data.profile.mplusMainPrevious.score
+                    env.riokey5plus  = data.profile.keystoneFivePlus
+                    env.riokey10plus = data.profile.keystoneTenPlus
+                    env.riokey15plus = data.profile.keystoneFifteenPlus
+                    env.riokey20plus = data.profile.keystoneTwentyPlus
+                    env.riokeymax    = data.profile.maxDungeonLevel
+                end
+                if data and data.dataType == RaiderIO.DataProvider.RAIDING and data.profile then
+                    if data.profile.currentRaid then
+                        env.rioraidbosscount = data.profile.currentRaid.bossCount
+                    end
+                    if data.profile.mainProgress and type(data.profile.mainProgress) == "table" then
+                        for _, mainProgress in pairs(data.profile.mainProgress) do
+                            env.riomainprogress = math.max(env.riomainprogress, mainProgress.progressCount)
+                        end
+                    end
+                    if data.profile.progress and type(data.profile.progress) == "table" then
+                        for _, progress in pairs(data.profile.progress) do
+                            if progress.difficulty == 1 then
+                                env.rionormalprogress = progress.progressCount
+                                env.rionormalkills = progress.killsPerBoss
+                            elseif progress.difficulty == 2 then
+                                env.rioheroicprogress = progress.progressCount
+                                env.rioheroickills = progress.killsPerBoss
+                            elseif progress.difficulty == 3 then
+                                env.riomythicprogress = progress.progressCount
+                                env.riomythickills = progress.killsPerBoss
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+function PGF.PutPremadeRegionInfo(env, leaderName)
+    env.region = nil
+    env.oce = false
+    env.usp = false
+    env.usm = false
+    env.usc = false
+    env.use = false
+    env.mex = false
+    env.bzl = false
+    if leaderName and PremadeRegions then
+        local region = PremadeRegions.GetRegion(leaderName)
+        if region then
+            env.region = region
+            env[region] = true
+        end
+    end
+end
+
+--- Ensures that all class-role/role-class and ranged/melees keywords are initialized to zero in the filter environment,
+--- because the values would cause a semantic error otherwise (because they do not exist)
+--- @generic V
+--- @param env table<string, V> environment to be prepared
+function PGF.InitClassRoleTypeKeywords(env)
+    env.ranged = 0
+    env.ranged_strict = 0
+    env.melees = 0
+    env.melees_strict = 0
+    for class, type in pairs(C.DPS_CLASS_TYPE) do
+        local classPlural = class:lower() .. "s"
+        env[classPlural] = 0
+        for role, prefix in pairs(C.ROLE_PREFIX) do
+            local classRolePlural = prefix .. "_" .. classPlural
+            local roleClassPlural = class:lower() .. "_" .. C.ROLE_SUFFIX[role]
+            env[classRolePlural] = 0
+            env[roleClassPlural] = 0
+        end
+    end
+end
+
+--- Initializes all class-role/role-class and ranged/melees keywords and increments them to their correct value
+--- @generic V
+--- @param resultID number search result identifier
+--- @param searchResultInfo table<string, V> search result info from API
+--- @param env table<string, V> environment to be prepared
+function PGF.PutSearchResultMemberInfos(resultID, searchResultInfo, env)
+    PGF.InitClassRoleTypeKeywords(env)
+    for i = 1, searchResultInfo.numMembers do
+        local role, class = C_LFGList.GetSearchResultMemberInfo(resultID, i)
+        local classPlural = class:lower() .. "s" -- plural form of the class in english
+        env[classPlural] = env[classPlural] + 1
+        if role then
+            local classRolePlural = C.ROLE_PREFIX[role] .. "_" .. class:lower() .. "s"
+            local roleClassPlural = class:lower() .. "_" .. C.ROLE_SUFFIX[role]
+            env[classRolePlural] = env[classRolePlural] + 1
+            env[roleClassPlural] = env[roleClassPlural] + 1
+            if role == "DAMAGER" then
+                if C.DPS_CLASS_TYPE[class].range and C.DPS_CLASS_TYPE[class].melee then
+                    env.ranged = env.ranged + 1
+                    env.melees = env.melees + 1
+                elseif C.DPS_CLASS_TYPE[class].range then
+                    env.ranged = env.ranged + 1
+                    env.ranged_strict = env.ranged_strict + 1
+                elseif C.DPS_CLASS_TYPE[class].melee then
+                    env.melees = env.melees + 1
+                    env.melees_strict = env.melees_strict + 1
+                end
+            end
         end
     end
 end
@@ -190,7 +343,6 @@ function PGF.DoFilterSearchResults(results)
         local searchResultInfo = C_LFGList.GetSearchResultInfo(resultID)
         -- /dump C_LFGList.GetSearchResultInfo(select(2, C_LFGList.GetSearchResults())[1])
         -- name and comment are now protected strings like "|Ks1969|k0000000000000000|k" which can only be printed
-        local defeatedBossNames = C_LFGList.GetSearchResultEncounterInfo(resultID)
         local memberCounts = C_LFGList.GetSearchResultMemberCounts(resultID)
         local numGroupDefeated, numPlayerDefeated, maxBosses,
               matching, groupAhead, groupBehind = PGF.GetLockoutInfo(searchResultInfo.activityID, resultID)
@@ -207,17 +359,15 @@ function PGF.DoFilterSearchResults(results)
         env.voice = searchResultInfo.voiceChat and searchResultInfo.voiceChat ~= ""
         env.voicechat = searchResultInfo.voiceChat
         env.ilvl = searchResultInfo.requiredItemLevel or 0
+        env.myilvl = select(2, GetAverageItemLevel())
         env.hlvl = searchResultInfo.requiredHonorLevel or 0
         env.friends = searchResultInfo.numBNetFriends + searchResultInfo.numCharFriends + searchResultInfo.numGuildMates
         env.members = searchResultInfo.numMembers
         env.tanks = memberCounts.TANK
         env.heals = memberCounts.HEALER
         env.healers = memberCounts.HEALER
-        env.ranged = 0        -- incremented below
-        env.ranged_strict = 0 -- incremented below
-        env.melees = 0        -- incremented below
-        env.melees_strict = 0 -- incremented below
         env.dps = memberCounts.DAMAGER + memberCounts.NOROLE
+        env.partyfit = PGF.HasRemainingSlotsForLocalPlayerPartyRoles(resultID)
         env.defeated = numGroupDefeated
         env.normal     = difficulty == C.NORMAL
         env.heroic     = difficulty == C.HEROIC
@@ -240,29 +390,7 @@ function PGF.DoFilterSearchResults(results)
         env.questid = searchResultInfo.questID
         env.declined = PGF.IsDeclinedGroup(searchResultInfo)
 
-        for i = 1, searchResultInfo.numMembers do
-            local role, class = C_LFGList.GetSearchResultMemberInfo(resultID, i)
-            local classPlural = class:lower() .. "s" -- plural form of the class in english
-            env[classPlural] = (env[classPlural] or 0) + 1
-            if role then
-                local classRolePlural = C.ROLE_PREFIX[role] .. "_" .. class:lower() .. "s"
-                local roleClassPlural = class:lower() .. "_" .. C.ROLE_SUFFIX[role]
-                env[classRolePlural] = (env[classRolePlural] or 0) + 1
-                env[roleClassPlural] = (env[roleClassPlural] or 0) + 1
-                if role == "DAMAGER" then
-                    if C.DPS_CLASS_TYPE[class].range and C.DPS_CLASS_TYPE[class].melee then
-                        env.ranged = env.ranged + 1
-                        env.melees = env.melees + 1
-                    elseif C.DPS_CLASS_TYPE[class].range then
-                        env.ranged = env.ranged + 1
-                        env.ranged_strict = env.ranged_strict + 1
-                    elseif C.DPS_CLASS_TYPE[class].melee then
-                        env.melees = env.melees + 1
-                        env.melees_strict = env.melees_strict + 1
-                    end
-                end
-            end
-        end
+        PGF.PutSearchResultMemberInfos(resultID, searchResultInfo, env)
 
         local aID = searchResultInfo.activityID
         env.arena2v2 = aID == 6 or aID == 491
@@ -332,8 +460,8 @@ function PGF.DoFilterSearchResults(results)
         env.siege = env.sob
         --env.tos = env.tosl -- collision with Tomb of Sargeras
         PGF.PutRaiderIOMetrics(env, searchResultInfo.leaderName)
+        PGF.PutPremadeRegionInfo(env, searchResultInfo.leaderName)
 
-        setmetatable(env, { __index = function(table, key) return 0 end }) -- set non-initialized values to 0
         if PGF.DoesPassThroughFilter(env, exp) then
             -- leaderName is usually still nil at this point if the group is new, but we can live with that
             if searchResultInfo.leaderName then PGF.currentSearchLeaders[searchResultInfo.leaderName] = true end

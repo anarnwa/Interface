@@ -4,8 +4,8 @@ Panel.lua
 ************************************************************************
 File date: 2017-07-03T23:53:12Z
 File hash: d46823d
-Project hash: 3c640e0
-Project version: 8.2.0.1
+Project hash: f45cfab
+Project version: 8.2.5.1
 ************************************************************************
 Please see http://www.wowace.com/addons/col/ for more information.
 ************************************************************************

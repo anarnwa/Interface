@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Bartender4",
+    "localName": "Bartender4",
+    "version": "4.8.8",
+    "fileName": "bartender4",
+    "addonsMap": [
+        "Bartender4"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Bartender4",
+    "gameVersion": ""
+}

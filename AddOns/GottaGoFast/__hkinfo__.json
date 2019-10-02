@@ -1,0 +1,17 @@
+{
+    "target": "curse",
+    "searchName": "GottaGoFast",
+    "localName": "GottaGoFast",
+    "version": "GottaGoFast_v3.1.1",
+    "fileName": "gottagofast",
+    "addonsMap": [
+        "GottaGoFastHistory",
+        "GottaGoFast"
+    ],
+    "interfaceMap": [],
+    "children": [
+        "GottaGoFastHistory"
+    ],
+    "name": "GottaGoFast",
+    "gameVersion": "8.1.0"
+}

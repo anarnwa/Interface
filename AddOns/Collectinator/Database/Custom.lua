@@ -2,10 +2,10 @@
 ************************************************************************
 Custom.lua
 ************************************************************************
-File date: 2019-06-25T17:59:51Z
-File hash: 3c640e0
-Project hash: 3c640e0
-Project version: 8.2.0.1
+File date: 2019-09-24T12:00:50Z
+File hash: f45cfab
+Project hash: f45cfab
+Project version: 8.2.5.1
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -146,6 +146,10 @@ function addon:InitCustom()
 	AddCustom("FRANCOIS",		Z.TIRAGARDE_SOUND,		52.8,	31.1)
 	AddCustom("ISLAND_EXPEDITIONS")
 	AddCustom("ZAND_AMULET",	Z.DAZARALOR)
+	AddCustom("FABIOUS",		Z.NAZJATAR)
+	AddCustom("NAZJATAR_BODYGUARDS",	Z.NAZJATAR)
+	AddCustom("REC_RIG",		Z.MECHAGON_ISLAND)
+	AddCustom("HONEYBACK_HIVE",	Z.STORMSONG_VALLEY)
 
 	AddCustom("UNKNOWN_COLLECT")
 

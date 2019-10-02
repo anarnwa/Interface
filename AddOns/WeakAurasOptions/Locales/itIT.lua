@@ -54,9 +54,7 @@ local L = WeakAuras.L
 	--[[Translation missing --]]
 	L["|cFFffcc00Extra Options:|r"] = "|cFFffcc00Extra Options:|r"
 	--[[Translation missing --]]
-	L["|cFFffcc00Font Flags:|r |cFFFF0000%s|r and shadow |c%sColor|r with offset |cFFFF0000%s/%s|r %s"] = "|cFFffcc00Font Flags:|r |cFFFF0000%s|r and shadow |c%sColor|r with offset |cFFFF0000%s/%s|r %s"
-	--[[Translation missing --]]
-	L["|cFFffcc00Font:|r %s %s"] = "|cFFffcc00Font:|r %s %s"
+	L["|cFFffcc00Font Flags:|r |cFFFF0000%s|r and shadow |c%sColor|r with offset |cFFFF0000%s/%s|r%s%s"] = "|cFFffcc00Font Flags:|r |cFFFF0000%s|r and shadow |c%sColor|r with offset |cFFFF0000%s/%s|r%s%s"
 	L["1 Match"] = "1 Confronta"
 	L["A 20x20 pixels icon"] = "Un' icona 20x20 pixel"
 	L["A 32x32 pixels icon"] = "Un'icona 32x32 pixel"
@@ -89,6 +87,8 @@ local L = WeakAuras.L
 	L["Advanced"] = "Avanzate"
 	L["Align"] = "Allinea"
 	--[[Translation missing --]]
+	L["Alignment"] = "Alignment"
+	--[[Translation missing --]]
 	L["All of"] = "All of"
 	L["Allow Full Rotation"] = "Permetti Rotazione Completa"
 	L["Alpha"] = "Alfa"
@@ -96,6 +96,14 @@ local L = WeakAuras.L
 	L["Anchor Point"] = "Punto di ancoraggio"
 	L["Anchored To"] = "Ancorato a"
 	L["And "] = "E"
+	--[[Translation missing --]]
+	L["and aligned left"] = "and aligned left"
+	--[[Translation missing --]]
+	L["and aligned right"] = "and aligned right"
+	--[[Translation missing --]]
+	L["and rotated left"] = "and rotated left"
+	--[[Translation missing --]]
+	L["and rotated right"] = "and rotated right"
 	L["and Trigger %s"] = "e innesco %s"
 	L["Angle"] = "Angolo"
 	L["Animate"] = "Animato"
@@ -126,6 +134,8 @@ local L = WeakAuras.L
 	L["Backdrop Color"] = "Colore Fondale"
 	L["Backdrop in Front"] = "Fondale d'avanti"
 	L["Backdrop Style"] = "Stile Fondale"
+	--[[Translation missing --]]
+	L["Background"] = "Background"
 	L["Background Color"] = "Colore Sfondo"
 	L["Background Offset"] = "Offset Sfondo"
 	L["Background Texture"] = "Texture dello Sfondo"
@@ -142,6 +152,10 @@ local L = WeakAuras.L
 	L["Blue Rune"] = "Runa Blu"
 	L["Blue Sparkle Orb"] = "Sfera Luccicante Blu"
 	L["Border"] = "Bordo"
+	--[[Translation missing --]]
+	L["Border %s"] = "Border %s"
+	--[[Translation missing --]]
+	L["Border Anchor"] = "Border Anchor"
 	L["Border Color"] = "Colore Bordo"
 	L["Border in Front"] = "Bordi davanti"
 	L["Border Inset"] = "Offset del Bordo"
@@ -158,8 +172,9 @@ local L = WeakAuras.L
 	L["Bracket Matching"] = "Corrispondenza Parentesi"
 	--[[Translation missing --]]
 	L["Button Glow"] = "Button Glow"
-	L["Can be a name or a UID (e.g., party1). A name only works on friendly players in your group."] = "Può essere un nome o un UID (p.es., party1). Il nome funziona solo con i giocatori amichevoli nel tuo gruppo."
 	L["Can be a Name or a Unit ID (e.g. party1). A name only works on friendly players in your group."] = "Può essere un Nome o un UID (p.es., party1). Il nome funziona solo con i giocatori amichevoli nel tuo gruppo."
+	--[[Translation missing --]]
+	L["Can be a UID (e.g., party1)."] = "Can be a UID (e.g., party1)."
 	L["Cancel"] = "Cancella"
 	--[[Translation missing --]]
 	L["Center"] = "Center"
@@ -178,6 +193,8 @@ local L = WeakAuras.L
 	L["Choose whether the displayed icon is automatic or defined manually"] = "Choose whether the displayed icon is automatic or defined manually"
 	--[[Translation missing --]]
 	L["Clip Overlays"] = "Clip Overlays"
+	--[[Translation missing --]]
+	L["Clipped by Progress"] = "Clipped by Progress"
 	--[[Translation missing --]]
 	L["Clone option enabled dialog"] = "Clone option enabled dialog"
 	--[[Translation missing --]]
@@ -213,7 +230,7 @@ local L = WeakAuras.L
 	--[[Translation missing --]]
 	L["Conditions"] = "Conditions"
 	--[[Translation missing --]]
-	L["Configure what options appear on this pannel."] = "Configure what options appear on this pannel."
+	L["Configure what options appear on this panel."] = "Configure what options appear on this panel."
 	--[[Translation missing --]]
 	L["Constant Factor"] = "Constant Factor"
 	--[[Translation missing --]]
@@ -425,6 +442,8 @@ local L = WeakAuras.L
 	--[[Translation missing --]]
 	L["Font Size"] = "Font Size"
 	--[[Translation missing --]]
+	L["Foreground"] = "Foreground"
+	--[[Translation missing --]]
 	L["Foreground Color"] = "Foreground Color"
 	--[[Translation missing --]]
 	L["Foreground Texture"] = "Foreground Texture"
@@ -616,6 +635,8 @@ local L = WeakAuras.L
 	L["Mirror"] = "Mirror"
 	--[[Translation missing --]]
 	L["Model"] = "Model"
+	--[[Translation missing --]]
+	L["Model %s"] = "Model %s"
 	--[[Translation missing --]]
 	L["Model Settings"] = "Model Settings"
 	--[[Translation missing --]]
@@ -819,10 +840,6 @@ local L = WeakAuras.L
 	--[[Translation missing --]]
 	L["Rotate Text"] = "Rotate Text"
 	--[[Translation missing --]]
-	L["rotated left"] = "rotated left"
-	--[[Translation missing --]]
-	L["rotated right"] = "rotated right"
-	--[[Translation missing --]]
 	L["Rotation"] = "Rotation"
 	--[[Translation missing --]]
 	L["Rotation Mode"] = "Rotation Mode"
@@ -883,6 +900,8 @@ local L = WeakAuras.L
 	--[[Translation missing --]]
 	L["Show Matches for Units"] = "Show Matches for Units"
 	--[[Translation missing --]]
+	L["Show Model"] = "Show Model"
+	--[[Translation missing --]]
 	L["Show model of unit "] = "Show model of unit "
 	--[[Translation missing --]]
 	L["Show On"] = "Show On"
@@ -895,7 +914,11 @@ local L = WeakAuras.L
 	--[[Translation missing --]]
 	L["Shows a 3D model from the game files"] = "Shows a 3D model from the game files"
 	--[[Translation missing --]]
+	L["Shows a border"] = "Shows a border"
+	--[[Translation missing --]]
 	L["Shows a custom texture"] = "Shows a custom texture"
+	--[[Translation missing --]]
+	L["Shows a model"] = "Shows a model"
 	--[[Translation missing --]]
 	L["Shows a progress bar with name, timer, and icon"] = "Shows a progress bar with name, timer, and icon"
 	--[[Translation missing --]]
@@ -984,6 +1007,8 @@ local L = WeakAuras.L
 	L["Stop ignoring Updates"] = "Stop ignoring Updates"
 	--[[Translation missing --]]
 	L["Stop Sound"] = "Stop Sound"
+	--[[Translation missing --]]
+	L["Sub Elements"] = "Sub Elements"
 	--[[Translation missing --]]
 	L["Sub Option %i"] = "Sub Option %i"
 	--[[Translation missing --]]

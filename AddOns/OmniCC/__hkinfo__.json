@@ -1,0 +1,17 @@
+{
+    "addonsMap": [
+        "OmniCC",
+        "OmniCC_Config"
+    ],
+    "children": [
+        "OmniCC_Config"
+    ],
+    "fileName": "omni-cc",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "OmniCC",
+    "name": "OmniCC",
+    "searchName": "OmniCC",
+    "target": "curse",
+    "version": "8.2.5"
+}

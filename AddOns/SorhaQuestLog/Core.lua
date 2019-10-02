@@ -26,12 +26,12 @@ local _
 
 -- Register framd font
 LSM:Register("font", "framd", [[Interface\AddOns\SorhaQuestLog\Fonts\framd.ttf]])
-LSM:Register("sound", "Peon Ready", [[Sound\Creature\Peon\PeonReady1.ogg]])
-LSM:Register("sound", "More work?", [[Sound\Creature\Peasant\PeasantWhat3.ogg]])
-LSM:Register("sound", "Work complete!", [[Sound\Creature\Peon\PeonBuildingComplete1.ogg]])
-LSM:Register("sound", "Quest Added", [[Sound\Interface\iQuestActivate.ogg]])
-LSM:Register("sound", "Quest Completed", [[Sound\Interface\iQuestComplete.ogg]])
-LSM:Register("sound", "Quest Failed", [[Sound\Interface\igQuestFailed.ogg]])
+LSM:Register("sound", "Peon Ready", 558137, [[Sound\Creature\Peon\PeonReady1.ogg]])
+LSM:Register("sound", "More work?", 558143, [[Sound\Creature\Peasant\PeasantWhat3.ogg]])
+LSM:Register("sound", "Work complete!", 558132, [[Sound\Creature\Peon\PeonBuildingComplete1.ogg]])
+LSM:Register("sound", "Quest Added", 567400, [[Sound\Interface\iQuestActivate.ogg]])
+LSM:Register("sound", "Quest Completed", 567439, [[Sound\Interface\iQuestComplete.ogg]])
+LSM:Register("sound", "Quest Failed", 567459, [[Sound\Interface\igQuestFailed.ogg]])
 
 -- Binding globals for bindings.xml
 BINDING_HEADER_SORHAQUESTLOG = "Sorha Quest Log";
@@ -131,7 +131,7 @@ local function getOptions()
 	if not options then
 		options = {
 			type = "group",
-			name = "SorhaQuestLog ".. "v1.5.1.0",
+			name = "SorhaQuestLog ".. "v1.5.1.1",
 			handler = SorhaQuestLog,
 			args = {
 				General = {
@@ -674,7 +674,7 @@ end
 function SorhaQuestLog:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 	if (prefix == "SorhaQuestLog") then
 		if (message == "VersionCheck") then
-			SendAddonMessage("SorhaQuestLog", UnitName("player") .. " v1.5.1.0", "WHISPER", sender)
+			SendAddonMessage("SorhaQuestLog", UnitName("player") .. " v1.5.1.1", "WHISPER", sender)
 		else
 			DEFAULT_CHAT_FRAME:AddMessage(message)
 		end	

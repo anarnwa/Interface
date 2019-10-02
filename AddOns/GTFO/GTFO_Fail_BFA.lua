@@ -487,6 +487,11 @@ GTFO.SpellID["301774"] = {
   sound = 3;
 };
 
+GTFO.SpellID["302305"] = {
+  --desc = "Twilight Barrage (Void Horror)";
+  sound = 3;
+};
+
 -- ***********************
 -- * Shrine of the Storm *
 -- ***********************
@@ -1660,3 +1665,9 @@ GTFO.SpellID["303963"] = {
   sound = 3;
   tankSound = 0;
 };
+
+GTFO.SpellID["303729"] = {
+  --desc = "Crackling Tornado (Rak'sha the Swift)";
+  sound = 3;
+};
+

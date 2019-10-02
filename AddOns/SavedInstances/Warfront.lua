@@ -8,7 +8,7 @@ local pairs, type = pairs, type
 -- WoW API / Variables
 local C_ContributionCollector_GetName = C_ContributionCollector.GetName
 local C_ContributionCollector_GetState = C_ContributionCollector.GetState
-local IsQuestFlaggedCompleted = IsQuestFlaggedCompleted
+local IsQuestFlaggedCompleted = C_QuestLog and C_QuestLog.IsQuestFlaggedCompleted or IsQuestFlaggedCompleted
 local UnitLevel = UnitLevel
 
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
@@ -23,12 +23,12 @@ local warfronts = {
   {
     Alliance = {
       id = 116,
-      scenario = {53414}, -- Warfront: The Battle for Stromgarde (Alliance)
+      scenario = {53414, 56136}, -- Warfront: The Battle for Stromgarde (Alliance)
       boss = 52847, -- Doom's Howl
     },
     Horde = {
       id = 11,
-      scenario = {53416}, -- Warfront: The Battle for Stromgarde (Horde)
+      scenario = {53416, 56137}, -- Warfront: The Battle for Stromgarde (Horde)
       boss = 52848, -- The Lion's Roar
     },
   },

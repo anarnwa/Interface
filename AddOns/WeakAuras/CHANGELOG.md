@@ -1,32 +1,23 @@
-# [2.14.0-beta5-16-ge384546](https://github.com/WeakAuras/WeakAuras2/tree/e3845463d92ac9f5757737e5f1c9af4c065e2ae6) (2019-08-16)
+# [2.15.1](https://github.com/WeakAuras/WeakAuras2/tree/2.15.1) (2019-09-27)
 
-[Full Changelog](https://github.com/WeakAuras/WeakAuras2/compare/2.14.0-beta5...e3845463d92ac9f5757737e5f1c9af4c065e2ae6)
+[Full Changelog](https://github.com/WeakAuras/WeakAuras2/compare/2.15.0...2.15.1)
 
-Krucifom (4):
+## Highlights
 
-- fix my shit and disable "Garrote - silence" debuff for classic
-- Add some rogue buff/debuff/ability for classic
-- Ignore classic section when copying Spells into classic section
-- disable some rogue buff/debuff for WoW classic
+ - Bug fixes
+- Workaround for things Blizzard broke in 8.2.5 
 
-Stanzilla (4):
+## Commits
 
-- Revert "fix import error with escape from < and >"
-- changelog-script: double quote for safety
-- support environment files in the translation script and add it to gitignore
-- temp fix our locale submissions
+InfusOnWoW (3):
 
-emptyrivers (6):
+- Fix LoadFunction
+- Make WA_GetUnitBuff work on 8.2.5
+- Fix description of "Specific Unit"
 
-- move *new* glow feature indicators into subtree
-- remove stale feature indicators
-- allow string custom option to give a multiline edit box
-- ensure that consistency checks are done on children of auras which thought they were a child
-- grab installed uid after running Add()
-- enhance parent-child validation
+mrbuds (3):
 
-mrbuds (2):
-
-- classic: use LibClassicCasterino for cast trigger
-- classic combo points: fix division per 0 for class with no combo points
+- fix nil error in Action Usable spellInRange condition round 2
+- power trigger: invert table use for power types with classic's one this fix "stagger" not shown on retail
+- fix "select" conditions with function for values  fixes #1728
 

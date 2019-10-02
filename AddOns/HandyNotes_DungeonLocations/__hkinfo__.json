@@ -1,0 +1,14 @@
+{
+    "fileName": "handynotes_dungeonlocations",
+    "localName": "HandyNotes_DungeonLocations",
+    "searchName": "HandyNotes_DungeonLocations",
+    "target": "curse",
+    "version": "1.48",
+    "addonsMap": [
+        "HandyNotes_DungeonLocations"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "HandyNotes_DungeonLocations",
+    "gameVersion": ""
+}

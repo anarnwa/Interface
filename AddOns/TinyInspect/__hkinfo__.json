@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "TinyInspect",
+    "localName": "TinyInspect",
+    "version": "8.2.1__2019-08-31 19:37:58",
+    "fileName": "itemlevel-anywhere",
+    "addonsMap": [
+        "TinyInspect"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "TinyInspect",
+    "gameVersion": ""
+}

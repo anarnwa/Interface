@@ -11,7 +11,7 @@ local LO = LibStub("LibOptionsFrame-1.0");
 local MACRO_EDITOR_NAME = "FishingBuddyOption_MacroEditor"
 local GSB = FishingBuddy.GetSettingBool;
 
-MacroOptions = {
+local MacroOptions = {
 	["CreateMacro"] = {
 		["text"] = FBConstants.CONFIG_CREATEMACRO_ONOFF,
 		["tooltip"] = FBConstants.CONFIG_CREATEMACRO_INFO,
@@ -126,6 +126,7 @@ FishingBuddy.FishingMacro = FishingMacro;
 local function SetupMacroKeyBinding()
     local key1, key2 = GetBindingKey("FISHINGBUDDY_GOFISHING");
     if key1 or key2 then
+        local macro_set;
         local GSB = FishingBuddy.GetSettingBool;
         if GSB("ToonMacro") then
             macro_set = CHARACTER_BINDINGS;
@@ -189,7 +190,7 @@ local function PrepareEditBox()
     holder:FixSizes();
 end
 
-MacroEvents = {}
+local MacroEvents = {}
 MacroEvents["VARIABLES_LOADED"] = function(started)
     PrepareEditBox()
     FishingBuddy.OptionsFrame.HandleOptions(MACROS, "Interface\\Icons\\INV_Misc_PaperBundle04a", MacroOptions);

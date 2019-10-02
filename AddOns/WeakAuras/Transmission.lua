@@ -166,11 +166,21 @@ local function filterFunc(_, event, msg, player, l, cs, t, flag, channelId, ...)
     if event == "CHAT_MSG_WHISPER" and not UnitInRaid(trimmedPlayer) and not UnitInParty(trimmedPlayer) then -- XXX: Need a guild check
       local _, num = BNGetNumFriends()
       for i=1, num do
-        local toon = BNGetNumFriendGameAccounts(i)
-        for j=1, toon do
-          local _, rName, rGame = BNGetFriendGameAccountInfo(i, j)
-          if rName == trimmedPlayer and rGame == "WoW" then
-            return false, newMsg, player, l, cs, t, flag, channelId, ...; -- Player is a real id friend, allow it
+        if C_BattleNet then -- introduced in 8.2.5 PTR
+          local toon = C_BattleNet.GetFriendNumGameAccounts(i)
+          for j=1, toon do
+            local gameAccountInfo = C_BattleNet.GetFriendGameAccountInfo(i, j);
+            if gameAccountInfo.characterName == trimmedPlayer and gameAccountInfo.clientProgram == "WoW" then
+              return false, newMsg, player, l, cs, t, flag, channelId, ...; -- Player is a real id friend, allow it
+            end
+          end
+        else -- keep old method for 8.2 and Classic
+          local toon = BNGetNumFriendGameAccounts(i)
+          for j=1, toon do
+            local _, rName, rGame = BNGetFriendGameAccountInfo(i, j)
+            if rName == trimmedPlayer and rGame == "WoW" then
+              return false, newMsg, player, l, cs, t, flag, channelId, ...; -- Player is a real id friend, allow it
+            end
           end
         end
       end
@@ -351,8 +361,10 @@ local function importPendingData()
   -- cleanup the mess
   ItemRefTooltip:Hide()-- this also wipes pendingData via the hook on L521
   buttonAnchor:Hide()
-  thumbnailAnchor.currentThumbnail:Hide()
-  thumbnailAnchor.currentThumbnail = nil
+  if thumbnailAnchor.currentThumbnail then
+    thumbnailAnchor.currentThumbnail:Hide()
+    thumbnailAnchor.currentThumbnail = nil
+  end
   if imports and WeakAuras.LoadOptions() then
     WeakAuras.ShowOptions()
   else
@@ -1661,24 +1673,26 @@ function WeakAuras.ShowDisplayTooltip(data, children, matchInfo, icon, icons, im
     thumbnailAnchor.currentThumbnail:Hide()
     thumbnailAnchor.currentThumbnail = nil
   end
-  local ok,thumbnail = pcall(regionOptions[regionType].createThumbnail, thumbnailAnchor);
-  if not ok then
-    error("Error creating thumbnail", 2)
-  end
-  pcall(regionOptions[regionType].modifyThumbnail, thumbnailAnchor, thumbnail, data)
-  thumbnailAnchor.currentThumbnail = thumbnail
-  thumbnail:SetAllPoints(thumbnailAnchor);
-  if (thumbnail.SetIcon) then
-    local i;
-    if(icon) then
-      i = icon;
-    elseif(WeakAuras.transmitCache and WeakAuras.transmitCache[data.id]) then
-      i = WeakAuras.transmitCache[data.id];
+  if regionOptions[regionType] then
+    local ok,thumbnail = pcall(regionOptions[regionType].createThumbnail, thumbnailAnchor);
+    if not ok then
+      error("Error creating thumbnail", 2)
     end
-    if (i) then
-      thumbnail:SetIcon(i);
-    else
-      thumbnail:SetIcon();
+    pcall(regionOptions[regionType].modifyThumbnail, thumbnailAnchor, thumbnail, data)
+    thumbnailAnchor.currentThumbnail = thumbnail
+    thumbnail:SetAllPoints(thumbnailAnchor);
+    if (thumbnail.SetIcon) then
+      local i;
+      if(icon) then
+        i = icon;
+      elseif(WeakAuras.transmitCache and WeakAuras.transmitCache[data.id]) then
+        i = WeakAuras.transmitCache[data.id];
+      end
+      if (i) then
+        thumbnail:SetIcon(i);
+      else
+        thumbnail:SetIcon();
+      end
     end
   end
   WeakAuras.GetData = RegularGetData or WeakAuras.GetData

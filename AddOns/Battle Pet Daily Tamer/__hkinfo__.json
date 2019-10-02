@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Battle Pet Daily Tamer",
+    "localName": "Battle Pet Daily Tamer",
+    "version": "Battle_Pet_Daily_Tamer_3_0_6.zip",
+    "fileName": "battle-pet-daily-tamer",
+    "addonsMap": [
+        "Battle Pet Daily Tamer"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Battle Pet Daily Tamer",
+    "gameVersion": "8.1.0"
+}

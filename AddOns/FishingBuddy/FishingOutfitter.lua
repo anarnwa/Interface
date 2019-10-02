@@ -111,7 +111,7 @@ local function Patch_ShowOutfitTooltip(self, pOutfit, pOwner, pMissingItems, pBa
 		bp = Outfitter.LibStatLogic:GetStatNameFromID("FISHING").." "..bp;
 		local sp = StylePoints(pOutfit);
 		local pstring;
-		if ( points == 1 ) then
+		if ( sp == 1 ) then
 			pstring = FBConstants.POINT;
 		else
 			pstring = FBConstants.POINTS;

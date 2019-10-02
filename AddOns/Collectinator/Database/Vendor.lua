@@ -2,10 +2,10 @@
 ************************************************************************
 Vendor.lua
 ************************************************************************
-File date: 2019-06-25T17:59:51Z
-File hash: 3c640e0
-Project hash: 3c640e0
-Project version: 8.2.0.1
+File date: 2019-09-19T0:09:44Z
+File hash: 28bfb82
+Project hash: f45cfab
+Project version: 8.2.5.1
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -327,7 +327,8 @@ function addon:InitVendor()
 	AddVendor(154140,	L["Speaker Utia"],		Z.NAZJATAR,			38.0,	55.6,	"Alliance")
 	AddVendor(154652,	L["Dazzerian"],			Z.NAZJATAR,			48.6,	60.8,	"Horde") -- PvP vendor
 	AddVendor(154653,	L["Crafticus Mindbender"],	Z.NAZJATAR,			38.1,	55.4,	"Alliance") -- PvP vendor
-	AddVendor(154860,	L["Feylana the Handler"],	Z.NAZJATAR,			0.0,	0.0,	"Neutral")  --Needs updating
+	AddVendor(154860,	L["Feylana the Handler"],	Z.NAZJATAR,			73.8,	46.0,	"Neutral")
+	AddVendor(155944,	L["Otela"],			Z.TANARIS,			0.0,	0.0, 	"Neutral") -- CoT Timewalking vendor
 
 	self.InitVendor = nil
 end

@@ -1,6 +1,6 @@
 ## Interface: 80200
 ## Title: Fishing Buddy
-## Version: 1.10.4
+## Version: 1.10.7
 ## Notes: Help with fishing related tasks -- clothing, fish information, etc.
 ## Notes-deDE: Erleichtert das Angeln - Ausrüstung und Fish-Infos
 ## Notes-frFR: Vous facilite la vie de pecheur. Informations sur les poissons, changement d'habits, etc.
@@ -13,6 +13,7 @@
 ## X-Help: FBConstants.HELPMSG
 ## X-Curse-Project-ID: 15093
 ## X-WoWI-ID: 4239
+## Globe: check-classic
 Libs\Libs.xml
 localization.enUS.lua
 localization.deDE.lua
@@ -34,15 +35,15 @@ FishingScrollMenu.xml
 FishingLocationsFrame.xml
 FishingOutfitManager.lua
 FishingOutfitter.xml
-FishingGearManager.lua
 FishingBuddyMinimap.lua
-FishingQuests.lua
-FishingExtravaganza.xml
 FishingWatcher.xml
+FishingQuests.lua
+FishingGearManager.lua
+FishingExtravaganza.xml
 FishingRaid.xml
+FishingMacro.lua
 FishingSchools.lua
 FishingAbout.lua
 FishingPlans.lua
 FishingPlans\Plans.xml
-FishingMacro.lua
 FishingFluff.xml

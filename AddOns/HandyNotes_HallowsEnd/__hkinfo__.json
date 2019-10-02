@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "HandyNotes_HallowsEnd",
+    "localName": "HandyNotes_HallowsEnd",
+    "version": "v1.4.3",
+    "fileName": "handynotes_hallowsend",
+    "addonsMap": [
+        "HandyNotes_HallowsEnd"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "HandyNotes_HallowsEnd",
+    "gameVersion": "8.0.1"
+}

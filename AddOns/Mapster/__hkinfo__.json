@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Mapster",
+    "localName": "Mapster",
+    "version": "1.8.5",
+    "fileName": "mapster",
+    "addonsMap": [
+        "Mapster"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Mapster",
+    "gameVersion": ""
+}

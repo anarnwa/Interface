@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Cromulent",
+    "localName": "Cromulent",
+    "version": "80205-2",
+    "fileName": "cromulent",
+    "addonsMap": [
+        "Cromulent"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Cromulent",
+    "gameVersion": ""
+}

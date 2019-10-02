@@ -1,0 +1,39 @@
+{
+    "target": "curse",
+    "searchName": "Deadly Boss Mods (DBM)",
+    "localName": "DBM-Core",
+    "version": "8.2.22",
+    "fileName": "deadly-boss-mods",
+    "addonsMap": [
+        "DBM-Core",
+        "DBM-Brawlers",
+        "DBM-DefaultSkin",
+        "DBM-DMF",
+        "DBM-GUI",
+        "DBM-StatusBarTimers",
+        "DBM-WorldEvents",
+        "DBM-Party-BfA",
+        "DBM-Azeroth-BfA",
+        "DBM-Uldir",
+        "DBM-CrucibleofStorms",
+        "DBM-ZuldazarRaid",
+        "DBM-EternalPalace"
+    ],
+    "interfaceMap": [],
+    "children": [
+        "DBM-Brawlers",
+        "DBM-DefaultSkin",
+        "DBM-DMF",
+        "DBM-GUI",
+        "DBM-StatusBarTimers",
+        "DBM-WorldEvents",
+        "DBM-Party-BfA",
+        "DBM-Azeroth-BfA",
+        "DBM-Uldir",
+        "DBM-CrucibleofStorms",
+        "DBM-ZuldazarRaid",
+        "DBM-EternalPalace"
+    ],
+    "name": "Deadly Boss Mods (DBM)",
+    "gameVersion": ""
+}

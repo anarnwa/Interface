@@ -1,24 +1,28 @@
 # Deadly Boss Mods Core
 
-## [8.2.13](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/8.2.13) (2019-08-16)
-[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/8.2.12...8.2.13)
+## [8.2.22](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/8.2.22) (2019-09-28)
+[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/8.2.21...8.2.22)
 
-- Prep a release  
-- Fix another error  
-- Fix error  
-- Queen Azshara P4 timer rework, improving accuracy in all difficulties thanks to longer pull data available. Just about all abilities in that phase are sequenced so most of timers in that phase are now sequenced.  
-    TODO, more sequence data and combine sequence tables into cleaner format.  
-    Also fixed a couple LFR timers  
-- Fixed a bug that'd cause timer update code for :RemoveTime timer object to put a timer into negative instead of canceling it if it falls below zero  
-    Renamed "other boss mods" to "other mods" to reflect that some of those mods (such as pvp) aren't boss mods.  
-    Updated Mythic azshara timers  
-    Revamped za'qul with timer correction code on stage changes that account for several of hidden logics that cause spells to delay, or in one niche case come sooner.  
-    Fixed a bug where Za'qul horiffic summoner timer would start faded in phase 1 after a wipe on heroic/mythic difficulty.  
-    Fixed a bug where during Phase 4 Za'qul you could end up getting a dread AND a manic dread timer. There should now only be one dread timer.  
-- Adjust add berserk some, apparently it's not a 3 min berserk, it's a 2min 54.2 second one :D (i mean technically 3 since blizzard counst the 5.8 seconds adds are not attackable against the player)  
-- Added missing heal interrupt spell to Eternal Palace trash  
-    Adjusted a couple timers for Phase 2 that were 2.8 seconds slow  
-    Added a combat timer to Azshara engage for the window of time you have to time prepot  
-    Added respawn to queens Court  
-- Update alpha version and update embed  
-- CN Update  
+- Prep new tag  
+- 8.2.5 introduced some erratic UnitPosition behaviors where x and y return nil in non instanced areas briefly on zone change, this causes arrows when changing between zones to throw nil errors. This update adds a check that if x and y are nil in an area that should not be nil in, it'll skip updates on those frames until x and y start returning again.  
+- Tweak option default for Toxic spine, too spammy for my liking. it was only on by default for healers so I didn't know how spammy it felt til I saw a healer PoV stream tonight.  
+- Tweaks to GUI (#75)  
+    - Use the correct script function for editframes  
+    - Removed dropdowns "OnShow", as it's built into dropdowns code  
+    - Removed dropdowns "OnClick", as its passed as an argument, and is more reliable  
+- Fix  
+- Fixed Several bugs with the checkForSafeSender refactor  
+    - Prevent C\_BattleNet.GetAccountInfoByID() getting used on non presenceID whispers to fix lua error  
+    - Fixed a bug where auto reply didn't reply to a realId friend that was not logged into a game client, since previous check aborted if they weren't.  
+    - Fixed a bug where a realId friend that send a whisper over non realId whisper, would not get an auto reply.  
+    - Fixed bug where auto accept invites would fail on realId friends, and throw a lua error instead.  
+- Rename some callbacks to eliminate common name and ensure they are recognized as DBM events  
+- Further optimize checkForSafeSender, there is no reason to scan all friends when we have the presence ID, just request accountinfo by ID instead.  
+- Needs to be here too  
+- Fixed Overflowing venom warnings/yells, as they have NEVER worked (and it took MANY months for someone to notice/report it, NANI?)  
+- Improve bnet logic for safe sender, and add support for filtering people who might send bnet whispers to each other mid fight, who are in same raid group.  
+- Pruned option redundancy with status whispers.  
+- Revert "Performing Bot Test"  
+- Performing Bot Test  
+- add discord notifications on failure  
+- Fixed lua errors with BNSendGameData api in 8.2.5 by correctly using gameaccount ID instead of battle.net account Id. Made other checks robust while at it to avoid doing anything at all if insufficient game account data  

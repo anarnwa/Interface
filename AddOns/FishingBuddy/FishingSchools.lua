@@ -60,11 +60,11 @@ local function AddFishingSchool(kind, fishid, mapId, sidx, x, y)
 		FishingBuddy_Info["FishSchools"][mapId] = {};
 	else
 		-- how do we find the same pool?
-		local C, _, x1, y1 = FL:GetCurrentPlayerPosition();
+		local C, mapId, x1, y1 = FL:GetCurrentPlayerPosition();
 		-- if we're in an instance, don't do math
 		if ( C ) then
 			for _,hole in pairs(FishingBuddy_Info["FishSchools"][mapId]) do
-				local d,_,_ = FL:GetWorldDistance(Z, x, y, hole.x or x, hole.y or y);
+				local d,_,_ = FL:GetWorldDistance(mapId, x, y, hole.x or x, hole.y or y);
 				
 				if ( d and d < CLOSEENOUGH ) then
 					hole.x = hole.x or x;
@@ -123,7 +123,7 @@ local function CheckFishingPool(fishid, poolhint)
 			info = FL:IsFishingPool(FL.SCHOOL);
 		end
 		if ( AddFishingSchool(info.kind, fishid) and FishingBuddy.GetSettingBool("ShowNewSchools") ) then
-			FishingBuddy.Print(FBConstants.ADDFISHINFOMSG, text, GetRealZoneText());
+			FishingBuddy.Print(FBConstants.ADDFISHINFOMSG, info.name, GetRealZoneText());
 		end
 	end
 end
@@ -186,6 +186,22 @@ local schoolfish = {
 	74865,			-- Krasarang Paddlefish School
 	83064,			-- Spine Fish School
 };
+
+local HyperCompressedOcean = {}
+HyperCompressedOcean[168016] = {
+    ["frFR"] = "Océan hyper-comprimé",
+    ["deDE"] = "Hyperkomprimierter Ozean",
+    ["enUS"] = "Hyper-Compressed Ocean",
+    ["enGB"] = "Hyper-Compressed Ocean",
+    ["itIT"] = "Oceano Ultra Compresso",
+    ["koKR"] = "초압축 바다",
+    ["zhCN"] = "Hyper-Compressed Ocean",
+    ["ruRU"] = "Гиперсжатый океан",
+    ["esES"] = "Océano hipercomprimido",
+    ["esMX"] = "Océano hipercomprimido",
+    ["ptBR"] = "Oceano Hipercomprimido",
+	["spell"] = 295044,
+}
 
 FishingBuddy.AddSchoolFish = function()
 	local loc = GetLocale();

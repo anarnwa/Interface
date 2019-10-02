@@ -49,7 +49,7 @@ local uselocale = FishingBuddy.DebugLocale;
 
 local major,_,_ = FL:WOWVersion();
 local printfunc;
-if ( major > 1 ) then
+if ( FL:IsClassic() or major > 1 ) then
 	printfunc = "function(...) FishingBuddy.Message(string.format(...)); end;";
 else
 	printfunc = "function(...) FishingBuddy.Message(string.format(unpack(arg))); end;";

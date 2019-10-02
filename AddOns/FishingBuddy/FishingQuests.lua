@@ -54,7 +54,7 @@ _fqframe:Register('GOSSIP_SHOW', function()
 	end
 end, true)
 
-_fqframe:Register('QUEST_PROGRESS', function(event, ...)
+_fqframe:Register('QUEST_PROGRESS', function(_, ...)
 	if (GSB("HandleQuests") and GSB("AutoLunker")) then
 		local npcID = GetNPCID()
 	
@@ -68,7 +68,7 @@ _fqframe:Register('QUEST_PROGRESS', function(event, ...)
 	end
 end, true)
 
-_fqframe:Register('QUEST_COMPLETE', function(event, ...)
+_fqframe:Register('QUEST_COMPLETE', function(_, ...)
 	if (GSB("HandleQuests") and GSB("AutoLunker")) then
 		local npcID = GetNPCID()
 	
@@ -104,6 +104,6 @@ local QuestOptions = {
 	},
 }
 
-_fqframe:Register("VARIABLES_LOADED", function(event, ...)
+_fqframe:Register("VARIABLES_LOADED", function(_, ...)
 	FishingBuddy.OptionsFrame.HandleOptions(GENERAL, nil, QuestOptions);
 end, true)

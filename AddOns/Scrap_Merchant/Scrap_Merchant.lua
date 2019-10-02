@@ -15,7 +15,6 @@ along with the addon. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
 This file is part of Scrap.
 --]]
 
-
 local MONEY_TYPES = {'Gold', 'Silver', 'Copper'}
 local HasPawn = IsAddOnLoaded('Pawn_Scrap')
 local Background, Icon, Border
@@ -202,7 +201,7 @@ end
 function Scrap:UpdateButtonPosition()
 	if CanMerchantRepair() then
 		local off, scale
-		if CanGuildBankRepair() then
+		if CanGuildBankRepair and CanGuildBankRepair() then
 			off, scale = -3.5, 0.9
 			MerchantRepairAllButton:SetPoint('BOTTOMRIGHT', MerchantFrame, 'BOTTOMLEFT', 120, 35)
 		else
@@ -288,7 +287,7 @@ end
 function Scrap:Repair()
 	local cost = GetRepairAllCost()
 	if cost > 0 then
-		local guildMoney = GetGuildBankWithdrawMoney()
+		local guildMoney = GetGuildBankWithdrawMoney and GetGuildBankWithdrawMoney() or -1
 		local useGuild = self:CanGuildRepair() and (guildMoney == -1 or guildMoney >= cost)
 
 		if useGuild or GetMoney() >= cost then

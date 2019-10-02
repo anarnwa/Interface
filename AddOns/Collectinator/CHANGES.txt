@@ -1,12 +1,12 @@
-tag 47496fafc11baad0f076f6090ad738b0ab504cc8 8.2.0.1
+tag ed582cd5630488a4ed4e456a17c5c10de6c8baa6 8.2.5.1
 Author:	Ressy <resa1983@hotmail.com>
-Date:	Tue Jun 25 14:03:03 2019 -0400
+Date:	Tue Sep 24 08:01:18 2019 -0400
 
-8.2.0 data
+8.2.5 update
 
-commit 3c640e0bf38df3d1a487c9415b7a7e6d275a5e85
+commit f45cfab18405a793e117bfcf473e664c3f401439
 Author: Ressy <resa1983@hotmail.com>
-Date:   Tue Jun 25 13:59:51 2019 -0400
+Date:   Tue Sep 24 08:00:50 2019 -0400
 
-    To update to 8.2
+    8.2.5 update
 

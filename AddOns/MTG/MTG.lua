@@ -123,7 +123,26 @@ local initializeValueableList = function(J_id,J_Boolean)
         [169202] = buyRareItemsWithTaco,
         [170158] = buyRareItemsWithTaco,
     }
-
+    --[[valueableList = {
+        [168053] = {itemType = buyNormalItems,iteminfo=L[168053],},
+        [168091] = {itemType = buyNormalItems,iteminfo=L[168091], },
+        [168092] = {itemType = buyNormalItems,iteminfo=L[168092], },
+        [168093] = {itemType = buyNormalItems,iteminfo=L[168093], },
+        [168094] = {itemType = buyNormalItems,iteminfo=L[168094], },
+        [168095] = {itemType = buyNormalItems,iteminfo=L[168095], },
+        [168096] = {itemType = buyNormalItems,iteminfo=L[168096], },
+        [168097] = {itemType = buyNormalItems,iteminfo=L[168097], },
+        --------------------------
+        [170159] = {itemType = buyRareItemsNoTaco,iteminfo=L[170159], },
+        [170152] = {itemType = buyRareItemsNoTaco,iteminfo=L[170152], },
+        [170153] = {itemType = buyRareItemsWithTaco,iteminfo=L[170153], },
+        [170157] = {itemType = buyRareItemsNoTaco,iteminfo=L[170157], },
+        [170161] = {itemType = buyRareItemsWithTaco,iteminfo=L[170161], },
+        [170162] = {itemType = buyRareItemsNoTaco,iteminfo=L[170162], },
+        [170101] = {itemType = buyRareItemsNoTaco,iteminfo=L[170101], },
+        [169202] = {itemType = buyRareItemsWithTaco,iteminfo=L[169202], },
+        [170158] = {itemType = buyRareItemsWithTaco,iteminfo=L[170158], },
+    }]]
     if debug.showValueableList or true then
         for k,v in pairs(valueableList) do 
             --print(k, GetItemInfo(k), v)
@@ -429,7 +448,7 @@ end
 
 generateBuyList = function(amount, itemID)
 
-    if not merchantItemList[itemID] then 
+    if not merchantItemList[itemID] or MTGsettingDB[itemID] == false then 
         return 
     end
    
@@ -710,10 +729,6 @@ end
 
 
 function frame:MERCHANT_CLOSED(event,...)
-    if IsAddOnLoaded("MTG") and IsAddOnLoaded("EuiScript") then
-        DisableAddOn("MTG")
-        ReloadUI()
-    end
     if IsAddOnLoaded("WeakAuras") then
         if WeakAuras.loaded["Mrrl's trade game"] then 
             frame:UnregisterEvent("MERCHANT_SHOW")
@@ -737,7 +752,10 @@ function frame:CHAT_MSG_LOOT(event,...)
             if item ~= nil and string.match(line, item) then
                 local lootAmount = string.match(line, item .. "]|h|rx(%d+)") or 1
                 buyitems = buyitems ..itemID.."("..lootAmount..")"..unit.."】【"
-                buyList[itemID].amount = buyList[itemID].amount - lootAmount   
+                buyList[itemID].amount = buyList[itemID].amount - lootAmount
+                if valueableList[itemID] ~= nil then
+                    LegendaryItemAlertSystem:AddAlert(select(2,GetItemInfo(itemID)))
+                end 
                 break
             end
         end
@@ -792,6 +810,27 @@ function frame:ADDON_LOADED(event,...)
     if j_BuyItemOption == nil then j_BuyItemOption = 1 end --1购买普通物品  2不购买普通物品
     if j_Markersize == nil then j_Markersize = 26 end
     if j_CheckTacoFirst == nil then j_CheckTacoFirst = true end  --先检查玉米卷，然后再用玉米卷购买稀有品。
+
+    if MTGsettingDB == nil then MTGsettingDB = {} end
+    if MTGsettingDB[168053] == nil then MTGsettingDB[168053] = true end
+    if MTGsettingDB[168091] == nil then MTGsettingDB[168091] = true end
+    if MTGsettingDB[168092] == nil then MTGsettingDB[168092] = true end
+    if MTGsettingDB[168093] == nil then MTGsettingDB[168093] = true end
+    if MTGsettingDB[168094] == nil then MTGsettingDB[168094] = true end
+    if MTGsettingDB[168095] == nil then MTGsettingDB[168095] = true end
+    if MTGsettingDB[168096] == nil then MTGsettingDB[168096] = true end
+    if MTGsettingDB[168097] == nil then MTGsettingDB[168097] = true end
+    if MTGsettingDB[170159] == nil then MTGsettingDB[170159] = true end
+    if MTGsettingDB[170152] == nil then MTGsettingDB[170152] = true end
+    if MTGsettingDB[170153] == nil then MTGsettingDB[170153] = true end
+    if MTGsettingDB[170157] == nil then MTGsettingDB[170157] = true end
+    if MTGsettingDB[170161] == nil then MTGsettingDB[170161] = true end
+    if MTGsettingDB[170162] == nil then MTGsettingDB[170162] = true end
+    if MTGsettingDB[170101] == nil then MTGsettingDB[170101] = true end
+    if MTGsettingDB[170162] == nil then MTGsettingDB[170162] = true end
+    if MTGsettingDB[169202] == nil then MTGsettingDB[169202] = true end
+    if MTGsettingDB[170158] == nil then MTGsettingDB[170158] = true end
+
       frame:RegisterEvent("MERCHANT_SHOW")
       frame:RegisterEvent("MERCHANT_CLOSED")
       frame:RegisterEvent("CHAT_MSG_LOOT")
@@ -820,7 +859,7 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     guangao:SetText(L["Mrrl's trade game"])
 
     local dropDown = CreateFrame("FRAME", "WPDemoDropDown", MTG_OptionsFrame, "UIDropDownMenuTemplate")
-    dropDown:SetPoint("LEFT",0,-30)
+    dropDown:SetPoint("RIGHT",0,-30)
     UIDropDownMenu_SetWidth(dropDown, 200)
     local j_fonts = {L["Buy normal items"],L["Don't buy normal items"]}
     UIDropDownMenu_SetText(dropDown,j_fonts[j_BuyItemOption])
@@ -839,7 +878,7 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     end)
 
     local BuyRareItemdropDown = CreateFrame("FRAME", "WPDemoDropDown", MTG_OptionsFrame, "UIDropDownMenuTemplate")
-    BuyRareItemdropDown:SetPoint("LEFT")
+    BuyRareItemdropDown:SetPoint("RIGHT")
     UIDropDownMenu_SetWidth(BuyRareItemdropDown, 200)
     local fonts = {L["buy cape items that don't need taco"],L["buy every cape items"],L["Don't buy cape items"]}
     UIDropDownMenu_SetText(BuyRareItemdropDown,fonts[j_BuyRareItemOption])
@@ -871,10 +910,19 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     MarkersizeEditBox:SetCursorPosition(0)
 ]]
     local J_button = CreateFrame("CheckButton", "j_s_CheckTacoFirst", MTG_OptionsFrame, "InterfaceOptionsCheckButtonTemplate")
-    J_button:SetPoint("LEFT",0,-60)
+    J_button:SetPoint("RIGHT",-270,-60)
     getglobal(J_button:GetName().."Text"):SetText(L["Check taco before buying rare items with taco"])
     if j_CheckTacoFirst == true then J_button:SetChecked(true) else J_button:SetChecked(false) end
 
+    local count,countx=0,0
+    for key,value in pairs(MTGsettingDB) do
+        count=count+1
+        if count>15 then countx,count=countx+1,0 end
+        local MTG_button = CreateFrame("CheckButton", "MTG_Shielding_"..key, MTG_OptionsFrame, "InterfaceOptionsCheckButtonTemplate")
+        MTG_button:SetPoint("TOPLEFT", 32+200*countx, -32-32*count)
+        getglobal(MTG_button:GetName().."Text"):SetText("|cFFad00c3"..GetItemInfo(key).."\n|r".."|cFF00FF00"..L[key])
+        if value == true then MTG_button:SetChecked(true) else MTG_button:SetChecked(false) end
+    end 
 
     self.show = true
     MTG_OptionsFrame:SetScript("OnHide", function(self)
@@ -891,6 +939,20 @@ MTG_OptionsFrame:SetScript("OnShow", function(self)
     else
         if j_CheckTacoFirst ~= false then
             j_CheckTacoFirst = false
+        end
+    end
+
+    for key,value in pairs(MTGsettingDB) do
+        if _G["MTG_Shielding_"..key]:GetChecked() then
+            if MTGsettingDB[(key)] ~= true then
+                MTGsettingDB[(key)] = true
+                print(key,"开启")
+            end
+        else
+            if MTGsettingDB[(key)] ~= false then
+                MTGsettingDB[(key)] = false
+                print(key,"关闭")
+            end
         end
     end
     end)

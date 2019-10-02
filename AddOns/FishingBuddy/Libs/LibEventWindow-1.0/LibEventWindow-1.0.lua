@@ -41,7 +41,7 @@ function EventLib:UnRegister(event, method)
 	if (methods) then
 		local jdx;
 		for idx,f in ipairs(self[event]) do
-			if ( f == func ) then
+			if ( f == method ) then
 				jdx = idx;
 			end
 		end

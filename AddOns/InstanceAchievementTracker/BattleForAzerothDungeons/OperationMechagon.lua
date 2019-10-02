@@ -10,10 +10,28 @@ local L = core.L
 core._2097 = {}
 core._2097.Events = CreateFrame("Frame")
 
+------------------------------------------------------
+---- Gunker
+------------------------------------------------------
+local helplessCritersSaved = 0
+
+function core._2097:Gunker()
+    --Defeat Gunker in Operation: Mechagon after rescuing 5 Helpless Critters on Mythic Difficulty.
+
+    --If Carrying Helpless Critter removed and player is alive, increment counter by 1
+    if core.type == "SPELL_AURA_REMOVED" and core.spellId == 302766 and UnitIsDead(core.destName) == false then
+        helplessCritersSaved = helplessCritersSaved + 1
+    end
+
+    if helplessCritersSaved >= 5 then
+        core:getAchievementSuccess()
+    end
+end
+
 function core._2097:TussleTonks()
     --Defeat the Tussle Tonks in Operation: Mechagon after Deuce Mecha-Buffer has been hit with a Piston Smasher on Mythic Difficulty.
 
-    if core.destID == "151654" and core.spellId == 282943 then
+    if core.type == "SPELL_DAMAGE" and core.destID == "151654" and core.spellId == 282943 then
         core:getAchievementSuccess()
     end
 end 
@@ -53,4 +71,11 @@ function core._2097:MachinistsGarden()
             end
         end
     end
+end
+
+function core._2097:ClearVariables()
+    ------------------------------------------------------
+    ---- Gunker
+    ------------------------------------------------------
+    helplessCritersSaved = 0
 end

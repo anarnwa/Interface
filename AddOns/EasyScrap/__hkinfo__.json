@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Easy Scrap",
+    "localName": "EasyScrap",
+    "version": "Easy Scrap 24",
+    "fileName": "easy-scrap",
+    "addonsMap": [
+        "EasyScrap"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Easy Scrap",
+    "gameVersion": "8.2.0"
+}

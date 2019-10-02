@@ -2,10 +2,10 @@
 ************************************************************************
 Seasonal.lua
 ************************************************************************
-File date: 2017-03-19T19:36:32Z
-File hash: 6ba4ef0
-Project hash: 3c640e0
-Project version: 8.2.0.1
+File date: 2019-09-24T12:00:50Z
+File hash: f45cfab
+Project hash: f45cfab
+Project version: 8.2.5.1
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -58,6 +58,9 @@ function addon:InitWorldEvents()
 
 	local achievement_id, achievement_name = _G.GetAchievementInfo(8820)
 	AddWorldEvent("WOW_10TH_ANNIVERSARY", achievement_name)
+
+	local achievement_id, achievement_name = _G.GetAchievementInfo(13917)
+	AddWorldEvent("WOW_15TH_ANNIVERSARY", achievement_name)
 
 	self.InitWorldEvents = nil
 end

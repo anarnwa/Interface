@@ -1,8 +1,8 @@
-## Interface: 80000
+## Interface: 80200
 ## Title: SorhaQuestLog
 ## Notes: QuestLog
 ## Author: Sorha
-## Version: v1.5.1.0
+## Version: v1.5.1.1
 ## SavedVariables: SorhaQuestLogDB
 ## OptionalDeps: Ace3, LibSink-2.0, LibDataBroker-1.1, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibToast-1.0, Masque
 ## X-Embeds: Ace3

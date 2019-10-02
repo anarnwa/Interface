@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Fishing Buddy",
+    "localName": "FishingBuddy",
+    "version": "1.10.7",
+    "fileName": "fishingbuddy",
+    "addonsMap": [
+        "FishingBuddy"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Fishing Buddy",
+    "gameVersion": ""
+}

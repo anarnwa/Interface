@@ -129,6 +129,7 @@ local function PickRandomBobber(bobbersetting)
 end
 
 local function UseThisBobber(itemid, info)
+	local canuse;
     if (info.toy) then
         canuse = false
 		if (PlayerHasToy(itemid) and C_ToyBox.IsToyUsable(itemid)) then

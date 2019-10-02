@@ -523,13 +523,42 @@ local pet_journal = _G.C_PetJournal
 local GetBestMapForUnit = _G.C_Map.GetBestMapForUnit
 local GetMapInfo = _G.C_Map.GetMapInfo
 local mount_journal = _G.C_MountJournal
-local C_Timer = C_Timer
-local IsSpellKnown = IsSpellKnown
+local C_Timer = _G.C_Timer
+local IsSpellKnown = _G.IsSpellKnown
+local CombatLogGetCurrentEventInfo = _G.CombatLogGetCurrentEventInfo
 
 local NUM_BAG_SLOTS = _G.NUM_BAG_SLOTS
 local COMBATLOG_OBJECT_AFFILIATION_MINE = _G.COMBATLOG_OBJECT_AFFILIATION_MINE
 local COMBATLOG_OBJECT_AFFILIATION_PARTY = _G.COMBATLOG_OBJECT_AFFILIATION_PARTY
 local COMBATLOG_OBJECT_AFFILIATION_RAID = _G.COMBATLOG_OBJECT_AFFILIATION_RAID
+
+
+--[[
+      HELPERS ----------------------------------------------------------------------------------------------------------------
+  ]]
+
+-- TODO: Move elsewhere (when refactoring the Core)
+--- Calculate an estimate for an item's drop chance while considering other group members that are also eligible
+-- Only modifies chances for SHARED Loot, i.e. those that are set to use a groupSize > 1
+-- Note: Virtually all items are now PERSONAL loot by default, which means this no longer applies to them
+-- Caveat: Rarity has no idea how many group members were actually present, so it uses a predefined estimate (stored in the groupSize field), but this is also used to categorize items according to their difficulty (...). This is why there is another field, equalOdds, which will override the groupSize calculation to effectively force Personal Loot everywhere
+-- @param item A table containing the data (itemDB entry) that is to be used
+-- @return The modified drop chance after accounting for shared loot, given as a percentage
+-- @return The modified drop chance after accounting for shared loot, given as a fraction (1 in X)
+local function GetRealDropPercentage(item)
+
+	local dropChance =  (1.00 / (item.chance or 100))
+	local realDropChance = dropChance -- Default: Personal Loot -> group members don't matter
+	local fractionalDropChance = ( (item.chance or 0) * (item.groupSize or 1) )
+
+	local itemUsesSharedLoot = (item.method == BOSS -- Only applies to
+		and item.groupSize ~= nil and item.groupSize > 1 -- Item uses Shared Loot
+		and not item.equalOdds) -- Not overwritten by the Personal Loot toggle
+	if itemUsesSharedLoot then realDropChance = dropChance / item.groupSize	end
+
+	return realDropChance, fractionalDropChance
+
+end
 
 
 -- Helper function (to look up map names more easily)
@@ -1267,14 +1296,12 @@ local function compareDifficulty(a, b)
 
  local item
  item = a
- local dropChance = (1.00 / (item.chance or 100))
- if item.method == BOSS and item.groupSize ~= nil and item.groupSize > 1 and not item.equalOdds then dropChance = dropChance / item.groupSize end
+ local dropChance = GetRealDropPercentage(item)
  local medianLoots = round(math.log(1 - 0.5) / math.log(1 - dropChance))
  local median1 = medianLoots
 
  item = b
- dropChance = (1.00 / (item.chance or 100))
- if item.method == BOSS and item.groupSize ~= nil and item.groupSize > 1 and not item.equalOdds then dropChance = dropChance / item.groupSize end
+	dropChance = GetRealDropPercentage(item)
  medianLoots = round(math.log(1 - 0.5) / math.log(1 - dropChance))
  local median2 = medianLoots
 
@@ -1287,16 +1314,14 @@ local function compareProgress(a, b)
 
  local item
  item = a
- local dropChance = (1.00 / (item.chance or 100))
- if item.method == BOSS and item.groupSize ~= nil and item.groupSize > 1 and not item.equalOdds then dropChance = dropChance / item.groupSize end
+ local dropChance = GetRealDropPercentage(item)
  local medianLoots = round(math.log(1 - 0.5) / math.log(1 - dropChance))
  local median1 = medianLoots
  local progress1 = 0
  if item.attempts or 0 > 0 then progress1 = 100 * (1 - math.pow(1 - dropChance, item.attempts or 0)) end
 
  item = b
- dropChance = (1.00 / (item.chance or 100))
- if item.method == BOSS and item.groupSize ~= nil and item.groupSize > 1 and not item.equalOdds then dropChance = dropChance / item.groupSize end
+	dropChance = GetRealDropPercentage(item)
  medianLoots = round(math.log(1 - 0.5) / math.log(1 - dropChance))
  local median2 = medianLoots
  local progress2 = 0
@@ -2554,7 +2579,8 @@ end
 -- Criteria in a dungeon completed, currently used for Reins of the Infinite Timereaver detection as a special case
 -------------------------------------------------------------------------------------
 local timewalkingCriteriaLUT = {
-	[24801] = "Ozumot",
+	[24801] = "Ozumat", -- Legacy (seems to no longer work? Perhaps the criterion ID was changed...)
+	[34414] = "Ozumat", -- Timewalking difficulty only? (need to test)
 	[24803] = "Murozond",
 	[24784] = "Trial of the King", -- [126952] = "Trial of the King", -- Object: Legacy of the Clan Leaders
 	[19256] = "Gekkan", -- Object: Ancient Mogu Treasure
@@ -2796,8 +2822,7 @@ _G.GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 							blankAdded = true
 							GameTooltip:AddLine(" ")
 						end
-						local chance = v.chance or 0
-						if v.method == BOSS and v.groupSize ~= nil and v.groupSize > 1 and not v.equalOdds then chance = chance * v.groupSize end
+						local chance = select(2, GetRealDropPercentage(v))
 						local attemptText = " "..colorize(format(L["(%d/%d attempts)"], v.attempts or 0, chance or 0), white)
 						if v.method == COLLECTION then attemptText = " "..colorize(format(L["(%d/%d collected)"], v.attempts or 0, v.chance or 0), white) end
 						if v.known or Rarity.db.profile.tooltipAttempts == false then attemptText = "" end
@@ -2908,8 +2933,7 @@ _G.GameTooltip:HookScript("OnTooltipSetUnit", function(self)
 										blankAdded = true
 										GameTooltip:AddLine(" ")
 									end
-									local chance = vv.chance or 0
-									if vv.method == BOSS and vv.groupSize ~= nil and vv.groupSize > 1 and not vv.equalOdds then chance = chance * vv.groupSize end
+									local chance = select(2, GetRealDropPercentage(vv))
 									local attemptText = " "..colorize(format(L["(%d/%d attempts)"], vv.attempts or 0, chance or 0), white)
 									if vv.method == COLLECTION then attemptText = " "..colorize(format(L["(%d/%d collected)"], vv.attempts or 0, vv.chance or 0), white) end
 									if vv.known or Rarity.db.profile.tooltipAttempts == false then attemptText = "" end
@@ -2954,8 +2978,7 @@ hooksecurefunc(GameTooltip, "SetBagItem", function(self, bag, slot)
 							blankAdded = true
 							GameTooltip:AddLine(" ")
 						end
-						local chance = v.chance or 0
-						if v.method == BOSS and v.groupSize ~= nil and v.groupSize > 1 and not v.equalOdds then chance = chance * v.groupSize end
+						local chance = select(2, GetRealDropPercentage(v))
 						local attemptText = " "..colorize(format(L["(%d/%d attempts)"], v.attempts or 0, chance or 0), white)
 						if v.method == COLLECTION then attemptText = " "..colorize(format(L["(%d/%d collected)"], v.attempts or 0, v.chance or 0), white) end
 						if v.known or Rarity.db.profile.tooltipAttempts == false then attemptText = "" end
@@ -2994,8 +3017,7 @@ hooksecurefunc(GameTooltip, "SetBagItem", function(self, bag, slot)
 													blankAdded = true
 													GameTooltip:AddLine(" ")
 												end
-												local chance = vv.chance or 0
-												if vv.method == BOSS and vv.groupSize ~= nil and vv.groupSize > 1 and not vv.equalOdds then chance = chance * vv.groupSize end
+												local chance = select(2, GetRealDropPercentage(vv))
 												local attemptText = " "..colorize(format(L["(%d/%d attempts)"], vv.attempts or 0, chance or 0), white)
 												if vv.method == COLLECTION then attemptText = " "..colorize(format(L["(%d/%d collected)"], vv.attempts or 0, vv.chance or 0), white) end
 												if vv.known or Rarity.db.profile.tooltipAttempts == false then attemptText = "" end
@@ -3098,8 +3120,7 @@ do
 				chance = chance * 100
 				dataobj.text = format(L["%d collected - %.2f%%"], attempts, chance)
 			else
-				dropChance = (1.00 / (trackedItem.chance or 100))
-				if trackedItem.method == BOSS and trackedItem.groupSize ~= nil and trackedItem.groupSize > 1 and not trackedItem.equalOdds then dropChance = dropChance / trackedItem.groupSize end
+				dropChance = GetRealDropPercentage(trackedItem)
 				chance = 100 * (1 - math.pow(1 - dropChance, attempts))
 				if self.db.profile.feedText == FEED_MINIMAL then
 					if attempts == 1 then dataobj.text = format(L["%d attempt"], attempts)
@@ -3151,8 +3172,7 @@ do
 					if chance > 1 then chance = 1 end
 					chance = chance * 100
 				else
-					dropChance = (1.00 / (trackedItem2.chance or 100))
-					if trackedItem2.method == BOSS and trackedItem2.groupSize ~= nil and trackedItem2.groupSize > 1 and not trackedItem2.equalOdds then dropChance = dropChance / trackedItem2.groupSize end
+					dropChance = GetRealDropPercentage(trackedItem2)
 					chance = 100 * (1 - math.pow(1 - dropChance, attempts))
 				end
 			end
@@ -3402,8 +3422,7 @@ do
 		else
 			tooltip2AddLine(colorize(format(L["1 in %d chance"], item.chance or 100), white))
 		end
-  local dropChance = (1.00 / (item.chance or 100))
-  if item.method == BOSS and item.groupSize ~= nil and item.groupSize > 1 and not item.equalOdds then dropChance = dropChance / item.groupSize end
+  local dropChance = GetRealDropPercentage(item)
   local medianLoots = round(math.log(1 - 0.5) / math.log(1 - dropChance))
   if item.method ~= COLLECTION then tooltip2AddLine(colorize(format(L["Lucky if you obtain in %d or less"], medianLoots), gray)) end
 
@@ -3450,9 +3469,8 @@ do
 		  tooltip2:AddSeparator(1, 1, 1, 1, 1)
     local f = sort2(item.finds)
     for k, v in pairs(f) do
-     local dropChance = (1.00 / (item.chance or 100))
+     local dropChance  =GetRealDropPercentage(v)
      local chance = 100 * (1 - math.pow(1 - dropChance, v.attempts))
-     if item.method == BOSS and item.groupSize ~= nil and item.groupSize > 1 and not item.equalOdds then dropChance = dropChance / item.groupSize end
      if v.attempts == 1 then tooltip2AddDoubleLine(format(L["#%d: %d attempt (%.2f%%)"], v.num, v.attempts, chance), R:FormatTime((v.time or 0) + len))
      else tooltip2AddDoubleLine(format(L["#%d: %d attempts (%.2f%%)"], v.num, v.attempts, chance), R:FormatTime((v.time or 0) + len)) end
     end
@@ -3629,8 +3647,7 @@ do
    local itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice = GetItemInfo(v.itemId)
    local attempts = v.attempts or 0
    if v.lastAttempts then attempts = attempts - v.lastAttempts end
-   local dropChance = (1.00 / (v.chance or 100))
-   if v.method == BOSS and v.groupSize ~= nil and v.groupSize > 1 and not v.equalOdds then dropChance = dropChance / v.groupSize end
+   local dropChance = GetRealDropPercentage(v)
    local chance = 100 * (1 - math.pow(1 - dropChance, attempts))
    local medianLoots = round(math.log(1 - 0.5) / math.log(1 - dropChance))
    local lucky = L["lucky"]
@@ -3720,8 +3737,7 @@ do
 							local lucky, chance, dropChance
 
 							if v.method ~= COLLECTION then
-								dropChance = (1.00 / (tonumber(v.chance) or 100))
-								if v.method == BOSS and v.groupSize ~= nil and tonumber(v.groupSize) ~= nil and v.groupSize > 1 and not v.equalOdds then dropChance = dropChance / v.groupSize end
+								dropChance = GetRealDropPercentage(v)
 								chance = 100 * (1 - math.pow(1 - dropChance, attempts))
 								local medianLoots = round(math.log(1 - 0.5) / math.log(1 - dropChance))
 								lucky = colorize(L["Lucky"], green)

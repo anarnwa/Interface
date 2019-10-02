@@ -79,9 +79,6 @@ L["Option.UnitReactionType.xOffset.Desc"] = "材質圖案相對於對齊點的�
 L["Option.UnitReactionType.xOffset.Name"] = "水平位置"
 L["Option.UnitReactionType.yOffset.Desc"] = "材質圖案相對於對齊點的垂直方向偏移位置。負的數值會讓材質圖案向下移動，正的數值會讓材質圖案上移動。"
 L["Option.UnitReactionType.yOffset.Name"] = "垂直位置"
---[[Translation missing --]]
-L["Usage.AnyNumber"] = "Must be a number"
---[[Translation missing --]]
-L["Usage.FractionalNumber"] = "Must be a number between 0 and 1"
---[[Translation missing --]]
-L["Usage.PositiveNumber"] = "Must be a positive number"
+L["Usage.AnyNumber"] = "必須是數字"
+L["Usage.FractionalNumber"] = "必須是 0 到 1 之間的數字"
+L["Usage.PositiveNumber"] = "必須是正的數字"

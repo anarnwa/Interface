@@ -41,21 +41,25 @@ local L = WeakAuras.L
 	L["Back"] = "뒤로"
 	L["Basic Show On Cooldown"] = "재사용 대기 시간 표시"
 	L["Bloodlust/Heroism"] = "피의 욕망/영웅심"
-	L["Buff"] = "강화 효과"
 	L["buff"] = "강화 효과"
 	L["Buffs"] = "강화 효과"
 	L["Cancel"] = "취소"
 	L["Cast"] = "시전"
-	L["Charge and Buff Tracking"] = "충전 및 버프 추적"
-	L["Charge and Debuff Tracking"] = "충전 및 디버프 추적"
+	L["Charge and Buff Tracking"] = "충전량 및 강화 효과 추적"
+	L["Charge and Debuff Tracking"] = "충전량 및 약화 효과 추적"
 	--[[Translation missing --]]
 	L["Charge and Duration Tracking"] = "Charge and Duration Tracking"
 	--[[Translation missing --]]
 	L["Charge Tracking"] = "Charge Tracking"
 	L["cooldown"] = "재사용 대기시간"
+	--[[Translation missing --]]
+	L["Cooldown"] = "Cooldown"
 	L["Cooldown Tracking"] = "재사용 대기시간 추적"
 	L["Create Auras"] = "효과 생성"
+	L["debuff"] = "약화 효과"
 	L["Debuffs"] = "약화 효과"
+	--[[Translation missing --]]
+	L["debuiff"] = "debuiff"
 	L["Enchants"] = "마법부여"
 	L["General"] = "일반"
 	L["General Azerite Traits"] = "일반 아제라이트 특성"
@@ -92,8 +96,7 @@ local L = WeakAuras.L
 	L["PvP Azerite Traits"] = "PvP 아제라이트 특성"
 	L["PvP Talents"] = "명예 특성"
 	L["PVP Trinkets (Aura)"] = "PVP 장신구 (효과)"
-	--[[Translation missing --]]
-	L["PVP Trinkets (CD)"] = "PVP Trinkets (CD)"
+	L["PVP Trinkets (CD)"] = "PVP 장신구 (재사용 대기시간)"
 	L["Replace all existing triggers"] = "모든 활성 조건 교체"
 	L["Replace Triggers"] = "활성 조건 교체"
 	L["Resources"] = "자원"
@@ -124,8 +127,7 @@ local L = WeakAuras.L
 	L["Show Cooldown and Check Usable, Proc Tracking"] = "Show Cooldown and Check Usable, Proc Tracking"
 	--[[Translation missing --]]
 	L["Show Cooldown and Check Usable, Target & Proc Tracking"] = "Show Cooldown and Check Usable, Target & Proc Tracking"
-	--[[Translation missing --]]
-	L["Show Cooldown and Debuff"] = "Show Cooldown and Debuff"
+	L["Show Cooldown and Debuff"] = "재사용 대기시간 및 약화 효과 표시"
 	--[[Translation missing --]]
 	L["Show Cooldown and Debuff and Check for Target"] = "Show Cooldown and Debuff and Check for Target"
 	--[[Translation missing --]]
@@ -143,9 +145,13 @@ local L = WeakAuras.L
 	L["Show Only if on Cooldown"] = "재사용 대기 중일 때만 표시"
 	--[[Translation missing --]]
 	L["Show Totem and Charge Information"] = "Show Totem and Charge Information"
+	--[[Translation missing --]]
+	L["slow debuff"] = "slow debuff"
 	L["Specific Azerite Traits"] = "특정 아제라이트 특성"
 	--[[Translation missing --]]
 	L["Stance"] = "Stance"
+	--[[Translation missing --]]
+	L["stun debuff"] = "stun debuff"
 	--[[Translation missing --]]
 	L["Track the charge and proc, highlight while proc is active, turns red when out of range, blue on insufficient resources."] = "Track the charge and proc, highlight while proc is active, turns red when out of range, blue on insufficient resources."
 	--[[Translation missing --]]

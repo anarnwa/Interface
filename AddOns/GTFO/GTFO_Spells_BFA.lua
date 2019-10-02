@@ -263,6 +263,17 @@ GTFO.SpellID["273178"] = {
   sound = 1;
 };
 
+GTFO.SpellID["302524"] = {
+  --desc = "Dark Orb (Grip of Horror)";
+  sound = 1;
+};
+
+GTFO.SpellID["302521"] = {
+  --desc = "Dark Orb (Grip of Horror)";
+  sound = 1;
+};
+
+
 -- ***********************
 -- * Shrine of the Storm *
 -- ***********************
@@ -759,7 +770,7 @@ GTFO.SpellID["285479"] = {
 GTFO.SpellID["284470"] = {
   --desc = "Hex of Lethargy (Opulence)";
   sound = 2;
-  minimumDamage = 1;
+  damageMinimum = 1;
   test = true;
 };
 
@@ -1010,8 +1021,7 @@ GTFO.SpellID["303958"] = {
 GTFO.SpellID["298192"] = {
   --desc = "Dark Beyond (Za'qul)";
   sound = 1;
-  minimumDamage = 1;
-  test = true;
+  damageMinimum = 1;
 };
 
 GTFO.SpellID["303819"] = {
@@ -1028,3 +1038,22 @@ GTFO.SpellID["303981"] = {
   --desc = "Nether Portal (Queen Azshara)";
   sound = 1;
 };
+
+GTFO.SpellID["303422"] = {
+  --desc = "Blizzard";
+  sound = 1;
+};
+
+GTFO.SpellID["299276"] = {
+  --desc = "Sanction (Queen Azshara)";
+  applicationOnly = true;
+  sound = 1;
+};
+
+GTFO.SpellID["298569"] = {
+  --desc = "Drained Soul (Queen Azshara)";
+  applicationOnly = true;
+  sound = 1;
+  minimumStacks = 5;
+};
+

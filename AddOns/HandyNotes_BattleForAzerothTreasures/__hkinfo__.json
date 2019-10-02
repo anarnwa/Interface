@@ -1,0 +1,14 @@
+{
+    "addonsMap": [
+        "HandyNotes_BattleForAzerothTreasures"
+    ],
+    "children": [],
+    "fileName": "handynotes-battle-for-azeroth-treasures",
+    "gameVersion": "8.2.0",
+    "interfaceMap": [],
+    "localName": "HandyNotes_BattleForAzerothTreasures",
+    "name": "HandyNotes: Battle for Azeroth Treasures",
+    "searchName": "HandyNotes: Battle for Azeroth Treasures",
+    "target": "curse",
+    "version": "v8"
+}

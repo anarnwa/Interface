@@ -36,28 +36,24 @@ FishingTranslations["frFR"] = {
 	["CLICKTOSWITCH_INFO"] = "Si actif, un clic gauche change l'équipement, sinon, il affiche la fenêtre Fishing Buddy.",
 	["CLICKTOSWITCH_ONOFF"] = "Cliquer pour changer",
 	["COMPATIBLE_SWITCHER"] = "Pas de gestionnaire d'équipement compatible trouvé.",
-	--[[Translation missing --]]
-	--[[ ["CONFIG_ALWAYSHAT_INFO"] = "If enabled, just use the damned hat (even if you don't need it).",--]] 
-	--[[Translation missing --]]
-	--[[ ["CONFIG_ALWAYSHAT_ONOFF"] = "Use hats",--]] 
+	["CONFIG_ALWAYSHAT_INFO"] = "Si activé, utilise simplement le maudit chapeau (même si vous n'en avez pas besoin).",
+	["CONFIG_ALWAYSHAT_ONOFF"] = "Utiliser les chapeaux",
 	["CONFIG_ALWAYSLURE_INFO"] = "Si activé, applique un appât si aucun n'est déjà présent.",
 	["CONFIG_ALWAYSLURE_ONOFF"] = "Toujours mettre un appât",
-	["CONFIG_AUTOLOOT_INFO"] = "Si activé, ferrage automatique du poisson durant la pêche.",
-	["CONFIG_AUTOLOOT_INFOD"] = "Le ferrage automatique est désactivée car l'addon Fish Warden est activé.",
-	["CONFIG_AUTOLOOT_ONOFF"] = "Ferrage auto",
+	["CONFIG_AUTOLOOT_INFO"] = "Si activé, fouille automatique du poisson durant la pêche.",
+	["CONFIG_AUTOLOOT_INFOD"] = "La fouille automatique est désactivée car l'addon Fish Warden est activé.",
+	["CONFIG_AUTOLOOT_ONOFF"] = "Fouille auto",
 	["CONFIG_AUTOOPEN_INFO"] = "Si actif, faire un double-clic pour ouvrir les objets de quête de pêche.",
 	["CONFIG_AUTOOPEN_ONOFF"] = "Ouvrir les objets de quête",
-	["CONFIG_BGSOUNDS_INFO"] = "Si activé, le son de la pêche sera plus fort tandis que le son général sera en arrière-plan.",
+	["CONFIG_BGSOUNDS_INFO"] = "Si activé, le son restera actif lorsque WoW est en arrière-plan.",
 	["CONFIG_BGSOUNDS_ONOFF"] = "Son en arrière-plan",
-	--[[Translation missing --]]
-	--[[ ["CONFIG_BIGDRAENOR_INFO"] = "If enabled, attempt to maximize skill while in Draenor and Broken Islands.",--]] 
-	--[[Translation missing --]]
-	--[[ ["CONFIG_BIGDRAENOR_ONOFF"] = "Max Fishing",--]] 
+	["CONFIG_BIGDRAENOR_INFO"] = "Si activé, essaye de maximiser la compétence à Draenor et aux îles Brisées.",
+	["CONFIG_BIGDRAENOR_ONOFF"] = "Améliore la Pêche au maximum",
 	["CONFIG_BOBBINGBERG_INFO"] = "Si activé, utilise le Bloc de glace branlant de Bipsi.",
 	--[[Translation missing --]]
 	--[[ ["CONFIG_BOBBINGBERG_ONOFF"] = "Use Bipsi's Berg",--]] 
 	["CONFIG_CONTESTS_INFO"] = "Afficher le compte à rebours pour les concours de pêche.",
-	["CONFIG_CONTESTS_ONOFF"] = "Soutien au concours de pêche",
+	["CONFIG_CONTESTS_ONOFF"] = "Prise en compte du concours de pêche",
 	["CONFIG_CREATEMACRO_INFO"] = "Crée une macro qui fait les fonctions #NAME#",
 	["CONFIG_CREATEMACRO_ONOFF"] = "Créer une macro",
 	--[[Translation missing --]]
@@ -68,10 +64,8 @@ FishingTranslations["frFR"] = {
 	["CONFIG_DERBYTIMER_ONOFF"] = "compte à rebours du match",
 	["CONFIG_DINGQUESTFISH_INFO"] = "Si activé, le son d'ajout de quête est joué quand un poisson à réputation Nat Pagle est attrapé.",
 	["CONFIG_DINGQUESTFISH_ONOFF"] = "Sonnette à poisson de quête",
-	--[[Translation missing --]]
-	--[[ ["CONFIG_DRAENORBAIT_INFO"] = "If enabled, attempt to use the right 'special' bait for the current zone.",--]] 
-	--[[Translation missing --]]
-	--[[ ["CONFIG_DRAENORBAIT_ONOFF"] = "Special Bait",--]] 
+	["CONFIG_DRAENORBAIT_INFO"] = "Si activé, essaye d'utiliser le bon appât \"spécial\" pour la zone actuelle.",
+	["CONFIG_DRAENORBAIT_ONOFF"] = "Appât spécial",
 	--[[Translation missing --]]
 	--[[ ["CONFIG_DRAENORBAITMAINTAIN_INFO"] = "If enabled, maintain existing 'special' bait, do not apply based on location.",--]] 
 	--[[Translation missing --]]
@@ -193,6 +187,8 @@ FishingTranslations["frFR"] = {
 	--[[Translation missing --]]
 	--[[ ["CONFIG_SECRET_FISHING_GOGGES_INFO"] = "If enabled, 'Fishing Without A Poel' will use 'Secret Fishing Goggles' first.",--]] 
 	--[[Translation missing --]]
+	--[[ ["CONFIG_SECRET_FISHING_GOGGLES_INFO"] = "If enabled, 'Fishing Without A Pole' will use 'Secret Fishing Goggles' first.",--]] 
+	--[[Translation missing --]]
 	--[[ ["CONFIG_SHOWBANNER_INFO"] = "If enabled, show the #NAME# banner on login.",--]] 
 	--[[Translation missing --]]
 	--[[ ["CONFIG_SHOWBANNER_ONOFF"] = "Show banner",--]] 
@@ -246,8 +242,7 @@ FishingTranslations["frFR"] = {
 	["COPPER_COIN"] = "Pièce de cuivre",
 	--[[Translation missing --]]
 	--[[ ["COPYRIGHT"] = "(c) 2005-2015 by The Software Cobbler",--]] 
-	--[[Translation missing --]]
-	--[[ ["CURRENT"] = "current",--]] 
+	["CURRENT"] = "actuel",
 	["CURRENT_HELP"] = "|c#GREEN#/fb #CURRENT# #RESET#|r#BRSPCS#Remet a zéro les poissons pris au cours de cette session.",
 	--[[Translation missing --]]
 	--[[ ["DASH"] = " -- ",--]] 
@@ -275,8 +270,8 @@ FishingTranslations["frFR"] = {
 	--[[ ["FISHDATARESETHELP"] = "|c#GREEN#/fb #FISHDATA# #RESET#|r#BRSPCS#Reset the fish database. Must be invoked twice.",--]] 
 	--[[Translation missing --]]
 	--[[ ["FISHDATARESETMORE_MSG"] = "Run |c#GREEN#/fb #FISHDATA# #RESET#|r one more time to reset fish location data.",--]] 
-	--[[Translation missing --]]
-	--[[ ["FISHINGMODE"] = "fishing",--]] 
+	["FISHING_SKILL"] = "Pêche",
+	["FISHINGMODE"] = "pêche",
 	["FISHINGMODE_HELP"] = "|c#GREEN#/fb #FISHINGMODE# [démarrer|arrêter]|r#BRSPCS#Exécuter #NAME# les actions de pêche.#BRSPCS#Utile dans les macros avec '/cast Fishing'.",
 	["FISHTYPES"] = "Genres de poissons",
 	["FLOATING_DEBRIS"] = "Débris flottant",
@@ -284,11 +279,9 @@ FishingTranslations["frFR"] = {
 	--[[Translation missing --]]
 	--[[ ["FORCE"] = "force",--]] 
 	["GOLD_COIN"] = "Pièce d'or",
-	--[[Translation missing --]]
-	--[[ ["HELP"] = "help",--]] 
+	["HELP"] = "aide",
 	["HIDEINWATCHER"] = "Afficher ce poisson dans l'afficheur",
-	--[[Translation missing --]]
-	--[[ ["HOURLY"] = "hourly",--]] 
+	["HOURLY"] = "par heure",
 	["KEYS_ALT_TEXT"] = "Alt",
 	["KEYS_CTRL_TEXT"] = "CTRL",
 	["KEYS_LABEL_TEXT"] = "Touches :",
@@ -322,8 +315,7 @@ FishingTranslations["frFR"] = {
 	["PRE_HELP"] = "Vous pouvez utiliser |c#GREEN#/fishingbuddy|r ou |c#GREEN#/fb|r pour toutes les commandes#BR#|c#GREEN#/fb|r: seul, affiche/cache la fenêtre de FishingBuddy#BR#|c#GREEN#/fb #HELP#|r: affiche ce message",
 	["RANDOM"] = "Aléatoire",
 	["RAW"] = "basse qualité",
-	--[[Translation missing --]]
-	--[[ ["RESET"] = "reset",--]] 
+	["RESET"] = "réinitialiser",
 	["RIGGLE_BASSBAIT"] = "Riggle Perchappât crie : « Nous avons un gagnant ! (%a+) est le Maître pêcheur ! »",
 	["RIGHTCLICKFORMENU"] = "Cliquer-droit pour le menu",
 	["ROLE_ADDON_AUTHORS"] = "Auteur des notes de l'addon",
@@ -345,19 +337,17 @@ FishingTranslations["frFR"] = {
 	["SHOWLOCATIONS_INFO"] = "Affiche vos prises classées par lieux.",
 	["SILVER_COIN"] = "Pièce d'argent",
 	["STVZONENAME"] = "Vallée de Strangleronce",
-	--[[Translation missing --]]
-	--[[ ["SWITCH"] = "switch",--]] 
+	["SWITCH"] = "changer",
 	["SWITCH_HELP"] = "|c#GREEN#/fb #SWITCH#|r#BRSPCS#Change l'équipement (si OutfitDisplayFrame ou Outfitter est chargé)",
 	["THANKS"] = "Merci à tous !",
 	["TIMELEFT"] = "%s se termine dans %d:%02d",
-	--[[Translation missing --]]
-	--[[ ["TIMER"] = "timer",--]] 
+	["TIMER"] = "chronomètre",
 	["TIMERRESET_HELP"] = "|c#GREEN#/fb #TIMER# #RESET#|r#BRSPCS#Réinitialiser l'emplacement du compteur du concours#BRSPCS#en la déplaçant vers le centre de l'écran.",
 	["TIMETOGO"] = "%s commence dans %d:%02d",
 	["TOOLTIP_HINT"] = "Astuce :",
 	["TOOLTIP_HINTSWITCH"] = "Cliquer pour mettre une autre tenue",
 	["TOOLTIP_HINTTOGGLE"] = "cliquer pour afficher la fenêtre #NAME#.",
-	["TOOMANYFISHERMEN"] = "Vous avez plus d'une sorte de lancement facile d'installé.",
+	["TOOMANYFISHERMEN"] = "Vous avez plus d'un addon installé permettant le lancement facile.",
 	["TOTAL"] = "Total",
 	["TOTALS"] = "Totaux",
 	--[[Translation missing --]]
@@ -369,16 +359,13 @@ FishingTranslations["frFR"] = {
 	--[[Translation missing --]]
 	--[[ ["WATCHER"] = "watcher",--]] 
 	["WATCHER_HELP"] = "|c#GREEN#/fb #WATCHER#|r [|c#GREEN##WATCHER_LOCK#|r or |c#GREEN##WATCHER_UNLOCK#|r or |c#GREEN##RESET#|r]#BRSPCS#Déverrouille pour bouger la fenêtre,#BRSPCS#lock pour la bloquer, reset pour remettre en position par défaut",
-	--[[Translation missing --]]
-	--[[ ["WATCHER_LOCK"] = "lock",--]] 
+	["WATCHER_LOCK"] = "verrouiller",
 	["WATCHER_TAB"] = "Observateur",
-	--[[Translation missing --]]
-	--[[ ["WATCHER_UNLOCK"] = "unlock",--]] 
+	["WATCHER_UNLOCK"] = "Déverrouiler",
 	--[[Translation missing --]]
 	--[[ ["WATCHERCLICKHELP"] = [=[#LEFTCLICKTODRAG#
 #RIGHTCLICKFORMENU#]=],--]] 
-	--[[Translation missing --]]
-	--[[ ["WEEKLY"] = "weekly",--]] 
+	["WEEKLY"] = "hebdomadaire",
 	--[[Translation missing --]]
 	--[[ ["WINDOW_TITLE"] = "#NAME# v#VERSION#",--]]
 }

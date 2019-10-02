@@ -8,7 +8,7 @@ local default = {
   border = false,
   borderColor = {0, 0, 0, 1},
   backdropColor = {1, 1, 1, 0.5},
-  borderEdge = "1 Pixel",
+  borderEdge = "Square Full White",
   borderOffset = 4,
   borderInset = 1,
   borderSize = 2,
@@ -952,7 +952,7 @@ local function modify(parent, region, data)
       controlPoint:ClearAnchorPoint()
       controlPoint:SetAnchorPoint(
         data.selfPoint,
-        frame == "" and self:GetParent() or frame,
+        frame == "" and self.relativeTo or frame,
         data.anchorPoint,
         x + data.xOffset, y + data.yOffset
       )
@@ -1049,7 +1049,12 @@ local function modify(parent, region, data)
       local max = #newPositions
       for index = 1, max do
         if newPositions[index] then
-          newPositions[self.sortedChildren[index]] = newPositions[index]
+          local data = self.sortedChildren[index]
+          if data then
+            newPositions[data] = newPositions[index]
+          else
+            geterrorhandler()(("Error in '%s', Grow function return position for an invalid region"):format(region.id))
+          end
           newPositions[index] = nil
         end
       end

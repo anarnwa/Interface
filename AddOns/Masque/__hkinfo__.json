@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Masque",
+    "localName": "Masque",
+    "version": "8.2.7",
+    "fileName": "masque",
+    "addonsMap": [
+        "Masque"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Masque",
+    "gameVersion": ""
+}

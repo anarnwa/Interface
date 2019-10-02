@@ -187,6 +187,21 @@ core.NPCCache = {
     [84520] = 84520, --Pitwarden Gwarnok
     [81603] = 81603, --Champion Druna
     [81305] = 81305, --Flseshrender Nok'gar
+    [34826] = 34826, --Mistress of Pain
+    [34605] = 34605, --Swarm Scarab
+    [34564] = 34564, --Anub'arak
+    [154741] = 154741, --Squirt Bot
+    [80728] = 80728, --Maggot
+    [78948] = 78948, --Tectus
+    [80551] = 80551, --Shard of Tectus
+    [80557] = 80557, --Mote of Tectus
+    [71803] = 71803, --Flamethrower
+    [81403] = 81403, --BFC9000
+    [78121] = 78121, --Gorian Warmage
+    [155595] = 155595, --Sacred Gear
+    [150159] = 150159, --King Gobbamak
+    [153172] = 153172, --Stolen Scrapbot
+    [153245] = 153245, --Stolen Shock Coil
 }
 
 --[] = , --

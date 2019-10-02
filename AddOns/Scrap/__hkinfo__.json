@@ -1,0 +1,23 @@
+{
+    "target": "curse",
+    "searchName": "Scrap (Junk Seller)",
+    "localName": "Scrap",
+    "version": "13.19",
+    "fileName": "scrap",
+    "addonsMap": [
+        "Scrap",
+        "Scrap_Options",
+        "Scrap_Merchant",
+        "Scrap_Visualizer",
+        "Scrap_Spotlight"
+    ],
+    "interfaceMap": [],
+    "children": [
+        "Scrap_Options",
+        "Scrap_Merchant",
+        "Scrap_Visualizer",
+        "Scrap_Spotlight"
+    ],
+    "name": "Scrap (Junk Seller)",
+    "gameVersion": ""
+}

@@ -147,6 +147,8 @@ FishingTranslations["zhCN"] = {
 	--[[ ["CONFIG_RAIDWATCH_INFO"] = "If enabled, the Fish Watcher will show the currency fish for the current raid boss.",--]] 
 	["CONFIG_RAIDWATCH_ONOFF"] = "监视当前",
 	["CONFIG_SECRET_FISHING_GOGGES_INFO"] = "如果启用，'不用鱼竿钓鱼'将首先使用'隐秘之鱼护目镜'。",
+	--[[Translation missing --]]
+	--[[ ["CONFIG_SECRET_FISHING_GOGGLES_INFO"] = "If enabled, 'Fishing Without A Pole' will use 'Secret Fishing Goggles' first.",--]] 
 	["CONFIG_SHOWBANNER_INFO"] = "如果启用，则在登录时显示#NAME#横幅.",
 	["CONFIG_SHOWBANNER_ONOFF"] = "显示横幅",
 	["CONFIG_SHOWLOCATIONZONES_INFO"] = "显示区域及子区域。",
@@ -212,6 +214,8 @@ FishingTranslations["zhCN"] = {
 	["FISHDATARESET_MSG"] = "鱼群位置数据已经重置",
 	["FISHDATARESETHELP"] = "|c#GREEN#/fb #FISHDATA# #RESET#|r#BRSPCS#重置鱼数据库. 必须调用两次.",
 	["FISHDATARESETMORE_MSG"] = "执行 |c#GREEN#/fb #FISHDATA# #RESET#|r 再一次重置鱼类位置数据.",
+	--[[Translation missing --]]
+	--[[ ["FISHING_SKILL"] = "Fishing",--]] 
 	["FISHINGMODE"] = "钓鱼",
 	--[[Translation missing --]]
 	--[[ ["FISHINGMODE_HELP"] = "|c#GREEN#/fb #FISHINGMODE# [start|stop]|r#BRSPCS#Run #NAME# fishing actions.#BRSPCS#Useful in macros along with '/cast Fishing'.",--]] 

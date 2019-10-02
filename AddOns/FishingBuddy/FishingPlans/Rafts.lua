@@ -79,6 +79,7 @@ local function HaveRafts()
     local haveBerg = HaveBerg();
     return (haveRaft or haveBerg or haveBoard), haveRaft, haveBoard, haveBerg
 end
+FishingBuddy.HaveRafts = HaveRafts
 
 local function SetupRaftOptions()
     local haveAny = HaveRafts();
@@ -88,7 +89,7 @@ local function SetupRaftOptions()
         ["tooltip"] = FBConstants.CONFIG_USERAFTS_INFO,
         ["tooltipd"] = FBConstants.CONFIG_USERAFTS_INFOD,
         ["text"] = FBConstants.CONFIG_USERAFTS_ONOFF,
-        ["enabled"] = haveAny;
+        ["enabled"] = HaveRafts;
         ["v"] = 1,
         ["default"] = true
     };

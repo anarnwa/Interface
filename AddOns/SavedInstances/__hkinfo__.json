@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "SavedInstances",
+    "localName": "SavedInstances",
+    "version": "8.2.3",
+    "fileName": "saved_instances",
+    "addonsMap": [
+        "SavedInstances"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "SavedInstances",
+    "gameVersion": ""
+}

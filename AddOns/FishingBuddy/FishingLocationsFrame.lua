@@ -210,7 +210,7 @@ local function SubZonesChanged()
                     oneidx = idx;
                     for fishid,count in pairs(fh[idx]) do
                         if ( not uniquify[fishid] ) then
-                            _, _, _, _, _, name, _ = FishingBuddy.GetFishie(fishid, 1);
+                            local _, _, _, _, _, name, _ = FishingBuddy.GetFishie(fishid, 1);
                             tinsert(fishsort, { id=fishid, text=name });
                             uniquify[fishid] = 1;
                         end
@@ -328,7 +328,7 @@ local function UpdateLocLine(id, line, leveloffset, c, e, text, append, texture)
         locHilite:SetTexture("");
         -- Place the highlight and lock the highlight state
         if ( LocationLineSelected == line ) then
-            FishingLocationHighlightFrame:SetPoint("TOPLEFT", locbutton,
+            FishingLocationHighlightFrame:SetPoint("TOPLEFT", locButton,
                                                                 "TOPLEFT", 21, 0);
             FishingLocationHighlightFrame:Show();
             locButton:LockHighlight();
@@ -421,11 +421,11 @@ FishingBuddy.Locations.Update = function(self, forced)
                     local text, texture;
                     locButton.tooltip = {};
                     if ( fid > 0 ) then
-                        local item, name;
+                        local item;
                         item, texture, _, _, _, text, _ = FishingBuddy.GetFishie(fid, 1);
                         locButton.item = item;
                         locButton.fishid = fid;
-                        locButton.name = name;
+                        locButton.name = text;
                         if ( IsQuestFish(fid) ) then
                             tinsert(locButton.tooltip, ITEM_BIND_QUEST);
                         end
@@ -622,7 +622,7 @@ FishingBuddy.Locations.Button_OnClick = function(self, button, down)
 end
 
 function FishingLocationsCollapseAllButton_OnClick()
-    if ( Collpased == 0 ) then
+    if ( Collapsed == 0 ) then
         FishingLocsScrollFrameScrollBar:SetValue(0);
         LocationLineSelected = 1;
     end
@@ -766,7 +766,7 @@ FishingBuddy.Locations.OnEvent = function(self, event, ...)
     -- this crashes the client when enabled
     -- self:EnableMouseWheel(0);
     if event == "VARIABLES_LOADED" then
-        groups = {}
+        local groups = {}
         tinsert(groups, {
             ["name"] = FBConstants.LOCATIONS_TAB,
             ["icon"] = "Interface\\Icons\\INV_Misc_Note_01",

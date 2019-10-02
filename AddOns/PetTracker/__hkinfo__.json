@@ -1,0 +1,25 @@
+{
+    "target": "curse",
+    "searchName": "PetTracker",
+    "localName": "PetTracker",
+    "version": "8.2.2",
+    "fileName": "pettracker",
+    "addonsMap": [
+        "PetTracker_Breeds",
+        "PetTracker_Config",
+        "PetTracker_Journal",
+        "PetTracker_Switcher",
+        "PetTracker_Upgrades",
+        "PetTracker"
+    ],
+    "interfaceMap": [],
+    "children": [
+        "PetTracker_Breeds",
+        "PetTracker_Config",
+        "PetTracker_Journal",
+        "PetTracker_Switcher",
+        "PetTracker_Upgrades"
+    ],
+    "name": "PetTracker",
+    "gameVersion": ""
+}

@@ -1,3 +1,7 @@
+09/26/2019 version 4.9.12
+- Clicking the "alert" toast when you uncage a pet will search for the pet in Rematch.
+- toc updated for 8.2.5 client
+
 08/10/2019 version 4.9.11
 - Added Postmaster Malown to Stratholme targets.
 - Removed random backline pets from Stratholme targets.

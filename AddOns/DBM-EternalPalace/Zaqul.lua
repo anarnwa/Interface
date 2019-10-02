@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2349, "DBM-EternalPalace", nil, 1179)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20190813233056")
+mod:SetRevision("20190916215737")
 mod:SetCreatureID(150859)
 mod:SetEncounterID(2293)
 mod:SetZone()
@@ -16,9 +16,9 @@ mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 301141 292963 296257 303978 301068 303543 302593 296018 304733 296078 295814 302503",
 	"SPELL_CAST_SUCCESS 303543 295444 294515 299708",
 	"SPELL_SUMMON 300732",
-	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303543 296018 302504 295249",
+	"SPELL_AURA_APPLIED 292971 292981 295480 300133 292963 302503 293509 295327 303543 296018 302504 295249 295099",
 	"SPELL_AURA_APPLIED_DOSE 292971",
-	"SPELL_AURA_REMOVED 292971 292963 293509 303543 296018 295249",
+	"SPELL_AURA_REMOVED 292971 292963 293509 303543 296018 295249 295099",
 	"SPELL_AURA_REMOVED_DOSE 292971",
 --	"SPELL_PERIODIC_DAMAGE",
 --	"SPELL_PERIODIC_MISSED",
@@ -46,6 +46,7 @@ local warnSnapped						= mod:NewTargetNoFilterAnnounce(300133, 4, nil, "Tank|Hea
 local warnUnleashedNightmare			= mod:NewSpellAnnounce("ej20289", 3, 300732)
 local warnDread							= mod:NewTargetNoFilterAnnounce(292963, 3, nil, "Healer")
 --Stage Two: Grip of Fear
+local warnPunctureDarkness				= mod:NewTargetNoFilterAnnounce(295099, 1)
 --Stage Three: Delirium's Descent
 local warnDeliriumsDescent				= mod:NewCountAnnounce(304733, 3)
 --Stage Four: All Pathways Open
@@ -85,8 +86,10 @@ local timerMindTetherCD					= mod:NewCDTimer(47.8, 295444, nil, "Tank", nil, 5, 
 --Stage Two: Grip of Fear
 local timerManifestNightmaresCD			= mod:NewCDTimer(35, 293509, nil, nil, nil, 3)
 local timerMaddeningEruptionCD			= mod:NewCDTimer(66.4, 292996, nil, nil, nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerPuncturedDarkness			= mod:NewNextTimer(25, 295099, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
+local timerPuncturedDarknessActive		= mod:NewBuffActiveTimer(20, 295099, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Three: Delirium's Descent
-local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 3)
+local timerDeliriumsDescentCD			= mod:NewCDTimer(35, 304733, nil, nil, nil, 5, nil, DBM_CORE_DAMAGE_ICON)
 --Stage Four: All Pathways Open
 local timerDarkPulseCD					= mod:NewCDTimer(93.5, 303978, nil, nil, nil, 6, nil, DBM_CORE_DEADLY_ICON)
 local timerManicDreadCD					= mod:NewCDTimer(75.4, 296018, nil, "Healer", nil, 5, nil, DBM_CORE_MAGIC_ICON)--75-83
@@ -120,7 +123,7 @@ function mod:OnCombatStart(delay)
 	if not self:IsLFR() then
 		timerMindTetherCD:Start(3.3-delay)
 		timerDreadCD:Start(11.8-delay)--START
-		timerHorrificSummonerCD:Start(25.4-delay)--20 sec for event, but the portal happens 5 seconds AFTER event
+		timerHorrificSummonerCD:Start(20.4-delay)--20 sec for event, adds aren't attackable for another 5 seconds after
 		timerCrushingGraspCD:Start(30-delay)
 	else
 		timerDreadCD:Start(10.8-delay)--START
@@ -208,12 +211,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		--In perfect scenario, not delayed very much if ever even by phase changes
 		--"Mind Tether-295444-npc:150859 = pull:4.0, 48.2, 52.3, 48.7, 48.7", -- [8]
 		timerMindTetherCD:Start()
-	elseif spellId == 294515 and self:AntiSpam(5, 1) then
+	--[[elseif spellId == 294515 and self:AntiSpam(5, 1) then
 		specWarnHorrificSummoner:Show()
 		specWarnHorrificSummoner:Play("bigmob")
 	elseif spellId == 299708 and self:AntiSpam(5, 1) then
 		specWarnHorrificSummoner:Show()
-		specWarnHorrificSummoner:Play("bigmob")
+		specWarnHorrificSummoner:Play("bigmob")--]]
 	end
 end
 
@@ -297,6 +300,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = true
+	elseif spellId == 295099 then
+		warnPunctureDarkness:Show(args.destName)
+		timerPuncturedDarknessActive:Start()
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -336,6 +342,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif spellId == 295249 and args:IsPlayer() then
 		playerDRealm = false
+	elseif spellId == 295099 then
+		timerPuncturedDarknessActive:Stop()
 	end
 end
 
@@ -374,14 +382,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, npc, _, _, target)
 		specWarnMaddeningEruption:Show(L.Tear)
 		specWarnMaddeningEruption:Play("moveboss")
 		timerMaddeningEruptionCD:Start()
+		timerPuncturedDarkness:Start()
 	end
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 	if spellId == 299711 then--Pick A Portal (script for horrors)
-		--"Pick a Portal-299711-npc:150859 = pull:20.3, 60.7, 92.5, 63.2", -- [5]
 		--Controller used for horrors even if we're in a phase one isn't cast, becauase we still want to know where the script is before we push boss.
-		timerHorrificSummonerCD:Schedule(5)--Script runs 5 sec before spawn events, so we need to offset it
+		timerHorrificSummonerCD:Start()
+		if self.vb.phase == 1 or self.vb.phase == 4 then
+			specWarnHorrificSummoner:Show()
+			specWarnHorrificSummoner:Play("bigmob")
+		end
 	elseif spellId == 299974 then--Pick a Dread (Script for dreads)
 		--Controller used for dreads even if we're in a phase one isn't cast, becauase we still want to know where the script is before we push boss.
 		if self.vb.Phase == 4 then
@@ -409,9 +421,9 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 			timerDreadCD:Stop()
 			timerManicDreadCD:Update(elapsed, total)
 		end
-		if timerHorrificSummonerCD:GetRemaining() < 24 then
+		if timerHorrificSummonerCD:GetRemaining() < 19 then
 			local elapsed, total = timerHorrificSummonerCD:GetTime()
-			local extend = 24 - (total-elapsed)
+			local extend = 19 - (total-elapsed)
 			DBM:Debug("timerHorrificSummonerCD extended by: "..extend, 2)
 			timerHorrificSummonerCD:Stop()
 			timerHorrificSummonerCD:Update(elapsed, total+extend)

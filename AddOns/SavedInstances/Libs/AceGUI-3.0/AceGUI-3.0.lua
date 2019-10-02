@@ -24,8 +24,8 @@
 -- f:AddChild(btn)
 -- @class file
 -- @name AceGUI-3.0
--- @release $Id: AceGUI-3.0.lua 1216 2019-07-10 02:36:51Z funkydude $
-local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 37
+-- @release $Id: AceGUI-3.0.lua 1228 2019-09-06 08:51:17Z nevcairiel $
+local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 40
 local AceGUI, oldminor = LibStub:NewLibrary(ACEGUI_MAJOR, ACEGUI_MINOR)
 
 if not AceGUI then return end -- No upgrade needed
@@ -176,7 +176,10 @@ end
 -- If this widget is a Container-Widget, all of its Child-Widgets will be releases as well.
 -- @param widget The widget to release
 function AceGUI:Release(widget)
+	if widget.isQueuedForRelease then return end
+	widget.isQueuedForRelease = true
 	safecall(widget.PauseLayout, widget)
+	widget.frame:Hide()
 	widget:Fire("OnRelease")
 	safecall(widget.ReleaseChildren, widget)
 
@@ -205,6 +208,7 @@ function AceGUI:Release(widget)
 		widget.content.width = nil
 		widget.content.height = nil
 	end
+	widget.isQueuedForRelease = nil
 	delWidget(widget, widget.type)
 end
 
@@ -639,6 +643,7 @@ AceGUI:RegisterLayout("Fill",
 		if children[1] then
 			children[1]:SetWidth(content:GetWidth() or 0)
 			children[1]:SetHeight(content:GetHeight() or 0)
+			children[1].frame:ClearAllPoints()
 			children[1].frame:SetAllPoints(content)
 			children[1].frame:Show()
 			safecall(content.obj.LayoutFinished, content.obj, nil, children[1].frame:GetHeight())

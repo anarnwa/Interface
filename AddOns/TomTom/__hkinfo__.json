@@ -1,0 +1,14 @@
+{
+    "addonsMap": [
+        "TomTom"
+    ],
+    "children": [],
+    "fileName": "tomtom",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "TomTom",
+    "name": "TomTom",
+    "searchName": "TomTom",
+    "target": "curse",
+    "version": "v80205-1.0.7"
+}

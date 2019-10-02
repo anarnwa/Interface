@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Rematch",
+    "localName": "Rematch",
+    "version": "Rematch_4_9_12.zip",
+    "fileName": "rematch",
+    "addonsMap": [
+        "Rematch"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Rematch",
+    "gameVersion": ""
+}

@@ -201,6 +201,8 @@ Draznar's Style-Wertung: %d]=],
 	--[[Translation missing --]]
 	--[[ ["CONFIG_SECRET_FISHING_GOGGES_INFO"] = "If enabled, 'Fishing Without A Poel' will use 'Secret Fishing Goggles' first.",--]] 
 	--[[Translation missing --]]
+	--[[ ["CONFIG_SECRET_FISHING_GOGGLES_INFO"] = "If enabled, 'Fishing Without A Pole' will use 'Secret Fishing Goggles' first.",--]] 
+	--[[Translation missing --]]
 	--[[ ["CONFIG_SHOWBANNER_INFO"] = "If enabled, show the #NAME# banner on login.",--]] 
 	--[[Translation missing --]]
 	--[[ ["CONFIG_SHOWBANNER_ONOFF"] = "Show banner",--]] 
@@ -281,6 +283,7 @@ Draznar's Style-Wertung: %d]=],
 	--[[ ["FISHDATARESETHELP"] = "|c#GREEN#/fb #FISHDATA# #RESET#|r#BRSPCS#Reset the fish database. Must be invoked twice.",--]] 
 	--[[Translation missing --]]
 	--[[ ["FISHDATARESETMORE_MSG"] = "Run |c#GREEN#/fb #FISHDATA# #RESET#|r one more time to reset fish location data.",--]] 
+	["FISHING_SKILL"] = "Angeln",
 	--[[Translation missing --]]
 	--[[ ["FISHINGMODE"] = "fishing",--]] 
 	["FISHINGMODE_HELP"] = [=[|c#GREEN#/fb #FISHINGMODE# [start|stop]|r#BRSPCS#Run #NAME# fishing actions.#BRSPCS#Nützlich in Makros zusammen mit

@@ -99,7 +99,7 @@ credits[FBConstants.ROLE_HELP_BUGS] = {
 	["Draznar"] = { "for the Fishing FAQ and style!", },
 	["bsmorgan"] = { "Minimap button radius improvements", "Auto-lure improvments", "Skill-up tabulation", "Checking for usable toys." },
 	["Wildcard_25"] = { "Fish watcher displays days!", },
-	["Bodar"] = { "GetProfessions change in 4.0.6", "Watch Bobber fix", "Deprecated Blizz acution APIs", },
+	["Bodar"] = { "GetProfessions change in 4.0.6", "Watch Bobber fix", "Deprecated Blizz acution APIs", "Better Nat's quest handling", "Watch Bobber fix", },
 	["Exaid"] = { "Fix for uncertain gear manager set on login" },
 	["x87bliss"] = { "Help with tracking down exit with pole crashes" },
 	["oscarucb"] = { "Help with the fix for repeat lure bug" },
@@ -113,7 +113,6 @@ credits[FBConstants.ROLE_HELP_BUGS] = {
 	["Alindrios"] = { "Fish Watcher bugs", },
 	["Dehvid"] = { "64-bit crash bug", },
 	["ProphetV"] = { "Fish Watcher accounting errors", },
-	["Bodar"] = { "Better Nat's quest handling", "Watch Bobber fix", },
 	["miss_kallistra"] = { "Pet handling fixes for Legion", },
 	["Baconslicer"] = { "Lure managment bug"},
 	["Gulduka"] = { "German language testing for LibBabble-SubZone" },
@@ -123,7 +122,10 @@ credits[FBConstants.ROLE_HELP_BUGS] = {
     ["chadcloman"] = { "Most detailed bug ever!", },
     ["robgha01"] = { "No pets bug" },
     ["bolerro619"] = { "Titan and Broker issues" },
-    ["Seamhas"] = { "Much help with rafts." },
+	["Seamhas"] = { "Much help with rafts." },
+	["Globe"] = { "https://www.townlong-yak.com/globe"},
+	["Zwixx"] = { "Help with Classic skill fix" },
+	["PierrotIV"] = { "Help with Classic skill fix" },
 };
 
 -- Ideas and suggestions
@@ -143,13 +145,12 @@ credits[FBConstants.ROLE_HELP_SUGGESTIONS] = {
 						"Titan Panel support",
 						"Only show counts -- no percentages", },
 	["LBlaze"] = { "Display both lifetime and current fish info in the watcher", },
-	["Valzic"] = { "Save helm/cloak settings per outfit", },
+	["Valzic"] = { "Save helm/cloak settings per outfit", "Show current skill level in watcher", },
 	["KayJayDK"] = { "Remember tastyfish pool locations", },
 	["Bruntlief"] = { "Track cycle fish", },
 	["Buio"] = { "Show current zone in watcher", },
 	["Tarklash"] = { "Minimap icon", },
 	["Anakar"] = { "Elapsed fishing time", },
-	["Valzic"] = { "Show current skill level in watcher", },
 	["Vreejack"] = { "Gatherer integration", },
 	["truefreak"] = { "Display total fish caught all time and this session", },
 	["Yeoman and RamahP"] = { "Save fishing level information", },
@@ -174,7 +175,7 @@ credits[FBConstants.ROLE_ADDON_AUTHORS] = {
 	["Arrowmaster"] = { "LibTourist-3.0", },
 	["Odica"] = { "LibTourist-3.0", },
 	["Ackis"] = { "LibBabble-Zone-3.0", },
-	["Nevcairiel"] = { "LibBabble-Zone-3.0", "LibStub", "LibBabble-SubZone-3.0", "CallbackHandler-1.0", },
+	["Nevcairiel"] = { "LibBabble-Zone-3.0", "LibStub", "LibBabble-SubZone-3.0", "CallbackHandler-1.0",  "HereBeDragons" },
 	["Kaelten"] = { "LibStub", },
 	["Ammo"] = { "LibStub", },
 	["Cladhaire"] = { "LibStub", },
@@ -186,7 +187,6 @@ credits[FBConstants.ROLE_ADDON_AUTHORS] = {
 	["Xinhuan"] = { "LibGraph-2.0", },
 	["KarlKFI"] = { "MobileMinimapButtons" },
 	["endx7"] = { "LibPetJournal-2.0" },
-	["Nevcairiel"] = { "HereBeDragons" },
 };
 
 local CREDITSKIP = 7;
@@ -377,7 +377,7 @@ local AboutOptions = {
 	},
 };
 
-local function OnEvent(self, event)
+local function OnEvent(self, _, ...)
 	FishingBuddy.OptionsFrame.HandleOptions(FBConstants.ABOUT_TAB, "Interface\\Icons\\Inv_Misc_Questionmark", AboutOptions, nil, nil, true);
 	self:UnregisterEvent("VARIABLES_LOADED");
 end

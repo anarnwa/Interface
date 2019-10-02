@@ -21,6 +21,7 @@ AchievementTrackerDebug = {}
 
 events:RegisterEvent("ADDON_LOADED")							--This is the first event that is called as soon as the addon loaded. Does Initial Setup							
 events:RegisterEvent("GET_ITEM_INFO_RECEIVED")					--Get Item Information after the game has loaded to finish loading tactics
+events:RegisterEvent("PLAYER_LOGIN")							--Fired just before login has finished
 
 function generateItemCache()									--The Item Cache can only be generated once the game has loaded		
 	for i,v in pairs(core.ItemCache) do							--We need to first get information about the item to load into the cache
@@ -792,8 +793,14 @@ function getCombatStatus()
 			return true
 		end
 	else
-		--Player is not in a group therefore, they must of left combat so clear variables
-		return false
+		--Player is not in a group. Check if they are in combat though
+		if UnitAffectingCombat("Player") == true then
+			playerInCombat = true
+			return true
+		else
+			playerInCombat = false
+			return false
+		end
 	end
 end
 
@@ -924,6 +931,42 @@ end
 ------------------------------------------------------
 ---- Events
 ------------------------------------------------------
+
+function events:PLAYER_LOGIN()
+	--------------------------------------
+	-- Minimap Icon
+	--------------------------------------
+	core.ATButton = LibStub("LibDBIcon-1.0")
+	--local profile
+
+	-- LDB
+	if not LibStub:GetLibrary("LibDataBroker-1.1", true) then return end
+
+	--Make an LDB object
+	local MiniMapLDB = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("InstanceAchievementTracker", {
+		type = "launcher",
+		text = "InstanceAchievementTracker",
+		icon = "Interface\\Icons\\ACHIEVEMENT_GUILDPERK_MRPOPULARITY",
+		OnTooltipShow = function(tooltip)
+			tooltip:AddLine("|cff00FF00" .. "Instance Achievement Tracker" .. "|r");
+		end,
+		OnClick = function(self, button)
+			core.Config.Toggle()
+		end,
+	})
+
+	--Register Minimap Icon
+	core.ATButton:Register("InstanceAchievementTracker", MiniMapLDB, AchievementTrackerOptions);
+
+	--Show Minimap Icon
+	if AchievementTrackerOptions["showMinimap"] then
+		core:sendDebugMessage("Showing Minimap Icon")
+        core.ATButton:Show("InstanceAchievementTracker")
+	else
+		core:sendDebugMessage("Hiding Minimap Icon")
+		core.ATButton:Hide("InstanceAchievementTracker")		
+    end
+end
 
 function events:ADDON_LOADED(event, name)
 	if name ~= "InstanceAchievementTracker" then return end
@@ -1072,42 +1115,6 @@ function events:ADDON_LOADED(event, name)
 	SlashCmdList.IAT = HandleSlashCommands;
 
 	--printMessage("loaded. Version: V" .. core.Config.majorVersion .. "." .. core.Config.minorVersion .. "." .. core.Config.revisionVersion)
-
-	--------------------------------------
-	-- Minimap Icon
-	--------------------------------------
-	core.ATButton = LibStub("LibDBIcon-1.0")
-	--local profile
-
-	-- LDB
-	if not LibStub:GetLibrary("LibDataBroker-1.1", true) then return end
-
-	--Make an LDB object
-	local MiniMapLDB = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("InstanceAchievementTracker", {
-		type = "launcher",
-		text = "InstanceAchievementTracker",
-		icon = "Interface\\Icons\\ACHIEVEMENT_GUILDPERK_MRPOPULARITY",
-		OnTooltipShow = function(tooltip)
-			tooltip:AddLine("|cff00FF00" .. "Instance Achievement Tracker" .. "|r");
-		end,
-		OnClick = function(self, button)
-			core.Config.Toggle()
-		end,
-	})
-
-	--Register Minimap Icon
-	core.ATButton:Register("InstanceAchievementTracker", MiniMapLDB, AchievementTrackerOptions);
-
-	--Show Minimap Icon
-	if AchievementTrackerOptions["showMinimap"] then
-		core:sendDebugMessage("Showing Minimap Icon")
-        core.ATButton:Show("InstanceAchievementTracker")
-	else
-		core:sendDebugMessage("Hiding Minimap Icon")
-		C_Timer.After(1, function()
-			core.ATButton:Hide("InstanceAchievementTracker")		
-		end)
-    end
 
 	--Set whether addon should be enabled or disabled
 	setAddonEnabled(AchievementTrackerOptions["enableAddon"])
@@ -1726,18 +1733,43 @@ function events:CHAT_MSG_ADDON(self, prefix, message, channel, sender)
 		local demotionRequired = false
 
 		if nameRecieved ~= name then
+			local allVariablesRecieved = true
 			if masterAddonRecieved ~= nil then
 				core:sendDebugMessage("------------NEW REQUEST------------")
 				core:sendDebugMessage("Recieved Info From: " .. sender)
-				core:sendDebugMessage("AddonID: " .. addonIDRecieved .. " : " .. tostring(addonID))
-				core:sendDebugMessage("Master Addon: " .. masterAddonRecieved .. " : " .. tostring(masterAddon))
-				core:sendDebugMessage("Player Rank: " .. playerRankRecieved .. " : " .. tostring(playerRank))
-				core:sendDebugMessage("Major Version: " .. majorVersionRecieved .. " : " .. tostring(core.Config.majorVersion))
-				core:sendDebugMessage("Minor Version: " .. minorVersionRecieved .. " : " .. tostring(core.Config.minorVersion))
-				core:sendDebugMessage("Only Track Missing Achievements: " .. onlyTrackMissingAchievementsRecieved .. " : " .. tostring(core.trackingSupressed))
+				if addonIDRecieved ~= nil then
+					core:sendDebugMessage("AddonID: " .. addonIDRecieved .. " : " .. tostring(addonID))
+				else
+					allVariablesRecieved = false
+				end
+				if masterAddonRecieved ~= nil then
+					core:sendDebugMessage("Master Addon: " .. masterAddonRecieved .. " : " .. tostring(masterAddon))
+				else
+					allVariablesRecieved = false
+				end
+				if playerRankRecieved ~= nil then
+					core:sendDebugMessage("Player Rank: " .. playerRankRecieved .. " : " .. tostring(playerRank))
+				else
+					allVariablesRecieved = false
+				end
+				if majorVersionRecieved ~= nil then
+					core:sendDebugMessage("Major Version: " .. majorVersionRecieved .. " : " .. tostring(core.Config.majorVersion))
+				else
+					allVariablesRecieved = false
+				end
+				if minorVersionRecieved ~= nil then
+					core:sendDebugMessage("Minor Version: " .. minorVersionRecieved .. " : " .. tostring(core.Config.minorVersion))
+				else
+					allVariablesRecieved = false
+				end
+				if onlyTrackMissingAchievementsRecieved ~= nil then
+					core:sendDebugMessage("Only Track Missing Achievements: " .. onlyTrackMissingAchievementsRecieved .. " : " .. tostring(core.trackingSupressed))
+				else
+					allVariablesRecieved = false
+				end
 			end
 
-			if masterAddonRecieved == "true" and blockRequirementsCheck == false then
+			if masterAddonRecieved == "true" and blockRequirementsCheck == false and allVariablesRecieved == true then
 
 				core:sendDebugMessage("Make it to tracking")
 
@@ -2444,7 +2476,7 @@ function core:sendMessage(message, outputToRW, messageType)
 					elseif outputToRW == true and announceToRaidWarning == true then
 						SendChatMessage("[IAT] " .. message,core.chatType,DEFAULT_CHAT_FRAME.editBox.languageID)
 						core:logMessage("[IAT] " .. message)
-						--RaidNotice_AddMessage(RaidWarningFrame, "[IAT] " .. message, ChatTypeInfo["RAID_WARNING"])
+						RaidNotice_AddMessage(RaidWarningFrame, "[IAT] " .. message, ChatTypeInfo["RAID_WARNING"])
 					else
 						--print("Outputting normally")
 						SendChatMessage("[IAT] " .. message,core.chatType,DEFAULT_CHAT_FRAME.editBox.languageID)

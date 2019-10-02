@@ -158,7 +158,10 @@ end
 
 local function IgnoreButtonDoubleClick(self, ...)
 	nameUI = addServer(C_FriendList.GetIgnoreName(GetSelectedIgnore()))
-	StaticPopup_Show("GIL_REASON", nameUI)
+	
+	if (nameUI ~= nil) then
+		StaticPopup_Show("GIL_REASON", nameUI)
+	end
 end
 
 local function IgnoreButtonClick(self, button, down)
@@ -174,7 +177,7 @@ local function IgnoreButtonClick(self, button, down)
 		{ text = C_FriendList.GetIgnoreName(GetSelectedIgnore()), isTitle = true, notCheckable = true },
 		{ text = L["RCM_1"], notCheckable = true, func = function() IgnoreButtonDoubleClick() end },
 		{ text = "", disabled = true, notCheckable = true },
-		{ text = L["RCM_2"], notCheckable = true, func = function() StaticPopup_Show("GIL_EXPIRE", nameUI) end },
+		{ text = L["RCM_2"], notCheckable = true, func = function() if (nameUI ~= nil) then StaticPopup_Show("GIL_EXPIRE", nameUI) end end },
 		{ text = L["RCM_3"], notCheckable = true, func = function() GlobalIgnoreDB.expList[hasGlobalIgnored(nameUI)] = 0 IgnoreList_Update() end },
 		{ text = "", disabled = true, notCheckable = true },
 --		{ text = L["RCM_4"], notCheckable = true, func = function() C_FriendList.DelIgnore(C_FriendList.GetIgnoreName(GetSelectedIgnore())) end },

@@ -1,10 +1,20 @@
-lightweight tag 67cf662682a9639acdd14bb170bba9f544de74c4 v8.2.0.380
-Author:	Tercioo <terciob19@hotmail.com>
-Date:	Sat Aug 10 13:40:49 2019 -0300
+lightweight tag 1c910a525fd035789062819aa08960bda1314730 v8.2.5.383
+Author:	Tercio Jose <terciob19@hotmail.com>
+Date:	Sat Sep 28 15:43:28 2019 -0300
 
-commit 67cf662682a9639acdd14bb170bba9f544de74c4
-Author: Tercioo <terciob19@hotmail.com>
-Date:   Sat Aug 10 13:40:49 2019 -0300
+commit 1c910a525fd035789062819aa08960bda1314730
+Author: Tercio Jose <terciob19@hotmail.com>
+Date:   Sat Sep 28 15:43:28 2019 -0300
 
-    Added total pet quests in the status bar.
+    Updates for the new retail version
+    
+    - ToC Update.
+    - Framework Update.
+    - Fixed GetPlayerFacing() returning null.
+
+commit 03a23bdc0f5357877d5123ae0f559ffe5aa8ddc3
+Author: Tercio Jose <terciob19@hotmail.com>
+Date:   Mon Sep 9 13:00:56 2019 -0300
+
+    Git Ignore localization files
 

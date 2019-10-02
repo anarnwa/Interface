@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Auto Gossip",
+    "localName": "AutoGossip",
+    "version": "AutoGossip-v8.2.5.zip",
+    "fileName": "auto-gossip",
+    "addonsMap": [
+        "AutoGossip"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Auto Gossip",
+    "gameVersion": ""
+}

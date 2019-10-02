@@ -14,7 +14,7 @@ MTG_L = GetLocale() == "zhCN" and {
   ["This item doesn't need tower cakes"] = "这个物品不需要塔可饼",
 
   ["Detected"] = "检测到",
-  [168053] = nil,
+  [168053] = "奖励:单个保镖75经验",--极其聪明的寄居蟹
   [168091] = "奖励:长满藤壶的宝箱",--严重生锈的保险箱
   [168092] = "奖励:解密实验洞穴所需物品",--一捆异常暖和的洗澡
   [168093] = "奖励:3个棱彩珍珠",--污秽的法力珍珠手镯
@@ -56,7 +56,7 @@ MTG_L = GetLocale() == "zhCN" and {
   ["This item doesn't need tower cakes"] = "This item doesn't need tower cakes",
 
   ["Detected"] = "Detected",
-  [168053] = "Unknown",
+  [168053] = "Prizes:Single bodyguard 75 experience",--极其聪明的寄居蟹
   [168091] = "Prizes:A treasure chest full of barnacles",--严重生锈的保险箱
   [168092] = "Prizes:Decrypt the objects needed in the experimental cave",--一捆异常暖和的洗澡
   [168093] = "Prizes:Three ribbed pearls",--污秽的法力珍珠手镯
@@ -83,7 +83,46 @@ MTG_L = GetLocale() == "zhCN" and {
   ["Mrrl"] = "Mrrl", 
 
 } or GetLocale() == "zhTW" and {
+  ["Mrrl's trade game"] = "魚人購買助手",
+  ["Don't buy cape items"] = "不要買稀有品",
+  ["buy cape items that don't need taco"] = "購買不含觸手捲的的稀有品",
+  ["buy every cape items"] = "購買每一件珍稀物品",
+  ["Buy normal items"] = "購買普通物品",
+  ["Don't buy normal items"] = "不購買普通物品",
+  ["Check taco before buying rare items with taco"] = "先檢查觸手捲，然後再用觸手捲購買稀有品",
 
+  ["Detected that you have loaded WeakAuras's Mrrl's trade game, to avoid repeated purchases, the MTG addon has been automatically closed, followed by WeakAuras's Mrrl's trade game purchase"] = "檢測到你已加載WA的Mrrl's trade game,為了避免重復購買,MTG插件已自動關閉,接下來使用的是WA的Mrrl's trade game購買.",
+  ["buy"] = "購買",
+  ["Use it manually in the water"] = "去水裡手動使用",
+  ["This item wants a Taco cake"] = "這個物品要觸手捲",
+  ["This item doesn't need tower cakes"] = "這個物品不需要觸手捲",
+
+  ["Detected"] = "檢測到",
+  [168053] = "獎勵:單個保鏢75經驗",--極其聰明的寄居蟹
+  [168091] = "獎勵:長滿藤壺的寶箱",--嚴重生鏽的保險箱
+  [168092] = "獎勵:解密實驗室所需物品",--一捆異常暖和的洗澡
+  [168093] = "獎勵:3個棱彩珍珠",--污穢的法力珍珠手鐲
+  [168094] = "獎勵:顯現石",--微微嗡鳴的海石
+  [168095] = "獎勵:神器能量",--奇特的珊瑚叢
+  [168096] = "獎勵:發芽種子,鹵石鋤,餌食等召喚用任務物品",--浸水的工具箱
+  [168097] = "獎勵:海底裝備",--被盜的護甲箱
+  --## the following items require Azsh'ari Stormsurger Cape
+  --## as the wowhead data is not completed yet, some might skip taco check 
+  [170159] = "獎勵:3個棱彩珍珠",--污穢的法力珍珠手鐲
+  [170152] = "獎勵:深淵海螺150聲望",--裹影貝殼
+  [170153] = "獎勵:保鏢全加150經驗",--看起來很不祥的書典
+  [170157] = "獎勵:解密實驗室所需物品",--一堆凶兆之沙
+  [170161] = "獎勵:單個保鏢75經驗",--極其聰明的寄居蟹
+  [170162] = "獎勵:發芽種子,鹵石鋤,餌食等召喚用任務物品", --浸水的工具箱
+  [170101] = "獎勵:海底裝備",--被盜的護甲箱
+  [169202] = "獎勵:坐騎",
+  [170158] = "獎勵:7個棱彩珍珠",--不可名狀的珍珠人偶
+
+  ["Mrrglrlr"] = "莫咕嚕",
+  ["Grrmrlg"] = "咕莫咕",
+  ["Flrgrrl"] = "弗咕嚕",
+  ["Hurlgrl"] = "呼咕嚕",
+  ["Mrrl"] = "莫嚕", 
 } or GetLocale() == "koKR" and {
 
 } or GetLocale() == "frFR" and {

@@ -762,7 +762,7 @@ function OptionsLib:ShowButtons()
             end
         end
     end
-    for name,button in pairs(self.optionmap) do
+    for name, button in pairs(self.optionmap) do
         if ( not button.parents ) then
             local value = true;
             if (button.enabled) then

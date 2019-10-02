@@ -256,7 +256,7 @@ local function Patch_GearSetButton_OnEnter(self)
 		end
 		bp = name.." "..bp;
 		local pstring;
-		if ( points == 1 ) then
+		if ( sp == 1 ) then
 			pstring = FBConstants.POINT;
 		else
 			pstring = FBConstants.POINTS;

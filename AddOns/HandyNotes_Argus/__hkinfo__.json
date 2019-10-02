@@ -1,0 +1,14 @@
+{
+    "addonsMap": [
+        "HandyNotes_Argus"
+    ],
+    "children": [],
+    "fileName": "handynotes-argus",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "HandyNotes_Argus",
+    "name": "HandyNotes - Argus",
+    "searchName": "HandyNotes - Argus",
+    "target": "curse",
+    "version": "v0.13"
+}

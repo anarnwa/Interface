@@ -58,7 +58,7 @@
 				</Anchor>
 			</Anchors>
 		</ButtonText>
-		<NormalFont inherits="GameFontNormalSmall" />
+		<NormalFont style="GameFontNormal" />
 	</Button>
 
 	<Button name="FishingLocationButtonTemplate" hidden="false" virtual="true">

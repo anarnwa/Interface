@@ -127,6 +127,30 @@ StaticPopupDialogs["GIL_RESETFILTER"] = {
 	end
 }
 
+StaticPopupDialogs["GIL_REMOVEFILTER"] = {
+
+	preferredIndex = STATICPOPUPS_NUMDIALOGS,
+	text           = "|cffffff00%s|cffffffff\n\n"..L["BOX_9"],
+	whileDead      = 1,
+	button1        = L["BOX_10"],
+	button2        = L["BOX_5"],
+	OnAccept       = function(self)
+		if FilterScrollSelect <= 0 then
+			return
+		end
+			
+		table.remove(GlobalIgnoreDB.filterList,   FilterScrollSelect)
+		table.remove(GlobalIgnoreDB.filterDesc,   FilterScrollSelect)
+		table.remove(GlobalIgnoreDB.filterCount,  FilterScrollSelect)
+		table.remove(GlobalIgnoreDB.filterActive, FilterScrollSelect)
+			
+		FilterListDrawUpdate(FilterScrollFrame)		
+	end,	
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent():Hide()
+	end
+}
+
 local function ButtonIgnoreRemove()
 	
 	if IgnoreScrollSelect <= 0 then
@@ -204,7 +228,7 @@ local function CreateFilterButtons()
 	
 	for count = 1, BUTTON_TOTAL do
 	
-		FilterScrollButtons[count] = CreateFrame("Button", nil, FilterScrollFrame:GetParent(), "FriendsFrameIgnoreButtonTemplate")
+		FilterScrollButtons[count] = CreateFrame("Button", nil, FilterScrollFrame:GetParent(), "IgnoreListButtonTemplate")
 	
 		if count == 1 then
 			FilterScrollButtons[count]:SetPoint("TOPLEFT", FilterScrollFrame, -1, 0)
@@ -357,7 +381,8 @@ local function CreateIgnoreButtons()
 	
 	for count = 1, BUTTON_TOTAL do
 	
-		IgnoreScrollButtons[count] = CreateFrame("Button", nil, IgnoreScrollFrame:GetParent(), "FriendsFrameIgnoreButtonTemplate")
+		IgnoreScrollButtons[count] = CreateFrame("Button", nil, IgnoreScrollFrame:GetParent(), "IgnoreListButtonTemplate")
+		--IgnoreScrollButtons[count] = CreateFrame("Button", nil, IgnoreScrollFrame:GetParent(), "FriendsFrameIgnoreButtonTemplate")
 	
 		if count == 1 then
 			IgnoreScrollButtons[count]:SetPoint("TOPLEFT", IgnoreScrollFrame, -1, 0)
@@ -976,28 +1001,12 @@ local function CreateUIFrames()
 	
 	CreateFilterButtons()
 
-	local Button = CreateFrame("Button", "GILFrame2RemoveButton", Tab2Frame, "UIPanelButtonTemplate")	
-	Button:SetSize(110, 22)
-	Button:SetText(L["BUT_6"])
-	Button:SetPoint("BOTTOMRIGHT", -1, -24)
-	Button:SetScript("OnClick",
-		function(self)
-			if FilterScrollSelect <= 0 then
-				return
-			end
-			
-			table.remove(GlobalIgnoreDB.filterList,   FilterScrollSelect)
-			table.remove(GlobalIgnoreDB.filterDesc,   FilterScrollSelect)
-			table.remove(GlobalIgnoreDB.filterCount,  FilterScrollSelect)
-			table.remove(GlobalIgnoreDB.filterActive, FilterScrollSelect)
-			
-			FilterListDrawUpdate(FilterScrollFrame)		
-		end)
-
+	-- create
 	Button = CreateFrame("Button", "GILFrame2CreateButton", Tab2Frame, "UIPanelButtonTemplate")
 	Button:SetSize(110, 22)
 	Button:SetText(L["BUT_5"])
-	Button:SetPoint("RIGHT", "GILFrame2RemoveButton", "LEFT", 0, 0)
+	--Button:SetPoint("RIGHT", "GILFrame2RemoveButton", "LEFT", 0, 0)
+	Button:SetPoint("BOTTOMRIGHT", -1, -24)
 	Button:SetScript("OnClick",
 		function(self)
 			idx = #GlobalIgnoreDB.filterList + 1
@@ -1009,12 +1018,20 @@ local function CreateUIFrames()
 			
 			FilterListDrawUpdate(FilterScrollFrame)
 		end)
+
+	local Button = CreateFrame("Button", "GILFrame2RemoveButton", Tab2Frame, "UIPanelButtonTemplate")	
+	Button:SetSize(110, 22)
+	Button:SetText(L["BUT_6"])
+	Button:SetPoint("RIGHT", "GILFrame2CreateButton", "LEFT", 0, 0)	
+	Button:SetScript("OnClick", function(self) if FilterScrollSelect <= 0 then return end StaticPopup_Show("GIL_REMOVEFILTER", L["BOX_10"]) end)
 	
+	-- reset
 	Button = CreateFrame("Button", "GILFrame2ResetButton", Tab2Frame, "UIPanelButtonTemplate")
 	Button:SetSize(110, 22)
 	Button:SetText(L["BUT_7"])
-	Button:SetPoint("RIGHT", "GILFrame2CreateButton", "LEFT", 0, 0)
+	Button:SetPoint("RIGHT", "GILFrame2RemoveButton", "LEFT", 0, 0)
 	Button:SetScript("OnClick", function(self) StaticPopup_Show("GIL_RESETFILTER", L["BOX_4"]) end)
+	--]]
 
 	-----------------------
 	-- TAB 2 EDIT FRAMES --
@@ -1326,6 +1343,20 @@ local function CreateUIFrames()
 	 _G[Button:GetName().."Text"]:SetFontObject("GameFontHighlight")
 	Button:SetScript("OnShow",  function(self) self:SetChecked(GlobalIgnoreDB.skipGuild == true) end)
 	Button:SetScript("OnClick" ,function(self) GlobalIgnoreDB.skipGuild = (self:GetChecked() or false) end)
+
+	Button = CreateFrame("CheckButton", "GILFrame3SkipParty", Tab3Frame, "UICheckButtonTemplate")
+	Button:SetPoint("TOPLEFT", GILFrame3SkipGuild, "BOTTOMLEFT", 0, 6)
+	 _G[Button:GetName().."Text"]:SetText(L["OPT_13"])
+	 _G[Button:GetName().."Text"]:SetFontObject("GameFontHighlight")
+	Button:SetScript("OnShow",  function(self) self:SetChecked(GlobalIgnoreDB.skipParty == true) end)
+	Button:SetScript("OnClick" ,function(self) GlobalIgnoreDB.skipParty = (self:GetChecked() or false) end)
+
+	Button = CreateFrame("CheckButton", "GILFrame3SkipPrivate", Tab3Frame, "UICheckButtonTemplate")
+	Button:SetPoint("TOPLEFT", GILFrame3SkipParty, "BOTTOMLEFT", 0, 6)
+	 _G[Button:GetName().."Text"]:SetText(L["OPT_14"])
+	 _G[Button:GetName().."Text"]:SetFontObject("GameFontHighlight")
+	Button:SetScript("OnShow",  function(self) self:SetChecked(GlobalIgnoreDB.skipPrivate == true) end)
+	Button:SetScript("OnClick" ,function(self) GlobalIgnoreDB.skipPrivate = (self:GetChecked() or false) end)
 
 	-- SHOW
 	

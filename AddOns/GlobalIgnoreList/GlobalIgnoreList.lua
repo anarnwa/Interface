@@ -382,7 +382,9 @@ local function ResetIgnoreDB()
 		filterCount		= {},
 		filterDesc		= {},
 		filterList		= {},
-		skipGuild		= true
+		skipGuild		= true,
+		skipParty		= false,
+		skipPrivate		= true
 	}
 	
 	GlobalIgnoreImported = false
@@ -632,7 +634,7 @@ local function ApplicationStartup(self)
 	-- Set filter defaults
 	
 	filterDefDesc[#filterDefDesc + 1]     = "Filter \"Anal\" Spammers"
-	filterDefFilter[#filterDefFilter + 1] = "([word=anal] or [contains=analan]) and [link]"
+	filterDefFilter[#filterDefFilter + 1] = "([word=anal] or [contains=analan]) and ([link] or [words=2])"
 	filterDefActive[#filterDefActive + 1] = true
 
 	filterDefDesc[#filterDefDesc + 1]     = "Filter Thunderfury linking"
@@ -678,6 +680,14 @@ local function ApplicationStartup(self)
 	end
 	
 	-- set missing defaults or upgrade if needed
+
+	if GlobalIgnoreDB.skipPrivate == nil then
+		GlobalIgnoreDB.skipPrivate = true
+	end
+
+	if GlobalIgnoreDB.skipParty == nil then
+		GlobalIgnoreDB.skipParty = false
+	end
 
 	if GlobalIgnoreDB.skipGuild == nil then
 		GlobalIgnoreDB.skipGuild = true
@@ -834,7 +844,12 @@ end
 
 local function EventHandler (self, event, sender, ...)
 
-	-- print ("DEBUG event=".. (event or "nil") .. " sender=" .. (sender or "nil"))
+	--print ("DEBUG event=".. (event or "nil"))
+	--print ("DEBUG event=".. (event or "nil") .. " sender=" .. (sender or "nil"))
+	
+	if (event == "CHANNEL_INVITE_REQUEST") then
+		print ("DEBUG RECEIVED CHANNEL INVITE REQUEST")
+	end
 
 	if (event == "ADDON_LOADED") and (sender == "GlobalIgnoreList") then
 		gotLoaded = true
@@ -943,7 +958,7 @@ end
 -- SPAM FILTER ENGINE --
 ------------------------
 
-function filterComplex (filterStr, chatStr)
+function filterComplex (filterStr, chatStr, chNum)
 	-- true=should be filtered
 	-- chatStr should be convered to all lower
 	
@@ -1137,6 +1152,8 @@ function filterComplex (filterStr, chatStr)
 		end		
 	end
 	
+	--print ("DEBUG filter word count is " .. #chatData)
+	
 	-----------	
 	
 	local filterCount = 0
@@ -1232,7 +1249,7 @@ function filterComplex (filterStr, chatStr)
 					end
 									
 					if token ~= "" then
-						--print("DEBUG tokenstart="..token)
+						--print("DEBUG tokenStart="..token)
 						tempPos = find(token, "=", 1, true)
 					
 						if tempPos then
@@ -1264,7 +1281,7 @@ function filterComplex (filterStr, chatStr)
 									found = true
 									break
 								end
-						end
+							end
 						
 							if found == true then
 								result = result .. "T"
@@ -1280,11 +1297,23 @@ function filterComplex (filterStr, chatStr)
 								result = result .. "T"						
 							else
 								result = result .. "F"									
-							end				
+							end
+						elseif token == "[channel]" then
+							if tonumber(tokenData) == chNum then
+								result = result .. "T"
+							else
+								result = result .. "F"
+							end								
+						elseif token == "[words]" then
+							if tonumber(tokenData) == #chatData then
+								result = result .. "T"
+							else
+								result = result .. "F"	
+							end		
 						elseif token == "[item]" then
 							if tokenData == "" then
 								if #itemID > 0 then
-								result = result .. "T"						
+									result = result .. "T"						
 								else
 									result = result .. "F"
 								end
@@ -1520,7 +1549,7 @@ end
 
 --local lastMsg = ""
 
-local function chatMessageFilter (self, event, message, from, ...)
+local function chatMessageFilter (self, event, message, from, t1, t2, t3, t4, t5, chnum, chname, ...)
 
 	--if lastMsg ~= message then	
 		--t = string.gsub(message, "|", "!")
@@ -1545,7 +1574,7 @@ local function chatMessageFilter (self, event, message, from, ...)
 	if GIL_Loaded ~= true then
 		return false
 	end
-
+	
 	if event == "CHAT_MSG_MONSTER_EMOTE" or event == "CHAT_MSG_MONSTER_PARTY" or event == "CHAT_MSG_MONSTER_SAY" or
 	   event == "CHAT_MSG_MONSTER_WHISPER" or event == "CHAT_MSG_MONSTER_YELL" then
 	   
@@ -1612,7 +1641,24 @@ local function chatMessageFilter (self, event, message, from, ...)
 				if GlobalIgnoreDB.skipGuild == true and (event == "CHAT_MSG_GUILD" or event == "CHAT_MSG_OFFICER") then
 					return false
 				end
-
+				
+				if GlobalIgnoreDB.skipParty == true and (
+					event == "CHAT_MSG_BATTLEGROUND" or
+					event == "CHAT_MSG_BATTLEGROUND_LEADER" or
+					event == "CHAT_MSG_INSTANCE_CHAT" or
+					event == "CHAT_MSG_INSTANCE_CHAT_LEADER" or
+					event == "CHAT_MSG_PARTY" or
+					event == "CHAT_MSG_RAID" or 
+					event == "CHAT_MSG_RAID_LEADER" or
+					event == "CHAT_MSG_RAID_WARNING"					
+				) then
+					return false
+				end
+				
+				if GlobalIgnoreDB.skipPrivate == true and event == "CHAT_MSG_WHISPER" then
+					return false
+				end
+				
 				if (event == "CHAT_MSG_ACHIEVEMENT") or (event == "CHAT_MSG_GUILD_ACHIEVEMENT") then			
 					return false
 				end
@@ -1622,7 +1668,7 @@ local function chatMessageFilter (self, event, message, from, ...)
 					
 					message = string.lower(message)
 					
-					lastFilterResult, filterNum = filterComplex(nil, message)
+					lastFilterResult, filterNum = filterComplex(nil, message, chnum)
 				
 					if lastFilterResult == true then
 						
@@ -1655,6 +1701,7 @@ end
 
 local chatEvents = (
 		{
+		"CHANNEL_INVITE_REQUEST",
 		"CHAT_MSG_ACHIEVEMENT",
 		"CHAT_MSG_BATTLEGROUND",
 		"CHAT_MSG_BATTLEGROUND_LEADER",
@@ -1680,7 +1727,6 @@ local chatEvents = (
 		"CHAT_MSG_SYSTEM",
 		"CHAT_MSG_TEXT_EMOTE",
 		"CHAT_MSG_WHISPER",
-		"CHAT_MSG_WHISPER_INFORM",
 		"CHAT_MSG_YELL"
 		}
 	)

@@ -35,10 +35,6 @@ end
 
 local FishingInit = {};
 
-local function copytable(tab, level)
-	return FL:copytable(tab, level);
-end
-
 FishingInit.ResetHelpers = function()
 	FishingBuddy.MappedZones = {};
 	FishingBuddy.SortedZones = {};
@@ -455,7 +451,7 @@ FishingInit.UpdateFishingDB = function()
 
 	if (version < 19500) then
 		-- Possible double subzones
-		local founddump = false
+		local founddup = false
 		local counter = {}
 		local dups = {}
 		local fisubzones = FishingBuddy_Info['SubZones']
@@ -475,14 +471,14 @@ FishingInit.UpdateFishingDB = function()
 		if founddup then
 			local ft = FishingBuddy_Info["FishTotals"]
 			for mapId,_ in pairs(dups) do
-				counters = counter[mapId]
+				local counters = counter[mapId]
 				table.sort(counters, function(a,b) return a>b end)
 				local sidm = counters[#counters]
 				if not FishingBuddy_Info['KnownZones'][mapId] then
 					FishingBuddy_Info['KnownZones'][mapId] = true
 				end
 				-- Remove the duplicates
-				zidm = zmto(mapId, 0)
+				local zidm = zmto(mapId, 0)
 				for idx=#counters,2,-1 do
 					local badm = zmto(mapId, idx)
 					FishingBuddy_Info["FishingSkill"][badm] = nil
@@ -614,7 +610,7 @@ FishingInit.InitSortHelpers = function()
 	local fh = FishingBuddy_Info["FishingHoles"];
 	FishingInit.ResetHelpers();
 	for mapId, name in pairs(FishingBuddy_Info["KnownZones"]) do
-		zone = FL:GetLocZone(mapId)
+		local zone = FL:GetLocZone(mapId)
 		if zone then
 			FishingBuddy.MappedZones[zone] = mapId
 			tinsert(FishingBuddy.SortedZones, zone);

@@ -1,0 +1,17 @@
+{
+    "target": "curse",
+    "searchName": "Rarity",
+    "localName": "Rarity",
+    "version": "r692-release",
+    "fileName": "rarity",
+    "addonsMap": [
+        "Rarity",
+        "Rarity_Options"
+    ],
+    "interfaceMap": [],
+    "children": [
+        "Rarity_Options"
+    ],
+    "name": "Rarity",
+    "gameVersion": ""
+}

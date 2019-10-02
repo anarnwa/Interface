@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "WIM (WoW Instant Messenger) v3",
+    "localName": "WIM",
+    "version": "3.8.0",
+    "fileName": "wim-3",
+    "addonsMap": [
+        "WIM"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "WIM (WoW Instant Messenger) v3",
+    "gameVersion": ""
+}

@@ -1,0 +1,14 @@
+{
+    "fileName": "handynotes-suramar-and-shalaran-telemancy",
+    "localName": "HandyNotes_SuramarShalAranTelemancy",
+    "searchName": "HandyNotes - Suramar and Shal'Aran Telemancy",
+    "target": "curse",
+    "version": "v1.21",
+    "addonsMap": [
+        "HandyNotes_SuramarShalAranTelemancy"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "HandyNotes - Suramar and Shal'Aran Telemancy",
+    "gameVersion": ""
+}

@@ -1,0 +1,14 @@
+{
+    "target": "curse",
+    "searchName": "Premade Groups Filter",
+    "localName": "PremadeGroupsFilter",
+    "version": "1.31",
+    "fileName": "premade-groups-filter",
+    "addonsMap": [
+        "PremadeGroupsFilter"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Premade Groups Filter",
+    "gameVersion": ""
+}

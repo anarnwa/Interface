@@ -11,7 +11,7 @@ core._2164 = {}
 core._2164.Events = CreateFrame("Frame")
 
 ------------------------------------------------------
----- Abyssal Commander Sivara
+---- Abyssal Commander Sivara Test
 ------------------------------------------------------
 local garvalTheVanquisherFound = false
 local tideshaperKorvessFound = false
@@ -46,6 +46,11 @@ local applauseAnnounce = false
 ------------------------------------------------------
 local eggFound = false
 local eggFoundPlayer = nil
+
+------------------------------------------------------
+---- Za'qul
+------------------------------------------------------
+local twinklehoofBovineKilled = 0
 
 function core._2164:AbyssalCommanderSivara()
 	--Defeat Abyssal Commander Sivara in The Eternal Palace while all three of her lieutenants are alive and engaged in the fight on Normal difficulty or higher.
@@ -92,7 +97,7 @@ function core._2164:BlackwaterBehemoth()
 		end
 		C_Timer.After(3, function()
 			--Ask all other addons in the group to see if they are running the addon and tracking this achievement
-			C_ChatInfo.SendAddonMessage("Whizzey", "reqIAT,2,38,true", "RAID")		
+			C_ChatInfo.SendAddonMessage("Whizzey", "reqIAT,2,53,true", "RAID")		
 
 			--Wait 1 second for a response from other addon in the group
 			C_Timer.After(2, function() 
@@ -113,7 +118,8 @@ function core._2164:BlackwaterBehemoth()
 	if core.type == "SPELL_CAST_SUCCESS" and core.spellId == 302005 and collectSampleUID[core.spawn_uid_dest] == nil then
 		collectSampleUID[core.spawn_uid_dest] = core.spawn_uid_dest
 		samplesCollected = samplesCollected + 1
-		core:sendMessage(core:getAchievement() .. samplesCollected .. " " .. L["AzsharasEternalPalace_SamplesCollected"])
+		-- core:sendMessage(core:getAchievement() .. samplesCollected .. "/50 " .. L["AzsharasEternalPalace_SamplesCollected"])
+		core.IATInfoFrame:SetText1(L["AzsharasEternalPalace_SamplesCollected"] .. " " .. samplesCollected .. "/50","GameFontHighlightLarge")
 		
 		--Send message to other addon users
 		local messageStr = core.type .. "," .. core.spellId .. "," .. core.spawn_uid_dest
@@ -126,10 +132,12 @@ function core._2164:BlackwaterBehemoth()
 			core:sendDebugMessage("Found Message:" .. message)
 			local spellType, spellid, spawnUIDDest = strsplit(",", message)
 			if spellType == "SPELL_CAST_SUCCESS" and spellid == "302005" and collectSampleUID[spawnUIDDest] == nil then
+				core:sendDebugMessage("Samples collected in message sync queue")
 				--Recieved sample from another addon user. Increment counter
 				collectSampleUID[spawnUIDDest] = spawnUIDDest
 				samplesCollected = samplesCollected + 1
-				core:sendMessage(core:getAchievement() .. samplesCollected .. " " .. L["AzsharasEternalPalace_SamplesCollected"])
+				-- core:sendMessage(core:getAchievement() .. samplesCollected .. "/50 " .. L["AzsharasEternalPalace_SamplesCollected"])
+				core.IATInfoFrame:SetText1(L["AzsharasEternalPalace_SamplesCollected"] .. " " .. samplesCollected .. "/50","GameFontHighlightLarge")
 			end
 			core.syncMessageQueue[k] = nil
 		end
@@ -149,6 +157,24 @@ function core._2164:LadyAshvane()
 	end
 end
 
+function core._2164:Orgozoa()
+	--Defeat Orgozoa in the Hatchery in The Eternal Palace after incubating a baby Zoatroid on Normal Difficulty or higher.
+
+	--If egg not found by time Massive Incubator spellcast is started then fail achievement
+	if core.type == "SPELL_CAST_START" and core.spellId == 298548 and eggFound == false then
+		core:getAchievementFailed()
+	end
+
+	--If egg found by time Massive Incubator spellcast is interrupted then achievement is completed
+	if core.type == "SPELL_AURA_REMOVED" and core.spellId == 305347 and eggFound == true then
+		C_Timer.After(1, function() 
+			if eggFound == true then
+				core:getAchievementSuccess()
+			end
+		end)
+	end
+end
+
 function core._2164:Zaqul() 
     --Defeat Za'qul in the Eternal Palace after killing ten Twinklehoof Bovine on Normal difficulty or higher.
 
@@ -156,6 +182,20 @@ function core._2164:Zaqul()
 	if core:getBlizzardTrackingStatus(13716, 1) == true then
 		core:getAchievementSuccess()
 	end
+
+	--Twinklehoof Bovine Killed
+	if core.type == "UNIT_DIED" and core.destID == "155648" then
+		twinklehoofBovineKilled = twinklehoofBovineKilled + 1
+		core:sendMessage(core:getAchievement() .. " " .. getNPCName(155648) .. " " .. L["Shared_Killed"] .. " (" .. twinklehoofBovineKilled .. "/10)")
+	end
+
+	--Whimsy Realm has worn off. Check if achievement was completed in time or not.
+	-- if core.type == "SPELL_AURA_REMOVED" and core.spellId == 303266 and core.destName ~= nil then
+	-- 	if UnitIsDead(core.destName) == false and core.achievementsCompleted[1] == false then
+	-- 		--Player is alive, lost the debuff and achievement is not completed. Mark achievement as failed
+	-- 		core:getAchievementFailed()
+	-- 	end
+	-- end
 end
 
 function core._2164:QueenAzshara()
@@ -209,7 +249,7 @@ function core._2164:RadianceOfAzshara()
 	end
 
 	--Achievement Completed but has since failed
-	if playersCompletedAchievement ~= #core.currentBosses[1].players and core.achievementsCompleted[1] == true then
+	if playersCompletedAchievement ~= #core.currentBosses[1].players and core.achievementsCompleted[1] == true and core:getHealthPercent("boss1") > 0 then
 		core:getAchievementFailed()
 		core.achievementsCompleted[1] = false 
 	end
@@ -222,7 +262,7 @@ function core._2164:TheQueensCourt()
 	--Form Ranks - Salute
 	if core.type == "SPELL_AURA_APPLIED" and core.spellId == 303188 and saluteAnnounce == false then
 		saluteAnnounce = true
-		core:sendMessage(GetSpellLink(303188) .. " /" .. L["AzsharasEternalPalace_Salute"] .. " " .. L["Shared_NOW"], true)
+		core:sendMessage(GetSpellLink(303188) .. " " .. format(L["AzsharasEternalPalace_TargetAndPerformEmote"], getNPCName(152910), L["AzsharasEternalPalace_Salute"]), true)
 		C_Timer.After(20, function() 
 			saluteAnnounce = false
 		end)
@@ -230,7 +270,7 @@ function core._2164:TheQueensCourt()
 	--Repeat Performance - Curtsey
 	if core.type == "SPELL_AURA_APPLIED" and core.spellId == 304409 and curtseyAnnounce == false then
 		curtseyAnnounce = true
-		core:sendMessage(GetSpellLink(304409) .. " /" .. L["AzsharasEternalPalace_Curtsey"] .. " " .. L["Shared_NOW"], true)
+		core:sendMessage(GetSpellLink(304409) .. " " .. format(L["AzsharasEternalPalace_TargetAndPerformEmote"], getNPCName(152910), L["AzsharasEternalPalace_Curtsey"]), true)
 		C_Timer.After(20, function() 
 			curtseyAnnounce = false
 		end)
@@ -238,7 +278,7 @@ function core._2164:TheQueensCourt()
 	--Deferred Sentance - Grovel
 	if core.type == "SPELL_AURA_APPLIED" and core.spellId == 304128 and grovelAnnounce == false then
 		grovelAnnounce = true
-		core:sendMessage(GetSpellLink(304128) .. " /" .. L["AzsharasEternalPalace_Grovel"] .. " " .. L["Shared_NOW"], true)
+		core:sendMessage(GetSpellLink(304128) .. " " .. format(L["AzsharasEternalPalace_TargetAndPerformEmote"], getNPCName(152910), L["AzsharasEternalPalace_Grovel"]), true)
 		C_Timer.After(20, function() 
 			grovelAnnounce = false
 		end)
@@ -246,7 +286,7 @@ function core._2164:TheQueensCourt()
 	--Obey or Suffer - Kneel
 	if core.type == "SPELL_AURA_APPLIED" and core.spellId == 297585 and kneelAnnounce == false then
 		kneelAnnounce = true
-		core:sendMessage(GetSpellLink(297585) .. " /" .. L["AzsharasEternalPalace_Kneel"] .. " " .. L["Shared_NOW"], true)
+		core:sendMessage(GetSpellLink(297585) .. " " .. format(L["AzsharasEternalPalace_TargetAndPerformEmote"], getNPCName(152910), L["AzsharasEternalPalace_Kneel"]), true)
 		C_Timer.After(20, function() 
 			kneelAnnounce = false
 		end)
@@ -254,7 +294,7 @@ function core._2164:TheQueensCourt()
 	--Stand Alone - Applause
 	if core.type == "SPELL_AURA_APPLIED" and core.spellId == 297656 and applauseAnnounce == false then
 		applauseAnnounce = true
-		core:sendMessage(GetSpellLink(297656) .. " /" .. L["AzsharasEternalPalace_Applause"] .. " " .. L["Shared_NOW"], true)
+		core:sendMessage(GetSpellLink(297656) .. " " .. format(L["AzsharasEternalPalace_TargetAndPerformEmote"], getNPCName(152910), L["AzsharasEternalPalace_Applause"]), true)
 		C_Timer.After(20, function() 
 			applauseAnnounce = false
 		end)
@@ -263,14 +303,25 @@ function core._2164:TheQueensCourt()
 	InfoFrame_UpdatePlayersOnInfoFramePersonal()
 	InfoFrame_SetHeaderCounter(L["Shared_PlayersWhoNeedAchievement"],playersCompletedAchievement,#core.currentBosses[1].players)
 
+	--Make sure we remove realm info from player before checking name
+	local name = nil
+	if core.destName ~= nil then
+		if string.find(core.destName, "-") then
+			local splitName, splitRealm = strsplit("-", core.destName)
+			name = splitName
+		else
+			name = core.destName
+		end
+	end
+
 	--When players gains Queen Favour debuff mark player as complete
-	if core.type == "SPELL_AURA_APPLIED" and core.spellId == 302029 then
+	if core.type == "SPELL_AURA_APPLIED" and core.spellId == 302029 and core.InfoFrame_PlayersTable[name] ~= nil then
 		playersCompletedAchievement = playersCompletedAchievement + 1
 		InfoFrame_SetPlayerComplete(core.destName)
 	end
 
 	--If player looses Queen Favour Debuff
-	if core.type == "SPELL_AURA_REMOVED" and core.spellId == 302029 and core.inCombat == true then
+	if core.type == "SPELL_AURA_REMOVED" and core.spellId == 302029 and core.inCombat == true and core.InfoFrame_PlayersTable[name] ~= nil then
 		playersCompletedAchievement = playersCompletedAchievement - 1
 		InfoFrame_SetPlayerFailed(core.destName)
 	end
@@ -281,11 +332,11 @@ function core._2164:TheQueensCourt()
 		core.achievementsFailed[1] = false
 	end
 
-	--Achievement Completed but has since failed
-	if playersCompletedAchievement ~= #core.currentBosses[1].players and core.achievementsCompleted[1] == true and core:getHealthPercent("boss1") > 0 then
-		core:getAchievementFailed()
-		core.achievementsCompleted[1] = false 
-	end
+	-- --Achievement Completed but has since failed
+	-- if playersCompletedAchievement ~= #core.currentBosses[1].players and core.achievementsCompleted[1] == true and core:getHealthPercent("boss1") > 0 then
+	-- 	core:getAchievementFailed()
+	-- 	core.achievementsCompleted[1] = false 
+	-- end
 end
 
 function core._2164:ClearVariables()
@@ -318,6 +369,11 @@ function core._2164:ClearVariables()
 	------------------------------------------------------
 	eggFound = false
 	eggFoundPlayer = nil
+
+	------------------------------------------------------
+	---- Za'qul
+	------------------------------------------------------
+	twinklehoofBovineKilled = 0
 end
 
 function core._2164:InstanceCleanup()
@@ -343,7 +399,7 @@ function core._2164.Events:UNIT_AURA(self, unitID)
 				if spellId == 305173 then
 					foundFunRunDebuff = true
 					if name ~= nil then
-						if playersWithFunRun[name] == nil then
+						if playersWithFunRun[name] == nil and core.InfoFrame_PlayersTable[name] ~= nil then
 							playersWithFunRun[name] = name
 							InfoFrame_SetPlayerComplete(name)
 							playersCompletedAchievement = playersCompletedAchievement + 1
@@ -356,7 +412,7 @@ function core._2164.Events:UNIT_AURA(self, unitID)
 			--Check if player has completed the achievement already and if so do they still have the debuff or not
 			if core.InfoFrame_PlayersTable[name] ~= nil and foundFunRunDebuff == false then
 				if core.InfoFrame_PlayersTable[name] == 2 then
-					if playersWithFunRun[name] ~= nil then
+					if playersWithFunRun[name] ~= nil and core:getHealthPercent("boss1") > 0 and core.InfoFrame_PlayersTable[name] ~= nil then
 						--Player has lost debuff. Update InfoFrame
 						InfoFrame_SetPlayerFailed(name)
 						playersWithFunRun[name] = nil
@@ -376,20 +432,20 @@ function core._2164.Events:UNIT_AURA(self, unitID)
 			local name, realm = UnitName(unitID)
 			for i=1,40 do
 				local _, _, count2, _, _, _, _, _, _, spellId = UnitDebuff(unitID, i)
-				if spellId == 298306 then
-					--Incubation Fluid
-					if name ~= nil then
-						incubationFluidFound = true
-						incubationFluidPlayer = name
+				-- if spellId == 298306 then
+				-- 	--Incubation Fluid
+				-- 	if name ~= nil then
+				-- 		incubationFluidFound = true
+				-- 		incubationFluidPlayer = name
 
-						--Check requirements have been met
-						if incubationFluidFound == true and incubatingZoatroidFound == true then
-							if incubationFluidPlayer == incubatingZoatroidPlayer then
-								core:getAchievementSuccess()
-							end
-						end
-					end
-				elseif spellId == 305322 then
+				-- 		--Check requirements have been met
+				-- 		if incubationFluidFound == true and incubatingZoatroidFound == true then
+				-- 			if incubationFluidPlayer == incubatingZoatroidPlayer then
+				-- 				core:getAchievementSuccess()
+				-- 			end
+				-- 		end
+				-- 	end
+				if spellId == 305322 then
 					--Incubating Zoatroid
 					if name ~= nil then
 						incubatingZoatroidFound = true
@@ -398,10 +454,10 @@ function core._2164.Events:UNIT_AURA(self, unitID)
 						eggFoundPlayer = name
 
 						--Check requirements have been met
-						if incubationFluidFound == true and incubatingZoatroidFound == true then
-							if incubationFluidPlayer == incubatingZoatroidPlayer then
-								core:getAchievementSuccess()
-							end
+						if incubatingZoatroidFound == true then
+							--Announce player has caught the egg
+							core:sendMessage(name .. " " .. L["Shared_HasCaught"] .. " " .. GetSpellLink(305322),true)
+							-- core:getAchievementSuccess()
 						end
 					end
 				end
