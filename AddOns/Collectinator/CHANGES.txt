@@ -1,12 +1,12 @@
-tag ed582cd5630488a4ed4e456a17c5c10de6c8baa6 8.2.5.1
+tag 9e9b78a2b8b907000fa93e8e15713e8b48d13fb7 8.2.5.2
 Author:	Ressy <resa1983@hotmail.com>
-Date:	Tue Sep 24 08:01:18 2019 -0400
+Date:	Wed Nov 27 21:03:58 2019 -0500
 
-8.2.5 update
+Update for 8.2.5
 
-commit f45cfab18405a793e117bfcf473e664c3f401439
+commit 7965d53efd4d128d18e4cce83c50b11aada57da6
 Author: Ressy <resa1983@hotmail.com>
-Date:   Tue Sep 24 08:00:50 2019 -0400
+Date:   Wed Nov 27 21:02:16 2019 -0500
 
-    8.2.5 update
+    Add Blizzcon & Shadowlands CE collectibles
 

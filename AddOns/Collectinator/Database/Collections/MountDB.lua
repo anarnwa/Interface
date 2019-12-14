@@ -2,10 +2,10 @@
 ************************************************************************
 MountDB.lua
 ************************************************************************
-File date: 2019-09-24T12:00:50Z
-File hash: f45cfab
-Project hash: f45cfab
-Project version: 8.2.5.1
+File date: 2019-11-28T2:02:16Z
+File hash: 7965d53
+Project hash: 7965d53
+Project version: 8.2.5.2
 ************************************************************************
 Please see http://www.wowace.com/addons/collectinator/ for more information.
 ************************************************************************
@@ -4797,6 +4797,12 @@ function addon:InitMounts()
 	mount:SetRequiredFaction("Horde")
 	mount:AddFilters(F.HORDE, F.IBOP, F.PVP, F.ACHIEVEMENT)
 	mount:AddAchievement(13930)
+
+	-- Ensorcelled Everwyrm -- 307932
+	mount = AddMount(307932, V.BFA, Q.EPIC)
+--	mount:SetItemID()
+	mount:AddFilters(F.ALLIANCE, F.HORDE, F.IBOP, F.COLLECTORS_EDITION)
+	mount:AddCustom("CE_H", "CE_E")
 
 	-- Stormpike Battle Ram -- 308250
 	mount = AddMount(308250, V.BFA, Q.EPIC)

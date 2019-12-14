@@ -1,14 +1,14 @@
 {
-    "target": "curse",
-    "searchName": "EnhancedChatFilterMODFix",
-    "localName": "EnhancedChatFilter",
-    "version": "8.2.5-0",
-    "fileName": "ecfmodfix",
     "addonsMap": [
         "EnhancedChatFilter"
     ],
-    "interfaceMap": [],
     "children": [],
+    "fileName": "ecfmodfix",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "EnhancedChatFilter",
     "name": "EnhancedChatFilterMODFix",
-    "gameVersion": ""
+    "searchName": "EnhancedChatFilterMODFix",
+    "target": "curse",
+    "version": "8.2.5-0"
 }

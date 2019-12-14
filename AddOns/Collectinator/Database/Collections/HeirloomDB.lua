@@ -4,8 +4,8 @@ HeirloomDB.lua
 ************************************************************************
 File date: 2018-12-13T2:32:04Z
 File hash: f9bd2f5
-Project hash: f45cfab
-Project version: 8.2.5.1
+Project hash: 7965d53
+Project version: 8.2.5.2
 ************************************************************************
 Please see http://www.wowace.com/addons/collectinator/ for more information.
 ************************************************************************

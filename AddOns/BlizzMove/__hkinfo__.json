@@ -3,5 +3,12 @@
     "localName": "BlizzMove",
     "searchName": "BlizzMove",
     "target": "curse",
-    "version": "1.9"
+    "version": "v1.9.1",
+    "addonsMap": [
+        "BlizzMove"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "BlizzMove",
+    "gameVersion": ""
 }

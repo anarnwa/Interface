@@ -1,5 +1,8 @@
+v8.2.6:
+- Added Teleportologist Fozlebub (Darkmoon Faire)
+
 v8.2.5:
-- TOC update
+- TOC update for patch 8.2.5
 
 v8.2.2:
 - Updated multiple exceptions for NPC Sean Wilkers target id inside Statholme Pet Dungeon

@@ -1495,6 +1495,7 @@ do
   local swingDurationMain, swingDurationOff, swingDurationRange, mainSwingOffset;
   local mainTimer, offTimer, rangeTimer;
   local selfGUID;
+  local mainSpeed, offSpeed = UnitAttackSpeed("player")
 
   function WeakAuras.GetSwingTimerInfo(hand)
     if(hand == "main") then
@@ -1547,7 +1548,7 @@ do
 
         local event;
         local currentTime = GetTime();
-        local mainSpeed, offSpeed = UnitAttackSpeed("player");
+        mainSpeed, offSpeed = UnitAttackSpeed("player");
         offSpeed = offSpeed or 0;
         if not(isOffHand) then
           lastSwingMain = currentTime;
@@ -1587,12 +1588,35 @@ do
   local function swingTimerCheck(event, unit, guid, spell)
     if unit ~= "player" then return end
     WeakAuras.StartProfileSystem("generictrigger swing");
-    if event == "UNIT_SPELLCAST_SUCCEEDED" then
+    if event == "UNIT_ATTACK_SPEED" then
+      local mainSpeedNew, offSpeedNew = UnitAttackSpeed("player")
+      offSpeedNew = offSpeedNew or 0
+      if lastSwingMain then
+        if mainSpeedNew ~= mainSpeed then
+          timer:CancelTimer(mainTimer)
+          local multiplier = mainSpeedNew / mainSpeed
+          local timeLeft = (lastSwingMain + swingDurationMain - GetTime()) * multiplier
+          swingDurationMain = mainSpeedNew
+          mainTimer = timer:ScheduleTimerFixed(swingEnd, timeLeft, "main")
+          WeakAuras.ScanEvents("SWING_TIMER_CHANGE")
+        end
+      end
+      if lastSwingOff then
+        if offSpeedNew ~= offSpeed then
+          timer:CancelTimer(offTimer)
+          local multiplier = offSpeedNew / mainSpeed
+          local timeLeft = (lastSwingOff + swingDurationOff - GetTime()) * multiplier
+          swingDurationOff = offSpeedNew
+          offTimer = timer:ScheduleTimerFixed(swingEnd, timeLeft, "off")
+          WeakAuras.ScanEvents("SWING_TIMER_CHANGE")
+        end
+      end
+      mainSpeed, offSpeed = mainSpeedNew, offSpeedNew
+    elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
       if WeakAuras.reset_swing_spells[spell] then
         local event;
-        local currentTime = GetTime();
-        local mainSpeed, offSpeed = UnitAttackSpeed("player");
-        lastSwingMain = currentTime;
+        mainSpeed, offSpeed = UnitAttackSpeed("player");
+        lastSwingMain = GetTime();
         swingDurationMain = mainSpeed;
         mainSwingOffset = 0;
         if (lastSwingMain) then
@@ -1635,6 +1659,7 @@ do
       swingTimerFrame = CreateFrame("frame");
       swingTimerFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
       swingTimerFrame:RegisterEvent("PLAYER_ENTER_COMBAT");
+      swingTimerFrame:RegisterUnitEvent("UNIT_ATTACK_SPEED", "player");
       swingTimerFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player");
       swingTimerFrame:SetScript("OnEvent",
         function(_, event, ...)
@@ -1855,6 +1880,7 @@ do
         WeakAuras.CheckCooldownReady();
       elseif(event == "SPELLS_CHANGED") then
         WeakAuras.CheckSpellKnown();
+        WeakAuras.CheckCooldownReady();
       elseif(event == "UNIT_SPELLCAST_SENT") then
         local unit, guid, castGUID, name = ...;
         if(unit == "player") then
@@ -2176,7 +2202,9 @@ do
       duration = duration or 0;
       local time = GetTime();
 
-      if(duration > 0 and duration ~= WeakAuras.gcdDuration()) then
+      -- We check against 1.5 and not gcdDuration, as apparently the durations might not match exactly.
+      -- But there shouldn't be any trinket with a actual cd of less than 1.5 anyway
+      if(duration > 0 and duration > 1.5) then
         -- On non-GCD cooldown
         local endTime = startTime + duration;
 
@@ -2225,7 +2253,9 @@ do
       duration = duration or 0;
       local time = GetTime();
 
-      if(duration > 0 and duration ~= WeakAuras.gcdDuration()) then
+      -- We check against 1.5 and not gcdDuration, as apparently the durations might not match exactly.
+      -- But there shouldn't be any trinket with a actual cd of less than 1.5 anyway
+      if(duration > 0 and duration > 1.5) then
         -- On non-GCD cooldown
         local endTime = startTime + duration;
 
@@ -2364,7 +2394,7 @@ do
         startTime, duration = 0, 0
       end
       itemCdEnabled[id] = enabled;
-      if(duration > 0 and duration ~= WeakAuras.gcdDuration()) then
+      if(duration > 0 and duration > 1.5) then
         local time = GetTime();
         local endTime = startTime + duration;
         itemCdDurs[id] = duration;
@@ -2387,7 +2417,7 @@ do
       itemSlots[id] = GetInventoryItemID("player", id);
       local startTime, duration, enable = GetInventoryItemCooldown("player", id);
       itemSlotsEnable[id] = enable;
-      if(duration > 0 and duration ~= WeakAuras.gcdDuration()) then
+      if(duration > 0 and duration > 1.5) then
         local time = GetTime();
         local endTime = startTime + duration;
         itemSlotsCdDurs[id] = duration;
@@ -2951,13 +2981,21 @@ do
         if(math.abs((mh_exp or 0) - (mh_exp_new or 0)) > 1) then
           mh_exp = mh_exp_new;
           mh_dur = mh_rem and mh_rem / 1000;
-          mh_name, mh_shortenedName = mh_exp and getTenchName(mh) or "None", "None";
+          if mh_exp then
+            mh_name, mh_shortenedName = getTenchName(mh)
+          else
+            mh_name, mh_shortenedName = "None", "None"
+          end
           mh_icon = GetInventoryItemTexture("player", mh)
         end
         if(math.abs((oh_exp or 0) - (oh_exp_new or 0)) > 1) then
           oh_exp = oh_exp_new;
           oh_dur = oh_rem and oh_rem / 1000;
-          oh_name, oh_shortenedName = oh_exp and getTenchName(oh) or "None", "None";
+          if oh_exp then
+            oh_name, oh_shortenedName = getTenchName(oh)
+          else
+            oh_name, oh_shortenedName = "None", "None"
+          end
           oh_icon = GetInventoryItemTexture("player", oh)
         end
         WeakAuras.ScanEvents("TENCH_UPDATE");

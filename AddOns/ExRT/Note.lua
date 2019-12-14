@@ -1307,6 +1307,14 @@ module.frame:SetScript("OnSizeChanged", function (self, width, height)
 end)
 module.frame:Hide() 
 
+ELib:FixPreloadFont(module.frame,function() 
+	if VExRT then
+		module.frame.text:SetFont(GameFontWhite:GetFont(),11)
+		module.frame:UpdateFont() 
+		return true
+	end
+end)
+
 function module.frame:UpdateFont()
 	local font = VExRT and VExRT.Note and VExRT.Note.FontName or ExRT.F.defFont
 	local size = VExRT and VExRT.Note and VExRT.Note.FontSize or 12

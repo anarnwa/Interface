@@ -2,10 +2,10 @@
 ************************************************************************
 Custom.lua
 ************************************************************************
-File date: 2019-09-24T12:00:50Z
-File hash: f45cfab
-Project hash: f45cfab
-Project version: 8.2.5.1
+File date: 2019-11-28T2:02:16Z
+File hash: 7965d53
+Project hash: 7965d53
+Project version: 8.2.5.2
 ************************************************************************
 Please see http://www.wowace.com/addons/arl/ for more information.
 ************************************************************************
@@ -39,6 +39,8 @@ function addon:InitCustom()
 
 -- Collectors Editions
 	AddCustom("CE")
+	AddCustom("CE_H")
+	AddCustom("CE_E")
 	AddCustom("STARCRAFTCE")
 	AddCustom("DIABLOCE")
 	AddCustom("OVERWATCHCE")

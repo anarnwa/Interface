@@ -1,6 +1,6 @@
 {
-    "target": "curse",
-    "searchName": "Wido's Explorer Coords",
     "localName": "ExplorerCoords",
+    "searchName": "Wido's Explorer Coords",
+    "target": "curse",
     "version": "1.7.11"
 }

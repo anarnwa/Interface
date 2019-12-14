@@ -2,10 +2,10 @@
 ************************************************************************
 ToyDB.lua
 ************************************************************************
-File date: 2019-09-19T0:09:44Z
-File hash: 28bfb82
-Project hash: f45cfab
-Project version: 8.2.5.1
+File date: 2019-11-28T2:02:16Z
+File hash: 7965d53
+Project hash: 7965d53
+Project version: 8.2.5.2
 ************************************************************************
 Please see http://www.wowace.com/addons/collectinator/ for more information.
 ************************************************************************
@@ -3204,6 +3204,11 @@ function addon:InitToys()
 	toy = AddToy(170469, V.BFA, Q.RARE)
 	toy:AddFilters(F.ALLIANCE, F.HORDE, F.IBOP, F.QUEST)
 	toy:AddQuest(53982, 55976)
+
+	-- Eternal Traveler's Hearthstone -- 172179
+	toy = AddToy(172179, V.BFA, Q.RARE)
+	toy:AddFilters(F.ALLIANCE, F.HORDE, F.IBOP, F.COLLECTORS_EDITION)
+	toy:AddCustom("CE_E")
 
 --[[  Didn't actually make it into the ToyBox panel
 

@@ -1,7 +1,6 @@
-﻿local AutoTeam = AutoLoadPetTeamRematch
-local rematch = Rematch
-local frame = CreateFrame("FRAME", nil, UIParent)
-local CFG = AutoLoadPetTeamConfig
+﻿local rematch = Rematch
+
+local CFG = ALPTRematch.alptconfig
 
 local g = {
   timeLastStart = 0,
@@ -16,28 +15,28 @@ local g = {
   thisXp = 0
 }
 
+local frame = CreateFrame("FRAME", nil, UIParent)
 frame:RegisterEvent("PLAYER_XP_UPDATE")
 frame:RegisterEvent("ADDON_LOADED")
 frame:RegisterEvent("PET_BATTLE_OPENING_START")
 frame:RegisterEvent("PET_BATTLE_CLOSE")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-
 frame:SetScript(
   "OnEvent",
   function(self, event, ...)
     if event == "PET_BATTLE_OPENING_START" then
-      frame:BattleTimerBegin()
+      ALPTRematch:BattleTimerBegin()
     elseif event == "PLAYER_ENTERING_WORLD" then
       g.lastXp = UnitXP("player")
     elseif event == "PET_BATTLE_CLOSE" then
       if not C_PetBattles.IsInBattle() then
-        if frame:CanLevelUP() and not g.isForfeit and not g.isLost then
+        if CFG.enableXpLog and ALPTRematch:CanLevelUP() and not g.isForfeit and not g.isLost then
           --推迟到经验获取再输出
         else
           C_Timer.After(
             0.005,
             function()
-              frame:BattleTimerEnd()
+              ALPTRematch:BattleTimerEnd()
             end
           )
         end
@@ -76,32 +75,33 @@ frame:SetScript(
       C_Timer.After(
         0.005,
         function()
-          frame:BattleTimerEnd()
+          ALPTRematch:BattleTimerEnd()
         end
       )
     end
   end
 )
 
-function frame:CanLevelUP()
+function ALPTRematch:CanLevelUP()
   local level = UnitLevel("player")
-  if level == 120 or IsXPUserDisabled() then
+  local areaid = C_Map.GetBestMapForUnit("player")
+  if level == 120 or IsXPUserDisabled() or areaid == 590 or areaid == 582 then
     return false
   else
     return true
   end
 end
 
-function frame:BattleTimerBegin()
+function ALPTRematch:BattleTimerBegin()
   if CFG.enableBattleTimer then
     g.timeLastStart = time()
     g.resetPrint = false
-    g.loadingKey = AutoTeam:GetCurrentKey()
-    g.npcId = AutoTeam:GetCurrentNpcId()
+    g.loadingKey = ALPTRematch:GetCurrentKey()
+    g.npcId = ALPTRematch:GetCurrentNpcId()
   end
 end
 
-function frame:BattleTimerEnd()
+function ALPTRematch:BattleTimerEnd()
   if not g.loadingKey then
     return
   end
@@ -170,8 +170,8 @@ function frame:BattleTimerEnd()
     if g.teamTimer[g.loadingKey][2] > 0 then
       local avg1 = math.ceil(teamTimer[1] / teamTimer[2])
       local avg2 = math.ceil(teamTimer[3] / teamTimer[4])
-      msg =
-        msg .. "，本队平均用时 " .. avg1 .. "/" .. avg2 .. " 秒(" .. teamTimer[7] .. "-" .. teamTimer[8] .. ")"
+      ALPTRematch:LogTeamTime(avg1, avg2)
+      msg = msg .. "，本队平均用时 " .. avg1 .. "/" .. avg2 .. " 秒(" .. teamTimer[7] .. "-" .. teamTimer[8] .. ")"
     end
 
     if teamTimer[6] > 0 then
@@ -200,18 +200,18 @@ function frame:BattleTimerEnd()
   end
 
   if msg and msg ~= "" then
-    AutoTeam:PrintTimer(msg)
+    ALPTRematch:PrintTimer(msg)
   end
   g.resetPrint = true
 end
 
-function frame:CalcXP()
+function ALPTRematch:CalcXP()
   if not CFG.enableXpLog then
     g.leftTime = -1
     return
   end
 
-  if not frame:CanLevelUP() then
+  if not ALPTRematch:CanLevelUP() then
     g.leftTime = -1
     return
   end

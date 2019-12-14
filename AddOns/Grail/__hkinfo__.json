@@ -1,9 +1,4 @@
 {
-    "target": "curse",
-    "searchName": "Grail",
-    "localName": "Grail",
-    "version": "102",
-    "fileName": "grail",
     "addonsMap": [
         "Grail",
         "Grail-Achievements",
@@ -60,7 +55,6 @@
         "Grail-NPCs-_retail_-zhTW",
         "Grail-NPCs-_retail_"
     ],
-    "interfaceMap": [],
     "children": [
         "Grail-Achievements",
         "Grail-Reputations-_classic_",
@@ -116,6 +110,12 @@
         "Grail-NPCs-_retail_-zhTW",
         "Grail-NPCs-_retail_"
     ],
+    "fileName": "grail",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "Grail",
     "name": "Grail",
-    "gameVersion": ""
+    "searchName": "Grail",
+    "target": "curse",
+    "version": "106"
 }

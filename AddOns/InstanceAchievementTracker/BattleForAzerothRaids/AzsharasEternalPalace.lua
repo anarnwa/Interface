@@ -46,105 +46,24 @@ local applauseAnnounce = false
 ------------------------------------------------------
 local eggFound = false
 local eggFoundPlayer = nil
+local announceCatch = false
 
 ------------------------------------------------------
 ---- Za'qul
 ------------------------------------------------------
 local twinklehoofBovineKilled = 0
 
-function core._2164:AbyssalCommanderSivara()
-	--Defeat Abyssal Commander Sivara in The Eternal Palace while all three of her lieutenants are alive and engaged in the fight on Normal difficulty or higher.
-	
-	if core.type == "SWING_DAMAGE" and core.sourceID == "155277" then
-		gorjeshTheSmasherFound = true
-	end
-
-	if core.type == "SWING_DAMAGE" and core.sourceID == "155275" then
-		tideshaperKorvessFound = true
-	end
-
-	if core.type == "SWING_DAMAGE" and core.sourceID == "155273" then
-		garvalTheVanquisherFound = true
-	end
-
-	if gorjeshTheSmasherFound == true and tideshaperKorvessFound == true and garvalTheVanquisherFound == true then
-		core:getAchievementSuccess()
-	end
-
-    --Blizzard tracking gone red so fail achievement
-	if core:getBlizzardTrackingStatus(13684) == false then
-		core:getAchievementFailed()
-	end
-end
-
 function core._2164:BlackwaterBehemoth()
 	--Defeat the Blackwater Behemoth in The Eternal Palace after collecting 50 samples of sea life from within the Darkest Depths on Normal Difficulty of higher.
 
-	InfoFrame_SetHeaderCounter(L["Shared_TrackingStatus"],playersWithTracking,core.groupSize)
+	InfoFrame_SetHeaderCounter(L["AzsharasEternalPalace_SamplesCollected"],InfoFrame_GetManualCounterCount(),50)
 	InfoFrame_UpdatePlayersOnInfoFrame(false)
+	InfoFrame_SetupManualCounter(50)
+	core.IATInfoFrame:SetText1(L["Shared_Notes"] .. "\n\n" .. L["Shared_ManualTracking"],"GameFontHighlight",nil,200)
 	
-	--Request which players are currently tracking this achievement
-	--Sync Message, Major Version, Minor Version, update Infoframe
 	if initialScan == false then
-		core:sendMessage(L["Shared_PlayersRunningAddon2"],true)
-		core.IATInfoFrame:SetText1(L["AzsharasEternalPalace_SamplesCollected"] .. " " .. samplesCollected,"GameFontHighlightLarge")
-		core.IATInfoFrame:SetSubHeading2(L["Shared_Notes"])
-		core.IATInfoFrame:SetText2(L["Shared_PlayersRunningAddon2"],200)
 		initialScan = true
-		--Set all players to fail initially as we have not determined yet if they have the addon installed
-		for player,status in ipairs(core.InfoFrame_PlayersTable) do
-			InfoFrame_SetPlayerFailed(player)
-		end
-		C_Timer.After(3, function()
-			--Ask all other addons in the group to see if they are running the addon and tracking this achievement
-			C_ChatInfo.SendAddonMessage("Whizzey", "reqIAT,2,53,true", "RAID")		
-
-			--Wait 1 second for a response from other addon in the group
-			C_Timer.After(2, function() 
-				local playersStr = L["Shared_TrackingAchievementFor"] .. ": "
-				for player, status in pairs(core.InfoFrame_PlayersTable) do
-					--For all players that have the addon running, increment the counter by 1
-					core:sendDebugMessage(status) 
-					if status == 2 then
-						playersStr = playersStr .. player .. ", "
-						playersWithTracking = playersWithTracking + 1
-					end
-				end
-				--core:sendMessageSafe(playersStr,true)
-			end)
-		end)
-	end	
-
-	if core.type == "SPELL_CAST_SUCCESS" and core.spellId == 302005 and collectSampleUID[core.spawn_uid_dest] == nil then
-		collectSampleUID[core.spawn_uid_dest] = core.spawn_uid_dest
-		samplesCollected = samplesCollected + 1
-		-- core:sendMessage(core:getAchievement() .. samplesCollected .. "/50 " .. L["AzsharasEternalPalace_SamplesCollected"])
-		core.IATInfoFrame:SetText1(L["AzsharasEternalPalace_SamplesCollected"] .. " " .. samplesCollected .. "/50","GameFontHighlightLarge")
-		
-		--Send message to other addon users
-		local messageStr = core.type .. "," .. core.spellId .. "," .. core.spawn_uid_dest
-		C_ChatInfo.SendAddonMessage("Whizzey", "syncMessage" .. "-" .. messageStr, "RAID")
-	end
-
-	--Check for message in the sync queue
-	for k,message in ipairs(core.syncMessageQueue) do
-		if message ~= nil then
-			core:sendDebugMessage("Found Message:" .. message)
-			local spellType, spellid, spawnUIDDest = strsplit(",", message)
-			if spellType == "SPELL_CAST_SUCCESS" and spellid == "302005" and collectSampleUID[spawnUIDDest] == nil then
-				core:sendDebugMessage("Samples collected in message sync queue")
-				--Recieved sample from another addon user. Increment counter
-				collectSampleUID[spawnUIDDest] = spawnUIDDest
-				samplesCollected = samplesCollected + 1
-				-- core:sendMessage(core:getAchievement() .. samplesCollected .. "/50 " .. L["AzsharasEternalPalace_SamplesCollected"])
-				core.IATInfoFrame:SetText1(L["AzsharasEternalPalace_SamplesCollected"] .. " " .. samplesCollected .. "/50","GameFontHighlightLarge")
-			end
-			core.syncMessageQueue[k] = nil
-		end
-	end
-
-	if samplesCollected >= 50 then
-		core:getAchievementSuccess()
+		core:sendMessage(L["Shared_ManualTracking"],true)
 	end
 end
 
@@ -166,9 +85,9 @@ function core._2164:Orgozoa()
 	end
 
 	--If egg found by time Massive Incubator spellcast is interrupted then achievement is completed
-	if core.type == "SPELL_AURA_REMOVED" and core.spellId == 305347 and eggFound == true then
-		C_Timer.After(1, function() 
-			if eggFound == true then
+	if core.type == "SPELL_AURA_REMOVED" and core.spellId == 305347 and eggFound == true and core.achievementsFailed[1] == false then
+		C_Timer.After(3, function() 
+			if eggFound == true and core.achievementsFailed[1] == false then
 				core:getAchievementSuccess()
 			end
 		end)
@@ -369,6 +288,7 @@ function core._2164:ClearVariables()
 	------------------------------------------------------
 	eggFound = false
 	eggFoundPlayer = nil
+	announceCatch = false
 
 	------------------------------------------------------
 	---- Za'qul
@@ -378,6 +298,7 @@ end
 
 function core._2164:InstanceCleanup()
     core._2164.Events:UnregisterEvent("UNIT_AURA")
+    core._2164.Events:UnregisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 end
 
 core._2164.Events:SetScript("OnEvent", function(self, event, ...)
@@ -386,6 +307,7 @@ end)
 
 function core._2164:InitialSetup()
     core._2164.Events:RegisterEvent("UNIT_AURA")
+    core._2164.Events:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 end
 
 function core._2164.Events:UNIT_AURA(self, unitID)
@@ -456,7 +378,10 @@ function core._2164.Events:UNIT_AURA(self, unitID)
 						--Check requirements have been met
 						if incubatingZoatroidFound == true then
 							--Announce player has caught the egg
-							core:sendMessage(name .. " " .. L["Shared_HasCaught"] .. " " .. GetSpellLink(305322),true)
+							if announceCatch == false then
+								announceCatch = true
+								core:sendMessage(name .. " " .. L["Shared_HasCaught"] .. " " .. GetSpellLink(305322),true)
+							end
 							-- core:getAchievementSuccess()
 						end
 					end
@@ -469,4 +394,12 @@ function core._2164.Events:UNIT_AURA(self, unitID)
 			end
 		end
 	end	
+end
+
+function core._2164.Events:UNIT_SPELLCAST_SUCCEEDED(self, unitTarget, castGUID, spellID)
+	if spellID == 302005 then
+		core:sendDebugMessage("IN UNIT SPELLCAST SUCEDDED")
+		core:sendDebugMessage(spellID)
+		core:sendDebugMessage(castGUID)
+	end
 end

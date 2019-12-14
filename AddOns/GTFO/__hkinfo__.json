@@ -1,14 +1,14 @@
 {
-    "target": "curse",
-    "searchName": "GTFO",
-    "localName": "GTFO",
-    "version": "4.49.4",
-    "fileName": "gtfo",
     "addonsMap": [
         "GTFO"
     ],
-    "interfaceMap": [],
     "children": [],
+    "fileName": "gtfo",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "GTFO",
     "name": "GTFO",
-    "gameVersion": ""
+    "searchName": "GTFO",
+    "target": "curse",
+    "version": "4.51"
 }

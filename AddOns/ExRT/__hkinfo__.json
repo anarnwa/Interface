@@ -1,14 +1,14 @@
 {
-    "target": "curse",
-    "searchName": "Exorsus Raid Tools",
-    "localName": "ExRT",
-    "version": "Exorsus Raid Tools v.4060",
-    "fileName": "exorsus-raid-tools",
     "addonsMap": [
         "ExRT"
     ],
-    "interfaceMap": [],
     "children": [],
+    "fileName": "exorsus-raid-tools",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "ExRT",
     "name": "Exorsus Raid Tools",
-    "gameVersion": ""
+    "searchName": "Exorsus Raid Tools",
+    "target": "curse",
+    "version": "Exorsus Raid Tools v.4110"
 }

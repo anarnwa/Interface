@@ -1,3 +1,6 @@
+10/05/2019 version 4.9.13
+- Fix for unwrapping pets
+
 09/26/2019 version 4.9.12
 - Clicking the "alert" toast when you uncage a pet will search for the pet in Rematch.
 - toc updated for 8.2.5 client

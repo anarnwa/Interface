@@ -1,14 +1,14 @@
 {
-    "target": "curse",
-    "searchName": "ErrorFilter",
-    "localName": "ErrorFilter",
-    "version": "v3.7",
-    "fileName": "errorfilter",
     "addonsMap": [
         "ErrorFilter"
     ],
-    "interfaceMap": [],
     "children": [],
+    "fileName": "errorfilter",
+    "gameVersion": "",
+    "interfaceMap": [],
+    "localName": "ErrorFilter",
     "name": "ErrorFilter",
-    "gameVersion": ""
+    "searchName": "ErrorFilter",
+    "target": "curse",
+    "version": "v3.7"
 }

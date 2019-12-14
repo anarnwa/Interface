@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "Deadly Boss Mods (DBM)",
     "localName": "DBM-Core",
-    "version": "8.2.22",
+    "version": "8.2.30",
     "fileName": "deadly-boss-mods",
     "addonsMap": [
         "DBM-Core",
@@ -17,7 +17,8 @@
         "DBM-Uldir",
         "DBM-CrucibleofStorms",
         "DBM-ZuldazarRaid",
-        "DBM-EternalPalace"
+        "DBM-EternalPalace",
+        "DBM-Nyalotha"
     ],
     "interfaceMap": [],
     "children": [
@@ -32,7 +33,8 @@
         "DBM-Uldir",
         "DBM-CrucibleofStorms",
         "DBM-ZuldazarRaid",
-        "DBM-EternalPalace"
+        "DBM-EternalPalace",
+        "DBM-Nyalotha"
     ],
     "name": "Deadly Boss Mods (DBM)",
     "gameVersion": ""

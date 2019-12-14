@@ -1458,7 +1458,13 @@ Change Log:
 4.49.3
 * Added BFA spells for The Eternal Palace
 
-4.49.4
-* Updated for patch 8.2.5
+4.50
+* Fixed issues that prevented GTFO from working in WoW Classic
+
+4.50.1
+* Fixed Classic spells (duplicates)
+
+4.51
+* Merged Classic and Retail versions since Twitch Client will sometimes wrongfully install the wrong addon
 * Added Battle for Azeroth spells (world)
 

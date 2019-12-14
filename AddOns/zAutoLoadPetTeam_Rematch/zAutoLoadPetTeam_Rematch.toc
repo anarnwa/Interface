@@ -1,19 +1,14 @@
-﻿## Interface: 80100
+﻿## Interface: 80205
 ## Title: AutoLoadPetTeam For Rematch
 ## Title-zhCN: AutoLoadPetTeam For Rematch
 ## Notes: 宠物自动换队-适配Rematch版
 ## Author: scdhao
-## Version: 1.0.12
+## Version: 2.0.4
 ## Dependencies: Rematch
 ## SavedVariables: BattleLog
 
-##CollectMeClear.lua
-tdBattlePetScriptExt.lua
-
-Npcs.lua
-Config.lua
+Option.lua
 Core.lua
 RematchEx.xml
-RematchEx.lua
 MacroButton.lua
 BattleTimer.lua

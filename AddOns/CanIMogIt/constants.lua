@@ -164,6 +164,23 @@ CanIMogIt.tooltipOverlayIcons = {
 CanIMogIt.DATABASE_START_UPDATE_TEXT = L["Updating appearances database."]
 CanIMogIt.DATABASE_DONE_UPDATE_TEXT = L["Items updated: "] -- followed by a number
 
+
+--------------------------------------------
+-- Location constants                     --
+--------------------------------------------
+
+CanIMogIt.ICON_LOCATIONS = {
+    ["TOPLEFT"] = {"TOPLEFT", 2, -2},
+    ["TOPRIGHT"] = {"TOPRIGHT", -2, -2},
+    ["BOTTOMLEFT"] = {"BOTTOMLEFT", 2, 2},
+    ["BOTTOMRIGHT"] = {"BOTTOMRIGHT", -2, 2},
+    ["CENTER"] = {"CENTER", 0, 0},
+    ["RIGHT"] = {"RIGHT", -2, 0},
+    ["LEFT"] = {"LEFT", 2, 0},
+    ["BOTTOM"] = {"BOTTOM", 0, 2},
+    ["TOP"] = {"TOP", 0, -2},
+}
+
 --------------------------------------------
 -- Blizzard frame constants --
 --------------------------------------------

@@ -267,6 +267,12 @@ function MethodDungeonTools:DisplayBlipTooltip(blip,shown)
 
     local text = upstairs..data.name.." "..occurence..group.."\nLevel "..data.level.." "..data.creatureType.."\n"..MethodDungeonTools:FormatEnemyHealth(health).." HP\n"
     text = text .."Forces: "..MethodDungeonTools:FormatEnemyForces(data.count)
+    local reapingText
+    if blip.data.reaping and db.MDI.enabled and preset.mdi.beguiling == 13 then
+        local reapingIcon = CreateTextureMarkup(MethodDungeonTools.reapingStatic[tostring(blip.data.reaping)].iconTexture, 32, 32, 16, 16, 0, 1, 0, 1,0,0) or ""
+        reapingText = "Reaping: "..reapingIcon.." "..MethodDungeonTools.reapingStatic[tostring(blip.data.reaping)].name .. "\n"
+    end
+    if reapingText then text = text .. "\n" .. reapingText end
     text = text .."\n\n[Right click for more info]"
     tooltip.String:SetText(text)
 
@@ -623,7 +629,7 @@ function MethodDungeonTools:DungeonEnemies_UpdateBeguiling()
     end
     for _,blip in pairs(blips) do
         local weekData =  blip.clone.week
-        if weekData and not weekData[week] then
+        if weekData and (not weekData[week] or db.currentDifficulty < 10) then
             blip:Hide()
         elseif weekData and weekData[week] then
             blip:Show()

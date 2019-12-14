@@ -5,8 +5,8 @@ frFR localization strings for Collectinator
 ************************************************************************
 File date: 2012-09-12T1:10:19Z 
 File revision: 5ba9799caf14e633944aab5775e188f66ae4206a 
-Project revision: f45cfab18405a793e117bfcf473e664c3f401439
-Project version: 8.2.5.1
+Project revision: 7965d53efd4d128d18e4cce83c50b11aada57da6
+Project version: 8.2.5.2
 ************************************************************************
 Currently maintained by:
 http://www.wowace.com/addons/collectinator/localization/translators/

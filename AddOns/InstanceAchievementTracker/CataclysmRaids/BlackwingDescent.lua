@@ -28,6 +28,8 @@ local aberrationsCounter = 0
 local aberrationsCounterKilled = 0
 local timerStarted = false
 local startTimer = false
+local timerTime = 10
+local ticker = nil
 
 ------------------------------------------------------
 ---- Chimaeron
@@ -52,19 +54,19 @@ end
 function core._669:OminitronDefenseSystem()
 	--Arcane Annihilator
 	if core.type == "SPELL_CAST_SUCCESS" and core.spellId == 79710 and arcaneAnnihilatorFailed == false then
-		core:getAchievementFailedWithMessageAfter("(" .. core.destName .. ") (" .. L["Core_Reason"] .. ": " .. core.spellName)
+		core:getAchievementFailedWithMessageAfter("(" .. L["Core_Reason"] .. ": " .. core.spellName)
 		arcaneAnnihilatorFailed = true
 	end
 
 	--Static Shock
 	if (core.type == "SPELL_ABSORBED" or core.type == "SPELL_DAMAGE" or core.type == "SPELL_MISSED") and core.spellId == 79912 and staticShockFailed == false then
-		core:getAchievementFailedWithMessageAfter("(" .. core.destName .. ") (" .. L["Core_Reason"] .. ": " .. core.spellName)
+		core:getAchievementFailedWithMessageAfter("(" .. L["Core_Reason"] .. ": " .. core.spellName)
 		staticShockFailed = true
 	end
 
 	--Poison Bomb
 	if (core.type == "SPELL_DAMAGE" or core.type == "SPELL_MISSED") and core.spellId == 80092 and poisonBombFailed == false then
-		core:getAchievementFailedWithMessageAfter("(" .. core.destName .. ") (" .. L["Core_Reason"] .. ": " .. core.spellName)
+		core:getAchievementFailedWithMessageAfter("(" .. L["Core_Reason"] .. ": " .. core.spellName)
 		poisonBombFailed = true
 	end
 
@@ -81,7 +83,7 @@ function core._669:OminitronDefenseSystem()
 		else
 			if core.destName ~= flameThrowerPlayer then
 				--More than one person has got hit by the flamethrower
-				core:getAchievementFailedWithMessageAfter("(" .. core.destName .. ") (" .. L["Core_Reason"] .. ": " .. core.spellName)
+				core:getAchievementFailedWithMessageAfter("(" .. L["Core_Reason"] .. ": " .. core.spellName)
 				flameThrowerFailed = true
 			end
 		end	
@@ -89,43 +91,9 @@ function core._669:OminitronDefenseSystem()
 end
 
 function core._669:Maloriak()
-	--Found Aberration
-	if core.sourceID == "41440" and core.achievementsCompleted[1] == false then
-		if aberrationsList[core.spawn_uid] == nil then
-			aberrationsList[core.spawn_uid] = spawn_uid
-			aberrationsCounter = aberrationsCounter + 1            
-		end
-	end
-
-	--Aberration has died
-	if core.type == "UNIT_DIED" and core.destID == "41440" then
-        aberrationsList[core.spawn_uid_dest] = nil
-        aberrationsCounter = aberrationsCounter - 1
-        if timerStarted == false then
-            core:sendMessage("Aberrations: " .. aberrationsCounter)
-        end
-        aberrationsCounterKilled = aberrationsCounterKilled + 1
-
-        if startTimer == true and timerStarted == false then
-			--Check that the adds were killed in time
-			core:sendMessage("Timer Started! 10 Seconds Remaining")
-            timerStarted = true
-            C_Timer.After(10, function()
-				if aberrationsCounterKilled >= 12 then
-					core:getAchievementSuccess()
-				else
-					core:sendMessage(core:getAchievement() .. " FAILED! Aberrations were not killed in time (" .. aberrationsCounterKilled .. "/12)")
-                    aberrationsCounterKilled = 0
-                    timerStarted = false
-                end
-            end)
-        end
-    end
-
-	if aberrationsCounter == 12 and startTimer == false then
-		core:sendMessage(core:getAchievement() .. " requirements have been met. Adds can now be killed!")
-		startTimer = true
-    end	
+	core.MobCounter:Setup(12, 10, "41440")
+	core.MobCounter:DetectSpawnedMob()
+	core.MobCounter:DetectKilledMob()
 end
 
 function core._669:Chimaeron()
@@ -208,6 +176,8 @@ function core._669:ClearVariables()
 	aberrationsCounter = 0
 	aberrationsCounterKilled = 0
 	timerStarted = false
+	timerTime = 10
+	ticker = nil
 
 	------------------------------------------------------
 	---- Chimaeron

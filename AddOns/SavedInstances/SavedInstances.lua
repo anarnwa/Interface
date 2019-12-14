@@ -86,8 +86,6 @@ for i = 0,10 do
   end
 end
 
--- eventInfo format: [iconTexture] = true
-local eventInfo = {}
 local tooltip, indicatortip = nil, nil
 addon.indicatortip = indicatortip
 local thisToon = UnitName("player") .. " - " .. GetRealmName()
@@ -749,11 +747,9 @@ end
 function addon:QuestIgnored(questID)
   if (TimewalkingItemQuest[questID]) then
     -- Timewalking Item Quests
-    for _, iconTexture in ipairs(TimewalkingItemQuest[questID]) do
-      if eventInfo[iconTexture] then
-        -- Timewalking Weedend Event ONGOING
-        return
-      end
+    if addon.activeHolidays[TimewalkingItemQuest[questID]] then
+      -- Timewalking Weedend Event ONGOING
+      return
     end
     return true
   end
@@ -784,34 +780,6 @@ function addon:QuestCount(toonname)
 end
 
 -- local addon functions below
-
-local function UpdateEventInfo()
-  local current, monthInfo = C_DateAndTime.GetCurrentCalendarTime(), C_Calendar.GetMonthInfo()
-  local month, day, year = current.month, current.monthDay, current.year
-  local showMonth, showYear = monthInfo.month, monthInfo.year
-  local monthOffset = -12 * (showYear - year) + month - showMonth
-  local numEvents = C_Calendar.GetNumDayEvents(monthOffset, day)
-  debug("numEvents: " .. numEvents)
-  for i = 1, numEvents do
-    local event = C_Calendar.GetDayEvent(monthOffset, day, i)
-    if event.iconTexture then
-      debug("iconTexture: " .. event.iconTexture)
-      if event.sequenceType == "START" then
-        local hour, minute = event.startTime.hour, event.startTime.minute
-        if hour < current.hour or (hour == current.hour and minute < current.minute) then
-          eventInfo[event.iconTexture] = true
-        end
-      elseif event.sequenceType == "END" then
-        local hour, minute = event.startTime.hour, event.startTime.minute
-        if hour > current.hour or (hour == current.hour and minute > current.minute) then
-          eventInfo[event.iconTexture] = true
-        end
-      else -- "ONGOING"
-        eventInfo[event.iconTexture] = true
-      end
-    end
-  end
-end
 
 local function GetLastLockedInstance()
   local numsaved = GetNumSavedInstances()
@@ -850,6 +818,7 @@ addon.transInstance = {
   [545] = 185, -- The Steamvault: issue #143 esES
   [1530] = 1353, -- The Nighthold: issue #186 frFR
   [585] = 1154, -- Magisters' Terrace: issue #293 frFR
+  [2235] = 1911, -- Caverns of Time - Anniversary: issue #315 (fake LFDID used by Escape from Tol Dagor)
 }
 
 -- some instances (like sethekk halls) are named differently by GetSavedInstanceInfo() and LFGGetDungeonInfoByID()
@@ -1397,6 +1366,10 @@ function addon:UpdateInstance(id)
     isHoliday = false
     typeID = TYPEID_DUNGEON
     subtypeID = LFG_SUBTYPEID_HEROIC
+  elseif id == 1911 then -- Caverns of Time - Anniversary: issue #315 (fake LFDID used by Escape from Tol Dagor)
+    local _
+    _, typeID, subtypeID, _, _, recLevel, _, _, expansionLevel, _,
+      _,  difficulty, maxPlayers, _, isHoliday, _, _, _, name = GetLFGDungeonInfo(2004)
   end
   if subtypeID == LFG_SUBTYPEID_SCENARIO and typeID ~= TYPEID_RANDOM_DUNGEON then -- ignore non-random scenarios
     return nil, nil, true
@@ -1492,6 +1465,8 @@ function addon:UpdateToonData()
     local id, name = GetLFGRandomDungeonInfo(i)
     local d = addon.db.Instances[name]
     if d and d.Holiday then
+      -- id used in timewalking item quest, name used later this function
+      addon.activeHolidays[id] = true
       addon.activeHolidays[name] = true
     end
   end
@@ -2553,7 +2528,7 @@ end
 function core:OnInitialize()
   local versionString = GetAddOnMetadata(addonName, "version")
   --[===[@debug@
-  if versionString == "8.2.3" then
+  if versionString == "8.2.6" then
     versionString = "Dev"
   end
   --@end-debug@]===]
@@ -3872,7 +3847,6 @@ function core:ShowTooltip(anchorframe)
   end
 
   do
-    UpdateEventInfo() -- fetch current event info before rendering
     local showd, showw
     for toon, t in cpairs(addon.db.Toons, true) do
       local dc, wc = addon:QuestCount(toon)

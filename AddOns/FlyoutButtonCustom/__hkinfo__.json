@@ -1,6 +1,6 @@
 {
-    "target": "curse",
-    "searchName": "FlyoutButtonCustom",
     "localName": "FlyoutButtonCustom",
+    "searchName": "FlyoutButtonCustom",
+    "target": "curse",
     "version": "2.85"
 }

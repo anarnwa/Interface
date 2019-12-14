@@ -237,6 +237,13 @@ local relayAddonVersion = 0
 local masterAddonPlayer = nil				--The player who is currently the master addon
 local versionRequestSent = false			--When adds send version request, only do this once per fight.
 
+--------------------------------------
+-- InfoFrame Variables
+--------------------------------------
+core.manualCountMaxSize = 0
+core.manualCountCurrentSize = 0
+core.manualCountSetup = false
+
 --Get the current size of the group
 function core:getGroupSize()
 	local size = GetNumGroupMembers()
@@ -594,6 +601,24 @@ function getInstanceInfomation()
 					else
 						core:sendDebugMessage("No Achievements to track for this instance")
 					end
+
+					--Switch to correct tab in GUI
+					if core.expansion == 2 then
+						Tab_OnClick(_G["AchievementTrackerTab2"])
+					elseif core.expansion == 3 then
+						Tab_OnClick(_G["AchievementTrackerTab3"])
+					elseif core.expansion == 4 then
+						Tab_OnClick(_G["AchievementTrackerTab4"])
+					elseif core.expansion == 5 then
+						Tab_OnClick(_G["AchievementTrackerTab5"])
+					elseif core.expansion == 6 then
+						Tab_OnClick(_G["AchievementTrackerTab6"])
+					elseif core.expansion == 7 then
+						Tab_OnClick(_G["AchievementTrackerTab7"])
+					end
+
+					--Make sure right instance is selected
+					core.Config:Instance_OnClickAutomatic()
 				else
 					core:sendDebugMessage("Achievements cannot be earned for the following difficulty " .. core.difficultyID)
 				end
@@ -604,6 +629,10 @@ function getInstanceInfomation()
 			end
 		elseif IsInInstance() == false and core.inInstance == true then
 			core.inInstance = false
+			if UIConfig ~= nil then
+				core:sendDebugMessage("Hiding Tracking UI")
+				UIConfig:Hide()
+			end
 		end
 	end)
 end
@@ -688,21 +717,6 @@ function enableAchievementTracking(self)
 	core.achievementTrackingEnabled = true
 	UIConfig:Hide()
 
-	--Switch to correct tab in GUI
-	if core.expansion == 2 then
-		Tab_OnClick(_G["AchievementTrackerTab2"])
-	elseif core.expansion == 3 then
-		Tab_OnClick(_G["AchievementTrackerTab3"])
-	elseif core.expansion == 4 then
-		Tab_OnClick(_G["AchievementTrackerTab4"])
-	elseif core.expansion == 5 then
-		Tab_OnClick(_G["AchievementTrackerTab5"])
-	elseif core.expansion == 6 then
-		Tab_OnClick(_G["AchievementTrackerTab6"])
-	elseif core.expansion == 7 then
-		Tab_OnClick(_G["AchievementTrackerTab7"])
-	end
-
 	--Register Events
 	events:RegisterEvent("INSPECT_ACHIEVEMENT_READY") 			--Used for scanning players in the group to see which achievements they are missing
 	events:RegisterEvent("GROUP_ROSTER_UPDATE")					--Used to find out when the group size has changed and to therefore initiate an achievement scan of the group
@@ -749,9 +763,6 @@ function enableAchievementTracking(self)
 			end
 		end
 	end
-
-	--Make sure right instance is selected
-	core.Config:Instance_OnClickAutomatic()
 end
 
 --Hide the achievment tracking UI once the player has left the instance
@@ -1565,8 +1576,10 @@ function events:INSPECT_ACHIEVEMENT_READY(self, GUID)
 
 								--Add to achievement tracking ui if option enabled by user
 								if trackAchievementsInUI == true then
-									AddTrackedAchievement(core.Instances[core.expansion][core.instanceType][core.instance][boss].achievement)
-									table.insert(trackAchievementInUiTable, core.Instances[core.expansion][core.instanceType][core.instance][boss].achievement)
+									if GetNumTrackedAchievements() < 10 then
+										AddTrackedAchievement(core.Instances[core.expansion][core.instanceType][core.instance][boss].achievement)										
+										table.insert(trackAchievementInUiTable, core.Instances[core.expansion][core.instanceType][core.instance][boss].achievement)	
+									end
 								end
 							end
 						end
@@ -2198,6 +2211,14 @@ function core:detectGroupType()
 		core.chatType = "INSTANCE_CHAT"
 	end
 
+	--Check if we are in a scenerio
+	local inInstance, instanceType = IsInInstance()
+	if instanceType == "scenario" then
+		core.chatType = "INSTANCE_CHAT"
+	end
+
+	core:sendDebugMessage("Setting chat mode to " .. core.chatType)
+
 	--Debug to stop message going out to other people by accident
 	--core.chatType = "OFFICER"
 end
@@ -2376,7 +2397,7 @@ function detectBoss(id)
 	--If an id is found by not in the database then add to cache to prevent the same ID being checked against the database over and over again
 	if core.foundBoss == true then
 		--Display tracking achievement for that boss if it has not been output yet for the fight. Make sure we are in combat as well before calling this function
-		if core.encounterStarted == true then
+		if core.encounterStarted == true or core.difficultyID == 11 or core.difficultyID == 12 then
 			core:getAchievementToTrack()
 		end
 	else
@@ -2504,15 +2525,18 @@ function core:sendMessage(message, outputToRW, messageType)
 					end
 				end
 			elseif masterAddon == true and requestToRun == true then
-				--We need to store the messages in a queue while the master addon is being decided
-				if outputToRW == true then
-					core:sendDebugMessage("Inserting into Message Queue: " .. message .. ",true")
-					table.insert(messageQueue, message .. ",true")
-				else
-					core:sendDebugMessage("Inserting into Message Queue: " .. message .. ",false")
-					table.insert(messageQueue, message .. ",false")
-				end
+				if message ~= "setup" then
+					--We need to store the messages in a queue while the master addon is being decided
+					if outputToRW == true then
+						core:sendDebugMessage("Inserting into Message Queue: " .. message .. ",true")
+						table.insert(messageQueue, message .. ",true")
+					else
+						core:sendDebugMessage("Inserting into Message Queue: " .. message .. ",false")
+						table.insert(messageQueue, message .. ",false")
+					end
+				end 
 			else
+				--Initate a request to see if this addon should be the master addon
 				if requestToRun == false then
 					requestToRun = true
 
@@ -2624,6 +2648,11 @@ function core:sendMessage(message, outputToRW, messageType)
 						end
 						electionFinished = true
 					end)
+				end
+
+				--We are not the master addon but lets check if there are RW messages that we need to relay
+				if outputToRW == true and relayAddonPlayer ~= nil then
+					C_ChatInfo.SendAddonMessage("Whizzey", "relayMessage," .. relayAddonPlayer .. "," .. message, "RAID")
 				end
 			end
 		elseif debugModeChat == true then
@@ -2993,6 +3022,23 @@ function core:getAchievementSuccess(index)
 	end
 end
 
+--Display the requirements completed message for achievements with manually counting
+function core:getAchievementSuccessManual(index)
+	local value = index
+	if index == nil then
+		value = 1
+	end
+	if core.achievementsCompleted[value] == false then
+		core:sendMessage(GetAchievementLink(core.achievementIDs[value]) .. " " .. L["Core_CriteriaMetManual"],true,"completed")
+		core.achievementsCompleted[value] = true
+
+		--Relay message to addon which has RW permissions if masterAddon does have permissions
+		if relayAddonPlayer ~= nil then
+			C_ChatInfo.SendAddonMessage("Whizzey", "relayMessage," .. relayAddonPlayer .. "," .. GetAchievementLink(core.achievementIDs[value]) .. " " .. L["Core_CriteriaMet"], "RAID")
+		end
+	end
+end
+
 --Display the requirements completed message for achievements with message before
 function core:getAchievementSuccessWithMessageBefore(message, index)
 	local value = index
@@ -3260,6 +3306,26 @@ function core:clearVariables()
 	versionRequestSent = false
 
 	core.groupSizeInInstance = 0
+
+	--Reset InfoFrame variables
+	core.manualCountMaxSize = 0
+	core.manualCountCurrentSize = 0
+	core.manualCountSetup = false
+	if core.InfoFrame.Events:IsEventRegistered("CHAT_MSG_RAID") then
+		core.InfoFrame.Events:UnregisterEvent("CHAT_MSG_RAID")
+	end
+	if core.InfoFrame.Events:IsEventRegistered("CHAT_MSG_PARTY") then
+		core.InfoFrame.Events:UnregisterEvent("CHAT_MSG_PARTY")
+	end
+	if core.InfoFrame.Events:IsEventRegistered("CHAT_MSG_PARTY_LEADER") then
+		core.InfoFrame.Events:UnregisterEvent("CHAT_MSG_PARTY_LEADER")
+	end
+	if core.InfoFrame.Events:IsEventRegistered("CHAT_MSG_SAY") then
+		core.InfoFrame.Events:UnregisterEvent("CHAT_MSG_SAY")
+	end
+
+	--Reset Mob Counter
+	core.MobCounter:Reset()
 
 	if infoFrameShown == true then
 		core:sendDebugMessage("Resetting InfoFrame")

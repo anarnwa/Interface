@@ -1,31 +1,8 @@
---	25.09.2019
+--	29.10.2019
 
---[[
-4040
-* Raid Cooldowns: Fixed Vision of perfection essence
-* Timers: Added new skin
-* Fight log: fixed The Queen's Court encounter healing
-* Invite tools: guild ranks for mass invite can be selected manually
-* Classic: fixed bug with game talents tab
-* Raid Inspect: added new ench/gems
-* WeakAuras checks: added filter
-* Minor fixes
-
-4060
-* 8.2.5 toc update
-
-4055-Classic
-* Readded Loot link module
-* Fixed mass invite
-* Fixed "Out of range" error for inspect module
-
-4060-Classic
-* Minor fixes
-
-]]
 local GlobalAddonName, ExRT = ...
 
-ExRT.V = 4060
+ExRT.V = 4110
 ExRT.T = "R"
 
 ExRT.OnUpdate = {}		--> таймеры, OnUpdate функции
@@ -61,6 +38,9 @@ end
 if ExRT.clientVersion < 20000 then
 	ExRT.isClassic = true
 	ExRT.T = "Classic"
+end
+if ExRT.clientVersion >= 80300 then
+	ExRT.is83 = true
 end
 -------------> smart DB <-------------
 ExRT.SDB = {}

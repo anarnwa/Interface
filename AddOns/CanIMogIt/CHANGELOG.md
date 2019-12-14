@@ -1,3 +1,42 @@
+8.2.5v1.20 Release - 2019/11/12
+
+* [#214](https://gitlab.com/toreltwiddler/CanIMogIt/issues/214) Fixed options showing up outside of settings window.
+
+*****
+
+8.2.5v1.19 Release - 2019/11/12
+
+* [#213](https://gitlab.com/toreltwiddler/CanIMogIt/issues/213) Changed Icon Location dropdown to a radio button grid to avoid taint.
+
+*****
+
+8.2.5v1.18 Release - 2019/10/23
+
+* [#212](https://gitlab.com/toreltwiddler/CanIMogIt/issues/212) Added C_Timer.After for ArkInventory so CIMI's options are loaded.
+
+*****
+
+8.2.5v1.17 Release - 2019/10/22
+
+Icon location can now be changed! /cimi to open the options menu!
+
+![Icons move](https://i.imgur.com/eTUv7pI.gif)
+
+* [#11](https://gitlab.com/toreltwiddler/CanIMogIt/issues/11) Added option to move the icon location everywhere except for on Quests and in the Adventure Journal.
+* [#210](https://gitlab.com/toreltwiddler/CanIMogIt/issues/210) Fixed Bagnon not working in some cases by adding to Optional Dependencies.
+
+*****
+
+8.2.5v1.16 Release - 2019/10/05
+
+Fixes for errors and TOC update.
+
+* [#207](https://gitlab.com/toreltwiddler/CanIMogIt/issues/207) No longer updates appearances during loading screens.
+* [#208](https://gitlab.com/toreltwiddler/CanIMogIt/issues/208) Makes sure item link is valid before adding to DB.
+* Updated TOC.
+
+*****
+
 8.2.0v1.15 Release - 2019/06/25
 
 * [#204](https://gitlab.com/toreltwiddler/CanIMogIt/issues/204) Change Blizzard constant for mail attachments in received mail window.

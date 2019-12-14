@@ -1,20 +1,16 @@
-lightweight tag 1c910a525fd035789062819aa08960bda1314730 v8.2.5.383
+lightweight tag 7104492c81a0ef928ce2385e66902650352e3a52 v8.2.5.386
 Author:	Tercio Jose <terciob19@hotmail.com>
-Date:	Sat Sep 28 15:43:28 2019 -0300
+Date:	Mon Dec 2 17:55:27 2019 -0300
 
-commit 1c910a525fd035789062819aa08960bda1314730
+commit 7104492c81a0ef928ce2385e66902650352e3a52
 Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Sat Sep 28 15:43:28 2019 -0300
+Date:   Mon Dec 2 17:55:27 2019 -0300
 
-    Updates for the new retail version
+    Added the ability to toggle all filters ON and OFF
     
-    - ToC Update.
-    - Framework Update.
-    - Fixed GetPlayerFacing() returning null.
-
-commit 03a23bdc0f5357877d5123ae0f559ffe5aa8ddc3
-Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Mon Sep 9 13:00:56 2019 -0300
-
-    Git Ignore localization files
+    - Added two new options into the Filters menu:
+    * Select All
+    * Select None
+    
+    - Localization and Libraries Updates.
 

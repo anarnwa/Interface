@@ -1,23 +1,23 @@
-# [2.15.1](https://github.com/WeakAuras/WeakAuras2/tree/2.15.1) (2019-09-27)
+# [2.15.5](https://github.com/WeakAuras/WeakAuras2/tree/2.15.5) (2019-10-22)
 
-[Full Changelog](https://github.com/WeakAuras/WeakAuras2/compare/2.15.0...2.15.1)
+[Full Changelog](https://github.com/WeakAuras/WeakAuras2/compare/2.15.4...2.15.5)
 
 ## Highlights
 
- - Bug fixes
-- Workaround for things Blizzard broke in 8.2.5 
+ - A few more bug fixes 
 
 ## Commits
 
-InfusOnWoW (3):
+Stanzilla (1):
 
-- Fix LoadFunction
-- Make WA_GetUnitBuff work on 8.2.5
-- Fix description of "Specific Unit"
+- drop branch name from PR artifacts
 
-mrbuds (3):
+Vardex (1):
 
-- fix nil error in Action Usable spellInRange condition round 2
-- power trigger: invert table use for power types with classic's one this fix "stagger" not shown on retail
-- fix "select" conditions with function for values  fixes #1728
+- Fix weapon enchant shortened name
+
+mrbuds (2):
+
+- swing timer: fix nil error if no offhand equiped
+- update "Cooldown Progress (Equipment Slot)" for handling amno fixes #1762 refresh on UNIT_INVENTORY_CHANGED add a stacksFunc
 

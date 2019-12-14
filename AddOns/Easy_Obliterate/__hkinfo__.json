@@ -1,14 +1,14 @@
 {
-    "target": "curse",
-    "searchName": "Easy Obliterate",
-    "localName": "Easy_Obliterate",
-    "version": "Easy Obliterate 32",
-    "fileName": "easy_obliterate",
     "addonsMap": [
         "Easy_Obliterate"
     ],
-    "interfaceMap": [],
     "children": [],
+    "fileName": "easy_obliterate",
+    "gameVersion": "8.2.0",
+    "interfaceMap": [],
+    "localName": "Easy_Obliterate",
     "name": "Easy Obliterate",
-    "gameVersion": "8.2.0"
+    "searchName": "Easy Obliterate",
+    "target": "curse",
+    "version": "Easy Obliterate 32"
 }

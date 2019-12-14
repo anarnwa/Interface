@@ -24,8 +24,8 @@
 ## X-Donate: http://www.wowace.com/addons/collectinator/
 
 ## Interface: 80205
-## Version: 8.2.5.1
-## X-Revision: f45cfab
+## Version: 8.2.5.2
+## X-Revision: 7965d53
 ## X-Date: 2019-09-24T12:00:50Z
 
 ## X-Category: Tradeskill

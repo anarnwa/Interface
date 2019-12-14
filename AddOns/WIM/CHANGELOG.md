@@ -1,10 +1,7 @@
 # WIM
 
-## [3.8.0](https://github.com/sylvanaar/wow-instant-messenger/tree/3.8.0) (2019-09-28)
-[Full Changelog](https://github.com/sylvanaar/wow-instant-messenger/compare/3.7.36...3.8.0)
+## [3.8.3](https://github.com/sylvanaar/wow-instant-messenger/tree/3.8.3) (2019-10-26)
+[Full Changelog](https://github.com/sylvanaar/wow-instant-messenger/compare/3.8.2...3.8.3)
 
-- Replying to a whisper now assumes that the conversation has been read.  
-- Redid invite battle.net frend so it actually works (on retail at least)  
-- Classic vs Retail invite method check.  
-- Fix bnet shortcut bar invite button on retail  
-- Purely cosmetic whitepsace cleanup  
+- esES & esMX are the same. Merged into one file.  
+- added esES & esMX localizations and attributions.  

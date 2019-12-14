@@ -5,8 +5,8 @@ Ace3 Configuration options for Collectinator
 ************************************************************************
 File date: 2013-01-06T15:00:19Z
 File hash: 3ff23fd
-Project hash: f45cfab
-Project version: 8.2.5.1
+Project hash: 7965d53
+Project version: 8.2.5.2
 ************************************************************************
 Please see http://www.wowace.com/addons/collectinator/ for more information.
 ************************************************************************

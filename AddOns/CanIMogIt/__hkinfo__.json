@@ -2,6 +2,13 @@
     "target": "curse",
     "searchName": "Can I Mog It?",
     "localName": "CanIMogIt",
-    "version": "8.2.0v1.15",
-    "fileName": "can-i-mog-it"
+    "version": "8.2.5v1.20",
+    "fileName": "can-i-mog-it",
+    "addonsMap": [
+        "CanIMogIt"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Can I Mog It?",
+    "gameVersion": ""
 }

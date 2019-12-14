@@ -8,6 +8,10 @@ local ELib,L = ExRT.lib,ExRT.L
 module.db.minRaidMapID = 1520
 module.db.minPartyMapID = 1456
 
+module.db.mapsToLog = not ExRT.isClassic and {} or {
+	[249] = true,
+}
+
 function module.options:Load()
 	self:CreateTilte()
 
@@ -21,7 +25,7 @@ function module.options:Load()
 		end
 	end)
 		
-	self.shtml1 = ELib:Text(self," -"..L.S_ZoneT22Uldir.."\n -"..L.S_ZoneT23Siege.."\n -"..L.S_ZoneT23Storms.."\n -"..L.S_ZoneT19Nightmare.."\n -"..L.S_ZoneT19ToV.."\n -"..L.S_ZoneT19Suramar.."\n -"..L.S_ZoneT20ToS.."\n -"..L.S_ZoneT21A,12):Size(620,0):Point("TOP",0,-65):Top()
+	self.shtml1 = ELib:Text(self," -"..L.S_ZoneT24Eternal.."\n -"..L.S_ZoneT23Storms.."\n -"..L.S_ZoneT23Siege.."\n -"..L.S_ZoneT22Uldir.."\n -"..L.S_ZoneT19Nightmare.."\n -"..L.S_ZoneT19ToV.."\n -"..L.S_ZoneT19Suramar.."\n -"..L.S_ZoneT20ToS.."\n -"..L.S_ZoneT21A,12):Size(620,0):Point("TOP",0,-65):Top()
 
 	self.shtml2 = ELib:Text(self,L.LoggingHelp1,12):Size(650,0):Point("TOP",self.shtml1,"BOTTOM",0,-15):Top()
 	
@@ -87,10 +91,16 @@ end
 
 function module:Enable()
 	module:RegisterEvents('ZONE_CHANGED_NEW_AREA','CHALLENGE_MODE_START')
+	if ExRT.isClassic then
+		module:RegisterEvents('LOADING_SCREEN_DISABLED')
+	end
 	module.main:ZONE_CHANGED_NEW_AREA()
 end
 function module:Disable()
 	module:UnregisterEvents('ZONE_CHANGED_NEW_AREA','CHALLENGE_MODE_START')
+	if ExRT.isClassic then
+		module:UnregisterEvents('LOADING_SCREEN_DISABLED')
+	end
 	module.main:ZONE_CHANGED_NEW_AREA()
 end
 
@@ -113,6 +123,8 @@ local function GetCurrentMapForLogging()
 			else
 				return false
 			end
+		elseif mapID and module.db.mapsToLog[mapID] then
+			return true 
 		elseif ExRT.isClassic and zoneType == 'raid' then
 			return true 
 		elseif zoneType == 'raid' and (tonumber(mapID) and mapID >= module.db.minRaidMapID) and ((difficulty == 16 and not VExRT.Logging.disableMythic) or (difficulty == 15 and not VExRT.Logging.disableHeroic) or (difficulty == 14 and not VExRT.Logging.disableNormal) or (difficulty ~= 14 and difficulty ~= 15 and difficulty ~= 16)) then
@@ -146,6 +158,8 @@ end
 function module.main:ZONE_CHANGED_NEW_AREA()
 	ExRT.F.ScheduleTimer(ZoneNewFunction, 2)
 end
+module.main.LOADING_SCREEN_DISABLED = module.main.ZONE_CHANGED_NEW_AREA
+
 function module.main:CHALLENGE_MODE_START()
 	ExRT.F.ScheduleTimer(ZoneNewFunction, 1)
 end

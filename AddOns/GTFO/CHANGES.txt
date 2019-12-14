@@ -1,14 +1,50 @@
 ------------------------------------------------------------------------
-r490 | Zensunim | 2019-09-25 06:46:57 +0000 (Wed, 25 Sep 2019) | 3 lines
+r494 | Zensunim | 2019-10-15 01:38:35 +0000 (Tue, 15 Oct 2019) | 3 lines
 Changed paths:
    M /trunk/GTFO.lua
    M /trunk/GTFO.toc
+   M /trunk/GTFO.xml
+   M /trunk/GTFO_FF_BC.lua
+   M /trunk/GTFO_FF_BFA.lua
+   M /trunk/GTFO_FF_CAT.lua
+   M /trunk/GTFO_FF_LGN.lua
+   M /trunk/GTFO_FF_LK.lua
+   M /trunk/GTFO_FF_MP.lua
+   M /trunk/GTFO_FF_WOD.lua
+   M /trunk/GTFO_Fail_BC.lua
    M /trunk/GTFO_Fail_BFA.lua
+   M /trunk/GTFO_Fail_CAT.lua
+   M /trunk/GTFO_Fail_Classic.lua
+   D /trunk/GTFO_Fail_Generic.lua
+   A /trunk/GTFO_Fail_GenericClassic.lua
+   A /trunk/GTFO_Fail_GenericRetail.lua
+   M /trunk/GTFO_Fail_LGN.lua
+   M /trunk/GTFO_Fail_LK.lua
+   M /trunk/GTFO_Fail_MP.lua
+   A /trunk/GTFO_Fail_Vanilla.lua
+   M /trunk/GTFO_Fail_WOD.lua
+   M /trunk/GTFO_Ignore.lua
+   M /trunk/GTFO_Mobs.lua
+   M /trunk/GTFO_PowerAuras.lua
+   M /trunk/GTFO_Recount.lua
+   M /trunk/GTFO_Skada.lua
+   M /trunk/GTFO_Spells_BC.lua
    M /trunk/GTFO_Spells_BFA.lua
+   M /trunk/GTFO_Spells_CAT.lua
+   M /trunk/GTFO_Spells_Classic.lua
+   D /trunk/GTFO_Spells_Generic.lua
+   A /trunk/GTFO_Spells_GenericClassic.lua
+   A /trunk/GTFO_Spells_GenericRetail.lua
+   M /trunk/GTFO_Spells_LGN.lua
+   M /trunk/GTFO_Spells_LK.lua
+   M /trunk/GTFO_Spells_MP.lua
+   M /trunk/GTFO_Spells_Special.lua
+   A /trunk/GTFO_Spells_Vanilla.lua
+   M /trunk/GTFO_Spells_WOD.lua
    M /trunk/ReadMe.txt
 
-4.49.4
-* Updated for patch 8.2.5
+4.51
+* Merged Classic and Retail versions since Twitch Client will sometimes wrongfully install the wrong addon
 * Added Battle for Azeroth spells (world)
 ------------------------------------------------------------------------
 

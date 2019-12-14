@@ -1,7 +1,7 @@
 {
-    "target": "curse",
-    "searchName": "Garrison Mission Manager",
+    "fileName": "garrison-mission-manager",
     "localName": "GarrisonMissionManager",
-    "version": "v59",
-    "fileName": "garrison-mission-manager"
+    "searchName": "Garrison Mission Manager",
+    "target": "curse",
+    "version": "v59"
 }

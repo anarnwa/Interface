@@ -2,6 +2,13 @@
     "target": "curse",
     "searchName": "Myslot",
     "localName": "Myslot",
-    "version": "v5.2.8",
-    "fileName": "myslot"
+    "version": "v5.3.0",
+    "fileName": "myslot",
+    "addonsMap": [
+        "Myslot"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "Myslot",
+    "gameVersion": ""
 }

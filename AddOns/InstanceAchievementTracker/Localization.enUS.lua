@@ -72,6 +72,7 @@ local baseLocale = {
     ["Core_PersonalAchievement"] = "Personal Achievement",
     ["Core_Reason"] = "Reason",
     ["Core_CriteriaMet"] = "Criteria has been met. Boss can now be killed!",
+    ["Core_CriteriaMetManual"] = "Criteria has been met. Boss can now be killed! Warning: This tracker has used data manually collected by players.",
     ["Core_Counter"] = "Counter",
     ["Core_CombatLogEnabled"] = "Combat Logging enabled",
     ["Core_CombatLogDisabled"] = "Combat Logging disabled",
@@ -83,6 +84,16 @@ local baseLocale = {
     ["Core_EnableAddonFirst"] = "Please enable IAT in the options first before trying to toggle achievement tracking",
     ["Core_CompletedAllAchievements"] = "You have completed all achievements for this instance",
     ["Core_IncompletedAchievements"] = "Incomplete achievements for this instance",
+
+    -------------------------------------------------------
+    --- Instances
+    -------------------------------------------------------
+    ["MobCounter_TimeReamining"] = "Time remaining",
+    ["MobCounter_TimerNotStarted"] = "Timer not started",
+    ["MobCounter_MobsAlive"] = "%s alive",
+    ["MobCounter_MobsKilled"] = "%s killed in time",
+    ["MobCounter_TimerStarted"] = "Timer started %s remaining",
+    ["MobCounter_TimerNotApplicable"] = "Not applicable",
 
     -------------------------------------------------------
     --- Instances
@@ -177,11 +188,35 @@ local baseLocale = {
     ["Shared_NOW"] = "NOW!",
     ["Shared_PlayersRunningAddon2"] = "For IAT to track this achievement accurately, players collecting items need to be running the addon",
     ["Shared_Killed"] = "killed",
-    ["Shared_HasCaught"] ="has caught",
+    ["Shared_HasCaught"] = "has caught",
+    ["Shared_AutomaticTracking"] = "To track this achievement AUTOMATICALLY, players collecting items need to be running the addon",
+    ["Shared_ManualTracking"] = "To track this achievement, players must type into chat the number of items they collect. For example type +5 for five items collected, +1 for one item collected etc",
+    ["Shared_AutomaticCounter"] = "Automatic Counter",
+    ["Shared_ManualCounter"] = "Manual Counter",
+    ["Shared_AddsKilled"] = "Adds killed",
 
     -------------------------------------------------------
     --- Battle of Dazar'alor
     -------------------------------------------------------
+
+    -------------------------------------------------------
+    --- Ny’alotha, the Walking City
+    -------------------------------------------------------
+    --Tactics
+    ["Ny’alotha_WrathionTheBlackEmperor"] = "",
+    ["Ny’alotha_Maut"] = "",
+    ["Ny’alotha_TheProphetSkitra"] = "",
+    ["Ny’alotha_DarkInquisitorXanesh"] = "",
+    ["Ny’alotha_TheHivemind"] = "",
+    ["Ny’alotha_ShadharTheInsatiable"] = "",
+    ["Ny’alotha_Drestagath"] = "",
+    ["Ny’alotha_Vexiona"] = "",
+    ["Ny’alotha_RadenTheDespoiled"] = "",
+    ["Ny’alotha_IlgynothCorruptionReborn"] = "",
+    ["Ny’alotha_CarapaceOfNZoth"] = "",
+    ["Ny’alotha_NZothTheCorruptor"] = "",
+    
+    --Chat Output
 
     -------------------------------------------------------
     --- The Eternal Palace
@@ -255,11 +290,12 @@ local baseLocale = {
     --- Operation: Mechagon
     -------------------------------------------------------
     --Tactics
-    ["OperationMechagon_KingGobbamak"] = "To complete this achievement you must keep the %s behind %s charged at all times throughout the fight. To charge the %s, simply have a player run up to the gear when they have %s (which you get from %s) to charge the gear. The easiest way to do this is to have 2 players alternate charging the %s every 20 seconds.\n\nNote: Make sure that the players saving the %s debuff does not move close to the %s or %s.",
+    ["OperationMechagon_KingGobbamak"] = "To complete this achievement you must keep the %s behind %s charged at all times throughout the fight. To charge the %s, simply have a player run up to the gear when they have %s (which you get from %s). The easiest way to do this is to have 2 players take turns charging the %s every 15 seconds.\n\nNote: Make sure that the players saving the %s debuff to charge the %s do not move close to the %s or %s.",
     ["OperationMechagon_Gunker"] = "After pulling the boss 5 critters which look like cranes will spawn in the water around the boss. Simply pick them up and bring them over to a %s to cleanse them. After cleansing 5 critters you can kill the boss.",
-    ["OperationMechagon_TussleTonks"] = "",
-    ["OperationMechagon_MachinistsGarden"] = "",
-    ["OperationMechagon_KingMechagon"] = "",
+    ["OperationMechagon_TussleTonks"] = "To complete this achievement, first pull the boss then position %s towards %s who is located to the left of the boss on the arena ledge.\n\n Next wait for %s to hit %s with %s which will cause %s to get knocked off the ledge onto the ground. Once %s is on the ground, drag him to one of the %s, wait for him to get hit then kill the boss to get this achievement.",
+    ["OperationMechagon_MachinistsGarden"] = "This achievement is a personal achievement and requires you to dodge the following damaging mechanics of the encounter:\n\n %s, %s, %s, %s",
+    ["OperationMechagon_KeepDpsingAndNobodyExplodes"] = "To complete this achievement, you must kill every boss in the dungeon on hard mode.\n\n The first 3 bosses must be killed while the %s hovers over each of the bosses. The %s causes %s to spawn throughout the fight. They are immune to damage and will follow players until they reach 100 energy and self destruct.\n\n For the %s fight, the %s is replaced with the %s. This adds an additional mechanic called %s which players must stack together to absorb. There is also %s which have a beam ability which needs to be avoided.\n\n For the %s fight you must click on the %s on the ground before pulling the boss. This will add an additional mechanic to the fight called %s which adds a stacking slow debuff to the group.\n\n For the %s fight you must click the small red button before starting the fight. %s will be added to the fight, which at 0 energy will explode and wipe the group. To prevent this from happening, there are 4 panels around the room which activate when %s reaches 35 energy. The panels display a sequence of 4 colours in a random order. After the sequence has finished, 4 players in the group must repeat the sequence by clicking on each of the panels in the same order. If done correctly %s will replenish it's energy back to 100.",
+    ["OperationMechagon_HertzLocker"] = "To complete this achievement, you must kill every boss in the dungeon on hard mode without any player in the group dying.\n\n The first 3 bosses must be killed while the %s hovers over each of the bosses. The %s causes %s to spawn throughout the fight. They are immune to damage and will follow players until they reach 100 energy and self destruct.\n\n For the %s fight, the %s is replaced with the %s. This adds an additional mechanic called %s which players must stack together to absorb. There is also %s which have a beam ability which needs to be avoided.\n\n For the %s fight you must click on the %s on the ground before pulling the boss. This will add an additional mechanic to the fight called %s which adds a stacking slow debuff to the group.\n\n For the %s fight you must click the small red button before starting the fight. %s will be added to the fight, which at 0 energy will explode and wipe the group. To prevent this from happening, there are 4 panels around the room which activate when %s reaches 35 energy. The panels display a sequence of 4 colours in a random order. After the sequence has finished, 4 players in the group must repeat the sequence by clicking on each of the panels in the same order. If done correctly %s will replenish it's energy back to 100.",
 
     --Chat Output
 
@@ -665,8 +701,8 @@ local baseLocale = {
     -------------------------------------------------------
     --Tactics
     ["UpperBlackrockSpire_Other"] = "",
-    ["UpperBlackrockSpire_RagewingTheUntamed"] = "",
-    ["UpperBlackrockSpire_WarlordZaela"] = "",
+    ["UpperBlackrockSpire_RagewingTheUntamed"] = "To complete this achievement, dps the boss to 70%% then wait for the first wave of %s to spawn. Next dps the boss down to 30%% then wait for the second wave of %s to spawn. Once all the adds are together DPS them down before the boss returns to the platform.",
+    ["UpperBlackrockSpire_WarlordZaela"] = "To complete this achievement, bring the boss down to 60%% health then wait for the boss to go into the air. Next kill 5 %s which spawn around the sides of the platform. Once you have killed 5 %s, you can kill the boss.",
 
     --Chat Output
 
