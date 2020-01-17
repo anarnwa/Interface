@@ -1468,3 +1468,8 @@ Change Log:
 * Merged Classic and Retail versions since Twitch Client will sometimes wrongfully install the wrong addon
 * Added Battle for Azeroth spells (world)
 
+4.52
+* Updated for patch 8.3
+* Added Battle for Azeroth spells (world)
+* Added BFA spells for Mechagon
+

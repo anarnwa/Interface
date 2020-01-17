@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod(2367, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20191112032458")
+mod:SetRevision("20200113013939")
 mod:SetCreatureID(157231)
 mod:SetEncounterID(2335)
 mod:SetZone()
@@ -13,7 +13,7 @@ mod:SetHotfixNoticeRev(20191109000000)--2019, 11, 09
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
-	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953",
+	"SPELL_CAST_START 312528 306928 312529 306929 307260 306953 318078",
 	"SPELL_CAST_SUCCESS 307471 312530 306930",
 	"SPELL_AURA_APPLIED 312328 312329 307471 307472 307358 306942 307260 308149 312099 306447 306931 306933",
 	"SPELL_AURA_APPLIED_DOSE 312328 307358",
@@ -29,6 +29,12 @@ mod:RegisterEventsInCombat(
 --TODO, add tracking of tasty Morsel carriers to infoframe?
 --TODO, see if seenAdds solved the fixate timer issue, or if something else wonky still going on with it
 --TODO, first fixate Still 31 on heroic? Or is the extra one mythic exclusive for Tasty mechanic
+--TODO, see if timer adjustments around phase transitions are possible to improve timers for things when boss changes phases
+--[[
+(ability.id = 312528 or ability.id = 306928 or ability.id = 312529 or ability.id = 306929 or ability.id = 307260 or ability.id = 306953) and type = "begincast"
+ or (ability.id = 307471 or ability.id = 312530 or ability.id = 306930) and type = "cast"
+ or (ability.id = 306447 or ability.id = 306931 or ability.id = 306933) and type = "applybuff"
+--]]
 local warnHunger							= mod:NewStackAnnounce(312328, 2, nil, false, 2)--Mythic
 local warnUmbralMantle						= mod:NewSpellAnnounce(306447, 2)
 local warnUmbralEruption					= mod:NewSpellAnnounce(308157, 2)
@@ -115,13 +121,13 @@ local function entropicBuildupLoop(self)
 	end
 end
 
-function mod:ZapTarget(targetname, uId)
+function mod:SpitTarget(targetname, uId)
 	if not targetname then return end
 	if targetname == UnitName("player") and self:AntiSpam(5, 5) then
 		specWarnDebilitatingSpit:Show()
 		specWarnDebilitatingSpit:Play("targetyou")
 	else
-		warnDebilitatingSpit:Show(self.vb.zapCount, targetname)
+		warnDebilitatingSpit:Show(targetname)
 	end
 end
 
@@ -160,7 +166,7 @@ function mod:SPELL_CAST_START(args)
 			timer = 29.2
 		end
 		timerSlurryBreathCD:Start(timer)
-	elseif spellId == 307260 and not seenAdds[args.sourceGUID] and self:AntiSpam(5, 3) then
+	elseif (spellId == 318078 or spellId == 307260) and not seenAdds[args.sourceGUID] and self:AntiSpam(5, 3) then
 		self.vb.fixateCount = self.vb.fixateCount + 1
 		seenAdds[args.sourceGUID] = true
 		local timer = self:IsMythic() and self.vb.fixateCount == 1 and 16.1 or 30.2
@@ -325,12 +331,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 298548 then
-
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 152311 then
@@ -360,6 +360,6 @@ end
 
 function mod:UNIT_SPELLCAST_START(uId, _, spellId)
 	if spellId == 306953 then
-		self:BossUnitTargetScanner(uId, "ZapTarget")
+		self:BossUnitTargetScanner(uId, "SpitTarget")
 	end
 end

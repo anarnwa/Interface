@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "Instance Portals",
     "localName": "InstancePortals",
-    "version": "2.0.14",
+    "version": "2.0.15",
     "fileName": "instance-portals",
     "addonsMap": [
         "InstancePortals"

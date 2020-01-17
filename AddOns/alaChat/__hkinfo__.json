@@ -1,0 +1,14 @@
+{
+    "addonsMap": [
+        "alaChat"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "localName": "alaChat",
+    "searchName": "alaChat",
+    "name": "alaChat",
+    "fileName": "alachat",
+    "target": "curse",
+    "version": "820r.190817",
+    "gameVersion": ""
+}

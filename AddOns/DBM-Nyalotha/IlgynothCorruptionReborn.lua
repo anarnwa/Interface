@@ -1,14 +1,14 @@
 local mod	= DBM:NewMod(2374, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20191111030008")
+mod:SetRevision("20200113013939")
 mod:SetCreatureID(158328)
 mod:SetEncounterID(2345)
 mod:SetZone()
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:SetBossHPInfoToHighest()
 mod.noBossDeathKill = true--Instructs mod to ignore 158328 deaths, since it might die 4x on this fight
---mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
+mod:SetHotfixNoticeRev(20200112000000)--2020, 1, 12
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
 
@@ -16,13 +16,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_CAST_START 309961 311401 310788",
-	"SPELL_CAST_SUCCESS 311401 311159 310788 312204 314396",
+	"SPELL_CAST_SUCCESS 311401 311159 314396",
 	"SPELL_AURA_APPLIED 309961 311367 310322 315094 311159 313759",
 	"SPELL_AURA_APPLIED_DOSE 309961",
 	"SPELL_AURA_REMOVED 311367 315094 311159 313759",
 	"SPELL_PERIODIC_DAMAGE 310322",
 	"SPELL_PERIODIC_MISSED 310322",
-	"SPELL_INTERRUPT",
 	"UNIT_DIED",
 	"UNIT_SPELLCAST_SUCCEEDED boss1 boss2 boss3 boss4"
 )
@@ -53,7 +52,7 @@ local specWarnPumpingBlood					= mod:NewSpecialWarningInterruptCount(310788, "Ha
 
 --mod:AddTimerLine(BOSS)
 --Stage 01: The Corruptor, Reborn
-local timerEyeofNZothCD						= mod:NewCDTimer(16.6, 309961, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--16.6-17.4
+local timerEyeofNZothCD						= mod:NewCDTimer(17, 309961, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON, nil, 2, 4)--16.6-17.4 (0ld), new seems more stable 17
 local timerTouchoftheCorruptorCD			= mod:NewCDTimer(64.4, 311401, nil, nil, nil, 3, nil, DBM_CORE_HEROIC_ICON, nil, 1, 4)--64.4-68
 local timerCorruptorsGazeCD					= mod:NewCDTimer(32.8, 310319, nil, nil, nil, 3)--32.8-34
 --Stage 02: The Organs of Corruption
@@ -66,7 +65,6 @@ mod:AddInfoFrameOption(315094, true)
 mod:AddSetIconOption("SetIconOnMC", 311367, false, false, {1, 2, 3, 4, 5, 6, 7})
 mod:AddSetIconOption("SetIconOnOoze", "ej20988", false, true, {8})--Perma disabled in LFR
 mod:AddBoolOption("SetIconOnlyOnce", true)--If disabled, as long as living oozes are up, the skull will bounce around to lowest health mob continually, which is likely not desired by most, thus this defaulted on
-mod:AddNamePlateOption("NPAuraOnPumpingBlood", 310788)
 mod:AddMiscLine(DBM_CORE_OPTION_CATEGORY_DROPDOWNS)
 mod:AddDropdownOption("InterruptBehavior", {"Two", "Three", "Four", "Five"}, "Two", "misc")
 
@@ -81,7 +79,6 @@ local autoMarkScannerActive = false
 local autoMarkBlocked = false
 local fixatedTargets = {}
 local castsPerGUID = {}
-local interruptTextures = {[1] = 2178508, [2] = 2178501, [3] = 2178502, [4] = 2178503, [5] = 2178504, [6] = 2178505, [7] = 2178506, [8] = 2178507,}--Fathoms Deck (better icons still needed)
 
 local updateInfoFrame
 do
@@ -192,9 +189,6 @@ function mod:OnCombatStart(delay)
 			self:SendSync("Five")
 		end
 	end
-	if self.Options.NPAuraOnPumpingBlood then
-		DBM:FireEvent("BossMod_EnableHostileNameplates")
-	end
 end
 
 function mod:OnCombatEnd()
@@ -203,9 +197,6 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
-	end
-	if self.Options.NPAuraOnPumpingBlood then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
 	end
 end
 
@@ -245,10 +236,6 @@ function mod:SPELL_CAST_START(args)
 				specWarnPumpingBlood:Play("kickcast")
 			end
 		end
-		if self.Options.NPAuraOnPumpingBlood then
-			DBM.Nameplate:Hide(true, args.sourceGUID)--In case spell interrupt check still isn't working
-			DBM.Nameplate:Show(true, args.sourceGUID, spellId, interruptTextures[count])
-		end
 	end
 end
 
@@ -260,30 +247,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerCursedBloodCD:Start(self:IsMythic() and 40 or 18)
 		if self:IsMythic() then
 			timerCursedBloodCD:UpdateInline(DBM_CORE_MAGIC_ICON)
-		end
-	elseif spellId == 310788 then
-		if self.Options.NPAuraOnPumpingBlood then
-			DBM.Nameplate:Hide(true, args.sourceGUID)
-		end
-	elseif spellId == 312204 then--Il'gynoth's Morass (Boss Re-activating)
-		--Start timers here, not at organ death
-		--it's possible to screw up organ phase so bad that you leave it without killing any of them
-		table.wipe(castsPerGUID)
-		if not self:IsMythic() then
-			timerCursedBloodCD:Stop()
-		end
-		timerEyeofNZothCD:Start(6)--START
-		timerCorruptorsGazeCD:Start(12)
-		if self:IsHard() then
-			timerTouchoftheCorruptorCD:Start(51.5)--SUCCESS
-		end
-		if self.Options.NPAuraOnPumpingBlood then
-			for i = 2, 4 do
-				local guid = UnitGUID("boss"..i)
-				if guid then
-					DBM.Nameplate:Hide(true, guid)
-				end
-			end
 		end
 	end
 end
@@ -406,14 +369,6 @@ function mod:SPELL_PERIODIC_DAMAGE(_, _, _, _, destGUID, _, _, _, spellId, spell
 end
 mod.SPELL_PERIODIC_MISSED = mod.SPELL_PERIODIC_DAMAGE
 
-function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and args.extraSpellId == 310788 then
-		if self.Options.NPAuraOnPumpingBlood then
-			DBM.Nameplate:Hide(true, args.destGUID)
-		end
-	end
-end
-
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 159514 then--blood-of-nyalotha
@@ -449,6 +404,18 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, _, spellId)
 		specWarnCorruptorsGaze:Show()
 		specWarnCorruptorsGaze:Play("watchstep")
 		timerCorruptorsGazeCD:Start()
+	elseif spellId == 312204 then--Il'gynoth's Morass
+		--Start timers here, not at organ death
+		--it's possible to screw up organ phase so bad that you leave it without killing any of them
+		table.wipe(castsPerGUID)
+		if not self:IsMythic() then
+			timerCursedBloodCD:Stop()
+		end
+		timerEyeofNZothCD:Start(6)--START
+		timerCorruptorsGazeCD:Start(12)
+		if self:IsHard() then
+			timerTouchoftheCorruptorCD:Start(51.5)--SUCCESS
+		end
 	end
 end
 

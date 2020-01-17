@@ -745,7 +745,7 @@ do
 end
 
 function addon:QuestIgnored(questID)
-  if (TimewalkingItemQuest[questID]) then
+  if (TimewalkingItemQuest[questID]) and addon.activeHolidays then
     -- Timewalking Item Quests
     if addon.activeHolidays[TimewalkingItemQuest[questID]] then
       -- Timewalking Weedend Event ONGOING
@@ -819,6 +819,7 @@ addon.transInstance = {
   [1530] = 1353, -- The Nighthold: issue #186 frFR
   [585] = 1154, -- Magisters' Terrace: issue #293 frFR
   [2235] = 1911, -- Caverns of Time - Anniversary: issue #315 (fake LFDID used by Escape from Tol Dagor)
+  [725] = 1148, -- The Stonecore: issue #328 frFR
 }
 
 -- some instances (like sethekk halls) are named differently by GetSavedInstanceInfo() and LFGGetDungeonInfoByID()
@@ -2528,7 +2529,7 @@ end
 function core:OnInitialize()
   local versionString = GetAddOnMetadata(addonName, "version")
   --[===[@debug@
-  if versionString == "8.2.6" then
+  if versionString == "8.2.7" then
     versionString = "Dev"
   end
   --@end-debug@]===]

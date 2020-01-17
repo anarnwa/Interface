@@ -1,12 +1,18 @@
-tag e1d4ad1de60d649d02fb1375b1fa0b9f5eb28eb3 8.2.6
+tag e0eddc4e1d4be17cc67b0fda98896df45143a843 8.2.7
 Author:	Benjamin Staneck <staneck@gmail.com>
-Date:	Thu Nov 28 13:58:11 2019 +0100
+Date:	Mon Dec 23 14:30:32 2019 +0100
 
-Tagging as 8.2.6
+Tagging as 8.2.7
 
-commit e3b115cdc4a3ebbb5f607e354f0b2df2a0ab9f04
+commit b46ec0feda19823285c94b73a5db730fb36fcd0e
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Wed Nov 27 15:00:42 2019 +0800
+Date:   Mon Dec 23 11:30:02 2019 +0800
 
-    fixes #325
+    fixes #330
+
+commit 73eff4abd313aba07a503ce6b5cff2ff1182ee10
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Mon Dec 9 15:50:50 2019 +0800
+
+    fixes #328
 

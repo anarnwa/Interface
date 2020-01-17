@@ -1420,6 +1420,10 @@ L["STRING_OPTIONS_TEXT_LOUTILINE"] = "Contorno del texto"
 L["STRING_OPTIONS_TEXT_LOUTILINE_DESC"] = "Añadir un contorno al texto izquierdo."
 L["STRING_OPTIONS_TEXT_LPOSITION"] = "Mostrar numero"
 L["STRING_OPTIONS_TEXT_LPOSITION_DESC"] = "Mostrar el numero de la posición al lado del nombre del personaje."
+--[[Translation missing --]]
+--[[ L["STRING_OPTIONS_TEXT_LTRANSLIT"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["STRING_OPTIONS_TEXT_LTRANSLIT_DESC"] = ""--]] 
 L["STRING_OPTIONS_TEXT_RIGHT_ANCHOR"] = "Texto derecho:"
 L["STRING_OPTIONS_TEXT_ROUTILINE_DESC"] = "Añadir un contorno al texto derecho."
 L["STRING_OPTIONS_TEXT_ROWICONS_ANCHOR"] = "Iconos:"

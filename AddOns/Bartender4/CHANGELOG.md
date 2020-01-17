@@ -1,10 +1,10 @@
 # Bartender4
 
-## [4.8.8](https://github.com/Nevcairiel/Bartender4/tree/4.8.8) (2019-09-25)
-[Full Changelog](https://github.com/Nevcairiel/Bartender4/compare/4.8.7...4.8.8)
+## [4.8.9](https://github.com/Nevcairiel/Bartender4/tree/4.8.9) (2019-12-15)
+[Full Changelog](https://github.com/Nevcairiel/Bartender4/compare/4.8.8...4.8.9)
 
-- Update TOC for 8.2.5  
-- Also re-layout the MicroMenu after taking it back over  
-- Add a few additional hooks to restore the MicroMenu to its original state  
-    Hopefully this can reduce the impact of other addons also messing with  
-    the MainMenuBar  
+- Add LibClassicSpellActionCount-1.0 for Classic action counts  
+- Update Classic to 1.13.3  
+- Fix options error on retail  
+- Add Keyring for Classic  
+    Signed-off-by: Hendrik Leppkes <h.leppkes@gmail.com>  

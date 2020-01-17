@@ -1,0 +1,14 @@
+## Interface: 80200
+## Title: alaChat
+## SavedVariablesPerCharacter: 
+## SavedVariables: alaBaseData,alaChatConfig
+## Notes: alaChat
+## Dependencies: 
+## OptionalDependencies: 
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: alex
+## Version: 820r.190817
+
+alaChat.xml
+

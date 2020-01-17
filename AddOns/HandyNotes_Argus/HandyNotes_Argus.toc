@@ -1,4 +1,4 @@
-## Interface: 80200
+## Interface: 80205
 #@non-debug@
 ## Title: HandyNotes - Argus
 ## Title-deDE: HandyNotes - Argus
@@ -21,12 +21,12 @@
 # ## Notes: Shows the POIs in Argus
 #@end-debug@
 ## Author: arith
-## Version: v0.13
+## Version: v0.14
 ## RequiredDeps: HandyNotes
 ## OptionalDeps: LibBabble-SubZone-3.0
 ## DefaultState: enabled
 ## SavedVariables: HandyNotes_ArgusDB
-## X-Date: 2019-09-03T14:41:52Z
+## X-Date: 2020-01-08T17:14:03Z
 ## X-License: GPLv2
 ## X-Category: Map
 

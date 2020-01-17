@@ -4598,7 +4598,7 @@ local function CreateCustomNameplatesGroup()
       hidden = function() return TidyPlatesThreat.db.global.CustomNameplatesVersion == 1 end,
     },
     MigrateVersion1 = {
-      name = L["|cffFF0000Migrate Custom Nameplates Settings|r"],
+      name = L["|cffFFFFFFMigrate Custom Nameplates Settings|r"],
       order = 3,
       type = "execute",
       width = "full",
@@ -7259,18 +7259,18 @@ local function CreateOptionsTable()
               width = "full",
               name = "deDE: Blacksalsify (original  author: Aideen@Perenolde/EU)"
             },
---						Translators2 = {
---							type = "description",
---							order = 5,
---							width = "full",
---							name = "esES: Need Translator!!"
---						},
---						Translators3 = {
---							type = "description",
---							order = 6,
---							width = "full",
---							name = "esMX: Need Translator!!"
---						},
+            Translators2 = {
+              type = "description",
+              order = 5,
+              width = "full",
+              name = "esES: Woopy"
+            },
+            Translators3 = {
+              type = "description",
+              order = 6,
+              width = "full",
+              name = "esMX: Woopy"
+            },
 --						Translators4 = {
 --							type = "description",
 --							order = 7,

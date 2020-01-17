@@ -1,38 +1,14 @@
-lightweight tag 1d230f61ee94e5c46c6dc3c7f06b9ef46f10b5db v8.2.0.7203.140
+lightweight tag c0ee4a7f9e38ff5ade61165d752833cd3678731d v8.2.5.7229.140
 Author:	Tercio Jose <terciob19@hotmail.com>
-Date:	Sat Sep 28 13:46:19 2019 -0300
+Date:	Sun Dec 15 11:02:12 2019 -0300
 
-commit 1d230f61ee94e5c46c6dc3c7f06b9ef46f10b5db
+commit c0ee4a7f9e38ff5ade61165d752833cd3678731d
 Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Sat Sep 28 13:46:19 2019 -0300
+Date:   Sun Dec 15 11:02:12 2019 -0300
 
-    Fixed issue with the latest wow patch 82505
+    Removed the chat message Details! sent everytime after a logon
     
-    Fixes for the client change: "Chat channel 'SAY' cannot be used in open world anymore".
-
-commit b4c9a55cc2b5a30d097635d67270154e7c6de856
-Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Sat Sep 21 13:40:38 2019 -0300
-
-    General Bug Fixes
-    
-    - Fixed custom displays import.
-    - Fixed 'Dynamic Overall Data' tooltip script.
-    - When using /details it tells the version of the addon much more clear.
-
-commit 9e376e803520ba63d04dd97caf189976f5000094
-Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Mon Sep 16 18:14:59 2019 -0300
-
-    Major Library Updates
-
-commit 09cb8a7ab92883b8cdaa8e635bec124e8eba64ee
-Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Sat Sep 7 19:17:06 2019 -0300
-
-    General Updates.
-    
-    - localizations updates.
-    - string bug fixes.
-    - coments updates.
+    - Removed the chat message Details! sent everytime after a logon
+    - Using Ace3 lib from Aug 12, 2019.
+    - Using Details! Framework v161 for Retail.
 

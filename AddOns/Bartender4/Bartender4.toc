@@ -3,7 +3,7 @@
 ## Title: Bartender4
 ## Notes: Simple and Advanced combined - Bartender4 ActionBar AddOn
 
-## Version: 4.8.8
+## Version: 4.8.9
 
 ## Author: Nevcairiel
 ## X-Email: h.leppkes at gmail dot com
@@ -31,6 +31,7 @@ libs\AceHook-3.0\AceHook-3.0.xml
 libs\AceLocale-3.0\AceLocale-3.0.xml
 libs\AceGUI-3.0\AceGUI-3.0.xml
 libs\AceConfig-3.0\AceConfig-3.0.xml
+
 
 libs\LibKeyBound-1.0\lib.xml
 libs\LibButtonGlow-1.0\LibButtonGlow-1.0.lua

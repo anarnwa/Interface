@@ -1056,7 +1056,7 @@ function FishLib:printable(val)
         return tab.." ]"
     elseif (val ~= nil) then
         val = tostring(val)
-        val = gsub(val, "\124", "\124\124");
+        val = string.gsub(val, "\124", "\124\124");
         return val;
     else
         return "nil";
@@ -2153,7 +2153,7 @@ function FishLib:GetOutfitBonus()
 end
 
 
-function FishLib:GetBestFishingItem(slotid)
+function FishLib:GetBestFishingItem(slotid, ignore)
     local item = nil
     local maxb = 0;
     if not infoslot then
@@ -2203,7 +2203,7 @@ function FishLib:GetFishingOutfitItems(wearing, nopole, ignore)
         local slotid = slotinfo[invslot].id;
         local ismain = (slotid == INVSLOT_MAINHAND);
         if ( not nopole or not ismain ) then
-            item = self:GetBestFishingItem(slotid)
+            local item = self:GetBestFishingItem(slotid)
             if item and not ignore[item] then
                 outfit = outfit or {};
                 outfit[slotid] = item

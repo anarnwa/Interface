@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibProcessable', 37
+local MAJOR, MINOR = 'LibProcessable', 38
 assert(LibStub, MAJOR .. ' requires LibStub')
 
 local lib, oldMinor = LibStub:NewLibrary(MAJOR, MINOR)
@@ -6,7 +6,7 @@ if(not lib) then
 	return
 end
 
-local CLASSIC = select(4, GetBuildInfo()) == 11302
+local CLASSIC = select(4, GetBuildInfo()) == 11303
 
 local professions = {}
 --[[ LibProcessable:IsMillable(_item[, ignoreMortar]_)

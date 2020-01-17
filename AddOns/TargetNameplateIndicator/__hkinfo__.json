@@ -1,6 +1,7 @@
 {
     "target": "curse",
-    "searchName": "TargetNameplateIndicator",
+    "searchName": "Target Nameplate Indicator",
     "localName": "TargetNameplateIndicator",
-    "version": "1.34"
+    "version": "1.34",
+    "fileName": "targetnameplateindicator"
 }

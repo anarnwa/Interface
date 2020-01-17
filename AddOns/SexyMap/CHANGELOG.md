@@ -1,6 +1,6 @@
 # SexyMap
 
-## [v8.2.2](https://github.com/funkydude/SexyMap/tree/v8.2.2) (2019-08-01)
-[Full Changelog](https://github.com/funkydude/SexyMap/compare/v8.2.1...v8.2.2)
+## [v8.3.0](https://github.com/funkydude/SexyMap/tree/v8.3.0) (2020-01-14)
+[Full Changelog](https://github.com/funkydude/SexyMap/compare/v8.2.3...v8.3.0)
 
-- Tweaks  
+- bump toc  

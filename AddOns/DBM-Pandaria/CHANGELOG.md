@@ -1,12 +1,7 @@
 # <DBM> Pandaria
 
-## [r131](https://github.com/DeadlyBossMods/DBM-MoP/tree/r131) (2019-09-24)
-[Full Changelog](https://github.com/DeadlyBossMods/DBM-MoP/compare/r130...r131)
+## [r133](https://github.com/DeadlyBossMods/DBM-MoP/tree/r133) (2020-01-14)
+[Full Changelog](https://github.com/DeadlyBossMods/DBM-MoP/compare/r132...r133)
 
-- TOC Bump  
-- Fix RU locales  
-- Fix lua error: Closing braces in locales  
-- Locale and readme updates  
-- Include project version in toc  
-- adjust packager call  
-- move to the BigWigs community packager  
+- Toc Bump for 8.3  
+- Removed yells from MoP world bosses, since it's no longer permitted by API  

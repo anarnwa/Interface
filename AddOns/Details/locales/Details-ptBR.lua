@@ -1,7 +1,7 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("Details", "ptBR") 
 if not L then return end 
 
-L["ABILITY_ID"] = "id da habilidade"
+L["ABILITY_ID"] = "Id da Habilidade"
 L["STRING_"] = ""
 L["STRING_ABSORBED"] = "Absorvido"
 L["STRING_ACTORFRAME_NOTHING"] = "oops, não há nada para reportar :("
@@ -89,7 +89,7 @@ L["STRING_CREATEAURA"] = "Criar Aura"
 L["STRING_CRITICAL_HITS"] = "Golpes Críticos"
 L["STRING_CRITICAL_ONLY"] = "critico"
 L["STRING_CURRENT"] = "Atual"
-L["STRING_CURRENTFIGHT"] = "Luta Atual"
+L["STRING_CURRENTFIGHT"] = "Segmento Atual"
 L["STRING_CUSTOM_ACTIVITY_ALL"] = "Tempo em Atividade"
 L["STRING_CUSTOM_ACTIVITY_ALL_DESC"] = "Mostra o tempo em atividade de cada membro no grupo de raide."
 L["STRING_CUSTOM_ACTIVITY_DPS"] = "Tempo de Atividade: Dano"
@@ -1164,6 +1164,10 @@ L["STRING_OPTIONS_TEXT_LOUTILINE"] = "Sombra do Texto Esquerdo"
 L["STRING_OPTIONS_TEXT_LOUTILINE_DESC"] = "Quando ativado o texto esquerdo ganhara um efeito de sombra ao seu redor."
 L["STRING_OPTIONS_TEXT_LPOSITION"] = "Mostrar Número"
 L["STRING_OPTIONS_TEXT_LPOSITION_DESC"] = "Mostra o número da colocação do jogador ao lado esquerdo do seu nome."
+--[[Translation missing --]]
+--[[ L["STRING_OPTIONS_TEXT_LTRANSLIT"] = ""--]] 
+--[[Translation missing --]]
+--[[ L["STRING_OPTIONS_TEXT_LTRANSLIT_DESC"] = ""--]] 
 L["STRING_OPTIONS_TEXT_RIGHT_ANCHOR"] = "Texto a Direita:"
 L["STRING_OPTIONS_TEXT_ROUTILINE_DESC"] = "Quando ativado o texto da direita ganhara um efeito de sombra ao seu redor."
 L["STRING_OPTIONS_TEXT_ROWICONS_ANCHOR"] = "Ícones:"

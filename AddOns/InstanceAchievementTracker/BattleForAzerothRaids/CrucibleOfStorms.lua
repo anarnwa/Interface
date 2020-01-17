@@ -113,7 +113,7 @@ function core._2096:UunatHarbingerOfTheVoid()
 		core:sendDebugMessage("Stop Moving: Gift of N'Zoth (SPELL_CAST_SUCCESS) NOT SAFE TO MOVE")
 		safeToMove = false
 		if playerCurrentlyMoving == true then
-			core:getAchievementFailedPersonalIndependent(UnitName("Player"))
+            core:getAchievementFailedPersonalIndependent(UnitName("Player"))
 		end
 	end
 
@@ -224,6 +224,7 @@ local function playerMoving(...)
             -- core:sendDebugMessage(GetTime() .. " Player is moving")
             playerCurrentlyMoving = true
             if safeToMove == false then
+                core:sendDebugMessage("Set Failed after start moving called")
                 core:getAchievementFailedPersonalIndependent(UnitName("Player"))
             end
         end
@@ -242,6 +243,7 @@ local function playerMovingMouse(...)
             -- core:sendDebugMessage(GetTime() .. " Player is moving")
             playerCurrentlyMoving = true
             if safeToMove == false then
+                core:sendDebugMessage("Set Failed after start moving called mouse")
                 core:getAchievementFailedPersonalIndependent(UnitName("Player"))
             end
         end
@@ -258,6 +260,11 @@ local function playerStoppedMoving(...)
             end
             -- core:sendDebugMessage(GetTime() .. " Player stopped moving")
             playerCurrentlyMoving = false
+
+            if safeToMove == false then
+                core:sendDebugMessage("Set Failed after stop moving called")
+                core:getAchievementFailedPersonalIndependent(UnitName("Player"))
+            end
         end
     end
 end
@@ -298,8 +305,8 @@ function core._2096.Events:UNIT_POWER_UPDATE(self, unit, powerType)
             local unitType, _, _, _, _, destID, spawn_uid_dest = strsplit("-", UnitGUID(unit))
             if destID == "145371" then
                 --If power is between 38 and 50 then announce safe to move again and we are not currently changes phases
-                --Player should not move during phase transition even if eye opens (Possible Bug)
-                if UnitPower(unit) >= 38 and giftOfNzothActive == true and stopMovingAnnounced == true and phaseChangeInProgress == false then
+                --Player can move during phase transition if eye is open?????
+                if UnitPower(unit) >= 38 and giftOfNzothActive == true and stopMovingAnnounced == true then
                     --If Gift of N'zoth is active wait till boss reaches 38 or more energy then players can move again
 			        core:sendDebugMessage("Boss reached 38 energy. SAFE TO MOVE")
                     stopMovingAnnounced = false
@@ -307,9 +314,10 @@ function core._2096.Events:UNIT_POWER_UPDATE(self, unit, powerType)
                     giftOfNzothActive = false
                     core:sendMessage(core:getAchievement() .. " " .. L["CrucibleOfStorms_StartMoving"],true)
                     core.IATInfoFrame:SetText1("|cff59FF00" .. L["CrucibleOfStorms_StartMoving"] .. "|r","GameFontHighlightLarge")
-                elseif UnitPower(unit) >= 38 and giftOfNzothActive == true and stopMovingAnnounced == true and bossatthirtyeightannounce == false then
-                    bossatthirtyeightannounce = true
-                    core:sendDebugMessage("Boss reached 38 energy but we are in phase transition. NOT SAFE TO MOVE")
+                    if bossatthirtyeightannounce == false and phaseChangeInProgress == true then
+                        core:sendDebugMessage("Boss reached 38 energy but we are in phase transition. PROBABLY SAFE TO MOVE")
+                        bossatthirtyeightannounce = true
+                    end
                 end
             end
         end

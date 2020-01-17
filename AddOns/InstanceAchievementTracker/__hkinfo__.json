@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "Instance Achievement Tracker",
     "localName": "InstanceAchievementTracker",
-    "version": "V2.64.0",
+    "version": "V2.67.0",
     "fileName": "instance-achievement-tracker",
     "addonsMap": [
         "InstanceAchievementTracker"

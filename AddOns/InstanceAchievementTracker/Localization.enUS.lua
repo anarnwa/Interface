@@ -194,6 +194,8 @@ local baseLocale = {
     ["Shared_AutomaticCounter"] = "Automatic Counter",
     ["Shared_ManualCounter"] = "Manual Counter",
     ["Shared_AddsKilled"] = "Adds killed",
+    ["Shared_PlayersMetCriteria"] = "Players who have met critera",
+    ["Shared_Players25Yards"] = "Players must be within 25 yards of a player running IAT to track this achievement accurately",
 
     -------------------------------------------------------
     --- Battle of Dazar'alor
@@ -217,6 +219,8 @@ local baseLocale = {
     ["Ny’alotha_NZothTheCorruptor"] = "",
     
     --Chat Output
+    ["Nyalotha_PetSelf"] = "You pet",
+    ["Nyalotha_PetOther"] = "pets",
 
     -------------------------------------------------------
     --- The Eternal Palace
@@ -546,7 +550,8 @@ local baseLocale = {
     --- Black Rook Hold
     -------------------------------------------------------
     --Tactics
-    ["BlackRookHold_Other"] = "",
+    ["BlackRookHold_Other"] = "";
+    --["BlackRookHold_Other"] = "To complete this achievement you must find all parts of %s diary. Each time you run the instance one of the six pages will spawn. The location for the pages are as follows.\n\n Torn Page: Found after the %s in the %s room on a table on the southern sidel.\n\n Worn-Edge Page: Found on the ground in %s to the left of the broken staircase.\n\n Dog-Eared Page: Found on a table in %s in the hallway that has the staircase taking you to %s.\n\n Signed Page: Found in %s on a table by three bookshelves.\n\n Ink-Splattered Page: Found in %s in the small room connecting to the stairs leading to %s.\n\n Hastily-Scrated Page: Found in %s on the desk",
     ["BlackRookHold_AmalgamOfSouls"] = "Bring the %s down to 50%% HP. When the %s spawn you will need to CC one of them to prevent it reaching the boss. After 1 minute the %s will transform into a %s. You can then kill the %s then the boss to get this achievement",
 
     --Chat Output
@@ -1277,7 +1282,7 @@ local baseLocale = {
     --- The Nexus
     -------------------------------------------------------
     --Tactics
-    ["TheNexus_Anomalus"] = "Damage the boss down to 45%, be careful you don’t 1 shot the boss. Wait for the add to finish casting the indestructible buff on the boss. Once this has finished you can kill the boss. Make sure you don’t kill the chaotic rift.",
+    ["TheNexus_Anomalus"] = "Damage the boss down to 45%, be careful you don�������t 1 shot the boss. Wait for the add to finish casting the indestructible buff on the boss. Once this has finished you can kill the boss. Make sure you don’t kill the chaotic rift.",
 
     --Chat Output
 

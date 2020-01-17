@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "SavedInstances",
     "localName": "SavedInstances",
-    "version": "8.2.6",
+    "version": "8.2.7",
     "fileName": "saved_instances",
     "addonsMap": [
         "SavedInstances"

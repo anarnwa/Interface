@@ -1,5 +1,5 @@
 		-------------------------------------------------
-		-- Paragon Reputation 1.24 by Fail US-Ragnaros --
+		-- Paragon Reputation 1.26 by Fail US-Ragnaros --
 		-------------------------------------------------
 
 		  --[[	  Special thanks to Ammako for
@@ -12,7 +12,7 @@ local PR = ParagonReputation
 local ACTIVE_TOAST = false
 local WAITING_TOAST = {}
 
-local PARAGON_QUEST_ID = { --[QuestID] = {factionID,rewardID}
+local PARAGON_QUEST_ID = { --[questID] = {factionID,rewardID}
 	--Legion
 		[48976] = {2170,152922}, -- Argussian Reach
 		[46777] = {2045,152108}, -- Armies of Legionfall
@@ -38,7 +38,7 @@ local PARAGON_QUEST_ID = { --[QuestID] = {factionID,rewardID}
 		[54462] = {2103,166292}, --Zandalari Empire
 		
 		--Alliance
-		[54456] = {2161,166297}, --Orber of Embers
+		[54456] = {2161,166297}, --Order of Embers
 		[54458] = {2160,166295}, --Proudmoore Admiralty
 		[54457] = {2162,166294}, --Storm's Wake
 		[54454] = {2159,166300}, --The 7th Legion
@@ -153,6 +153,24 @@ reward:SetScript("OnEvent",function(self,event,...)
 	end
 end)
 
+-- [Paragon Overlay] Create the Overlay for the Reputation Bar.
+function ParagonReputation:CreateBarOverlay(factionBar)
+	local overlay = CreateFrame("FRAME",nil,factionBar)
+	overlay:SetAllPoints(factionBar)
+	overlay:SetFrameLevel(3)
+	overlay.bar = overlay:CreateTexture("ARTWORK",nil,nil,-1)
+	overlay.bar:SetTexture((ElvUI and ElvUI[1].private and ElvUI[1].private.skins and ElvUI[1].private.skins.blizzard and ElvUI[1].private.skins.blizzard.enable and ElvUI[1].private.skins.blizzard.character and ElvUI[1].media and ElvUI[1].media.normTex) or "Interface\\TARGETINGFRAME\\UI-StatusBar") -- Checks for ElvUI and it's values in case they are skinning the Character Frame.
+	overlay.bar:SetPoint("TOP",overlay)
+	overlay.bar:SetPoint("BOTTOM",overlay)
+	overlay.bar:SetPoint("LEFT",overlay)
+	overlay.edge = overlay:CreateTexture("ARTWORK",nil,nil,-1)
+	overlay.edge:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
+	overlay.edge:SetPoint("CENTER",overlay.bar,"RIGHT")
+	overlay.edge:SetBlendMode("ADD")
+	overlay.edge:SetSize(38,38) --Arbitrary value, I hope there isn't an AddOn that skins the bar and the glow doesnt look right with this size.
+	factionBar.ParagonOverlay = overlay
+end
+
 -- [Reputation Frame] Change the Reputation Bars accordingly.
 hooksecurefunc("ReputationFrame_Update",function()
 	ReputationFrame.paragonFramesPool:ReleaseAll()
@@ -165,6 +183,7 @@ hooksecurefunc("ReputationFrame_Update",function()
 		if factionIndex <= GetNumFactions() then
 			local name,_,_,_,_,_,_,_,_,_,_,_,_,factionID = GetFactionInfo(factionIndex)
 			if factionID and C_Reputation.IsFactionParagon(factionID) then
+				local r,g,b = unpack(PR.DB.value)
 				local currentValue,threshold,rewardQuestID,hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
 				factionRow.questID = rewardQuestID
 				if currentValue then
@@ -176,11 +195,20 @@ hooksecurefunc("ReputationFrame_Update",function()
 						paragonFrame.Glow:SetShown(true)
 						paragonFrame.Check:SetShown(true)
 						paragonFrame:Show()
+						-- If value is 0 we force it to 1 so we don't get 0 as result, math...
+						local over = ((value <= 0 and 1) or value)/threshold
+						if not factionBar.ParagonOverlay then PR:CreateBarOverlay(factionBar) end
+						factionBar.ParagonOverlay:Show()
+						factionBar.ParagonOverlay.bar:SetWidth(factionBar.ParagonOverlay:GetWidth()*over)
+						factionBar.ParagonOverlay.bar:SetVertexColor(r+.15,g+.15,b+.15)
+						factionBar.ParagonOverlay.edge:SetVertexColor(r+.2,g+.2,b+.2,(over > .05 and .75) or 0)
 						value = value+threshold
+					else
+						if factionBar.ParagonOverlay then factionBar.ParagonOverlay:Hide() end
 					end
 					factionBar:SetMinMaxValues(0,threshold)
 					factionBar:SetValue(value)
-					factionBar:SetStatusBarColor(unpack(PR.DB.value))
+					factionBar:SetStatusBarColor(r,g,b)
 					factionRow.rolloverText = HIGHLIGHT_FONT_COLOR_CODE.." "..format(REPUTATION_PROGRESS_FORMAT,BreakUpLargeNumbers(value),BreakUpLargeNumbers(threshold))..FONT_COLOR_CODE_CLOSE
 					if PR.DB.text == "PARAGON" then
 						factionStanding:SetText(PR.L["PARAGON"])
@@ -214,6 +242,7 @@ hooksecurefunc("ReputationFrame_Update",function()
 				end
 			else
 				factionRow.questID = nil
+				if factionBar.ParagonOverlay then factionBar.ParagonOverlay:Hide() end
 			end
 		else
 			factionRow:Hide()
