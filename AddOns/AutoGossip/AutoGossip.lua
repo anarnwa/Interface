@@ -18,13 +18,25 @@ local AUtoGossipOnlyOnce = {
     [131287] = 1, -- Natal'hakata (Horde Zandalari Emissary)
     [138097] = 1, -- Muka Stormbreaker (Stormsong Valley Horde flight master)
 	[35642] = 1, -- Jeeves
-	[57850]=1		-- Teleportologist Fozlebub (Darkmoon Faire)
+    [57850]=1,		-- Teleportologist Fozlebub (Darkmoon Faire)
+    [151526]=1--始祖龟任务
+}
+
+--始终自动对话的NPC
+
+local alwaysAutoGossip={
+    [151286]=1 --托卡里的子嗣
 }
 
 GossipFrame:HookScript(
     'OnShow',
     function()
         local targetid = tonumber(string.match(tostring(UnitGUID('target')), '-([^-]+)-[^-]+$'))
+
+        --如果在始终自动对话的表里
+        if (alwaysAutoGossip[targetid] ~= nil) then
+            SelectGossipOption(alwaysAutoGossip[targetid])
+        end
 
         -- 如果按下控制键就不自动对话
         if (IsModifierKeyDown()) then
