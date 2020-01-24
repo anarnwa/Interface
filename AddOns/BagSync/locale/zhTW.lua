@@ -2,10 +2,6 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("BagSync", "zhTW")
 if not L then return end
 
---PLEASE LOOK AT enUS.lua for a complete localization list
-
---special thanks to ytzyt at Curse for the zhCN and zhTW translations!
-
 L.TooltipBag = "背包:"
 L.TooltipBank = "銀行:"
 L.TooltipEquip = "已裝備:"
@@ -23,14 +19,14 @@ L.Gold = "金錢"
 L.Close = "關閉"
 L.FixDB = "優化數據庫"
 L.Config = "設定"
-L.DeleteWarning = "選擇要刪除的設定檔.\n注意:此操作不可逆！"
+L.DeleteWarning = "選擇要刪除的設定檔. 注意:此操作不可逆！"
 L.Delete = "刪除"
 L.Confirm = "確認"
 L.FixDBComplete = "已執行FixDB, 數據庫已優化!"
 L.ON = "開[ON]"
 L.OFF = "關[OFF]"
-L.LeftClickSearch = "左鍵 = 搜索窗"
-L.RightClickBagSyncMenu = "右鍵 = 選單"
+L.LeftClickSearch = "|cffddff00左鍵|r |cff00ff00= 搜索窗|r"
+L.RightClickBagSyncMenu = "|cffddff00右鍵|r |cff00ff00= 選單|r"
 L.RightClickInsertTradeskill = "右鍵 = 插入專業技能鏈接"
 L.ClickViewProfession = "點擊查看專業"
 L.ClickHere = "點這裡"
@@ -40,7 +36,7 @@ L.AddItemID = "添加物品ID"
 L.RemoveItemID = "移除物品ID"
 L.HelpSearchItemName = "/bgs [物品名稱] - 快速搜索一件物品"
 L.HelpSearchWindow = "/bgs search - 開啟搜索窗"
-L.HelpGoldTooltip = "/bgs gold - 顯示各角色的金錢統計提示"
+L.HelpGoldTooltip = "/bgs gold (or /bgs money) - 顯示各角色的金錢統計提示"
 L.HelpProfilesWindow = "/bgs profiles - 開啟設定檔視窗"
 L.HelpFixDB = "/bgs fixdb - 優化數據庫"
 L.HelpConfigWindow = "/bgs config - 設置"

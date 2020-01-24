@@ -1,8 +1,24 @@
+--[[
+	currency.lua
+		A currency frame for BagSync
+--]]
 
 local BSYC = select(2, ...) --grab the addon namespace
 local Currency = BSYC:NewModule("Currency")
+local Data = BSYC:GetModule("Data")
+local Tooltip = BSYC:GetModule("Tooltip")
 
-local L = LibStub("AceLocale-3.0"):GetLocale("BagSync", true)
+local debugf = tekDebug and tekDebug:GetFrame("BagSync")
+local function Debug(...)
+    if debugf then
+		local debugStr = string.join(", ", tostringall(...))
+		local moduleName = string.format("|cFFffff00[%s]|r: ", "CURRENCY")
+		debugStr = moduleName..debugStr
+		debugf:AddMessage(debugStr)
+	end
+end
+
+local L = LibStub("AceLocale-3.0"):GetLocale("BagSync")
 local AceGUI = LibStub("AceGUI-3.0")
 
 function Currency:OnEnable()
@@ -44,31 +60,38 @@ function Currency:AddEntry(entry, isHeader)
 
 	if isHeader then
 		label:SetText(entry.header)
-		label:SetFont(L.GetFontType, 14, THICKOUTLINE)
+		label:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
 		label:SetFullWidth(true)
 		label:SetColor(unpack(label.userdata.color))
 		label:ApplyJustifyH("CENTER")
 		label.userdata.isHeader = true
 		label.userdata.text = entry.header
+		label.userdata.icon = entry.icon
+		label.userdata.currencyID = entry.currencyID
+		
 		label:ToggleHeaderHighlight(true)
 	else
 		label:SetText(entry.name)
-		label:SetFont(L.GetFontType, 14, THICKOUTLINE)
+		label:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
 		label:SetFullWidth(true)
-		label.userdata.color = {64/255, 224/255, 208/255}
+		label.userdata.color = {64/255, 224/255, 208/255} --hex: 40e0d0
 		label:SetColor(unpack(label.userdata.color))
 		label:ApplyJustifyH("LEFT")
 		label.userdata.isHeader = false
 		label.userdata.text = entry.name
+		label.userdata.icon = entry.icon
+		label.userdata.currencyID = entry.currencyID
 	end
 
 	label:SetCallback(
 		"OnEnter",
 		function (widget, sometable)
-			label:SetColor(unpack(highlightColor))
-			GameTooltip:SetOwner(label.frame, "ANCHOR_BOTTOMRIGHT")
 			if not label.userdata.isHeader then
-				BSYC:AddCurrencyTooltip(GameTooltip, label.userdata.text, true)
+				label:SetColor(unpack(highlightColor))
+				GameTooltip:SetOwner(label.frame, "ANCHOR_RIGHT")
+				if not label.userdata.isHeader then
+					Tooltip:CurrencyTooltip(GameTooltip, label.userdata.text, label.userdata.icon, label.userdata.currencyID)
+				end
 			end
 		end)
 	label:SetCallback(
@@ -83,46 +106,41 @@ end
 
 function Currency:DisplayList()
 
-	local tmp = {}
-	local tempList = {}
-	local count = 0
-
 	self.scrollframe:ReleaseChildren() --clear out the scrollframe
 	
-	local xDB = BSYC:FilterDB(2) --dbSelect 2
-	
-	--loop through our database and collect the currenry headers
-	for k, v in pairs(xDB) do
-		--no need to split to get playername and realm as it's not important, we let AddCurrencyTooltip() handle that
-		--loop through each player table and grab only the headers and insert it into a temp table if it doesn't already exist
-		for q, r in pairs(v) do
-			if not tempList[q] then
-				--we only really want to list the currency once for display
-				table.insert(tmp, { header=r.header, icon=r.icon, name=q} )
-				tempList[q] = true
-				count = count + 1
+	local usrData = {}
+	local tempList = {}
+
+	for unitObj in Data:IterateUnits() do
+		if not unitObj.isGuild and unitObj.data.currency then
+			for k, v in pairs(unitObj.data.currency) do
+				--only do the entry once per heading and name
+				if not tempList[v.header..v.name] then
+					table.insert(usrData, { header=v.header, name=v.name, icon=v.icon, currencyID=k} )
+					tempList[v.header..v.name] = true
+				end
 			end
 		end
 	end
-		
-	--show or hide the scrolling frame depending on count
-	if count > 0 then
-		table.sort(tmp, function(a,b)
-			if a.header < b.header then
-				return true;
-			elseif a.header == b.header then
-				return (a.name < b.name);
+	
+	if table.getn(usrData) > 0 then
+	
+		--sort the list by header, name
+		table.sort(usrData, function(a, b)
+			if a.header  == b.header then
+				return a.name < b.name;
 			end
+			return a.header < b.header;
 		end)
-		
+	
 		local lastHeader = ""
-		for i=1, #tmp do
-			if lastHeader ~= tmp[i].header then
-				self:AddEntry(tmp[i], true) --add header
-				self:AddEntry(tmp[i], false) --add entry
-				lastHeader = tmp[i].header
+		for i=1, #usrData do
+			if lastHeader ~= usrData[i].header then
+				self:AddEntry(usrData[i], true) --add header
+				self:AddEntry(usrData[i], false) --add entry
+				lastHeader = usrData[i].header
 			else
-				self:AddEntry(tmp[i], false) --add entry
+				self:AddEntry(usrData[i], false) --add entry
 			end
 		end
 		self.scrollframe.frame:Show()

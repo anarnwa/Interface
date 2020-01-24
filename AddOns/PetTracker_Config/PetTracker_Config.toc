@@ -1,9 +1,9 @@
-## Interface: 80205
+## Interface: 80300
 ## Title: PetTracker Config
 ## Notes: Load on demand options and tutorial.
 ## Author: Jaliborc (João Cardoso)
 ## X-Category: Battle Pets
-## Version: 8.2.2
+## Version: 8.3.0
 
 ## Dependencies: PetTracker
 ## LoadOnDemand: 1

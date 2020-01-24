@@ -1,33 +1,24 @@
 ------------------------------------------------------------------------
-r500 | Zensunim | 2020-01-14 20:53:15 +0000 (Tue, 14 Jan 2020) | 5 lines
+r503 | Zensunim | 2020-01-16 08:15:06 +0000 (Thu, 16 Jan 2020) | 3 lines
+Changed paths:
+   M /trunk/GTFO.lua
+   M /trunk/GTFO_FF_BFA.lua
+   M /trunk/GTFO_Fail_BFA.lua
+   M /trunk/GTFO_Ignore.lua
+   M /trunk/GTFO_Spells_BFA.lua
+
+4.52.1
+* Added Battle for Azeroth spells (world)
+
+------------------------------------------------------------------------
+r502 | Zensunim | 2020-01-15 08:41:02 +0000 (Wed, 15 Jan 2020) | 1 line
 Changed paths:
    M /trunk/GTFO.lua
    M /trunk/GTFO.toc
-
-4.52
-* Updated for patch 8.3
-* Added Battle for Azeroth spells (world)
-* Added BFA spells for Mechagon
-
-------------------------------------------------------------------------
-r499 | Zensunim | 2020-01-13 03:01:58 +0000 (Mon, 13 Jan 2020) | 2 lines
-Changed paths:
    M /trunk/GTFO_Fail_BFA.lua
-   M /trunk/GTFO_Spells_BFA.lua
-
-* Added Battle for Azeroth spells (world)
-
-------------------------------------------------------------------------
-r498 | Zensunim | 2020-01-12 23:52:00 +0000 (Sun, 12 Jan 2020) | 3 lines
-Changed paths:
-   M /trunk/GTFO.lua
-   M /trunk/GTFO_Fail_BFA.lua
-   M /trunk/GTFO_Ignore.lua
    M /trunk/GTFO_Spells_BFA.lua
    M /trunk/ReadMe.txt
 
 * Added Battle for Azeroth spells (world)
-* Added BFA spells for Mechagon
-
 ------------------------------------------------------------------------
 

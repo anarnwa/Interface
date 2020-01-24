@@ -1,11 +1,11 @@
 local mod	= DBM:NewMod(2377, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20191215174316")
+mod:SetRevision("20200121232330")
 mod:SetCreatureID(160229)
 mod:SetEncounterID(2328)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 --mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 --mod:SetMinSyncRevision(20190716000000)
 --mod.respawnTime = 29
@@ -27,6 +27,7 @@ mod:RegisterEventsInCombat(
 
 --TODO, see if heroic timers still faster. Considering mythic timers were same as normal, it may just be that timers same in all now. OR, mythic was bugged
 --TODO, add https://ptr.wowhead.com/spell=313198/void-touched when it's put in combat log
+--TODO, verify add auto marking on mythic
 --[[
 (ability.id = 312336 or ability.id = 316211) and type = "begincast"
  or (ability.id = 311551 or ability.id = 306319 or ability.id = 306208) and type = "cast"
@@ -56,13 +57,14 @@ local timerTormentCD						= mod:NewNextCountTimer(46.7, 306208, nil, nil, nil, 3
 --mod:AddRangeFrameOption(6, 264382)
 mod:AddInfoFrameOption(312406, true)
 mod:AddSetIconOption("SetIconOnVoidWoken", 312406, true, false, {1, 2, 3})
+mod:AddSetIconOption("SetIconOnAdds", "ej21227", true, true, {4, 5, 6, 7, 8})
 
 mod.vb.ritualCount = 0
 mod.vb.obeliskCount = 0
 mod.vb.tormentCount = 0
+mod.vb.addIcon = 8
 local voidWokenTargets = {}
-local heroicTormentTimers = {20.5, 50.6, 29, 49.6, 30.2, 49.6, 31.1, 48.7}--Heroic
-local normalTormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}--Normal and mythic
+local tormentTimers = {20.5, 71.8, 30.4, 65.7, 30.6, 65.6, 30.5}--Normal and mythic
 local castsPerGUID = {}
 
 local updateInfoFrame
@@ -108,25 +110,18 @@ function mod:OnCombatStart(delay)
 	self.vb.ritualCount = 0
 	self.vb.obeliskCount = 0
 	self.vb.tormentCount = 0
+	self.vb.addIcon = 8
 	table.wipe(voidWokenTargets)
 	table.wipe(castsPerGUID)
 	if self:IsHard() then
 		timerSummonRitualObeliskCD:Start(12-delay, 1)
 	end
+	timerSoulFlayCD:Start(18.5-delay)--SUCCESS
 	timerAbyssalStrikeCD:Start(32.9-delay)--SUCCESS
-	if self:IsHeroic() then
-		timerSoulFlayCD:Start(14-delay)--SUCCESS
-		timerVoidRitualCD:Start(52.9-delay, 1)
-	else
-		timerSoulFlayCD:Start(18.5-delay)--SUCCESS
-		timerVoidRitualCD:Start(62-delay, 1)
-	end
+	timerVoidRitualCD:Start(61.8-delay, 1)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(OVERVIEW)
 		DBM.InfoFrame:Show(8, "function", updateInfoFrame, false, false)
-	end
-	if self.Options.NPAuraOnTerrorWave then
-		DBM:FireEvent("BossMod_EnableHostileNameplates")
 	end
 end
 
@@ -137,9 +132,6 @@ function mod:OnCombatEnd()
 --	if self.Options.RangeFrame then
 --		DBM.RangeCheck:Hide()
 --	end
-	if self.Options.NPAuraOnTerrorWave then
-		DBM.Nameplate:Hide(true, nil, nil, nil, true, true)
-	end
 end
 
 --function mod:OnTimerRecovery()
@@ -156,12 +148,20 @@ function mod:SPELL_CAST_START(args)
 		else
 			warnVoidRitual:Show(self.vb.ritualCount)
 		end
-		timerVoidRitualCD:Start(self:IsHeroic() and 79.7 or 95.2, self.vb.ritualCount+1)
+		timerVoidRitualCD:Start(95.2, self.vb.ritualCount+1)
 	elseif spellId == 316211 then
 		if not castsPerGUID[args.sourceGUID] then
 			castsPerGUID[args.sourceGUID] = 0
 		end
 		castsPerGUID[args.sourceGUID] = castsPerGUID[args.sourceGUID] + 1
+		if self.Options.SetIconOnAdds then
+			self:ScanForMobs(args.sourceGUID, 2, self.vb.addIcon, 1, 0.2, 12)
+		end
+		--Increment icon for next cast/seticon
+		self.vb.addIcon = self.vb.addIcon + 1
+		if self.vb.addIcon == 3 then--4, 5, 6, 7, 8
+			self.vb.addIcon = 8--Reset to 8 if its 3
+		end
 		local count = castsPerGUID[args.sourceGUID]
 		if self:CheckInterruptFilter(args.sourceGUID, false, true) then
 			specWarnTerrorWave:Show(args.sourceName, count)
@@ -187,12 +187,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if spellId == 311551 then
 		timerAbyssalStrikeCD:Start()
 	elseif spellId == 306319 then
-		timerSoulFlayCD:Start(self:IsHeroic() and 46.7 or 57.2)
+		timerSoulFlayCD:Start(57.2)
 	elseif spellId == 306208 then
 		self.vb.tormentCount = self.vb.tormentCount + 1
 		specWarnTorment:Show(self.vb.tormentCount)
 		specWarnTorment:Play("watchstep")
-		local timer = self:IsHeroic() and heroicTormentTimers[self.vb.tormentCount+1] or normalTormentTimers[self.vb.tormentCount+1]
+		local timer = tormentTimers[self.vb.tormentCount+1]
 		if timer then
 			timerTormentCD:Start(timer, self.vb.tormentCount+1)
 		end
@@ -267,7 +267,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 160937 then--TODO, FIXME
+	if cid == 162432 then
 		castsPerGUID[args.destGUID] = nil
 	end
 end

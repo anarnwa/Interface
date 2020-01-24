@@ -1,97 +1,199 @@
+--[[
+	profiles.lua
+		A profiles editor frame for BagSync
+--]]
 
 local BSYC = select(2, ...) --grab the addon namespace
 local Profiles = BSYC:NewModule("Profiles")
+local Data = BSYC:GetModule("Data")
+local Unit = BSYC:GetModule("Unit")
+local Tooltip = BSYC:GetModule("Tooltip")
 
-local L = LibStub("AceLocale-3.0"):GetLocale("BagSync", true)
+local debugf = tekDebug and tekDebug:GetFrame("BagSync")
+local function Debug(...)
+    if debugf then
+		local debugStr = string.join(", ", tostringall(...))
+		local moduleName = string.format("|cFFffff00[%s]|r: ", "Profiles")
+		debugStr = moduleName..debugStr
+		debugf:AddMessage(debugStr)
+	end
+end
+
+local L = LibStub("AceLocale-3.0"):GetLocale("BagSync")
 local AceGUI = LibStub("AceGUI-3.0")
 
 function Profiles:OnEnable()
 
 	--lets create our widgets
 	local ProfilesFrame = AceGUI:Create("Window")
-	local warning = AceGUI:Create("Label")
-	local deleteButton = AceGUI:Create("Button")
-	local confirmButton = AceGUI:Create("Button")
-	local ddlist = AceGUI:Create("Dropdown")
-
 	Profiles.frame = ProfilesFrame
+	Profiles.parentFrame = ProfilesFrame.frame
 
-	--add the controls first then edit them
-	ProfilesFrame:AddChild(warning)
-	ProfilesFrame:AddChild(ddlist)
-	ProfilesFrame:AddChild(deleteButton)
-	ProfilesFrame:AddChild(confirmButton)
-	
-	--set the defaults for the main frame
 	ProfilesFrame:SetTitle("BagSync - "..L.Profiles)
-	ProfilesFrame:SetHeight(200)
-	ProfilesFrame:SetWidth(375)
+	ProfilesFrame:SetHeight(500)
+	ProfilesFrame:SetWidth(380)
 	ProfilesFrame:EnableResize(false)
+	
+	local information = AceGUI:Create("Label")
+	information:SetText(L.DeleteWarning)
+	information:SetFont(STANDARD_TEXT_FONT, 12, THICKOUTLINE)
+	information:SetColor(1, 165/255, 0)
+	information:SetFullWidth(true)
+	ProfilesFrame:AddChild(information)
+	
+	local scrollframe = AceGUI:Create("ScrollFrame");
+	scrollframe:SetFullWidth(true)
+	scrollframe:SetLayout("Flow")
 
-	--I wish Ace3 had better methods for modifying the alignment of widgets on a container....
-	--list has to be in order for editing, warning, ddlist, deletebutton, confirmbutton, etc..
-	warning:SetText(L.DeleteWarning)
-	warning:SetFont(L.GetFontType, 14, THICKOUTLINE)
-	warning:ClearAllPoints()
-	warning:SetPoint( "CENTER", ProfilesFrame.frame, "CENTER", 10, 55)
-	
-	ddlist:SetWidth(300)
-	ddlist:ClearAllPoints()
-	ddlist:SetPoint( "TOPLEFT", ProfilesFrame.frame, "TOPLEFT", 35, -70)
-	
-	deleteButton:ClearAllPoints()
-	deleteButton:SetPoint("BOTTOMLEFT", ddlist.frame, "LEFT", 0, -50)
-	
-	confirmButton:ClearAllPoints()
-	confirmButton:SetPoint("BOTTOMRIGHT", ddlist.frame, "RIGHT", 0, -50)
-	
-	deleteButton:SetText(L.Delete)
-	deleteButton:SetCallback("OnClick", function()
-		if not ddlist:GetValue() then BSYC:Print(L.ErrorUserNotFound) return end
-		confirmButton:SetDisabled(false)
-	end)
+	Profiles.scrollframe = scrollframe
+	ProfilesFrame:AddChild(scrollframe)
 
-	confirmButton:SetText(L.Confirm)
-	confirmButton:SetCallback("OnClick", function()
-		if not ddlist:GetValue() then return end
-
-		local yName, yRealm  = strsplit("^", ddlist:GetValue())
-		
-		--call me paranoid but I want to make sure we have something to work with before we even think of deleting... double checking everything
-		if yName and string.len(yName) > 0 and yRealm and string.len(yRealm) > 0 then
-			BSYC.db.global[yRealm][yName] = nil --remove it
-			BSYC:FixDB() --remove all associated tables from the user
-			BSYC:Print(L.Profiles.." "..L.Delete.." ["..yName.." - "..(BSYC.db.realmkey[yRealm] or yRealm).."]!")
-			ddlist:SetValue(nil) --remove the currently selected player from dropdown
-			ProfilesFrame:Hide()
-		else
-			BSYC:Print(L.ErrorUserNotFound)
-		end
-		
-		confirmButton:SetDisabled(true)
-	end)
-	confirmButton:SetDisabled(true)
-
-	deleteButton:SetWidth(100)
-	confirmButton:SetWidth(100)
-	
-	--populate the dropdown
 	hooksecurefunc(ProfilesFrame, "Show" ,function()
-		local tmp = {}
-		
-		--add all the accounts, who cares if it's the current user
-		for realm, rd in pairs(BSYC.db.global) do
-			for k, v in pairs(rd) do
-				local key = k.."^"..realm
-				tmp[key] = k.." - "..(BSYC.db.realmkey[realm] or realm)
-			end
-		end
-		
-		table.sort(tmp, function(a,b) return (a < b) end)
-		
-		--set the list and move the dropdown a bit
-		ddlist:SetList(tmp)
+		self:DisplayList()
 	end)
+	
+	StaticPopupDialogs["BAGSYNC_PROFILES_REMOVE"] = {
+		text = L.ProfilesRemove,
+		button1 = "Yes",
+		button2 = "No",
+		hasEditBox = false,
+		timeout = 0,
+		exclusive = 1,
+		hideOnEscape = 1,
+		OnShow = function (self)
+			self.text:SetText(L.ProfilesRemove:format(self.data.colorized));
+		end,
+		OnAccept = function (self)
+			Profiles:DeleteUnit(self.data)
+		end,
+		whileDead = 1,
+	}
 	
 	ProfilesFrame:Hide()
+	
+end
+
+function Profiles:DeleteUnit(entry)
+	if not entry then BSYC:Print(L.ErrorUserNotFound) return end
+	
+	local player = Unit:GetUnitInfo()
+	
+	if not entry.unitObj.isGuild then
+		if entry.unitObj.name == player.name and entry.unitObj.realm == player.realm then
+			--it's the current player so we have to do a reloadui
+			BagSyncDB[entry.unitObj.realm][entry.unitObj.name] = nil
+			ReloadUI()
+			return
+		else
+			BSYC:Print(L.ProfileBeenRemoved:format(entry.colorized))
+			BagSyncDB[entry.unitObj.realm][entry.unitObj.name] = nil
+			self:DisplayList()
+			return
+		end
+	else
+		BSYC:Print(L.GuildRemoved:format(entry.colorized))
+		BagSyncDB[entry.unitObj.realm][entry.unitObj.name] = nil
+		self:DisplayList()
+		return
+	end
+	
+	BSYC:Print(L.ErrorUserNotFound)
+end
+
+function Profiles:AddEntry(entry, isHeader)
+
+	local label = AceGUI:Create("BagSyncInteractiveLabel")
+
+	label:SetHeaderHighlight("Interface\\QuestFrame\\UI-QuestTitleHighlight")
+	label:ToggleHeaderHighlight(false)
+	label.entry = entry
+	label:SetColor(1, 1, 1)
+	
+	if isHeader then
+		label:SetText(entry.unitObj.realm)
+		label:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
+		label:SetFullWidth(true)
+		label:ApplyJustifyH("CENTER")
+		label:ToggleHeaderHighlight(true)
+		label.userdata.isHeader = true
+	else
+		if entry.unitObj.isGuild then
+			label:SetText(GUILD..":  "..entry.colorized)
+		else
+			label:SetText(entry.colorized)
+		end
+		label:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
+		label:SetFullWidth(true)
+		label:ApplyJustifyH("LEFT")
+		label.userdata.isHeader = false
+	end
+
+	label:SetCallback(
+		"OnClick", 
+		function (widget, sometable, button)
+			if "LeftButton" == button and not label.userdata.isHeader then
+				StaticPopup_Show("BAGSYNC_PROFILES_REMOVE", '', '', entry) --cannot pass nil as it's expected for SetFormattedText (Interface/FrameXML/StaticPopup.lua)
+			end
+		end)
+	label:SetCallback(
+		"OnEnter",
+		function (widget, sometable)
+			if not label.userdata.isHeader then
+				label:SetColor(1, 0, 0)
+				GameTooltip:SetOwner(label.frame, "ANCHOR_BOTTOMRIGHT")
+				
+				if not label.entry.unitObj.isGuild then
+					GameTooltip:AddLine(PLAYER..":  "..entry.colorized)
+				else
+					GameTooltip:AddLine(GUILD..":  "..entry.colorized)
+					GameTooltip:AddLine(L.TooltipRealmKey.." "..entry.unitObj.data.realmKey)
+				end
+				GameTooltip:Show()
+			end
+		end)
+	label:SetCallback(
+		"OnLeave",
+		function (widget, sometable)
+			label:SetColor(1, 1, 1)
+			GameTooltip:Hide()
+		end)
+
+	self.scrollframe:AddChild(label)
+end
+
+function Profiles:DisplayList()
+
+	self.scrollframe:ReleaseChildren() --clear out the scrollframe
+	
+	local profilesTable = {}
+	local tempList = {}
+	
+	for unitObj in Data:IterateUnits(true) do
+		table.insert(profilesTable, { unitObj=unitObj, colorized=Tooltip:ColorizeUnit(unitObj, true) } )
+	end
+
+	if table.getn(profilesTable) > 0 then
+	
+		table.sort(profilesTable, function(a, b)
+			if a.unitObj.realm  == b.unitObj.realm then
+				return a.unitObj.name < b.unitObj.name;
+			end
+			return a.unitObj.realm < b.unitObj.realm;
+		end)
+	
+		local lastHeader = ""
+		for i=1, #profilesTable do
+			if lastHeader ~= profilesTable[i].unitObj.realm then
+				self:AddEntry(profilesTable[i], true) --add header
+				self:AddEntry(profilesTable[i], false) --add entry
+				lastHeader = profilesTable[i].unitObj.realm
+			else
+				self:AddEntry(profilesTable[i], false) --add entry
+			end
+		end
+		self.scrollframe.frame:Show()
+	else
+		self.scrollframe.frame:Hide()
+	end
+
 end

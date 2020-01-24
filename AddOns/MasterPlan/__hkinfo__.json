@@ -2,6 +2,16 @@
     "target": "curse",
     "searchName": "Master Plan",
     "localName": "MasterPlan",
-    "version": "0.116",
-    "fileName": "master-plan"
+    "version": "0.117",
+    "fileName": "master-plan",
+    "addonsMap": [
+        "MasterPlan",
+        "MasterPlanA"
+    ],
+    "interfaceMap": [],
+    "children": [
+        "MasterPlanA"
+    ],
+    "name": "Master Plan",
+    "gameVersion": ""
 }

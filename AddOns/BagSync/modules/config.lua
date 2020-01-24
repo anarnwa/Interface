@@ -1,7 +1,22 @@
+--[[
+	config.lua
+		A config frame for BagSync
+--]]
+
 local BSYC = select(2, ...) --grab the addon namespace
-local L = LibStub("AceLocale-3.0"):GetLocale("BagSync", true)
+local L = LibStub("AceLocale-3.0"):GetLocale("BagSync")
 local config = LibStub("AceConfig-3.0")
 local configDialog = LibStub("AceConfigDialog-3.0")
+
+local debugf = tekDebug and tekDebug:GetFrame("BagSync")
+local function Debug(...)
+    if debugf then
+		local debugStr = string.join(", ", tostringall(...))
+		local moduleName = string.format("|cFFffff00[%s]|r: ", "CONFIG")
+		debugStr = moduleName..debugStr
+		debugf:AddMessage(debugStr)
+	end
+end
 
 local options = {}
 local ReadyCheck = [[|TInterface\RaidFrame\ReadyCheck-Ready:0|t]]
@@ -52,7 +67,7 @@ local function set(info, arg1, arg2, arg3, arg4)
 		if p == "minimap" then
 			if arg1 then BagSync_MinimapButton:Show() else BagSync_MinimapButton:Hide() end
 		else
-			BSYC:ResetTooltip()
+			--BSYC:ResetTooltip()
 		end
 	end
 	
@@ -221,8 +236,18 @@ options.args.display = {
 			set = set,
 			arg = "display.showGuildNames",
 		},
-		faction = {
+		guildgoldtooltip = {
 			order = 5,
+			type = "toggle",
+			name = L.DisplayGuildGoldInGoldTooltip,
+			width = "full",
+			descStyle = "hide",
+			get = get,
+			set = set,
+			arg = "display.showGuildInGoldTooltip",
+		},
+		faction = {
+			order = 6,
 			type = "toggle",
 			name = L.DisplayFaction,
 			width = "full",
@@ -232,7 +257,7 @@ options.args.display = {
 			arg = "display.enableFaction",
 		},
 		class = {
-			order = 6,
+			order = 7,
 			type = "toggle",
 			name = L.DisplayClassColor,
 			width = "full",
@@ -242,7 +267,7 @@ options.args.display = {
 			arg = "display.enableUnitClass",
 		},
 		mailbox = {
-			order = 7,
+			order = 8,
 			type = "toggle",
 			name = L.DisplayMailbox,
 			width = "full",
@@ -252,7 +277,7 @@ options.args.display = {
 			arg = "display.enableMailbox",
 		},
 		auction = {
-			order = 8,
+			order = 9,
 			type = "toggle",
 			name = L.DisplayAuctionHouse,
 			width = "full",
@@ -262,7 +287,7 @@ options.args.display = {
 			arg = "display.enableAuction",
 		},
 		crossrealm = {
-			order = 9,
+			order = 10,
 			type = "toggle",
 			name = L.DisplayCrossRealm,
 			width = "full",
@@ -272,7 +297,7 @@ options.args.display = {
 			arg = "display.enableCrossRealmsItems",
 		},
 		battlenet = {
-			order = 10,
+			order = 11,
 			type = "toggle",
 			name = L.DisplayBNET,
 			width = "full",
@@ -282,7 +307,7 @@ options.args.display = {
 			arg = "display.enableBNetAccountItems",
 		},
 		itemid = {
-			order = 11,
+			order = 12,
 			type = "toggle",
 			name = L.DisplayItemID,
 			width = "full",
@@ -292,7 +317,7 @@ options.args.display = {
 			arg = "display.enableTooltipItemID",
 		},
 		greencheck = {
-			order = 12,
+			order = 13,
 			type = "toggle",
 			name = string.format(L.DisplayGreenCheck, ReadyCheck),
 			width = "full",
@@ -302,7 +327,7 @@ options.args.display = {
 			arg = "display.enableTooltipGreenCheck",
 		},
 		realmidtags = {
-			order = 13,
+			order = 14,
 			type = "toggle",
 			name = L.DisplayRealmIDTags,
 			width = "full",
@@ -312,7 +337,7 @@ options.args.display = {
 			arg = "display.enableRealmIDTags",
 		},
 		realmastrick = {
-			order = 14,
+			order = 15,
 			type = "toggle",
 			name = L.DisplayRealmAstrick,
 			width = "full",
@@ -322,7 +347,7 @@ options.args.display = {
 			arg = "display.enableRealmAstrickName",
 		},
 		realmshortname = {
-			order = 15,
+			order = 16,
 			type = "toggle",
 			name = L.DisplayShortRealmName,
 			width = "full",
@@ -332,7 +357,7 @@ options.args.display = {
 			arg = "display.enableRealmShortName",
 		},
 		factionicon = {
-			order = 16,
+			order = 17,
 			type = "toggle",
 			name = L.DisplayFactionIcons..factionString,
 			width = "full",
@@ -342,18 +367,20 @@ options.args.display = {
 			arg = "display.enableFactionIcons",
 		},
 		showuniqueitemsgroup = {
-			order = 17,
+			order = 18,
 			name = L.DisplayShowUniqueItemsTotalsTitle,
 			type = 'group',
 			guiInline = true,
 			args = {
 				title = {
 				  order = 0,
+				  fontSize = "medium",
 				  type = "description",
 				  name = L.DisplayShowUniqueItemsTotals,
 				},
 				title_2 = {
 				  order = 1,
+				  fontSize = "medium",
 				  type = "description",
 				  name = L.DisplayShowUniqueItemsTotals_2,
 				},
@@ -362,7 +389,7 @@ options.args.display = {
 					type = 'toggle',
 					name = L.DisplayShowUniqueItemsEnableText,
 					width = "full",
-					desc = "hide",
+					descStyle = "hide",
 					get = get,
 					set = set,
 					arg = "display.enableShowUniqueItemsTotals",
@@ -459,5 +486,136 @@ options.args.color = {
 	},
 }
 
-config:RegisterOptionsTable("BagSync", options)
-configDialog:AddToBlizOptions("BagSync", "BagSync")
+options.args.faq = {
+	type = "group",
+	order = 5,
+	name = L.ConfigFAQ,
+	desc = L.ConfigFAQHeader,
+	args = {
+		question_1 = {
+			order = 1,
+			name = L.FAQ_Question_1,
+			type = 'group',
+			guiInline = true,
+			args = {
+				title = {
+				  order = 0,
+				  fontSize = "medium",
+				  type = "description",
+				  name = L.FAQ_Question_1_p1,
+				},
+			}
+		},
+		question_2 = {
+			order = 2,
+			name = L.FAQ_Question_2,
+			type = 'group',
+			guiInline = true,
+			args = {
+				title = {
+				  order = 0,
+				  fontSize = "medium",
+				  type = "description",
+				  name = L.FAQ_Question_2_p1,
+				},
+			}
+		},
+		question_3 = {
+			order = 3,
+			name = L.FAQ_Question_3,
+			type = 'group',
+			guiInline = true,
+			args = {
+				title = {
+				  order = 0,
+				  fontSize = "medium",
+				  type = "description",
+				  name = L.FAQ_Question_3_p1,
+				},
+			}
+		},
+		question_4 = {
+			order = 4,
+			name = L.FAQ_Question_4,
+			type = 'group',
+			guiInline = true,
+			args = {
+				title = {
+				  order = 0,
+				  fontSize = "medium",
+				  type = "description",
+				  name = L.FAQ_Question_4_p1,
+				},
+			}
+		},
+	},
+}
+
+local function LoadAboutFrame()
+
+	--Code inspired from tekKonfigAboutPanel
+	local about = CreateFrame("Frame", "BagSyncAboutPanel", InterfaceOptionsFramePanelContainer)
+	about.name = "BagSync"
+	about:Hide()
+	
+    local fields = {"Version", "Author"}
+	local notes = GetAddOnMetadata("BagSync", "Notes")
+
+    local title = about:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+
+	title:SetPoint("TOPLEFT", 16, -16)
+	title:SetText("BagSync")
+
+	local subtitle = about:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+	subtitle:SetHeight(32)
+	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -8)
+	subtitle:SetPoint("RIGHT", about, -32, 0)
+	subtitle:SetNonSpaceWrap(true)
+	subtitle:SetJustifyH("LEFT")
+	subtitle:SetJustifyV("TOP")
+	subtitle:SetText(notes)
+
+	local anchor
+	for _,field in pairs(fields) do
+		local val = GetAddOnMetadata("BagSync", field)
+		if val then
+			local title = about:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
+			title:SetWidth(75)
+			if not anchor then title:SetPoint("TOPLEFT", subtitle, "BOTTOMLEFT", -2, -8)
+			else title:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -6) end
+			title:SetJustifyH("RIGHT")
+			title:SetText(field:gsub("X%-", ""))
+
+			local detail = about:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+			detail:SetPoint("LEFT", title, "RIGHT", 4, 0)
+			detail:SetPoint("RIGHT", -16, 0)
+			detail:SetJustifyH("LEFT")
+			detail:SetText(val)
+
+			anchor = title
+		end
+	end
+	
+	InterfaceOptions_AddCategory(about)
+
+	return about
+end
+
+BSYC.aboutPanel = LoadAboutFrame()
+
+-- General Options
+config:RegisterOptionsTable("BagSync-General", options.args.main)
+BSYC.blizzPanel = configDialog:AddToBlizOptions("BagSync-General", options.args.main.name, "BagSync")
+
+-- Display Options
+config:RegisterOptionsTable("BagSync-Display", options.args.display)
+configDialog:AddToBlizOptions("BagSync-Display", options.args.display.name, "BagSync")
+
+-- Color Options
+config:RegisterOptionsTable("BagSync-Color", options.args.color)
+configDialog:AddToBlizOptions("BagSync-Color", options.args.color.name, "BagSync")
+
+-- FAQ / Help Options
+config:RegisterOptionsTable("BagSync-FAQ", options.args.faq)
+configDialog:AddToBlizOptions("BagSync-FAQ", options.args.faq.name, "BagSync")
+

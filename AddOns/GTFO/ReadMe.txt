@@ -1469,7 +1469,10 @@ Change Log:
 * Added Battle for Azeroth spells (world)
 
 4.52
-* Updated for patch 8.3
+* Updated for patch 8.3, WoW Classic 1.13.3
 * Added Battle for Azeroth spells (world)
 * Added BFA spells for Mechagon
+
+4.52.1
+* Added Battle for Azeroth spells (world)
 

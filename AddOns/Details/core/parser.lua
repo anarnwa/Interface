@@ -178,6 +178,9 @@
 		[233499] = 233490, --warlock Unstable Affliction
 		
 		[261947] = 261977, --monk fist of the white tiger talent
+
+		[32175] = 17364, -- shaman Stormstrike (from Turkar on github)
+		[32176] = 17364, -- shaman Stormstrike
 		
 	}
 	
@@ -222,6 +225,8 @@
 		[SPELLID_SHAMAN_SLT] = true, --> Spirit Link Toten
 		[SPELLID_PALADIN_LIGHTMARTYR] = true, --> Light of the Martyr
 		[SPELLID_MONK_STAGGER] = true, --> Stagger
+		[315161] = true, --> Eye of Corruption --REMOVE ON 9.0
+		[315197] = true, --> Thing From Beyond --REMOVE ON 9.0
 	}
 	
 	--> damage spells to ignore
@@ -247,6 +252,7 @@
 		local _in_combat = false
 		local _current_encounter_id
 		local _is_storing_cleu = false
+		local _in_resting_zone = false
 		
 	--> deathlog
 		local _death_event_amt = 16
@@ -485,7 +491,7 @@
 				end
 			end
 			
-			if (who_serial) then
+			if (who_serial) then --which exp was this?
 				local npcid = _select (6, _strsplit ("-", who_serial))
 				if (npcid == "125828") then --soulrend add
 					who_name = "Soulrend Add"
@@ -524,6 +530,11 @@
 		if (is_using_spellId_override) then
 			spellid = override_spellId [spellid] or spellid
 		end
+
+		--Thing From Beyond 8.3 REMOVE ON 9.0
+		if(alvo_serial:match("161895%-%w+$")) then
+			alvo_flags = 0xa48
+		end
 		
 		--> avoid doing spellID checks on each iteration
 		if (special_damage_spells [spellid]) then
@@ -539,6 +550,14 @@
 			elseif (spellid == SPELLID_PALADIN_LIGHTMARTYR) then -- or spellid == 183998 < healing part
 				return parser:LOTM_damage (token, time, who_serial, who_name, who_flags, alvo_serial, alvo_name, alvo_flags, spellid, spellname, spelltype, amount, overkill, school, resisted, blocked, absorbed, critical, glacing, crushing, isoffhand)
 				
+			--Eye of Corruption 8.3 REMOVE ON 9.0
+			elseif (spellid == 315161) then
+				local enemyName = GetSpellInfo(315161)
+				who_serial, who_name, who_flags = "", enemyName, 0xa48
+				
+			--Thing From Beyond 8.3 REMOVE ON 9.0
+			elseif (spellid == 315197) then
+				who_flags = 0xa48
 			end
 		end
 		
@@ -1575,7 +1594,7 @@
 		
 		--[[statistics]]-- _detalhes.statistics.absorbs_calls = _detalhes.statistics.absorbs_calls + 1
 		
-		if (not shieldname) then
+		if (_type(shieldname) == "boolean") then
 			owner_serial, owner_name, owner_flags, owner_flags2, shieldid, shieldname, shieldtype, amount = spellid, spellname, spellschool, owner_serial, owner_name, owner_flags, owner_flags2, shieldid
 		end
 	
@@ -1620,7 +1639,9 @@
 	
 		--> only capture heal if is in combat
 		if (not _in_combat) then
-			return
+			if (not _in_resting_zone) then
+				return
+			end
 		end
 	
 		--> check invalid serial against pets
@@ -1960,6 +1981,12 @@
 	--> recording debuffs applied by player
 
 		elseif (tipo == "DEBUFF") then
+
+			--Eye of Corruption 8.3 REMOVE ON 9.0
+			if (spellid == 315161) then
+				local enemyName = GetSpellInfo(315161)
+				who_serial, who_name, who_flags = "", enemyName, 0xa48
+			end
 			
 			if (_in_combat) then
 			
@@ -2207,6 +2234,13 @@
 
 		elseif (tipo == "DEBUFF") then
 		--print ("debuff - ", token, spellname)
+
+			--Eye of Corruption 8.3 REMOVE ON 9.0
+			if (spellid == 315161) then
+				local enemyName = GetSpellInfo(315161)
+				who_serial, who_name, who_flags = "", enemyName, 0xa48
+			end
+
 			if (_in_combat) then
 			------------------------------------------------------------------------------------------------
 			--> buff uptime
@@ -2338,6 +2372,12 @@
 	--> recording debuffs applied by player
 		elseif (tipo == "DEBUFF") then
 		
+			--Eye of Corruption 8.3 REMOVE ON 9.0
+			if (spellid == 315161) then
+				local enemyName = GetSpellInfo(315161)
+				who_serial, who_name, who_flags = "", enemyName, 0xa48
+			end
+
 			if (_in_combat) then
 			------------------------------------------------------------------------------------------------
 			--> buff uptime
@@ -4080,6 +4120,8 @@ local SPELL_POWER_PAIN = SPELL_POWER_PAIN or (PowerEnum and PowerEnum.Pain) or 1
 		_detalhes.zone_type = zoneType
 		_detalhes.zone_id = zoneMapID
 		_detalhes.zone_name = zoneName
+
+		_in_resting_zone = IsResting()
 		
 		parser:WipeSourceCache()
 		

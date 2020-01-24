@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "Premade Groups Filter",
     "localName": "PremadeGroupsFilter",
-    "version": "1.31",
+    "version": "1.32",
     "fileName": "premade-groups-filter",
     "addonsMap": [
         "PremadeGroupsFilter"

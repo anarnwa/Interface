@@ -1,5 +1,5 @@
 		-------------------------------------------------
-		-- Paragon Reputation 1.26 by Fail US-Ragnaros --
+		-- Paragon Reputation 1.27 by Fail US-Ragnaros --
 		-------------------------------------------------
 
 		  --[[	  Special thanks to Ammako for
@@ -27,8 +27,10 @@ local PARAGON_QUEST_ID = { --[questID] = {factionID,rewardID}
 	--Battle for Azeroth
 		--Neutral
 		[54453] = {2164,166298}, --Champions of Azeroth
+		[58096] = {2415,174483}, --Rajani
 		[55348] = {2391,170061}, --Rustbolt Resistance
 		[54451] = {2163,166245}, --Tortollan Seekers
+		[58097] = {2417,174484}, --Uldum Accord
 		
 		--Horde
 		[54460] = {2156,166282}, --Talanji's Expedition
@@ -183,10 +185,10 @@ hooksecurefunc("ReputationFrame_Update",function()
 		if factionIndex <= GetNumFactions() then
 			local name,_,_,_,_,_,_,_,_,_,_,_,_,factionID = GetFactionInfo(factionIndex)
 			if factionID and C_Reputation.IsFactionParagon(factionID) then
-				local r,g,b = unpack(PR.DB.value)
 				local currentValue,threshold,rewardQuestID,hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
 				factionRow.questID = rewardQuestID
 				if currentValue then
+					local r,g,b = unpack(PR.DB.value)
 					local value = mod(currentValue,threshold)
 					if hasRewardPending then
 						local paragonFrame = ReputationFrame.paragonFramesPool:Acquire()

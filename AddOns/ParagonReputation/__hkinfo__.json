@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "Paragon Reputation",
     "localName": "ParagonReputation",
-    "version": "1.26",
+    "version": "1.27",
     "fileName": "paragon-reputation",
     "addonsMap": [
         "ParagonReputation"

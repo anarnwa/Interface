@@ -1,6 +1,6 @@
-## Interface: 80200
+## Interface: 80300
 ## Author: p3lim
-## Version: 80200.64-Release
+## Version: 80300.65-Release
 ## Title: Molinari
 ## Notes: One-click Milling, Prospecting, Disenchanting and Lockpicking!
 ## OptionalDeps: LibProcessable, Wasabi

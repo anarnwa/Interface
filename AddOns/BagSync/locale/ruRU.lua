@@ -2,14 +2,6 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("BagSync", "ruRU")
 if not L then return end
 
---PLEASE LOOK AT enUS.lua for a complete localization list
-
---special thanks to senryo
-
---Get the best possible font for the localization langugage.
---Some fonts are better than others to display special character sets.
-L.GetFontType = "Fonts\\ARIALN.TTF"
-
 L.TooltipBag = "В сумке:"
 L.TooltipBank = "В банке:"
 L.TooltipEquip = "На персонаже:"
@@ -26,18 +18,18 @@ L.Gold = "Золото"
 L.Close = "Закрыть"
 L.FixDB = "Исправить БД"
 L.Config = "Опции"
-L.DeleteWarning = "Выберите профиль для удаления.\nВНИМАНИЕ: это необратимо!"
+L.DeleteWarning = "Выберите профиль для удаления. ВНИМАНИЕ: это необратимо!"
 L.Delete = "Удалить"
 L.Confirm = "Подтвердить"
-L.LeftClickSearch = "Левый клик = Окно Поиска"
-L.RightClickBagSyncMenu = "Правый клик = Меню BagSync"
+L.LeftClickSearch = "|cffddff00Левый клик|r |cff00ff00= Окно Поиска|r"
+L.RightClickBagSyncMenu = "|cffddff00Правый клик|r |cff00ff00= Меню BagSync|r"
 L.ClickHere = "Кликните здесь"
 L.EnterItemID = "Введите ItemID"
 L.AddItemID = "Добавить ItemID"
 L.RemoveItemID = "Удалить ItemID"
 L.HelpSearchItemName = "/bgs [имя предмета] - Быстрый поиск предмета."
 L.HelpSearchWindow = "/bgs search - Открыть окно поиска."
-L.HelpGoldTooltip = "/bgs gold - Показать количество золота на всех персонажах."
+L.HelpGoldTooltip = "/bgs gold (or /bgs money) - Показать количество золота на всех персонажах."
 L.HelpProfilesWindow = "/bgs profiles - Открыть окно профилей."
 L.HelpFixDB = "/bgs fixdb - Запустить исправление БД в BagSync."
 L.HelpConfigWindow = "/bgs config - Открыть окно опций BagSync."

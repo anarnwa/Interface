@@ -2,6 +2,13 @@
     "target": "curse",
     "searchName": "BagSync",
     "localName": "BagSync",
-    "version": "11.1",
-    "fileName": "bagsync"
+    "version": "v12.3",
+    "fileName": "bagsync",
+    "addonsMap": [
+        "BagSync"
+    ],
+    "interfaceMap": [],
+    "children": [],
+    "name": "BagSync",
+    "gameVersion": ""
 }

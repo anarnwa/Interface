@@ -1,14 +1,12 @@
-lightweight tag c0ee4a7f9e38ff5ade61165d752833cd3678731d v8.2.5.7229.140
+lightweight tag 6161cc451722a6f780b676cd72b0914dbeea1e7d DetailsRetail.8.3.0.7255.140
 Author:	Tercio Jose <terciob19@hotmail.com>
-Date:	Sun Dec 15 11:02:12 2019 -0300
+Date:	Mon Jan 20 19:05:59 2020 -0300
 
-commit c0ee4a7f9e38ff5ade61165d752833cd3678731d
+commit 6161cc451722a6f780b676cd72b0914dbeea1e7d
 Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Sun Dec 15 11:02:12 2019 -0300
+Date:   Mon Jan 20 19:05:59 2020 -0300
 
-    Removed the chat message Details! sent everytime after a logon
+    - Fixed Eye of Corruption and Grand Delusions
     
-    - Removed the chat message Details! sent everytime after a logon
-    - Using Ace3 lib from Aug 12, 2019.
-    - Using Details! Framework v161 for Retail.
+    Also Segment Lockdown is now enabled by default on new installs.
 

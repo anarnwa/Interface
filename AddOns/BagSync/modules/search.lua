@@ -1,10 +1,26 @@
+--[[
+	search.lua
+		A search frame for BagSync items
+--]]
 
 local BSYC = select(2, ...) --grab the addon namespace
 local Search = BSYC:NewModule("Search")
+local Unit = BSYC:GetModule("Unit")
+local Data = BSYC:GetModule("Data")
 
-local L = LibStub("AceLocale-3.0"):GetLocale("BagSync", true)
+local debugf = tekDebug and tekDebug:GetFrame("BagSync")
+local function Debug(...)
+    if debugf then
+		local debugStr = string.join(", ", tostringall(...))
+		local moduleName = string.format("|cFFffff00[%s]|r: ", "Search")
+		debugStr = moduleName..debugStr
+		debugf:AddMessage(debugStr)
+	end
+end
+
+local L = LibStub("AceLocale-3.0"):GetLocale("BagSync")
 local AceGUI = LibStub("AceGUI-3.0")
-local ItemSearch = LibStub('LibItemSearchGrid-1.0')
+local itemScanner = LibStub('LibItemSearch-1.2')
 
 function Search:OnEnable()
 
@@ -60,14 +76,14 @@ function Search:OnEnable()
 
 	local warninglabel = AceGUI:Create("Label")
 	warninglabel:SetText(L.WarningItemSearch)
-	warninglabel:SetFont(L.GetFontType, 14, THICKOUTLINE)
+	warninglabel:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
 	warninglabel:SetColor(1, 165/255, 0) --orange, red is just too much sometimes
 	warninglabel:SetFullWidth(true)
 	warningframe:AddChild(warninglabel)
 
 	local warninglabel2 = AceGUI:Create("Label")
 	warninglabel2:SetText(L.ObsoleteWarning)
-	warninglabel2:SetFont(L.GetFontType, 14, THICKOUTLINE)
+	warninglabel2:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
 	warninglabel2:SetColor(50/255, 165/255, 0)
 	warninglabel2:SetFullWidth(true)
 	warningframe:AddChild(warninglabel2)
@@ -103,186 +119,168 @@ function Search:AddEntry(entry)
 
 	local name, link, rarity, texture = entry.name, entry.link, entry.rarity, entry.texture
 	local r, g, b, hex = GetItemQualityColor(rarity)
+	local isBattlePet = false
+	
+	local _, _, identifier, optOne = strsplit(";", link)
+	if identifier and tonumber(identifier) == 2 and optOne then
+		isBattlePet = true
+	end
 	
 	label:SetText(name)
-	label:SetFont(L.GetFontType, 14, THICKOUTLINE)
+	label:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
 	label:SetFullWidth(true)
 	label:SetColor( r, g, b)
 	label:SetImage(texture)
 	label:SetCallback(
 		"OnClick", 
 		function (widget, sometable, button)
-			ChatEdit_InsertLink(link)
+			if not isBattlePet then
+				ChatEdit_InsertLink(link)
+			else
+				FloatingBattlePet_Toggle(tonumber(optOne), 0, 0, 0, 0, 0, nil, nil)
+			end
 		end)
 	label:SetCallback(
 		"OnEnter",
 		function (widget, sometable)
 			label:SetColor(unpack(highlightColor))
-			GameTooltip:SetOwner(label.frame, "ANCHOR_BOTTOMRIGHT")
-			GameTooltip:SetHyperlink(link)
-			GameTooltip:Show()
+			if not isBattlePet then
+				GameTooltip:SetOwner(label.frame, "ANCHOR_BOTTOMRIGHT")
+				GameTooltip:SetHyperlink(link)
+				GameTooltip:Show()
+			else
+				GameTooltip:SetOwner(label.frame, "ANCHOR_BOTTOMRIGHT")
+				BattlePetToolTip_Show(tonumber(optOne), 0, 0, 0, 0, 0, nil)
+			end
 		end)
 	label:SetCallback(
 		"OnLeave",
 		function (widget, sometable)
 			label:SetColor(r, g, b)
 			GameTooltip:Hide()
+			if not isBattlePet then
+				GameTooltip:Hide()
+			else
+				BattlePetTooltip:Hide()
+			end
 		end)
 
 	self.scrollframe:AddChild(label)
 end
 
+local function checkData(data, searchStr, searchTable, tempList, countWarning, playerSearch)
+	for i=1, table.getn(data) do
+		if data[i] then
+			local link, count, identifier, optOne = strsplit(";", data[i])
+			
+			if link then
+				local dName, dItemLink, dRarity, dTexture
+				local testMatch = false
+				
+				--if identifier is 2 then it's a battlepet, optOne would be speciesID
+				if identifier and tonumber(identifier) == 2 and optOne then
+					dName, dTexture = C_PetJournal.GetPetInfoBySpeciesID(optOne)
+					dRarity = 1
+					dItemLink = data[i]
+					testMatch = LibStub('CustomSearch-1.0'):Find(searchStr, dName)
+				else
+					dName, dItemLink, dRarity, _, _, _, _, _, _, dTexture = GetItemInfo("item:"..link)
+					testMatch = itemScanner:Matches(dItemLink, searchStr)
+				end
+				
+				if dName and not tempList[link] then
+					if playerSearch or testMatch then
+						tempList[link] = dName
+						table.insert(searchTable, { name=dName, link=dItemLink, rarity=dRarity, texture=dTexture } )
+					end					
+				else
+					countWarning = countWarning + 1
+				end
+			end
+		end
+	end
+	return countWarning
+end
+
 function Search:DoSearch(searchStr)
+	if not searchStr then return end
 	local searchStr = searchStr or self.searchbar:GetText()
 	searchStr = searchStr:lower() --always make sure everything is lowercase when doing searches
+	if string.len(searchStr) < 1 then return end
 	
-	local searchTable = {}
-	local tempList = {}
-	local previousGuilds = {}
-	local previousGuildsXRList = {}
-	local count = 0
-	local playerSearch = false
-	local countWarning = 0
+	self.searchbar:SetText(nil) --reset to make searching faster
 	
 	self.scrollframe:ReleaseChildren() --clear out the scrollframe
 	
-	if strlen(searchStr) > 0 then
-		
-		local allowList = {
-			["bag"] = 0,
-			["bank"] = 0,
-			["equip"] = 0,
-			["mailbox"] = 0,
-			["void"] = 0,
-			["auction"] = 0,
-			["guild"] = 0,
-			["reagentbank"] = 0,
-		}
-		
-		if string.len(searchStr) > 1 and string.find(searchStr, "@") and allowList[string.sub(searchStr, 2)] ~= nil then playerSearch = true end
-		
-		local xDB = BSYC:FilterDB()
-		
-		--loop through our characters
-		--k = player, v = stored data for player
-		for k, v in pairs(xDB) do
+	local searchTable = {}
+	local tempList = {}
+	local countWarning = 0
+	local playerSearch
+	local player = Unit:GetUnitInfo()
 
-			local pFaction = v.faction or BSYC.playerFaction --just in case ;) if we dont know the faction yet display it anyways
-			local yName, yRealm  = strsplit("^", k)
-			
-			--check if we should show both factions or not
-			if BSYC.options.enableFaction or pFaction == BSYC.playerFaction then
-
-				--now count the stuff for the user
-				--q = bag name, r = stored data for bag name
-				for q, r in pairs(v) do
-					--only loop through table items we want
-					if allowList[q] and type(r) == "table" then
-						--bagID = bag name bagID, bagInfo = data of specific bag with bagID
-						for bagID, bagInfo in pairs(r) do
-							--slotID = slotid for specific bagid, itemValue = data of specific slotid
-							if type(bagInfo) == "table" then
-								for slotID, itemValue in pairs(bagInfo) do
-									local dblink, dbcount = strsplit(",", itemValue)
-									if dblink then
-										local dName, dItemLink, dRarity, _, _, _, _, _, _, dTexture = GetItemInfo("item:"..dblink)
-										if dName then
-											--are we checking in our bank,void, etc?
-											if playerSearch and string.sub(searchStr, 2) == q and string.sub(searchStr, 2) ~= "guild" and yName == BSYC.currentPlayer and not tempList[dblink] then
-												table.insert(searchTable, { name=dName, link=dItemLink, rarity=dRarity, texture=dTexture } )
-												tempList[dblink] = dName
-												count = count + 1
-											--we found a match
-											elseif not playerSearch and not tempList[dblink] and ItemSearch:Find(dItemLink, searchStr) then
-												table.insert(searchTable, { name=dName, link=dItemLink, rarity=dRarity, texture=dTexture } )
-												tempList[dblink] = dName
-												count = count + 1
-											end
-										else
-											countWarning = countWarning + 1
-										end
-									end
-								end
+	local allowList = {
+		["bag"] = 0,
+		["bank"] = 0,
+		["reagents"] = 0,
+		["equip"] = 0,
+		["mailbox"] = 0,
+		["void"] = 0,
+		["auction"] = 0,
+		["guild"] = 0,
+	}
+	
+	if string.len(searchStr) > 1 and string.find(searchStr, "@") and allowList[string.sub(searchStr, 2)] ~= nil then playerSearch = string.sub(searchStr, 2) end
+	
+	for unitObj in Data:IterateUnits() do
+	
+		if not unitObj.isGuild then
+			for k, v in pairs(unitObj.data) do
+				if allowList[k] and type(v) == "table" then
+					--bags, bank, reagents are stored in individual bags
+					if k == "bag" or k == "bank" or k == "reagents" then
+						for bagID, bagData in pairs(v) do
+							if not playerSearch or playerSearch == k and unitObj.name == player.name and unitObj.realm == player.realm then
+								countWarning = checkData(bagData, searchStr, searchTable, tempList, countWarning, playerSearch)
 							end
 						end
-					end
-				end
-				
-				if BSYC.options.enableGuild then
-					local guildN = v.guild or nil
-
-					--check the guild bank if the character is in a guild
-					if guildN and BSYC.db.guild[v.realm][guildN] then
-						--check to see if this guild has already been done through this run (so we don't do it multiple times)
-						--check for XR/B.Net support
-						local gName = BSYC:GetRealmTags(guildN, v.realm, true)
-					
-						--check to make sure we didn't already add a guild from a connected-realm
-						local trueRealmList = BSYC.db.realmkey[0][v.realm] --get the connected realms
-						if trueRealmList then
-							table.sort(trueRealmList, function(a,b) return (a < b) end) --sort them alphabetically
-							trueRealmList = table.concat(trueRealmList, "|") --concat them together
-						else
-							trueRealmList = v.realm
-						end
-						trueRealmList = guildN.."-"..trueRealmList --add the guild name in front of concat realm list
-					
-						if not previousGuilds[gName] and not previousGuildsXRList[trueRealmList] then
-							--we only really need to see this information once per guild
-							for q, r in pairs(BSYC.db.guild[v.realm][guildN]) do
-								local dblink, dbcount = strsplit(",", r)
-								if dblink then
-									local dName, dItemLink, dRarity, _, _, _, _, _, _, dTexture = GetItemInfo("item:"..dblink)
-									if dName then
-										if playerSearch and string.sub(searchStr, 2) == "guild" and BSYC.db.player.guild and guildN == BSYC.db.player.guild and not tempList[dblink] then
-											table.insert(searchTable, { name=dName, link=dItemLink, rarity=dRarity, texture=dTexture } )
-											tempList[dblink] = dName
-											count = count + 1
-										--we found a match
-										elseif not playerSearch and not tempList[dblink] and ItemSearch:Find(dItemLink, searchStr) then
-											table.insert(searchTable, { name=dName, link=dItemLink, rarity=dRarity, texture=dTexture } )
-											tempList[dblink] = dName
-											count = count + 1
-										end
-									else
-										countWarning = countWarning + 1
-									end
-								end
-							end
-							previousGuilds[gName] = true
-							previousGuildsXRList[trueRealmList] = true
-						end
+					else
+						local passChk = true
+						if k == "auction" and not BSYC.options.enableAuction then passChk = false end
+						if k == "mailbox" and not BSYC.options.enableMailbox then passChk = false end
 						
+						if passChk then
+							if not playerSearch or playerSearch == k and unitObj.name == player.name and unitObj.realm == player.realm then
+								countWarning = checkData(k == "auction" and v.bag or v, searchStr, searchTable, tempList, countWarning, playerSearch)
+							end
+						end
 					end
 				end
-				
 			end
-			
-		end
-		
-		--display the rows
-		if count > 0 then
-			table.sort(searchTable, function(a,b) return (a.name < b.name) end)
-			for i=1, #searchTable do
-				self:AddEntry(searchTable[i])
-			end
-		end
-		
-		--show warning window if the server hasn't queried all the items yet
-		if countWarning > 0 then
-			self.warninglabel:SetText(L.WarningItemSearch:format(countWarning))
-			self.warningframe:Show()
 		else
-			self.warningframe:Hide()
+			if not playerSearch or playerSearch == "guild" and unitObj.name == player.guild and unitObj.data.realmKey == player.realmKey then
+				countWarning = checkData(unitObj.data.bag, searchStr, searchTable, tempList, countWarning, playerSearch)
+			end
 		end
 
 	end
-	
-	--show or hide the scrolling frame depending on count
-	if strlen(searchStr) > 0 and count > 0 then
+
+	--show warning window if the server hasn't queried all the items yet
+	if countWarning > 0 then
+		self.warninglabel:SetText(L.WarningItemSearch:format(countWarning))
+		self.searchbar:SetText(searchStr) --set for the refresh button
+		self.warningframe:Show()
+	else
+		self.warningframe:Hide()
+	end
+		
+	if table.getn(searchTable) > 0 then
+		table.sort(searchTable, function(a,b) return (a.name < b.name) end)
+		for i=1, #searchTable do
+			self:AddEntry(searchTable[i])
+		end
 		self.scrollframe.frame:Show()
 	else
 		self.scrollframe.frame:Hide()
 	end
-	
+		
 end

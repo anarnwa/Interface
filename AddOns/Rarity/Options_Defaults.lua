@@ -1318,6 +1318,129 @@ function R:PrepareDefaults()
 			equalOdds = true,
 		},
 
+		-- 8.3 Mounts
+		["Xinlao"] = {
+			cat = BFA,
+			type = MOUNT,
+			method = NPC,
+			name = L["Xinlao"],
+			itemId = 174840,
+			spellId = 316723,
+			npcs = { 157466 },
+			chance = 100,
+			groupSize = 5,
+			equalOdds = true,
+			coords = {
+				{ m = CONSTANTS.UIMAPIDS.VALE_OF_ETERNAL_BLOSSOMS, x = 34.15, y = 68.05, n = L["Anh-De the Loyal"] },
+			},
+		},
+
+		["Reins of the Drake of the Four Winds"] = {
+			cat = BFA,
+			type = MOUNT,
+			method = NPC,
+			name = L["Reins of the Drake of the Four Winds"],
+			itemId = 174641,
+			spellId = 315847,
+			npcs = { 157134 },
+			chance = 100,
+			groupSize = 5,
+			equalOdds = true,
+			questId = { 000000000000000000000000000000000000000000000000000000000000000000000000 },
+			coords = {
+				{ m = CONSTANTS.UIMAPIDS.ULDUM, x = 73.96, y = 83.52, n = L["Ishak of the Four Winds"] },
+			},
+		},
+
+		["Malevolent Drone"] = {
+			cat = BFA,
+			type = MOUNT,
+			method = NPC,
+			name = L["Malevolent Drone"],
+			itemId = 174769,
+			spellId = 316337,
+			npcs = { 162147 },
+			chance = 100,
+			groupSize = 5,
+			equalOdds = true,
+			questId = { 58139 }, -- 58139, 58696
+			coords = {
+				{ m = CONSTANTS.UIMAPIDS.ULDUM, x = 30.85, y = 49.71, n = L["Corpse Eater"] },
+			},
+		},
+
+		["Clutch of Ha-Li"] = {
+			cat = BFA,
+			type = MOUNT,
+			method = NPC,
+			name = L["Clutch of Ha-Li"],
+			itemId = 173887,
+			spellId = 312751,
+			npcs = { 157153 },
+			chance = 100,
+			groupSize = 5,
+			equalOdds = true,
+			questId = { 000000000000000000000000000000000000000000000000000000000000000000000000 },
+			coords = {
+				{ m = CONSTANTS.UIMAPIDS.VALE_OF_ETERNAL_BLOSSOMS, x = 36.6, y = 37.6, n = L["Ha-Li"] },
+			},
+		},
+
+		["Ren's Stalwart Hound"] = {
+			cat = BFA,
+			type = MOUNT,
+			method = NPC,
+			name = L["Ren's Stalwart Hound"],
+			itemId = 174841,
+			spellId = 316722,
+			npcs = { 157160 },
+			chance = 100,
+			groupSize = 5,
+			equalOdds = true,
+			questId = { 000000000000000000000000000000000000000000000000000000000000000000000000 },
+			coords = {
+				{ m = CONSTANTS.UIMAPIDS.VALE_OF_ETERNAL_BLOSSOMS, x = 10, y = 33, n = L["Houndlord Ren"] },
+			},
+		},
+
+		["Waste Marauder"] = {
+			cat = BFA,
+			type = MOUNT,
+			method = NPC,
+			name = L["Waste Marauder"],
+			itemId = 174753,
+			spellId = 316275,
+			npcs = { 157146 },
+			chance = 100,
+			groupSize = 5,
+			equalOdds = true,
+			questId = { 57273 },
+			coords = {
+				{ m = CONSTANTS.UIMAPIDS.ULDUM, x = 68.23, y = 31.97, n = L["Rotfeaster"] },
+			},
+		},
+
+		-- ["NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"] = {
+		-- 	cat = BFA,
+		-- 	type = MOUNT,
+		-- 	method = NPC,
+		-- 	name = L["NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"],
+		-- 	itemId = 00000000000000000000000000000000000000000000000,
+		-- 	spellId = 000000000000000000000000000000000000000000000,
+		-- 	npcs = { 000000000000000000000000000 },
+		-- 	chance = 000000000000000000000000000000000000000000,
+		-- 	groupSize = 5,
+		-- 	equalOdds = true,
+		-- 	questId = { 000000000000000000000000000000000000000000000000000000000000000000000000 },
+		-- 	coords = {
+		-- 		{ m = CONSTANTS.UIMAPIDS.AAAAAAAAAAAAAAAAAAAAAAAAAAAA, x = 0000000000000000000, y = 00000000000000000000000000000000000, n = L["NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"] },
+		-- 	},
+		-- },
+
+
+
+		-- 8.3 Mounts
+
 
 	--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 						-- MOUNTS: Requires a group (some of these may be soloable by certain classes, but not in general)
@@ -1843,7 +1966,7 @@ function R:PrepareDefaults()
 					-- 1.x
      ["Cat Carrier (Black Tabby)"] =                     { cat = BASE, type = PET, method = NPC, name = L["Cat Carrier (Black Tabby)"], spellId = 10675, itemId = 8491, npcs = { 2372, 49116, 2385, 48741, 2248, 48184, 49269, 48628, 48017, 47204, 48260, 49245, 47861, 2373, }, chance = 10000,  creatureId = 7383, coords = {{m=25}}, },
      ["Dark Whelpling"] =                                { cat = BASE, type = PET, method = NPC, name = L["Dark Whelpling"], spellId = 10695, itemId = 10822, npcs = { 4324, 42042, 2725, 46916, 7049, 4323, 46914 }, chance = 1000,  creatureId = 7543, coords = {{m=15,x=29.6,y=44.2}, {m=15,x=71.8,y=47.6}, {m=15,x=11.2,y=41.0}, {m=36,x=16.8,y=64.8}, {m=36,x=23.8,y=64.4}, {m=56,x=63.8,y=50.6}, {m=70,x=47.6,y=69.8}}, },
-     ["Disgusting Oozeling"] =                           { cat = BASE, type = PET, method = USE, name = L["Disgusting Oozeling"], spellId = 25162, itemId = 20769, items = { 20768 }, chance = 85,  creatureId = 15429, tooltipNpcs = { 1806, 1808, 12387, 3928, 43158, 43123, 44988, 44967, 4394, 4393, 7092, 48315, 7093, 7086, 48136, 48319, 48322, 3295, 8607, 8606, 15335, 41573, 47397, 11741, 11740, 14477, 46997, 42952, 2656, 2655, 6559, 9477, 6557, 42669, 41145, 1032, 41147, 41453, 51028, 49347, 50319, 48768, }, coords = { {m=64},{m=729},{m=416},{m=77},{m=25},{m=10},{m=124},{m=247},{m=205},{m=81},{m=50},{m=26},{m=78},{m=52},{m=56},{m=83},{m=51}, }, },
+     ["Disgusting Oozeling"] =                           { cat = BASE, type = PET, method = USE, name = L["Disgusting Oozeling"], spellId = 25162, itemId = 20769, items = { 20768 }, chance = 85,  creatureId = 15429, tooltipNpcs = { 1806, 1808, 12387, 3928, 43158, 43123, 44988, 44967, 4394, 4393, 7092, 48315, 7093, 7086, 48136, 48319, 48322, 3295, 8607, 8606, 15335, 41573, 47397, 11741, 11740, 14477, 46997, 42952, 2656, 2655, 6559, 9477, 6557, 42669, 41145, 1032, 41147, 41453, 51028, 49347, 50319, 48768, }, coords = { {m=64},{m=729},{m=416},{m=77},{m=25},{m=10},{m=124},{m=247},{m=205},{m=81},{m=50},{m=26},{m=78}, {m=51},{m=52},{m=56},{m=83},{m=51}, }, },
      ["Parrot Cage (Green Wing Macaw)"] =                { cat = BASE, type = PET, method = NPC, name = L["Parrot Cage (Green Wing Macaw)"], spellId = 10683, itemId = 8492, npcs = { 48522 }, chance = 33,  creatureId = 7387, coords = {{m=291, x=55,y=39.6,i=true}}, },
      ["Parrot Cage (Hyacinth Macaw)"] =                  { cat = BASE, type = PET, method = ZONE, name = L["Parrot Cage (Hyacinth Macaw)"], spellId = 10682, itemId = 8494, zones = { "224", "50", "210" }, chance = 10000,  creatureId = 7391, coords = {{m=50}, {m=210}}, },
      ["Sprite Darter Egg"] =                             { cat = BASE, type = PET, method = ZONE, name = L["Sprite Darter Egg"], spellId = 15067, itemId = 11474, zones = { "69" }, chance = 10000, creatureId = 9662, coords = {{m=69}}, },
@@ -4133,6 +4256,103 @@ function R:PrepareDefaults()
 		equalOdds = true,
 	},
 
+	-- 8.3 Pets
+	["K'uddly"] = {
+		cat = BFA,
+		type = PET,
+		method = NPC,
+		name = L["K'uddly"],
+		npcs = { 157176 },
+		spellId = 315339,
+		itemId = 174473,
+		creatureId = 161954,
+		questId = { 57342 },
+		chance = 20,
+		coords = {
+			{ m = CONSTANTS.UIMAPIDS.VALE_OF_ETERNAL_BLOSSOMS, x = 51.85, y = 42.19, n = L["The Forgotten"] },
+		},
+	},
+
+	-- ["Cursed Dune Watcher"] = {
+	-- 	cat = BFA,
+	-- 	type = PET,
+	-- 	method = NPC,
+	-- 	name = L["Cursed Dune Watcher"],
+	-- 	npcs = { 00000000000000000000000000000000000000000 },
+	-- 	spellId = 000000000000000000000000000000000000000000000,
+	-- 	itemId = 174481,
+	-- 	creatureId = 00000000000000000000000000000000000000000000,
+	-- 	questId = { 00000000000000000000000000000000000000000 },
+	-- 	chance = 20,
+	-- 	coords = {
+	-- 		{ m = CONSTANTS.UIMAPIDS.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, x = 00000000000000000000000000000000000000000000000000000000000, y = 000000000000000000000000000000000000000000000000000000000000000000, n = L["BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"] },
+	-- 	},
+	-- }, -- paragon
+
+	["Black Chitinous Plate"] = {
+		cat = BFA,
+		type = PET,
+		method = NPC,
+		name = L["Black Chitinous Plate"],
+		npcs = { 162140 },
+		spellId = 315360,
+		itemId = 174476,
+		creatureId = 162004,
+		questId = { 58697 },
+		chance = 20,
+		coords = {
+			{ m = CONSTANTS.UIMAPIDS.ULDUM, x = 21.23, y = 61.05, n = L["Skikx'traz"] },
+		},
+	},
+
+	["Corrupted Tentacle"] = {
+		cat = BFA,
+		type = PET,
+		method = NPC,
+		name = L["Corrupted Tentacle"],
+		npcs = { 154495 },
+		spellId = 315353,
+		itemId = 174474,
+		creatureId = 00000000000000000000000000000000000000000000,
+		questId = { 57341 }, --56303?
+		chance = 20,
+		coords = {
+			{ m = CONSTANTS.UIMAPIDS.VALE_OF_ETERNAL_BLOSSOMS, x = 52.51, y =  62.14, n = L["Will of N'zoth"] },
+		},
+	},
+
+	["Stinky Sack"] = {
+		cat = BFA,
+		type = PET,
+		method = NPC,
+		name = L["Stinky Sack"],
+		npcs = { 154604 },
+		spellId = 315355,
+		itemId = 174475,
+		creatureId = 161997,
+		questId = { 56340 },
+		chance = 20,
+		coords = {
+			{ m = CONSTANTS.UIMAPIDS.ULDUM, x = 36.85, y = 20.93, n = L["Lord Aj'qirai"] },
+		},
+	},
+
+	-- ["SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"] = {
+	-- 	cat = BFA,
+	-- 	type = PET,
+	-- 	method = NPC,
+	-- 	name = L["SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"],
+	-- 	npcs = { 00000000000000000000000000000000000000000 },
+	-- 	spellId = 000000000000000000000000000000000000000000000,
+	-- 	itemId = 000000000000000000000000000000000000000000000000,
+	-- 	creatureId = 00000000000000000000000000000000000000000000,
+	-- 	questId = { 00000000000000000000000000000000000000000 },
+	-- 	chance = 20,
+	-- 	coords = {
+	-- 		{ m = CONSTANTS.UIMAPIDS.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, x = 00000000000000000000000000000000000000000000000000000000000, y = 000000000000000000000000000000000000000000000000000000000000000000, n = L["BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"] },
+	-- 	},
+	-- },
+
 },
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 				-- TOYS AND ITEMS
@@ -5108,6 +5328,68 @@ function R:PrepareDefaults()
 		itemId = 168824,
 		chance = 50,
 	},
+
+	-- 8.3 Toys
+	["Hell-Bent Bracers"] = {
+		cat = BFA,
+		type = ITEM,
+		isToy = true,
+		method = NPC,
+		name = L["Hell-Bent Bracers"],
+		itemId = 169303,
+		npcs = { 158636 },
+		chance = 20, -- Blind guess (no data)
+		questId = { 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 },
+		coords = {
+			{ m = CONSTANTS.UIMAPIDS.ULDUM, x = 49.35, y = 82.29, n = L["The Grand Executor"] },
+		},
+	},
+
+	["Budget K'thir Disguise"] = {
+		cat = BFA,
+		type = ITEM,
+		isToy = true,
+		method = NPC,
+		name = L["Budget K'thir Disguise"],
+		itemId = 174874,
+		npcs = { 157473 },
+		chance = 20, -- Blind guess (no data)
+		questId = { 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 },
+		coords = {
+			{ m = CONSTANTS.UIMAPIDS.ULDUM, x = 00000000000000000000000000000000000000000000000000000000000000000000000000, y = 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, n = L["Yiphrim the Will Ravager"] },
+		},
+	},
+
+	["Trans-mogu-rifier"] = {
+		cat = BFA,
+		type = ITEM,
+		isToy = true,
+		method = NPC,
+		name = L["Trans-mogu-rifier"],
+		itemId = 174873,
+		npcs = { 155958 },
+		chance = 20, -- Blind guess (no data)
+		questId = { 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 },
+		coords = {
+			{ m = CONSTANTS.UIMAPIDS.VALE_OF_ETERNAL_BLOSSOMS, x = 29.13, y = 22.07, n = L["Tashara"] },
+		},
+	},
+
+	-- ["AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"] = {
+	-- 	cat = BFA,
+	-- 	type = ITEM,
+	-- 	isToy = true,
+	-- 	method = NPC,
+	-- 	name = L["AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"],
+	-- 	itemId = 00000000000000000000000000000000000000000000000000000000000000000,
+	-- 	npcs = { 000000000000000000000000000000000000000000000000000000000000000000 },
+	-- 	chance = 20, -- Blind guess (no data)
+	-- 	questId = { 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 },
+	-- 	coords = {
+	-- 		{ m = CONSTANTS.UIMAPIDS.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, x = 00000000000000000000000000000000000000000000000000000000000000000000000000, y = 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, n = L["JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ"] },
+	-- 	},
+	-- },
+
 
 		-- Mount-related items (5.x)
      ["Primal Egg"] =                                    { cat = MOP, type = ITEM, method = NPC, name = L["Primal Egg"], itemId = 94295, npcs = { 69983, 69991, 69992, 69993, 70004, 70005, 70006, 70007, 70008, 70009, 70010, 70011, 70012, 70013, 70014, 70015, 70016, 70017, 70018, 70019, 70020, 70021, }, chance = 100,  unique = true, sourceText = L["Dropped by dinosaurs on Isle of Giants Will hatch into one of three Primal Raptor mounts after three days."], coords = { {m=507} }, },

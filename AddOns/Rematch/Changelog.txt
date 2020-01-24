@@ -1,3 +1,9 @@
+01/20/2020 version 4.10.0
+- Added Blackrock Depths to target menu
+- Added experimental option 'Import Team Tabs Too' under Teams Options: When importing teams backed up via 'Backup All Teams', teams will be returned to the tabs they were in at the time of backup. (Please read the tooltip in options.)
+- Fix for Automatically Level New Pets option not working in 8.3
+- toc update for 8.3 client
+
 10/05/2019 version 4.9.13
 - Fix for unwrapping pets
 

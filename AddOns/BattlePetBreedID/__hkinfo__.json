@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "Battle Pet BreedID",
     "localName": "BattlePetBreedID",
-    "version": "v1.14.4",
+    "version": "v1.15.0",
     "fileName": "battle_pet_breedid",
     "addonsMap": [
         "BattlePetBreedID"

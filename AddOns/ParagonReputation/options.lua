@@ -1,5 +1,5 @@
 		-------------------------------------------------
-		-- Paragon Reputation 1.26 by Fail US-Ragnaros --
+		-- Paragon Reputation 1.27 by Fail US-Ragnaros --
 		-------------------------------------------------
 
 		  --[[	  Special thanks to Ammako for
@@ -28,8 +28,10 @@ toast:Hide()
 
 -- [Toast] Create Background Texture
 toast.texture = toast:CreateTexture(nil,"BACKGROUND")
-toast.texture:SetTexture("Interface\\AddOns\\ParagonReputation\\toast")
-toast.texture:SetPoint("CENTER",toast,"CENTER",0,0)
+toast.texture:SetPoint("TOPLEFT",toast,"TOPLEFT",-6,4)
+toast.texture:SetPoint("BOTTOMRIGHT",toast,"BOTTOMRIGHT",4,-4)
+toast.texture:SetTexture("Interface\\Garrison\\GarrisonToast")
+toast.texture:SetTexCoord(0,.61,.33,.48)
 
 -- [Toast] Create Title Text
 toast.title = toast:CreateFontString(nil,"ARTWORK","GameFontNormalLarge")

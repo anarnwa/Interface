@@ -1,36 +1,46 @@
 # Deadly Boss Mods Core
 
-## [8.3.0](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/8.3.0) (2020-01-14)
-[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/8.2.31...8.3.0)
+## [8.3.3](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/8.3.3) (2020-01-23)
+[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/8.3.2...8.3.3)
 
-- Bump version and TOC for 8.3 release  
-- Fix some items that got swapped and fixed range input fixer for range 23  
-- Fixed canceling of pull timers so it works again (ie /pull 0 is once again allowed)  
-- Fix error in last  
-- Finally refactored range check to be more efficient with api usage. It was never refactored before because I never expected blizzard to let it even exist this long. but it still exists/works so it was time to make it cleaner.  
-- Added trash warnings for Rain of Blood and Sanguine Fountain, both of which utterly delete all the melee in any difficulty (including LFR) :D  
-- Fixed loading/detection of Sekzara world boss  
-    Fixed phase change detection on Ilgynoth that was caused by blizzard disabling "Il'gynoth's Morass" ability from showing in combat log  
-    Fixed fixate timer not showing in LFR Shadhar do to LFR using a different spellID than other difficulties  
-    Fixed a bug that caused Mutterings of Insanity special warning not to have a sound when using a voice pack  
-    Fixed a bug that caused Mind Flay interrupt warning for Eye of Drest'agath's to spam like crazy do to fact blizzard changed all Eyes of Drest'agath to now have same GUID in combat log (seriously blizzard?)  
-- Added Visions staging area to mod available notification  
-- Added drycodes for all 3 world bosses added in 8.3  
-- Changed target scanning method on tonks in mechagon to be compatible with 8.3 changes  
-    Finished trash module for mechagon  
-    Added a print to mechagon tonks about mine timer being wrong until new 8.3 timer can be acquired  
-- Post tier cleanup. Removed all unused commented code from Eternal Palace that will likely never be used now that we're moving into 8.3  
-- DBM-Core will now notify that PVP mods are again available, upon entering first BG. Same way it does with timewalking dungeons/etc.  
-    Added more trash warnings for Mechagon dungeon, this time for bosses 5 and 6.  
-- tweak arrow nil check  
-- Improve timer patch  
-- Add check for negative numbers in /pull (#101)  
-- Updated luacheck to ignore less, so brace for travis errors (but project is fine if travis does fail)  
-- Fix heavily armed warning so it doesn't show from units you aren't in combat with. Why does no one report bugs like this? I have to see them on a twitch stream months later :\  
-- Tweaked Upheavel on sporecaller to combine multiple targets as well as filter additional nearby warnings from occuring if you're one of affected players.  
-- KR Update (#99)  
-    * KR Update  
-- Detect when a user has DBM-Lootreminder installed and warn them that it'll break DBM-Core  
-- Remove Extra Space  
-- Fixed personal fake syncs, restoring break/pull/etc functions when doing outside of groups, or soloing raids that use syncing to pass boss messages  
-- Adjust arrow protection against nil errors from slow/nil UnitPosition returns to prevent errors in in situations where the remote target is another player.  
+- Update zhTW (#114)  
+    Co-authored-by: Adam <MysticalOS@users.noreply.github.com>  
+- Create zhTW (#116)  
+- Update TOC (#115)  
+- Update zhTW (#113)  
+    * Update zhTW  
+    * Update zhTW  
+    Fix mistakes  
+- Bump version and prepare a tag, all the fixes thus far should be pushed out even if only 11/12 completed with live data. Don't worry though, There will be another update as soon as I can get hands on enough Nzoth data (heroic and normal)  
+- Significant updates to carapace again.  
+    Heroic and normal timer speeds differences now handled correctly by mod  
+    ALL timers were further updated for greatly improved accuracy by accounting for all stage resets and all stage differences correctly, in both normal and heroic.  
+- Carapace of N'Zoth Update  
+    Redid  Stage code to fix some bugs with it. Should reliably transition timers for stage changes now.  
+    Added warning for gaze of madness spawn to switch for dps  
+    Updated most timers to newest values on live  
+    Re-added gaze of madness timer since it was possible to do one again.  
+    Disabled the Trashing tentacle timer and warning for now, since currently it is undetectable and may need some elaborate scheduling later  
+- Remove api checks from world bosses, and disable Tashara since blizz removed it? all it's spells exist but journal entry for it vanished.  
+- Speed up legacy target scanning on Tussle tonks so it doesn't take too long if on a tank  
+    Switched King Mechagon to legacy target scanning since 8.3 broke UNIT\_TARGET scanning for taht boss too, not just tonks  
+    Added more boss unit IDs to ViqGoth, which should hopefully resolve cases where tentacle timer doesn't show  
+- Updated curse urls on voice packs panel in DBM GUI  
+- Fixed crush timer on Shadhar. Event I was using is no longer in combat log. There are CLEU events still there but not ones for the sequence starting, so I switched to a reliable UNIT event that is equiv of old CLEU one.  
+    Changed umbral breath to START event since it's back and removed SUCCESS handler for it. This will speed up that breath warning a tiny bit  
+    Redid breath timer to live update off energy instead of being less reliably hardcoded to speed up over time. It's still not perfect because blizzards energy code is typically garbage (they don't use realtime in even static energy calculations, they use some kind of onupdate/loop method. So you can imagine how it is with scaling energy rates too). Fortunately based on my checks, and how often timer will auto correct when needed, it'll still be off far less than it was.  
+- Fixed the fixate warning/yell on Shadhar  
+- Fixed ra-den's call essences timer on heroic difficulty  
+- Drycode infoframe for checking who has debuff and how much time remaining on it to Drestagath  
+    Couple fixes to last hivemind commit  
+- Completely redid hivemind timers for live heroic and normal since blizzard redid them again.  
+    Restored Add timers on hivemind do to the stupid removal of add spawn combat log events.  
+- Updated wrathion timers on all difficulties to match live  
+    Updated heroic timers on Xanesh to match live (and other difficulties)  
+    Changed Mind Control switch target warnings to off by default on both nzoth encounters. It can get spammy and as such is more of an opt in than an opt out.  
+- Maut infoframe should now show mana % instead of mana number  
+    Maut Annihilation timer is now 55 seconds (up from 35 it was on PTR)  
+    Maut shadow claws and Devour magic timers also adjusted by about 2 seconds each.  
+    Porphet Skitra mod should now remove icons when Shred Psyche ends  
+- KR Update (Ny'alotha) (#112)  
+    * KR Update (Ny'alotha)  

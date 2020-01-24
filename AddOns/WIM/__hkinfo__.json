@@ -2,7 +2,7 @@
     "target": "curse",
     "searchName": "WIM (WoW Instant Messenger) v3",
     "localName": "WIM",
-    "version": "3.8.4",
+    "version": "3.8.5",
     "fileName": "wim-3",
     "addonsMap": [
         "WIM"

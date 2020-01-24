@@ -1,8 +1,24 @@
+--[[
+	professions.lua
+		A professions frame for BagSync
+--]]
 
 local BSYC = select(2, ...) --grab the addon namespace
 local Professions = BSYC:NewModule("Professions")
+local Data = BSYC:GetModule("Data")
+local Tooltip = BSYC:GetModule("Tooltip")
 
-local L = LibStub("AceLocale-3.0"):GetLocale("BagSync", true)
+local debugf = tekDebug and tekDebug:GetFrame("BagSync")
+local function Debug(...)
+    if debugf then
+		local debugStr = string.join(", ", tostringall(...))
+		local moduleName = string.format("|cFFffff00[%s]|r: ", "Professions")
+		debugStr = moduleName..debugStr
+		debugf:AddMessage(debugStr)
+	end
+end
+
+local L = LibStub("AceLocale-3.0"):GetLocale("BagSync")
 local AceGUI = LibStub("AceGUI-3.0")
 
 function Professions:OnEnable()
@@ -19,7 +35,7 @@ function Professions:OnEnable()
 	
 	local information = AceGUI:Create("Label")
 	information:SetText(L.ProfessionInformation)
-	information:SetFont(L.GetFontType, 12, THICKOUTLINE)
+	information:SetFont(STANDARD_TEXT_FONT, 12, THICKOUTLINE)
 	information:SetColor(1, 165/255, 0)
 	information:SetFullWidth(true)
 	ProfessionsFrame:AddChild(information)
@@ -41,35 +57,31 @@ end
 
 function Professions:AddEntry(entry, isHeader)
 
-	local highlightColor = {1, 0, 0}
 	local label = AceGUI:Create("BagSyncInteractiveLabel")
 
-	label.userdata.color = {1, 1, 1}
 	label:SetHeaderHighlight("Interface\\QuestFrame\\UI-QuestTitleHighlight")
 	label:ToggleHeaderHighlight(false)
-
+	label.entry = entry
+	label:SetColor(1, 1, 1)
+	
 	if isHeader then
-		label:SetText(entry.player)
-		label:SetFont(L.GetFontType, 14, THICKOUTLINE)
+		label:SetText(entry.skillData.name)
+		label:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
 		label:SetFullWidth(true)
-		label:SetColor(unpack(label.userdata.color))
 		label:ApplyJustifyH("CENTER")
-		label.userdata.isHeader = true
 		label.userdata.hasRecipes = false
 		label:ToggleHeaderHighlight(true)
+		label.userdata.isHeader = true
 	else
-		local labelText = entry.name..format(" |cFFFFFFFF(%s)|r", entry.level)
-		label:SetText(labelText)
-		label:SetFont(L.GetFontType, 14, THICKOUTLINE)
+		label:SetText(entry.colorized)
+		label:SetFont(STANDARD_TEXT_FONT, 14, THICKOUTLINE)
 		label:SetFullWidth(true)
-		if entry.recipes then
-			label.userdata.color = {153/255,204/255,51/255} --primary profession color it green
+		if not entry.skillData.secondary then
 			label.userdata.hasRecipes = true
 		else
-			label.userdata.color = {102/255,153/255,1} --gathering profession color it blue
+			label:SetText(entry.colorized..format("   |cFFFFFFFF%s/%s|r", entry.skillData.skillLineCurrentLevel, entry.skillData.skillLineMaxLevel))
 			label.userdata.hasRecipes = false
 		end
-		label:SetColor(unpack(label.userdata.color))
 		label:ApplyJustifyH("LEFT")
 		label.userdata.isHeader = false
 	end
@@ -78,27 +90,29 @@ function Professions:AddEntry(entry, isHeader)
 		"OnClick", 
 		function (widget, sometable, button)
 			if "LeftButton" == button and label.userdata.hasRecipes then
-				BSYC:GetModule("Recipes"):ViewRecipes(entry.name, entry.level, entry.recipes)
+				BSYC:GetModule("Recipes"):ViewRecipes(label.entry)
 			end
 		end)
 	label:SetCallback(
 		"OnEnter",
 		function (widget, sometable)
-			label:SetColor(unpack(highlightColor))
-			GameTooltip:SetOwner(label.frame, "ANCHOR_BOTTOMRIGHT")
 			if not label.userdata.isHeader then
-				if label.userdata.hasRecipes then
-					GameTooltip:AddLine(L.ProfessionHasRecipes)
-				else
-					GameTooltip:AddLine(L.ProfessionHasNoRecipes)
+				label:SetColor(1, 0, 0)
+				GameTooltip:SetOwner(label.frame, "ANCHOR_BOTTOMRIGHT")
+				if not label.userdata.isHeader then
+					if label.userdata.hasRecipes then
+						GameTooltip:AddLine(label.entry.colorized..": "..L.ProfessionHasRecipes)
+					else
+						GameTooltip:AddLine(label.entry.colorized..": "..L.ProfessionHasNoRecipes)
+					end
+					GameTooltip:Show()
 				end
-				GameTooltip:Show()
 			end
 		end)
 	label:SetCallback(
 		"OnLeave",
 		function (widget, sometable)
-			label:SetColor(unpack(label.userdata.color))
+			label:SetColor(1, 1, 1)
 			GameTooltip:Hide()
 		end)
 
@@ -107,42 +121,49 @@ end
 
 function Professions:DisplayList()
 
-	local professionsTable = {}
-	local count = 0
-
 	self.scrollframe:ReleaseChildren() --clear out the scrollframe
 	
-	local xDB = BSYC:FilterDB(1) --dbSelect 1
+	local professionsTable = {}
+	local tempList = {}
 	
-	--loop through our characters
-	--k = player, v = stored data for player
-	for k, v in pairs(xDB) do
-
-		local tmp = {}
-		local yName, yRealm  = strsplit("^", k)
-		local playerName = BSYC:GetRealmTags(yName, yRealm)
-
-		for q, r in pairs(v) do
-			table.insert(tmp, { player=playerName, name=r.name, level=r.level, recipes=r.recipes } )
-			count = count + 1
+	for unitObj in Data:IterateUnits() do
+		if not unitObj.isGuild and unitObj.data.professions then
+			for skillID, skillData in pairs(unitObj.data.professions) do
+				if skillData.name then
+					table.insert(professionsTable, { skillID=skillID, skillData=skillData, unitObj=unitObj, colorized=Tooltip:ColorizeUnit(unitObj), sortIndex=Tooltip:GetSortIndex(unitObj) } )
+				end
+			end
 		end
-		
-		--add to master table
-		table.insert(professionsTable, { player=playerName, info=tmp } )
 	end
-		
-	--show or hide the scrolling frame depending on count
-	if count > 0 then
-		table.sort(professionsTable, function(a,b) return (a.player < b.player) end)
+
+	if table.getn(professionsTable) > 0 then
+	
+		table.sort(professionsTable, function(a, b)
+			if a.skillData.name == b.skillData.name then
+				if a.sortIndex  == b.sortIndex then
+					if a.unitObj.realm == b.unitObj.realm then
+						return a.unitObj.name < b.unitObj.name;
+					end
+					return a.unitObj.realm < b.unitObj.realm;
+				end
+				return a.sortIndex < b.sortIndex;
+			end
+			return a.skillData.name < b.skillData.name;
+		end)
+	
+		local lastHeader = ""
 		for i=1, #professionsTable do
-			self:AddEntry(professionsTable[i], true) --add header
-			for z=1, #professionsTable[i].info do
-				self:AddEntry(professionsTable[i].info[z], false)
+			if lastHeader ~= professionsTable[i].skillData.name then
+				self:AddEntry(professionsTable[i], true) --add header
+				self:AddEntry(professionsTable[i], false) --add entry
+				lastHeader = professionsTable[i].skillData.name
+			else
+				self:AddEntry(professionsTable[i], false) --add entry
 			end
 		end
 		self.scrollframe.frame:Show()
 	else
 		self.scrollframe.frame:Hide()
 	end
-	
+
 end
