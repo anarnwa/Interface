@@ -2,7 +2,7 @@
 ## Title: HandyNotes: Tools of the Trade
 ## Notes: Tools of the Trade locations
 ## Author: Imoom
-## Version: 4.1.0
+## Version: 5.0.0
 ## DefaultState: enabled
 ## X-Category: Map
 ## X-eMail: 

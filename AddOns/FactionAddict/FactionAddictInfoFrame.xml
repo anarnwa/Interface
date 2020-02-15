@@ -352,7 +352,7 @@
 
 			<EditBox name="$parentEditBox" parentKey="EditBox" letters="40" autofocus="false">
 				<Size>
-					<AbsDimension x="230" y="20"></AbsDimension>
+					<AbsDimension x="235" y="20"></AbsDimension>
 				</Size>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentFactionIconInfoWin" relativePoint="BOTTOMLEFT">

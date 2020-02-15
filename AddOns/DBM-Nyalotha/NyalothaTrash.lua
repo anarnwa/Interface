@@ -1,11 +1,10 @@
 local mod	= DBM:NewMod("NyalothaTrash", "DBM-Nyalotha", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20200113015326")
+mod:SetRevision("20200203212050")
 --mod:SetModelID(47785)
 mod:SetZone()
 mod.isTrashMod = true
---mod:SetUsedIcons(1, 2, 3, 4, 5)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START 310780 315011 159409 310839 315932 311550 311576 307403 306982 311544 314433",
@@ -31,8 +30,6 @@ local specWarnAnnihilation					= mod:NewSpecialWarningDodgeCount(307403, nil, DB
 local specWarnDirgefromBelow				= mod:NewSpecialWarningInterrupt(310839, "HasInterrupt", nil, nil, 1, 2)
 local specWarnVoidBoltVolley				= mod:NewSpecialWarningInterrupt(311576, "HasInterrupt", nil, nil, 1, 2)
 
---mod:AddSetIconOption("SetIconDread", 303619, true, false, {1, 2, 3, 4, 5})
-
 function mod:SPELL_CAST_START(args)
 	local spellId = args.spellId
 	if spellId == 310780 and self:AntiSpam(5, 1) then
@@ -44,7 +41,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 159409 and self:AntiSpam(5, 1) then
 		specWarnDreadWind:Show()
 		specWarnDreadWind:Play("watchstep")
-	elseif spellId == 315932 and self:AntiSpam(5, 1) then
+	elseif spellId == 315932 and self:AntiSpam(3, 1) then
 		specWarnBrutalSmash:Show()
 		specWarnBrutalSmash:Play("watchstep")
 	elseif spellId == 311544 and self:AntiSpam(5, 1) then
@@ -56,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 	elseif spellId == 311550 then
 		specWarnFeartheVoid:Show()
 		specWarnFeartheVoid:Play("fearsoon")
-	elseif spellId == 307403 or spellId == 306982 then--Enemy, Player
+	elseif (spellId == 307403 or spellId == 306982) and self:AntiSpam(3, args.sourceName) then--Enemy, Player
 		specWarnAnnihilation:Show(args.sourceName)
 		specWarnAnnihilation:Play("shockwave")
 	elseif spellId == 310839 and self:CheckInterruptFilter(args.sourceGUID, false, true) then

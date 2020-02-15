@@ -18,12 +18,19 @@ local function Debug(...)
 	end
 end
 
+--increment forceDBReset to reset the ENTIRE db forcefully
+local forceDBReset = 2
+--these just reset individual items in the DB
+local unitDBVersion = {
+	auction = 1,
+}
+
 StaticPopupDialogs["BAGSYNC_RESETDATABASE"] = {
 	text = L.ResetDBInfo,
 	button1 = L.Yes,
 	button2 = L.No,
 	OnAccept = function()
-		BagSyncDB = {}
+		BagSyncDB = { ["forceDBReset§"] = forceDBReset }
 		ReloadUI()
 	end,
 	timeout = 0,
@@ -36,15 +43,19 @@ StaticPopupDialogs["BAGSYNC_RESETDATABASE"] = {
 ----------------------
 
 function Data:OnEnable()
-
+	
+	local ver = GetAddOnMetadata("BagSync","Version") or 0
+	
 	--get player information from Unit
 	local player = Unit:GetUnitInfo()
-
+	
+	--initiate database
+	BagSyncDB = BagSyncDB or {}
+	
 	--before we do ANYTHING with the databse, lets do a cleanup or upgrade if necessary
 	self:CleanDB()
 	
-	--initiate global db variable
-	BagSyncDB = BagSyncDB or {}
+	--load the options and blacklist
 	BagSyncDB["options§"] = BagSyncDB["options§"] or {}
 	BagSyncDB["blacklist§"] = BagSyncDB["blacklist§"] or {}
 	
@@ -67,7 +78,6 @@ function Data:OnEnable()
 	--options DB
 	BSYC.options = BagSyncDB["options§"]
 	if BSYC.options.showTotal == nil then BSYC.options.showTotal = true end
-	if BSYC.options.showGuildNames == nil then BSYC.options.showGuildNames = false end
 	if BSYC.options.enableGuild == nil then BSYC.options.enableGuild = true end
 	if BSYC.options.enableMailbox == nil then BSYC.options.enableMailbox = true end
 	if BSYC.options.enableUnitClass == nil then BSYC.options.enableUnitClass = true end
@@ -76,6 +86,7 @@ function Data:OnEnable()
 	if BSYC.options.enableAuction == nil then BSYC.options.enableAuction = true end
 	if BSYC.options.tooltipOnlySearch == nil then BSYC.options.tooltipOnlySearch = false end
 	if BSYC.options.enableTooltips == nil then BSYC.options.enableTooltips = true end
+	if BSYC.options.enableExtTooltip == nil then BSYC.options.enableExtTooltip = false end
 	if BSYC.options.enableTooltipSeperator == nil then BSYC.options.enableTooltipSeperator = true end
 	if BSYC.options.enableCrossRealmsItems == nil then BSYC.options.enableCrossRealmsItems = true end
 	if BSYC.options.enableBNetAccountItems == nil then BSYC.options.enableBNetAccountItems = false end
@@ -87,8 +98,9 @@ function Data:OnEnable()
 	if BSYC.options.enableLoginVersionInfo == nil then BSYC.options.enableLoginVersionInfo = true end
 	if BSYC.options.enableFactionIcons == nil then BSYC.options.enableFactionIcons = false end
 	if BSYC.options.enableShowUniqueItemsTotals == nil then BSYC.options.enableShowUniqueItemsTotals = true end
-	if BSYC.options.disableXR_BNETRealmNames == nil then BSYC.options.disableXR_BNETRealmNames = true end
+	if BSYC.options.enableXR_BNETRealmNames == nil then BSYC.options.enableXR_BNETRealmNames = true end
 	if BSYC.options.showGuildInGoldTooltip == nil then BSYC.options.showGuildInGoldTooltip = true end
+	if BSYC.options.showGuildCurrentCharacter == nil then BSYC.options.showGuildCurrentCharacter = false end
 	
 	--setup the default colors
 	if BSYC.options.colors == nil then BSYC.options.colors = {} end
@@ -101,11 +113,11 @@ function Data:OnEnable()
 	if BSYC.options.colors.itemid == nil then BSYC.options.colors.itemid = { r = 82/255, g = 211/255, b = 134/255 }  end
 
 	--do DB cleanup check by version number
-	if not BSYC.options.dbversion or BSYC.options.dbversion ~= ver then	
-		--self:FixDB()
-		BSYC.options.dbversion = ver
+	if not BSYC.options.addonversion or BSYC.options.addonversion ~= ver then	
+		self:FixDB()
+		BSYC.options.addonversion = ver
 	end
-
+	
 	--player info
 	BSYC.db.player.money = player.money
 	BSYC.db.player.class = player.class
@@ -118,8 +130,6 @@ function Data:OnEnable()
 	--load the slash commands
 	self:LoadSlashCommand()
 	
-	local ver = GetAddOnMetadata("BagSync","Version") or 0
-	
 	if BSYC.options.enableLoginVersionInfo then
 		BSYC:Print("[v|cFF20ff20"..ver.."|r] /bgs, /bagsync")
 	end
@@ -128,10 +138,6 @@ end
 
 function Data:CleanDB()
 
-	--BagSyncDB = BagSyncDB or {}
-	--BagSyncDB["options§"] = BagSyncDB["options§"] or {}
-	--BagSyncDB["blacklist§"] = BagSyncDB["blacklist§"] or 
-	
 	--delete old DB variables
 	if BagSyncOpt then
 		BagSyncOpt = nil
@@ -152,7 +158,65 @@ function Data:CleanDB()
 		BagSync_REALMKEY = nil
 	end
 
-	--BSYC:Print("|cFFFF9900"..L.FixDBComplete.."|r")
+	--check for empty table table to prevent loops
+	if next(BagSyncDB) == nil then
+		BagSyncDB["forceDBReset§"] = forceDBReset
+		BSYC:Print("|cFFFF9900"..L.DatabaseReset.."|r")
+		return
+	elseif not BagSyncDB["forceDBReset§"] or BagSyncDB["forceDBReset§"] < forceDBReset then
+		BagSyncDB = { ["forceDBReset§"] = forceDBReset }
+		BSYC:Print("|cFFFF9900"..L.DatabaseReset.."|r")
+		return
+	end
+end
+
+function Data:FixDB()
+
+    local storeUsers = {}
+    local storeGuilds = {}
+	
+	if not BSYC.options.unitDBVersion then BSYC.options.unitDBVersion = {} end
+	
+	for unitObj in self:IterateUnits(true) do
+		--store only user guild names
+		if not unitObj.isGuild then
+			storeUsers[unitObj.name] = true
+			if unitObj.data.guild then
+				storeGuilds[unitObj.data.guild] = true
+			end
+		end
+	end
+
+	--cleanup guilds
+	for realm, rd in pairs(BagSyncDB) do
+		--ignore options
+		if not string.match(realm, '§*') then
+			--iterate through realm data
+			for k, v in pairs(rd) do
+				local isGuild = (k:find('©*') and true) or false
+				if isGuild then
+					if not storeGuilds[k] then
+						--remove obsolete guild
+						BagSyncDB[realm][k] = nil
+					end
+				else
+					--users lets do a individual db cleanup if necessary
+					if BSYC.options.unitDBVersion.auction ~= unitDBVersion.auction and v.auction then
+						v.auction = nil
+					end
+				end
+			end
+		end
+	end
+	
+	if BSYC.options.unitDBVersion.auction ~= unitDBVersion.auction then
+		BSYC:Print("|cFFffff00"..L.UnitDBAuctionReset.."|r")
+	end
+	
+	--update db unit version information
+	BSYC.options.unitDBVersion = unitDBVersion
+	
+	BSYC:Print("|cFFFF9900"..L.FixDBComplete.."|r")
 end
 
 function Data:LoadSlashCommand()
@@ -227,10 +291,10 @@ end
 
 function Data:CheckExpiredAuctions()
 
-	local slotItems = {}
-	
 	for unitObj in self:IterateUnits(true) do
 		if not unitObj.isGuild and unitObj.data.auction and unitObj.data.auction.count then
+			
+			local slotItems = {}
 
 			for x = 1, unitObj.data.auction.count do
 				if unitObj.data.auction.bag[x] then
@@ -286,6 +350,20 @@ function Data:IterateUnits(dumpAll)
 							
 							--check for previous listed guilds just in case, because of connected realms (can have same guild on multiple connected realms)
 							if BSYC.options.enableGuild and isGuild and v.realmKey then
+							
+								if BSYC.options.showGuildCurrentCharacter and player.guild then
+									if v.realmKey == player.realmKey then
+										--same realm, but lets check name
+										if k ~= player.guild then
+											skipChk = true
+										end
+										--otherwise it matches so don't skip it
+									else
+										--not same realm so skip it
+										skipChk = true
+									end
+								end
+							
 								local XRName = k .. v.realmKey
 								if not previousGuilds[XRName] then
 									previousGuilds[XRName] = true
@@ -294,6 +372,8 @@ function Data:IterateUnits(dumpAll)
 								end
 								--check for the guild blacklist
 								if BSYC.db.blacklist[XRName] then skipChk = true end
+							elseif not BSYC.options.enableGuild and isGuild then
+								skipChk = true
 							end
 							
 							if not skipChk then

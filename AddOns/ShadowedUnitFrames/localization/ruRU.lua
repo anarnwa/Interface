@@ -697,6 +697,7 @@ L["You have entered combat, unit frames have been locked. Once you leave combat 
 L["You have to set the events to fire, you can only enter letters and underscores, \"FOO_BAR\" for example is valid, \"APPLE_5_ORANGE\" is not because it contains a number."] = "Вы должны установить события для срабатывания, вы можете ввести только буквы и символы подчёркивания. К примеру: \"FOO_BAR \" действителен, \"APPLE_5_ORANGE \" нет, потому что оно содержит число."
 L["You must enter a number that is 0 or higher, negative numbers are not allowed."] = "Вы должны ввести число 0 и выше, отрицательные цифры не допускается."
 L["You must enter a tag name."] = "Вы должны ввести название тега."
+L["You must restart Shadowed Unit Frames."] = "Вы должны перезагрузить Shadowed Unit Frames."
 L["You must wrap your code in a function."] = "Вы должны обернуть свой код в функцию."
 L["You will need to create an aura filter before you can set which unit to enable aura filtering on."] = "Вам нужно создать фильтр аур, прежде чем установить рамку, к которой будет применяться фильтрация аур."
 L["You will need to do a /console reloadui before a hidden frame becomes visible again.|nPlayer and other unit frames are automatically hidden depending on if you enable the unit in Shadowed Unit Frames."] = "Вам необходимо будет выполнить команду /console reloadui перед тем как скрытые рамки станут видимыми.|nРамки игрока и других объектов будут автоматически скрыты до тех пор, пока вы не включите их отображение в Shadowed Unit Frames."
@@ -704,7 +705,7 @@ L["Your active layout is the profile used for import backup, this cannot be over
 L["Your aura color"] = "Цвет ваших аур"
 L["Your Auras"] = "Ваши ауры"
 L["Your code must be wrapped in a function, for example, if you were to make a tag to return the units name you would do:|n|nfunction(unit, unitOwner)|nreturn UnitName(unitOwner)|nend"] = "Ваш код должен быть написан с разделением строк. Например, если вы хотите создать тег для возврата наименования объекта, вам необходимо сделать это так:|n|nfunction(unit, unitOwner)|nreturn UnitName(unitOwner)|nend"
-L["Zone configuration units"] = "Настройка зон объектов"
+L["Zone configuration units"] = "Настройка зон"
 
 local ShadowUF = select(2, ...)
 ShadowUF.L = setmetatable(L, {__index = ShadowUF.L})

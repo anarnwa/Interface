@@ -1,13 +1,13 @@
 local mod	= DBM:NewMod(2365, "DBM-Nyalotha", nil, 1180)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20200121194329")
+mod:SetRevision("20200206171259")
 mod:SetCreatureID(156523)
 mod:SetEncounterID(2327)--Obsidian Destroyer ID, but only one left after eliminating all others, should be correct
 mod:SetZone()
 --mod:SetHotfixNoticeRev(20190716000000)--2019, 7, 16
 --mod:SetMinSyncRevision(20190716000000)
---mod.respawnTime = 29
+mod.respawnTime = 20
 
 mod:RegisterCombat("combat")
 
@@ -27,7 +27,6 @@ mod:RegisterEventsInCombat(
 --TODO, infoframe showing players missing Devoured Abyss during big aoe cast?
 --TODO, auto icon marking of siphons?
 --TODO, tank swap stacks 2 or 3?
---TODO, raid icons for ancient curse review
 --[[
 (ability.id = 308044 or ability.id = 305663 or ability.id = 308903 or ability.id = 308872 or ability.id = 314337 or ability.id = 305722) and type = "begincast"
  or (ability.id = 307805 or ability.id = 310129 or ability.id = 306290) and type = "cast"
@@ -50,23 +49,22 @@ local specWarnShadowWoundsTaunt				= mod:NewSpecialWarningTaunt(307399, nil, nil
 local specWarnDevourMagic					= mod:NewSpecialWarningMoveAway(307805, nil, nil, nil, 1, 2)
 local yellDevourMagic						= mod:NewYell(307805)
 local yellDevourMagicFades					= mod:NewShortFadesYell(307805)
-local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(308044, nil, nil, nil, 3, 2)
+local specWarnStygianAnnihilation			= mod:NewSpecialWarningMoveTo(308044, nil, 307421, nil, 3, 2)
 local specWarnBlackWing						= mod:NewSpecialWarningDodge(305663, nil, nil, nil, 2, 2)
 local specWarnDarkManifestation				= mod:NewSpecialWarningDodge(308903, nil, nil, nil, 2, 2)
-local specWarnAncientCurse					= mod:NewSpecialWarningYou(315025, nil, nil, nil, 1, 2)
-local yellAncientCurse						= mod:NewYell(315025)
-local yellAncientCurseFades					= mod:NewFadesYell(315025)
+local specWarnAncientCurse					= mod:NewSpecialWarningYou(315025, nil, nil, nil, 1, 2, 4)
+local yellAncientCurse						= mod:NewYell(315025, nil, false, 2)
+local yellAncientCurseFades					= mod:NewShortFadesYell(315025)
 --Stage Two: Obsidian Statue
 local specWarnDrainEssence					= mod:NewSpecialWarningMoveAway(314993, nil, nil, nil, 1, 2)
 local yellDrainEssence						= mod:NewYell(314993, nil, false, 2)
 local yellDrainEssenceFades					= mod:NewShortFadesYell(314993)
 --local specWarnGTFO						= mod:NewSpecialWarningGTFO(270290, nil, nil, nil, 1, 8)
---local specWarnConductivePulse				= mod:NewSpecialWarningInterrupt(295822, "HasInterrupt", nil, nil, 3, 2)
 
 --Stage One: Obsidian Destroyer
 mod:AddTimerLine(DBM:EJ_GetSectionInfo(20594))
 local timerDevourMagicCD					= mod:NewCDTimer(22, 307805, nil, nil, nil, 3)
-local timerStygianAnnihilationCD			= mod:NewCDTimer(55.3, 308044, nil, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
+local timerStygianAnnihilationCD			= mod:NewCDTimer(55.3, 308044, 307421, nil, nil, 2, nil, DBM_CORE_DEADLY_ICON, nil, 1, 4)
 local timerBlackWingsCD						= mod:NewCDTimer(20.6, 305663, nil, nil, nil, 3)--20-30
 local timerShadowClawsCD					= mod:NewCDTimer(12.3, 310129, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerDarkManifestationCD				= mod:NewCDCountTimer(35.2, 308903, nil, nil, nil, 1, nil, DBM_CORE_TANK_ICON)
@@ -79,11 +77,10 @@ mod:AddTimerLine(DBM:EJ_GetSectionInfo(20553))
 local timerForbiddenRitualCD				= mod:NewCDCountTimer(7, 306290, nil, "Healer", nil, 5, nil, DBM_CORE_HEALER_ICON)--6.1-8.5 (7)
 local timerDrainEssenceCD					= mod:NewCDTimer(13.8, 314993, nil, nil, nil, 5, nil, DBM_CORE_MAGIC_ICON)--13.8-15.8
 
---local berserkTimer						= mod:NewBerserkTimer(600)
+local berserkTimer							= mod:NewBerserkTimer(600)
 
 mod:AddRangeFrameOption(8, 314995)
 mod:AddInfoFrameOption(306005, true)
---mod:AddSetIconOption("SetIconOnAncientCurse", 315025, true, false, {1, 2, 3, 4, 5})
 
 mod.vb.bigAoeActive = false
 mod.vb.darkManifestationCount = 0
@@ -111,6 +108,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(DBM_CORE_INFOFRAME_POWER)
 		DBM.InfoFrame:Show(3, "enemypower", 0, 0)
 	end
+	berserkTimer:Start(self:IsHard() and 600 or 660)--Heroic and Normal confirmed, LFR and mythic unknown
 end
 
 function mod:OnCombatEnd()
@@ -239,10 +237,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			yellAncientCurse:Yell()
 			yellAncientCurseFades:Countdown(spellId)
 		end
-		--if self.Options.SetIconOnAncientCurse then
-		--	self:SetIcon(args.destName, self.vb.ancientCurseIcon)
-		--end
-		--self.vb.ancientCurseIcon = self.vb.ancientCurseIcon + 1
 	end
 end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -278,9 +272,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if args:IsPlayer() then
 			yellAncientCurseFades:Cancel()
 		end
-		--if self.Options.SetIconOnAncientCurse then
-		--	self:SetIcon(args.destName, 0)
-		--end
 	end
 end
 

@@ -75,11 +75,17 @@ function setFilter:GetOptions()
           type = 'toggle',
           order = 29,
         },
+        groupPatch8_3 = {
+          name = L['Patch 8.3 Items'],
+          desc = L['Group items added in Patch 8.3 for Uldum, Horrific Visions, and Vale of Eternal Blossoms. They really should leave that poor Vale alone.'],
+          type = 'toggle',
+          order = 30,
+        },
         zonePriority = {
           name = L['Current Zone First'],
           desc = L['Group current zone\'s items first in bags.'],
           type = 'toggle',
-          order = 29,
+          order = 31,
         },
       }
     },
@@ -90,13 +96,16 @@ end
 function setFilter:Filter(slotData)
   local currZoneName = GetRealZoneText()
   if self.db.profile.groupEssences then
-    addon:SetCategoryOrder('Essence',110)
+    addon:SetCategoryOrder('Essence',28)
   end
   if self.db.profile.groupRepItems then
-    addon:SetCategoryOrder('Current Rep Item',105)
+    addon:SetCategoryOrder('Current Rep Item',29)
+  end
+  if self.db.profile.groupPatch8_3 then
+    addon:SetCategoryOrder('Patch 8.3',30)
   end
   if self.db.profile.zonePriority then
-    addon:SetCategoryOrder('Current Zone Item',103)
+    addon:SetCategoryOrder('Current Zone Item',31)
   end
     -- Exit if profile not enabled
   if (self.db.profile.enableZoneItem == false) or (slotData.itemId == false) then 
@@ -104,7 +113,7 @@ function setFilter:Filter(slotData)
   end
   local ziID, ziZone, ziSubcat, ziName, currSubCategory, bagItemID
   bagItemID = tonumber(slotData.itemId)
-  -- Check if Heart of Azeroth Essence
+  -- Check if Heart of Azeroth Essence, and grouping for them selected
   local item = Item:CreateFromBagAndSlot(slotData.bag, slotData.slot)
   local _,_, itemRarity, _,_, itemType, itemSubType, _,_,_,_,_,_,_,_ = GetItemInfo(slotData.itemId)
   if (self.db.profile.groupEssences) and (itemType == 'Consumable' and itemSubType == 'Other' and itemRarity == 6) then
@@ -120,6 +129,7 @@ function setFilter:Filter(slotData)
         index = index +1
       end
       --169478^BfA^Benthic^Benthic Bracers (Exampleb)
+      --167027^Patch8_3^^Portable Clarity Beam
       ziID = tonumber(currSubset[1])
       ziZone = currSubset[2]
       ziSubcat = currSubset[3]
@@ -129,6 +139,10 @@ function setFilter:Filter(slotData)
         if ziZone == 'BfA' and ziSubcat == 'Benthic' and  (self.db.profile.groupBenthic) then
           currSubCategory = 'Benthic'
           return kPfx .. currSubCategory.. kSfx, kCategory
+        elseif ziZone == 'Patch8_3' and (self.db.profile.groupPatch8_3) then
+          currSubCategory = 'Patch 8.3 Item'
+          return kPfx .. currSubCategory.. kSfx, 'Patch 8.3 Item'
+  
         elseif ziZone == 'Nazjatar'  or ziZone == 'Mechagon' then
           if (self.db.profile.groupRepItems) and ziSubcat=='Reputation' then
             currSubCategory = 'Reputation'

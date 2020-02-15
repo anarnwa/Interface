@@ -1,4 +1,4 @@
-## Interface: 80200
+## Interface: 80300
 ## Title: AdiBags - Archaeology
 ## Notes: Adds Archaeology items to AdiBags virtual groups
 ## Notes-ruRU: Добавляет предметы археологии в виртуальные группы AdiBags
@@ -12,10 +12,10 @@
 ## Notes-itIT: Aggiunge elementi di archeologia ai gruppi virtuali di AdiBags
 ## Notes-frFR: Ajoute des éléments d'archéologie aux groupes virtuels AdiBags
 
-## Version: 8.2-release1
+## Version: 8.3-release2
 ## Author: Paul "Myrroddin" Vandersypen
-## X-Date: 2019-06-27T13:53:07Z
-## X-License: © 2017 - 2019 Paul Vandersypen, All Rights Reserved
+## X-Date: 2020-01-28T17:47:18Z
+## X-License: © 2017 - 2020 Paul Vandersypen, All Rights Reserved
 ## X-Category: Bags & Inventory
 ## Dependencies: AdiBags
 

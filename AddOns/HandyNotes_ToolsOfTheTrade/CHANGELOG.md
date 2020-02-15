@@ -1,4 +1,8 @@
 # Changelog
+
+## Changed in v5.0.0
+* Create Waypoint bulk now separated for different professions.
+
 ## Changed in v4.1.0
 * Cauldron Spawnspot added
 

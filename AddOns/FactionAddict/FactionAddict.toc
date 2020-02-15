@@ -1,6 +1,6 @@
-## Interface: 80200
+## Interface: 80300
 ## Title: Faction Addict
-## Version: 1.56
+## Version: 1.58
 ## Author: gmz323(Greg)
 ## Notes: Provides additional faction information to your characters|nworking towards faction based achievements.
 ## SavedVariablesPerCharacter: FactionAddictConfig,FactionAddictLogVersion,FactionAddictLogData,FactionAddictLogEntries,FactionAddictConfigIsInactive

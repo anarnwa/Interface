@@ -828,7 +828,6 @@
 									self:SetFontObject("GameFontDisable");
 									self.searchIcon:SetVertexColor(0.6, 0.6, 0.6);
 								end
-								self.clearButton:Hide();
 							</OnEditFocusLost>
 							<OnEditFocusGained>
 								self:SetFontObject("ChatFontNormal");
@@ -842,7 +841,7 @@
 							</OnTextChanged>
 						</Scripts>
 						<Frames>
-							<Button name="$parentExitButton" parentKey="clearButton" hidden="true">
+							<Button name="$parentExitButton" parentKey="clearButton">
 								<Size x="17" y="17"/>
 								<Anchors>
 									<Anchor point="RIGHT" x="-3" y="0"/>
@@ -868,7 +867,7 @@
 									</OnLeave>
 									<OnMouseDown>
 										if self:IsEnabled() then
-										self.texture:SetPoint("TOPLEFT", 1, -1);
+											self.texture:SetPoint("TOPLEFT", 1, -1);
 										end
 									</OnMouseDown>
 									<OnMouseUp>

@@ -1,22 +1,16 @@
-lightweight tag e440824e99a7e41bf1eb31a588e94626e33dae29 v80300-1.1.0
+lightweight tag f664c7d04272de1cc1e3d82b3adfda7aef503bc0 v80300-1.1.1
 Author:	Ludovicus <ludovicus.maior@gmail.com>
-Date:	Tue Jan 14 17:36:10 2020 -0500
+Date:	Sun Feb 2 17:50:26 2020 -0500
 
-commit e440824e99a7e41bf1eb31a588e94626e33dae29
+commit f664c7d04272de1cc1e3d82b3adfda7aef503bc0
 Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Tue Jan 14 17:36:10 2020 -0500
+Date:   Sun Feb 2 17:50:26 2020 -0500
 
-    Retail Interface update.
+    If HBD does not know where we are, do not crash in /way list.
 
-commit 4116545b21ba3123a2a81d54a6762acf5205833e
+commit ef9538a3b6e0b3172dc657c5f83c11d121f621d5
 Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Tue Jan 14 17:35:33 2020 -0500
+Date:   Sun Feb 2 17:49:00 2020 -0500
 
-    Updated RU translations.
-
-commit b1bf5f57a361084b48b51db63c9dfe0f9f5de26f
-Author: Ludovicus <ludovicus.maior@gmail.com>
-Date:   Tue Jan 14 17:30:46 2020 -0500
-
-    Use HereBeDragons-2.02-release-6-g3a585ad for 8.3 until next update.
+    Use HereBeDragons-2.02-release-10-gd4da4b5 till next release.
 

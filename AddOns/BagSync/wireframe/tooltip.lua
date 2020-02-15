@@ -48,70 +48,84 @@ end
 function Tooltip:ColorizeUnit(unitObj, bypass, showRealm)
 	if not unitObj.data then return nil end
 	
-	if unitObj.isGuild then
-		return self:HexColor(BSYC.options.colors.first, select(2, Unit:GetUnitAddress(unitObj.name)) )
-	end
-	
 	local player = Unit:GetUnitInfo()
 	local tmpTag = ""
 	local realm = unitObj.realm
 	local realmTag = ""
 	local delimiter = " "
 	
-	--first colorize by class color
-	if bypass or BSYC.options.enableUnitClass and RAID_CLASS_COLORS[unitObj.data.class] then
-		tmpTag = self:HexColor(RAID_CLASS_COLORS[unitObj.data.class], unitObj.name)
+	if not unitObj.isGuild then
+		--first colorize by class color
+		if bypass or BSYC.options.enableUnitClass and RAID_CLASS_COLORS[unitObj.data.class] then
+			tmpTag = self:HexColor(RAID_CLASS_COLORS[unitObj.data.class], unitObj.name)
+		else
+			tmpTag = self:HexColor(BSYC.options.colors.first, unitObj.name)
+		end
+		
+		--add green checkmark
+		if unitObj.name == player.name and unitObj.realm == player.realm then
+			if bypass or BSYC.options.enableTooltipGreenCheck then
+				local ReadyCheck = [[|TInterface\RaidFrame\ReadyCheck-Ready:0|t]]
+				tmpTag = ReadyCheck.." "..tmpTag
+			end
+		end
+		
+		--add faction icons
+		if bypass or BSYC.options.enableFactionIcons then
+			local FactionIcon = [[|TInterface\Icons\Achievement_worldevent_brewmaster:18|t]]
+			
+			if unitObj.data.faction == "Alliance" then
+				FactionIcon = [[|TInterface\Icons\Inv_misc_tournaments_banner_human:18|t]]
+			elseif unitObj.data.faction == "Horde" then
+				FactionIcon = [[|TInterface\Icons\Inv_misc_tournaments_banner_orc:18|t]]
+			end
+			
+			tmpTag = FactionIcon.." "..tmpTag
+		end
+		
+		--return the bypass
+		if bypass then
+			--check for showRealm tag before returning
+			if showRealm then
+				realmTag = L.TooltipBattleNetTag..delimiter
+				tmpTag = self:HexColor(BSYC.options.colors.bnet, "["..realmTag..realm.."]").." "..tmpTag
+			end
+			return tmpTag
+		end
 	else
-		tmpTag = self:HexColor(BSYC.options.colors.first, unitObj.name)
+		--is guild
+		tmpTag = self:HexColor(BSYC.options.colors.guild, select(2, Unit:GetUnitAddress(unitObj.name)) )
 	end
 	
-	--add green checkmark
-	if unitObj.name == player.name and unitObj.realm == player.realm then
-		if bypass or BSYC.options.enableTooltipGreenCheck then
-			local ReadyCheck = [[|TInterface\RaidFrame\ReadyCheck-Ready:0|t]]
-			tmpTag = ReadyCheck.." "..tmpTag
-		end
-	end
-	
-	--add faction icons
-	if bypass or BSYC.options.enableFactionIcons then
-		local FactionIcon = [[|TInterface\Icons\Achievement_worldevent_brewmaster:18|t]]
-		
-		if unitObj.data.faction == "Alliance" then
-			FactionIcon = [[|TInterface\Icons\Inv_misc_tournaments_banner_human:18|t]]
-		elseif unitObj.data.faction == "Horde" then
-			FactionIcon = [[|TInterface\Icons\Inv_misc_tournaments_banner_orc:18|t]]
-		end
-		
-		tmpTag = FactionIcon.." "..tmpTag
-	end
-	
-	--return the bypass to display all server tags
-	if bypass then
-		if showRealm then
-			realmTag = L.TooltipBattleNetTag..delimiter
-			tmpTag = self:HexColor(BSYC.options.colors.bnet, "["..realmTag..realm.."]").." "..tmpTag
-		end
-		return tmpTag
-	end
-	
-	if BSYC.options.disableXR_BNETRealmNames then
-		realm = ""
-		delimiter = ""
+	if BSYC.options.enableXR_BNETRealmNames then
+		if BSYC.options.enableRealmAstrickName then BSYC.options.enableRealmAstrickName = false end
+		if BSYC.options.enableRealmShortName then BSYC.options.enableRealmShortName = false end
+		realm = unitObj.realm
 	elseif BSYC.options.enableRealmAstrickName then
+		if BSYC.options.enableXR_BNETRealmNames then BSYC.options.enableXR_BNETRealmNames = false end
+		if BSYC.options.enableRealmShortName then BSYC.options.enableRealmShortName = false end
 		realm = "*"
 	elseif BSYC.options.enableRealmShortName then
-		realm = string.sub(realm, 1, 5)
+		if BSYC.options.enableXR_BNETRealmNames then BSYC.options.enableXR_BNETRealmNames = false end
+		if BSYC.options.enableRealmAstrickName then BSYC.options.enableRealmAstrickName = false end
+		realm = string.sub(unitObj.realm, 1, 5)
+	else
+		realm = ""
+		delimiter = ""
 	end
 	
 	if BSYC.options.enableBNetAccountItems and not unitObj.isConnectedRealm then
 		realmTag = BSYC.options.enableRealmIDTags and L.TooltipBattleNetTag..delimiter or ""
-		tmpTag = self:HexColor(BSYC.options.colors.bnet, "["..realmTag..realm.."]").." "..tmpTag
+		if string.len(realm) > 0 or string.len(realmTag) > 0 then
+			tmpTag = self:HexColor(BSYC.options.colors.bnet, "["..realmTag..realm.."]").." "..tmpTag
+		end
 	end
 	
 	if BSYC.options.enableCrossRealmsItems and unitObj.isConnectedRealm and unitObj.realm ~= player.realm then
 		realmTag = BSYC.options.enableRealmIDTags and L.TooltipCrossRealmTag..delimiter or ""
-		tmpTag = self:HexColor(BSYC.options.colors.cross, "["..realmTag..realm.."]").." "..tmpTag
+		if string.len(realm) > 0 or string.len(realmTag) > 0 then
+			tmpTag = self:HexColor(BSYC.options.colors.cross, "["..realmTag..realm.."]").." "..tmpTag
+		end
 	end
 	
 	return tmpTag
@@ -146,7 +160,7 @@ function Tooltip:MoneyTooltip()
 	tooltip:ClearLines()
 	tooltip:ClearAllPoints()
 	tooltip:SetOwner(UIParent, "ANCHOR_NONE")
-	tooltip:SetPoint("CENTER",UIParent,"CENTER",0,0)
+	tooltip:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 	tooltip:AddLine("BagSync")
 	tooltip:AddLine(" ")
 	
@@ -290,12 +304,15 @@ function Tooltip:TallyUnits(objTooltip, link, source, isBattlePet)
 	--short the shortID and ignore all BonusID's and stats
 	if BSYC.options.enableShowUniqueItemsTotals then link = shortID end
 	
-	if isBattlePet and not objTooltip.qTip then
+	if (BSYC.options.enableExtTooltip or isBattlePet) and not objTooltip.qTip then
 		objTooltip.qTip = LibQTip:Acquire(objTooltip:GetName(), 3, "LEFT", "CENTER", "RIGHT")
 		objTooltip.qTip:Clear()
-		--tooltip:SmartAnchorTo(objTooltip)
-		objTooltip.qTip:SetPoint("TOPLEFT", objTooltip, "BOTTOMLEFT")
+		--objTooltip.qTip:SmartAnchorTo(objTooltip)
+		objTooltip.qTip:SetPoint("TOPRIGHT", objTooltip, "BOTTOMRIGHT")
 		objTooltip.qTip.OnRelease = function() objTooltip.qTip = nil end
+	elseif objTooltip.qTip then
+		--clear any item data already in the tooltip
+		objTooltip.qTip:Clear()
 	end
 	
 	--if we already did the item, then display the previous information
@@ -303,11 +320,11 @@ function Tooltip:TallyUnits(objTooltip, link, source, isBattlePet)
 		if self.__lastTally and table.getn(self.__lastTally) > 0 then
 			for i=1, table.getn(self.__lastTally) do
 				local color = BSYC.options.colors.total --this is a cover all color we are going to use
-				if not isBattlePet then
-					objTooltip:AddDoubleLine(self.__lastTally[i].colorized, self.__lastTally[i].tallyString, color.r, color.g, color.b, color.r, color.g, color.b)
-				else
-					local lineNum = objTooltip.qTip:AddLine(self.__lastTally[i].colorized, "   ", self.__lastTally[i].tallyString)
+				if BSYC.options.enableExtTooltip or isBattlePet then
+					local lineNum = objTooltip.qTip:AddLine(self.__lastTally[i].colorized, 	string.rep(" ", 4), self.__lastTally[i].tallyString)
 					objTooltip.qTip:SetLineTextColor(lineNum, color.r, color.g, color.b, 1)
+				else
+					objTooltip:AddDoubleLine(self.__lastTally[i].colorized, self.__lastTally[i].tallyString, color.r, color.g, color.b, color.r, color.g, color.b)
 				end
 			end
 			objTooltip:Show()
@@ -402,23 +419,26 @@ function Tooltip:TallyUnits(objTooltip, link, source, isBattlePet)
 	if BSYC.options.enableTooltipItemID and shortID then
 		desc = self:HexColor(BSYC.options.colors.itemid, L.TooltipItemID)
 		value = self:HexColor(BSYC.options.colors.second, shortID)
+		if isBattlePet then
+			desc = string.format("|cFFCA9BF7%s|r ", L.TooltipFakeID)
+		end
 		table.insert(unitList, 1, { colorized=desc, tallyString=value} )
 	end
 	
 	--add seperator if enabled and only if we have something to work with
-	if BSYC.options.enableTooltipSeperator and table.getn(unitList) > 0 then
+	if not objTooltip.qTip and BSYC.options.enableTooltipSeperator and table.getn(unitList) > 0 then
 		table.insert(unitList, 1, { colorized=" ", tallyString=" "} )
 	end
 	
 	--finally display it
 	for i=1, table.getn(unitList) do
 		local color = BSYC.options.colors.total --this is a cover all color we are going to use
-		if not isBattlePet then
-			objTooltip:AddDoubleLine(unitList[i].colorized, unitList[i].tallyString, color.r, color.g, color.b, color.r, color.g, color.b)
-		else
+		if BSYC.options.enableExtTooltip or isBattlePet then
 			-- Add an new line, using all columns
-			local lineNum = objTooltip.qTip:AddLine(unitList[i].colorized, "   ", unitList[i].tallyString)
+			local lineNum = objTooltip.qTip:AddLine(unitList[i].colorized, string.rep(" ", 4), unitList[i].tallyString)
 			objTooltip.qTip:SetLineTextColor(lineNum, color.r, color.g, color.b, 1)
+		else
+			objTooltip:AddDoubleLine(unitList[i].colorized, unitList[i].tallyString, color.r, color.g, color.b, color.r, color.g, color.b)
 		end
 	end
 	
@@ -472,12 +492,19 @@ function Tooltip:CurrencyTooltip(objTooltip, currencyName, currencyIcon, currenc
 	objTooltip:Show()
 end
 
+--LibExtraTip has a few more hook methods for tooltip, we don't really need them all
+
 function Tooltip:HookTooltip(objTooltip)
 
 	objTooltip:HookScript("OnHide", function(self)
 		self.__tooltipUpdated = false
 		--reset __lastLink in the addon itself not within the tooltip
 		Tooltip.__lastLink = nil
+		
+		if self.qTip then
+			LibQTip:Release(self.qTip)
+			self.qTip = nil
+		end
 	end)
 	objTooltip:HookScript("OnTooltipCleared", function(self)
 		--this gets called repeatedly on some occasions. Do not reset Tooltip.__lastLink here

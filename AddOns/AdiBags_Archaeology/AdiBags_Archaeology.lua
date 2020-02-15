@@ -32,16 +32,14 @@ L["Use: Carefully crate the restored artifact."] = "Benutzen: Das restaurierte A
 elseif LOCALE == "koKR" then
 --[[Translation missing --]]
 --[[ L["Archaeology Bought Items"] = ""--]] 
---[[Translation missing --]]
---[[ L["Archaeology Items"] = ""--]] 
+L["Archaeology Items"] = "고고학 아이템"
 --[[Translation missing --]]
 --[[ L["Filter all crates, completed artifacts, key stones, and restored artifacts into their own category."] = ""--]] 
 L["Purchasable things from vendors."] = "공급 업체가 구매할 수있는 것."
 L["Put the artifact on display."] = "유물을 전시에 놓으십시오."
 --[[Translation missing --]]
 --[[ L["Rewards from Legion Archaeology quests. Does not include toys or mounts."] = ""--]] 
---[[Translation missing --]]
---[[ L["Use: Carefully crate the restored artifact."] = ""--]] 
+L["Use: Carefully crate the restored artifact."] = "사용 효과 : 복원 된 유물을 조심스럽게 상자에 넣습니다."
 
 elseif LOCALE == "ruRU" then
 L["Archaeology Bought Items"] = "Археология куплены предметы"
@@ -59,21 +57,16 @@ L["Filter all crates, completed artifacts, key stones, and restored artifacts in
 L["Purchasable things from vendors."] = "Cosas comprables de los vendedores."
 L["Put the artifact on display."] = "Ponga el artefacto en la pantalla."
 L["Rewards from Legion Archaeology quests. Does not include toys or mounts."] = "Rewards from Legion Archaeology quests. Does not include toys or mounts."
-L["Use: Carefully crate the restored artifact."] = "Use: Carefully crate the restored artifact."
+L["Use: Carefully crate the restored artifact."] = "Uso: Embala cuidadosamente el artefacto restaurado."
 
 elseif LOCALE == "esMX" then
---[[Translation missing --]]
---[[ L["Archaeology Bought Items"] = ""--]] 
---[[Translation missing --]]
---[[ L["Archaeology Items"] = ""--]] 
---[[Translation missing --]]
---[[ L["Filter all crates, completed artifacts, key stones, and restored artifacts into their own category."] = ""--]] 
+L["Archaeology Bought Items"] = "Archaeology Bought Items"
+L["Archaeology Items"] = "Archaeology Items"
+L["Filter all crates, completed artifacts, key stones, and restored artifacts into their own category."] = "Filter all crates, completed artifacts, key stones, and restored artifacts into their own category."
 L["Purchasable things from vendors."] = "Cosas comprables de los vendedores."
 L["Put the artifact on display."] = "Ponga el artefacto en la pantalla."
---[[Translation missing --]]
---[[ L["Rewards from Legion Archaeology quests. Does not include toys or mounts."] = ""--]] 
---[[Translation missing --]]
---[[ L["Use: Carefully crate the restored artifact."] = ""--]] 
+L["Rewards from Legion Archaeology quests. Does not include toys or mounts."] = "Rewards from Legion Archaeology quests. Does not include toys or mounts."
+L["Use: Carefully crate the restored artifact."] = "Uso: Embala cuidadosamente el artefacto restaurado."
 
 elseif LOCALE == "itIT" then
 L["Archaeology Bought Items"] = "Articoli acquistati di archeologia"
@@ -87,16 +80,14 @@ L["Use: Carefully crate the restored artifact."] = "Usa: Accuratamente la cassa 
 elseif LOCALE == "ptBR" then
 --[[Translation missing --]]
 --[[ L["Archaeology Bought Items"] = ""--]] 
---[[Translation missing --]]
---[[ L["Archaeology Items"] = ""--]] 
+L["Archaeology Items"] = "Itens de Arqueologia"
 --[[Translation missing --]]
 --[[ L["Filter all crates, completed artifacts, key stones, and restored artifacts into their own category."] = ""--]] 
 L["Purchasable things from vendors."] = "Coisas compráveis de fornecedores."
 L["Put the artifact on display."] = "Coloque o artefato em exibição."
 --[[Translation missing --]]
 --[[ L["Rewards from Legion Archaeology quests. Does not include toys or mounts."] = ""--]] 
---[[Translation missing --]]
---[[ L["Use: Carefully crate the restored artifact."] = ""--]] 
+L["Use: Carefully crate the restored artifact."] = "Uso: Crie cuidadosamente o artefato restaurado."
 
 elseif LOCALE == "zhTW" then
 L["Archaeology Bought Items"] = "考古學購買物品"
@@ -118,22 +109,19 @@ L["Purchasable things from vendors."] = "从供应商处购买东西。"
 L["Put the artifact on display."] = "显示神器。"
 --[[Translation missing --]]
 --[[ L["Rewards from Legion Archaeology quests. Does not include toys or mounts."] = ""--]] 
---[[Translation missing --]]
---[[ L["Use: Carefully crate the restored artifact."] = ""--]] 
+L["Use: Carefully crate the restored artifact."] = "使用：小心地将还原的工件装箱。"
 
 elseif LOCALE == "frFR" then
 --[[Translation missing --]]
 --[[ L["Archaeology Bought Items"] = ""--]] 
---[[Translation missing --]]
---[[ L["Archaeology Items"] = ""--]] 
+L["Archaeology Items"] = "Articles d'Archéologie"
 --[[Translation missing --]]
 --[[ L["Filter all crates, completed artifacts, key stones, and restored artifacts into their own category."] = ""--]] 
 L["Purchasable things from vendors."] = "Les choses achetables des fournisseurs."
 L["Put the artifact on display."] = "Mettez l'artefact sur l'affichage."
 --[[Translation missing --]]
 --[[ L["Rewards from Legion Archaeology quests. Does not include toys or mounts."] = ""--]] 
---[[Translation missing --]]
---[[ L["Use: Carefully crate the restored artifact."] = ""--]] 
+L["Use: Carefully crate the restored artifact."] = "Utilise: Créez soigneusement l'artefact restauré."
 
 end
 

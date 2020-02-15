@@ -186,8 +186,6 @@ IPUIInstanceMapDB = {
 	[1178]={"Operation: Mechagon", 1, 120, 8},
 	[1179]={"The Eternal Palace", 2, 120, 8},
 
-	[1180]={"Ny'alotha, The Waking City", 2, 120, 8},
-
 }
 
 IPUIInstanceFactionSpecificDB = {

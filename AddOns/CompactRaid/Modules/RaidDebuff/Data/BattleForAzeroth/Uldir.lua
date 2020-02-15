@@ -1,8 +1,8 @@
 ------------------------------------------------------------
 -- Uldir.lua
 --
--- 
--- 2019/04/23
+-- Abin
+-- 2018/08/31
 ------------------------------------------------------------
 
 local module = CompactRaid:GetModule("RaidDebuff")
@@ -36,7 +36,7 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 265127, 4)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 265206, 2)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 266948)
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 265212, 4)
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 265178, 5) 
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 265178, 5) -- 2018-9-17 çÎç¿@ngacn
 
 BOSS = 2195 -- Zul
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 274195, 1)

@@ -144,16 +144,18 @@ function HLHandler:OnEnter(uiMapID, coord)
     handle_tooltip_by_coord(tooltip, uiMapID, coord)
 end
 
-local function createWaypointBulk(button, uiMapID)
+local function createWaypointBulk(button, uiMapID, pointtype)
     if TomTom then
         for coord, v in pairs(ns.points[uiMapID]) do
-            local x, y = HandyNotes:getXY(coord)
-            TomTom:AddWaypoint(uiMapID, x, y, {
-                title = get_point_info_by_coord(uiMapID, coord),
-                persistent = nil,
-                minimap = true,
-                world = true
-            })
+            if((pointtype == 'timerift' and v.timeRift) or (pointtype == 'cauldron' and v.cauldron)) then
+                local x, y = HandyNotes:getXY(coord)
+                TomTom:AddWaypoint(uiMapID, x, y, {
+                    title = get_point_info_by_coord(uiMapID, coord),
+                    persistent = nil,
+                    minimap = true,
+                    world = true
+                })
+            end
         end
     end
 end
@@ -202,12 +204,24 @@ do
                 UIDropDownMenu_AddButton(info, level)
                 wipe(info)
 
+                if ns.db.show_cauldron then
                 info.text = "Create waypoint for all cauldrons in zone"
                 info.notCheckable = 1
                 info.func = createWaypointBulk
                 info.arg1 = currentZone
+                info.arg2 = 'cauldron'
                 UIDropDownMenu_AddButton(info, level)
                 wipe(info)
+            end
+            if ns.db.show_timeRift then
+                info.text = "Create waypoint for all time rifts in zone"
+                info.notCheckable = 1
+                info.func = createWaypointBulk
+                info.arg1 = currentZone
+                info.arg2 = 'timerift'
+                UIDropDownMenu_AddButton(info, level)
+                wipe(info)
+            end
             end
 
             -- Hide menu item

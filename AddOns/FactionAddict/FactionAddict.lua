@@ -64,12 +64,12 @@
 --			function FactionAddict_OnLoad(self)
 --			
 --
---  (c) 2011-2019 gmz323(Greg)
+--  (c) 2011-2020 gmz323(Greg)
 -----------------------------------------------------------------------------
 
 
 -- Constants
-local FACTION_ADDICT_VERSION = "1.56"
+local FACTION_ADDICT_VERSION = "1.58"
 local FACTION_ADDICT_LOGGING_VERSION = 1
 local FACTION_ADDICT_LOGGING_DAYS = 20
 local GUILD_FACTION_ID = 1168

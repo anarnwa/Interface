@@ -1,32 +1,6 @@
-﻿-- Quest-o-matic
+-- Quest-o-matic
 -- Copyright (c) 2010-2016, RiskyNet <riskynet@gmail.com>
 -- All rights reserved.
-
---添加右键NPC后不自动执行的NPC ID。
-local ignoreQuestNPC = {
-	[64029] = true,  --长者林曦  (5.0 LM 锦绣谷-七星殿换战火徽记的NPC)
-	[63996] = true,  --长者廖禄  (5.0 BL 锦绣谷-双月殿换战火徽记的NPC)
-	[88570] = true,  -- 命运扭曲者提拉尔 (7.0 BL 战争之矛换既定命运印记的NPC）
-	[87391] = true,  -- 命运扭曲者赛瑞斯 (7.0 LM 风暴之盾换既定命运印记的NPC）
-	[90481] = true,  --德拉卡 (7.0 塔纳安丛林--BL 沃玛尔要塞发放日常任务的NPC)
-	[90309] = true,  --大主教伊瑞尔 (7.0 塔纳安丛林--LM 雄狮之巢发放日常任务的NPC)
-	[111243] = true, -- 大法师兰达洛克 (7.0兑换破碎命运印记的NPC-新达拉然）
-	[103792] = true, -- 格里伏塔 (DZ大厅每周交空气币的NPC）
-	[119388] = true, -- 酋长哈顿 （阿古斯交资源给随从的NPC-克罗库恩）
-	[127037] = true, -- 纳毕鲁 （阿古斯交资源给随从的NPC-玛凯雷 洞里那个）
-	[124312] = true, -- 大主教图拉扬  （阿古斯交资源给随从的NPC-飞船上）
-	[126954] = true, -- 大主教图拉扬  （阿古斯交资源给随从的NPC-另一艘飞船上）
-	[98489] = true,  -- 尾锚NPC--海难俘虏
-	[43929] = true,	 -- 布林顿4000
-	[77789] = true,	 -- 布林顿5000
-	--[101527] = true, -- 布林顿6000
-	[141584] = true, -- 祖尔温 (8.0 BL 赞达拉兑换战痕命运徽记的NPC)
-	[142063] = true, -- 特兹兰 (8.0 LM 伯拉勒斯兑换战痕命运徽记的NPC)
-}
-
-local function GetNPCID()
-	return tonumber(string.match(UnitGUID('npc') or '', 'Creature%-.-%-.-%-.-%-.-%-(.-)%-'))
-end
 
 local QOM = LibStub("AceAddon-3.0"):NewAddon("Questomatic", "AceConsole-3.0", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Questomatic", true)
@@ -57,12 +31,12 @@ local QOMLDB = LibStub("LibDataBroker-1.1"):NewDataObject("Questomatic",{
 })
 
 local dateFormats = {
-    ["%Y.%m.%d"] = "YYYY.MM.DD",
-    ["%Y/%m/%d"] = "YYYY/MM/DD",
-    ["%d.%m.%y"] = "DD.MM.YYYY",
-    ["%d/%m/%y"] = "DD/MM/YYYY",
+    ["%d.%m.%Y"] = "DD.MM.YYYY",
+    ["%d/%m/%Y"] = "DD/MM/YYYY",
     ["%m/%d/%Y"] = "MM/DD/YYYY",
-    ["%m/%d/%y"] = "MM/DD/YYYY",
+    ["%d.%m.%y"] = "DD.MM.YY",
+    ["%d/%m/%y"] = "DD/MM/YY",
+    ["%m/%d/%y"] = "MM/DD/YY",
 }
 
 local defaults = {
@@ -78,12 +52,12 @@ local defaults = {
         mapbutton = {
             hide = false,
         },
-        questlevels = false,
+        questlevels = true,
         tooltipHint = true,
-        diskey = 1,  --用Shift键  1=Alt   2=Ctrl   3=Shift
+        diskey = 2,
         record = 0,
         recorddate = nil,
-        dateformat = "%Y.%m.%d",
+        dateformat = "%d.%m.%Y",
     },
 }
 
@@ -305,20 +279,18 @@ function QOM:CheckConfigs()
     return true
 end
 
-function QOM:CheckQuestData() --不自动接
-         local npcID = GetNPCID()                   --添加NPC ID就不自动接任务
-         if (ignoreQuestNPC[npcID]) then return end  --添加NPC ID就不自动接任务
+function QOM:CheckQuestData()
     if ( not QuestIsDaily() ) and self.db.char.dailiesonly then return end
     if QuestFlagsPVP() and ( not self.db.char.pvp ) then return end
-       return true
+
+    return true
 end
 
-function QOM:QUEST_GREETING(eventName, ...) --当NPC有大于2个以上任务时，不自动读泡泡。
-        local npcID = GetNPCID()                  --添加NPC ID就不自动读2个以上泡泡
-	    if (ignoreQuestNPC[npcID]) then return end --添加NPC ID就不自动读2个以上泡泡
+function QOM:QUEST_GREETING(eventName, ...)
     if QOM:CheckConfigs() and self.db.char.greeting then
         local numact,numava = GetNumActiveQuests(), GetNumAvailableQuests()
         if numact+numava == 0 then return end
+
         if numava > 0 then
             SelectAvailableQuest(1)
         end
@@ -328,11 +300,9 @@ function QOM:QUEST_GREETING(eventName, ...) --当NPC有大于2个以上任务时
     end
 end
 
-function QOM:GOSSIP_SHOW(eventName, ...) --不自动读泡泡
-         local npcID = GetNPCID()                  --添加NPC ID就不自动读泡泡
-         if (ignoreQuestNPC[npcID]) then return end --添加NPC ID就不自动读泡泡
+function QOM:GOSSIP_SHOW(eventName, ...)
     if QOM:CheckConfigs() and self.db.char.greeting then
-        if GetGossipAvailableQuests() then   --这一行，如果把if写成elseif，那么有泡泡的NPC界面就不会自动接/完成任务了。
+        if GetGossipAvailableQuests() then
             SelectGossipAvailableQuest(1)
         elseif GetGossipActiveQuests() then
             SelectGossipActiveQuest(1)
@@ -341,32 +311,28 @@ function QOM:GOSSIP_SHOW(eventName, ...) --不自动读泡泡
 end
 
 function QOM:QUEST_DETAIL(eventName, ...)
-         local npcID = GetNPCID()                  --未知
-         if (ignoreQuestNPC[npcID]) then return end --未知
+    if IsQuestIgnored() then
+        return
+    end
+
     if QOM:CheckConfigs() and QOM:CheckQuestData() and self.db.char.accept then
         AcceptQuest()
     end
 end
 
 function QOM:QUEST_ACCEPT_CONFIRM(eventName, ...)
-         local npcID = GetNPCID()                  --未知
-         if (ignoreQuestNPC[npcID]) then return end --未知
     if QOM:CheckConfigs() and self.db.char.escort then
         ConfirmAcceptQuest()
     end
 end
 
-function QOM:QUEST_PROGRESS(eventName, ...) --不自动下一步
-         local npcID = GetNPCID()                  --添加NPC ID就不自动下一步 比如阿古斯交资源，对话NPC，会先弹出来说明要交150资源窗口，下一步是继续，此条就是这是个下一步。
-	     if (ignoreQuestNPC[npcID]) then return end --添加NPC ID就不自动下一步 比如阿古斯交资源，对话NPC，会先弹出来说明要交150资源窗口，下一步是继续，此条就是这是个下一步。
+function QOM:QUEST_PROGRESS(eventName, ...)
     if QOM:CheckConfigs() and self.db.char.complete then
         CompleteQuest()
     end
 end
 
-function QOM:QUEST_COMPLETE(eventName, ...)  --不自动交，完成任务
-        local npcID = GetNPCID()                   --添加NPC ID就不自动交，完成任务
-	    if (ignoreQuestNPC[npcID]) then return end --添加NPC ID就不自动交，完成任务
+function QOM:QUEST_COMPLETE(eventName, ...)
     if QOM:CheckConfigs() and self.db.char.complete then
         if GetNumQuestChoices() == 0 then
             GetQuestReward(QuestFrameRewardPanel.itemChoice)
@@ -386,7 +352,9 @@ function QOM:QUEST_LOG_UPDATE(eventName, ...)
     QOMLDB.text = "Q: |cffffd200" .. numQuests .. "|r D: |cffffd200" .. dailyComplete .. "|r R: |cffffd200" .. self.db.char.record
 end
 
---Broker tooltip section
+--[[
+Broker tooltip section
+]]
 function QOMLDB.OnEnter(self)
     if tooltip then
         LibQTip:Release(tooltip)

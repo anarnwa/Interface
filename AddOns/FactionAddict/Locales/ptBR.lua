@@ -81,7 +81,7 @@ FactionAddictLocalization["ABOUT_TXT"] = "Faction Addict é um addon que ajuda o
 
 -- Info Window
 FactionAddictLocalization["LAUNCH_WATCH_PANEL_TXT"] = "Abrir Painel de Visualização"
-FactionAddictLocalization["FACTION_URL_TXT"] = "http://pt.wowhead.com/faction="
+FactionAddictLocalization["FACTION_URL_TXT"] = "https://pt.wowhead.com/faction="
 FactionAddictLocalization["PCT_TO_EXALTED_TXT"] = "% para Exaltado: "
 FactionAddictLocalization["PCT_TO_REWARD_TXT"] = "Pct to Next Reward: "
 FactionAddictLocalization["CATEGORY_TXT"] = "Categoria: "

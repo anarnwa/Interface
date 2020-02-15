@@ -1,9 +1,0 @@
-------------------------------------------------------------------------
-r24 | myrroddin | 2019-06-27 13:53:07 +0000 (Thu, 27 Jun 2019) | 2 lines
-Changed paths:
-   M /trunk/AdiBags_Archaeology.toc
-
-- Bump ToC for patch 8.2
-- Update localization (Italian and traditional Chinese)
-------------------------------------------------------------------------
-

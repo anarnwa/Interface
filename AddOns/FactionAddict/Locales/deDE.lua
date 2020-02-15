@@ -1,13 +1,13 @@
 
 
 -- UTF-8 encoding table and Unicode characters:
-	-- ü = \195\188
-	-- Ü = \195\156
-	-- ä = \195\164
-	-- Ä = \195\132
-	-- ö = \195\182
-	-- Ö = \195\150
-	-- ß = \195\159
+	-- ï¿½ = \195\188
+	-- ï¿½ = \195\156
+	-- ï¿½ = \195\164
+	-- ï¿½ = \195\132
+	-- ï¿½ = \195\182
+	-- ï¿½ = \195\150
+	-- ï¿½ = \195\159
 
 
 if GetLocale() == "deDE" then
@@ -94,7 +94,7 @@ FactionAddictLocalization["ABOUT_TXT"] = "Faction Addict ist ein Addon, das dem 
 
 -- Info Window
 FactionAddictLocalization["LAUNCH_WATCH_PANEL_TXT"] = "\195\150ffne Informations Panel"
-FactionAddictLocalization["FACTION_URL_TXT"] = "http://de.wowhead.com/faction="
+FactionAddictLocalization["FACTION_URL_TXT"] = "https://de.wowhead.com/faction="
 FactionAddictLocalization["PCT_TO_EXALTED_TXT"] = "Proz. bis Erf\195\188rchtig: "
 FactionAddictLocalization["PCT_TO_REWARD_TXT"] = "Pct to Next Reward: "
 FactionAddictLocalization["CATEGORY_TXT"] = "Kategorie: "

@@ -4,8 +4,8 @@
 -- Desc: Addon for World of Warcraft
 --
 -- Author: gmz323(Greg)
--- current version: v1.56
--- (c) 2011-2019
+-- current version: v1.58
+-- (c) 2011-2020
 --
 =============================================================================
 
@@ -20,12 +20,12 @@ Use slash commands /fa or /factionaddict or click the new button on the upper ri
 
 Download location:
 ==================
-* wowinterface - http://goo.gl/NtOjh
-* curse - http://goo.gl/MNoKm
+* wowinterface - http://bit.ly/2smMui8
+* curse - http://bit.ly/2QSXy04
 
 Official Homepage:
 ==================
-http://goo.gl/R3Ocg
+http://bit.ly/3ab6bKQ
 
 Usage:
 ======
@@ -68,6 +68,16 @@ My Other Addons:
 
 Changelog:
 ==========
+
+v1.58 (2020-01-16)
+------------------
+* Bugfix: When using search box - clear button will now work properly.
+
+v1.57 (2020-01-14)
+------------------
+* Update for 8.3 client.
+* Added faction: Uldum Accord (alliance and horde)
+* Added faction: Rajani (alliance and horde)
 
 v1.56 (2019-06-26)
 ------------------

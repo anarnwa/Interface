@@ -1,4 +1,4 @@
-﻿## Interface: 70000
+## Interface: 70000
 ## Title: HandyNotes_PandariaTreasures
 ## Version: 1.06
 ## Notes: Shows location of treasures, rares and helps filling some Achievements in Pandaria
@@ -13,4 +13,3 @@ embeds.xml
 #@end-no-lib-strip@
 
 HandyNotes_PandariaTreasures.lua
-## AU_Info:{"sv":false,"time":"1472248405","name":"handy-notes-pandaria-treasures","loctm":1543236064,"wt":"3wc"}

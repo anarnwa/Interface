@@ -1,12 +1,12 @@
-lightweight tag 42d12a2fe6361af2bd6451a7ab04b77436063b4a v1.0.5
+lightweight tag 6b3cc430be73ca8f2b3c0db4efff8e752f323991 v1.0.6
 Author:	Lown Ignitus <lownignitus@gmail.com>
-Date:	Sat Jul 6 15:40:02 2019 -0700
+Date:	Tue Sep 24 13:16:21 2019 -0700
 
-commit 42d12a2fe6361af2bd6451a7ab04b77436063b4a
+commit 6b3cc430be73ca8f2b3c0db4efff8e752f323991
 Author: Lown Ignitus <lownignitus@gmail.com>
-Date:   Sat Jul 6 15:40:02 2019 -0700
+Date:   Tue Sep 24 13:16:21 2019 -0700
 
-    v1.0.5
+    v1.0.6
     
-    Added koKR Localization from Comiluv
+    TOC update for 8.2.5
 

@@ -1,4 +1,4 @@
-## Interface: 80200
+## Interface: 80300
 ## Title: Easy Scrap
 ## Notes: Adds all eligible gear to the scrapper interface.
 ## Author: Motig

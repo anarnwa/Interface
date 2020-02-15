@@ -1,15 +1,20 @@
+02/06/2020 version 4.10.1
+- Added Uldum and Vale of Eternal Blossom targets to new Battle for Azeroth target menu.
+- Moved Nazjatar and Mechagon targets to the Battle for Azeroth target menu.
+- Fix for occasional lua error when caging a pet.
+
 01/20/2020 version 4.10.0
-- Added Blackrock Depths to target menu
+- Added Blackrock Depths to target menu.
 - Added experimental option 'Import Team Tabs Too' under Teams Options: When importing teams backed up via 'Backup All Teams', teams will be returned to the tabs they were in at the time of backup. (Please read the tooltip in options.)
-- Fix for Automatically Level New Pets option not working in 8.3
-- toc update for 8.3 client
+- Fix for Automatically Level New Pets option not working in 8.3.
+- toc update for 8.3 client.
 
 10/05/2019 version 4.9.13
-- Fix for unwrapping pets
+- Fix for unwrapping pets.
 
 09/26/2019 version 4.9.12
 - Clicking the "alert" toast when you uncage a pet will search for the pet in Rematch.
-- toc updated for 8.2.5 client
+- toc updated for 8.2.5 client.
 
 08/10/2019 version 4.9.11
 - Added Postmaster Malown to Stratholme targets.

@@ -1,4 +1,4 @@
-﻿## Interface: 80000
+## Interface: 80000
 ## Title: QuakeAssist
 ## Version: 1.10
 ## Author: Abin
@@ -13,4 +13,3 @@ Localization.lua
 Core.lua
 MainFrame.lua
 OptionFrame.lua
-## AU_Info:{"sv":false,"time":"1541092890","name":"quakeassist","loctm":1541246801,"wt":null}

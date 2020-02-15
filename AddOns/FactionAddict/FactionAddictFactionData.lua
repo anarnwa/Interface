@@ -4,7 +4,7 @@
 --  This file is used to contain basic info about each faction. Including an
 --  icon, alliance/horde, faction id, category and type.
 --
---  (c) 2011-2019 gmz323(Greg)
+--  (c) 2011-2020 gmz323(Greg)
 -----------------------------------------------------------------------------
 
 
@@ -210,6 +210,9 @@ faFactionDataRow[2103]  = 187;
 faFactionDataRow[2391]  = 188;
 faFactionDataRow[2373]  = 189;
 faFactionDataRow[2400]  = 190;
+
+faFactionDataRow[2415]  = 191;
+faFactionDataRow[2417]  = 192;
 
 
 faFactionData = {
@@ -609,6 +612,11 @@ faFactionData = {
 			7,2,20},
 	{2400, "Interface\\ICONS\\inv_sharkraymount_1",
 			7,1,20},
+	-- 8.3.0
+	{2415, "Interface\\ICONS\\inv_inscription_83_contract_rajani",
+			7,0,20},
+	{2417, "Interface\\ICONS\\inv_inscription_83_contract_uldumaccord",
+			7,0,20},
 };
 
 local faFactionDataDesc = { -- column descriptions - info only, no need to localize

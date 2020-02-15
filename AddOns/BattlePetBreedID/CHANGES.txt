@@ -1,7 +1,7 @@
-changeset:   206:a4eb7d5fec93
-tag:         v1.15.0
+changeset:   208:fa091e2b60fe
+tag:         v1.15.1
 user:        MMOSimca
-date:        Wed Jan 15 19:25:17 2020 -0500
-summary:     Updated base stats, breed data, and TOC for Patch 8.3.0.
+date:        Thu Jan 30 17:44:37 2020 -0500
+summary:     Added additional breed data for Patch 8.3.0.
 
 

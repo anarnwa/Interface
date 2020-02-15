@@ -45,7 +45,6 @@ local function get(info)
 			return false
 		end
 	end
-	
 end
 
 local function set(info, arg1, arg2, arg3, arg4)
@@ -64,13 +63,11 @@ local function set(info, arg1, arg2, arg3, arg4)
 	   SaveBindings(GetCurrentBindingSet())
 	else
 		BSYC.options[c] = arg1
+
 		if p == "minimap" then
 			if arg1 then BagSync_MinimapButton:Show() else BagSync_MinimapButton:Hide() end
-		else
-			--BSYC:ResetTooltip()
 		end
 	end
-	
 end
 
 options.args.heading = {
@@ -97,8 +94,19 @@ options.args.main = {
 			set = set,
 			arg = "main.enableTooltips",
 		},
-		enabletooltipsearchonly = {
+		enableexternaltooltip = {
 			order = 2,
+			type = "toggle",
+			name = L.EnableExtTooltip,
+			width = "full",
+			descStyle = "hide",
+			get = get,
+			set = set,
+			arg = "main.enableExtTooltip",
+			disabled = function() return not BSYC.options["enableTooltips"] end,
+		},
+		enabletooltipsearchonly = {
+			order = 3,
 			type = "toggle",
 			name = L.DisplayTooltipOnlySearch,
 			width = "full",
@@ -108,7 +116,7 @@ options.args.main = {
 			arg = "main.tooltipOnlySearch",
 		},
 		enableminimap = {
-			order = 3,
+			order = 4,
 			type = "toggle",
 			name = L.DisplayMinimap,
 			width = "full",
@@ -118,7 +126,7 @@ options.args.main = {
 			arg = "minimap.enableMinimap",
 		},
 		enableversiontext = {
-			order = 4,
+			order = 5,
 			type = "toggle",
 			name = L.EnableLoginVersionInfo,
 			width = "full",
@@ -128,7 +136,7 @@ options.args.main = {
 			arg = "main.enableLoginVersionInfo",
 		},
 		keybindblacklist = {
-			order = 5,
+			order = 6,
 			type = "keybinding",
 			name = L.KeybindBlacklist,
 			width = "full",
@@ -138,7 +146,7 @@ options.args.main = {
 			arg = "keybind.BAGSYNCBLACKLIST",
 		},
 		keybindcurrency = {
-			order = 6,
+			order = 7,
 			type = "keybinding",
 			name = L.KeybindCurrency,
 			width = "full",
@@ -148,7 +156,7 @@ options.args.main = {
 			arg = "keybind.BAGSYNCCURRENCY",
 		},
 		keybindgold = {
-			order = 7,
+			order = 8,
 			type = "keybinding",
 			name = L.KeybindGold,
 			width = "full",
@@ -158,7 +166,7 @@ options.args.main = {
 			arg = "keybind.BAGSYNCGOLD",
 		},
 		keybindprofessions = {
-			order = 8,
+			order = 9,
 			type = "keybinding",
 			name = L.KeybindProfessions,
 			width = "full",
@@ -168,7 +176,7 @@ options.args.main = {
 			arg = "keybind.BAGSYNCPROFESSIONS",
 		},
 		keybindprofiles = {
-			order = 9,
+			order = 10,
 			type = "keybinding",
 			name = L.KeybindProfiles,
 			width = "full",
@@ -178,7 +186,7 @@ options.args.main = {
 			arg = "keybind.BAGSYNCPROFILES",
 		},
 		keybindsearch = {
-			order = 10,
+			order = 11,
 			type = "keybinding",
 			name = L.KeybindSearch,
 			width = "full",
@@ -196,178 +204,240 @@ options.args.display = {
 	name = L.ConfigDisplay,
 	desc = L.ConfigTooltipHeader,
 	args = {
-		seperator = {
+		groupstorage = {
 			order = 1,
-			type = "toggle",
-			name = L.DisplayLineSeperator,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableTooltipSeperator",
+			type = 'group',
+			name = L.DisplayTooltipStorage,
+			guiInline = true,
+			args = {
+				mailbox = {
+					order = 0,
+					type = "toggle",
+					name = L.DisplayMailbox,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableMailbox",
+				},
+				auction = {
+					order = 1,
+					type = "toggle",
+					name = L.DisplayAuctionHouse,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableAuction",
+				},
+				guildbank = {
+					order = 2,
+					type = "toggle",
+					name = L.DisplayGuildBank,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableGuild",
+				},
+			}
 		},
-		total = {
+		groupextra = {
 			order = 2,
-			type = "toggle",
-			name = L.DisplayTotal,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.showTotal",
+			type = 'group',
+			name = L.DisplayTooltipExtra,
+			guiInline = true,
+			args = {
+				seperator = {
+					order = 0,
+					type = "toggle",
+					name = L.DisplayLineSeperator,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableTooltipSeperator",
+				},
+				class = {
+					order = 1,
+					type = "toggle",
+					name = L.DisplayClassColor,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableUnitClass",
+				},
+				itemid = {
+					order = 2,
+					type = "toggle",
+					name = L.DisplayItemID,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableTooltipItemID",
+				},
+				total = {
+					order = 3,
+					type = "toggle",
+					name = L.DisplayTotal,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.showTotal",
+				},
+				guildgoldtooltip = {
+					order = 4,
+					type = "toggle",
+					name = L.DisplayGuildGoldInGoldTooltip,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.showGuildInGoldTooltip",
+					disabled = function() return not BSYC.options["enableGuild"] end,
+				},
+				faction = {
+					order = 5,
+					type = "toggle",
+					name = L.DisplayFaction,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableFaction",
+				},
+				guildcurrentcharacter = {
+					order = 6,
+					type = "toggle",
+					name = L.DisplayGuildCurrentCharacter,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.showGuildCurrentCharacter",
+				},
+			}
 		},
-		guildbank = {
+		grouptags = {
 			order = 3,
-			type = "toggle",
-			name = L.DisplayGuildBank,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableGuild",
+			type = 'group',
+			name = L.DisplayTooltipTags,
+			guiInline = true,
+			args = {
+				greencheck = {
+					order = 0,
+					type = "toggle",
+					name = string.format(L.DisplayGreenCheck, ReadyCheck),
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableTooltipGreenCheck",
+				},
+				factionicon = {
+					order = 1,
+					type = "toggle",
+					name = L.DisplayFactionIcons..factionString,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableFactionIcons",
+				},
+				realmidtags = {
+					order = 2,
+					type = "toggle",
+					name = L.DisplayRealmIDTags,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableRealmIDTags",
+					disabled = function() return not BSYC.options["enableCrossRealmsItems"] and not BSYC.options["enableBNetAccountItems"] end,
+				},
+			}
 		},
-		guildname = {
+		groupaccountwide = {
 			order = 4,
-			type = "toggle",
-			name = L.DisplayGuildName,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.showGuildNames",
-		},
-		guildgoldtooltip = {
-			order = 5,
-			type = "toggle",
-			name = L.DisplayGuildGoldInGoldTooltip,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.showGuildInGoldTooltip",
-		},
-		faction = {
-			order = 6,
-			type = "toggle",
-			name = L.DisplayFaction,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableFaction",
-		},
-		class = {
-			order = 7,
-			type = "toggle",
-			name = L.DisplayClassColor,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableUnitClass",
-		},
-		mailbox = {
-			order = 8,
-			type = "toggle",
-			name = L.DisplayMailbox,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableMailbox",
-		},
-		auction = {
-			order = 9,
-			type = "toggle",
-			name = L.DisplayAuctionHouse,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableAuction",
-		},
-		crossrealm = {
-			order = 10,
-			type = "toggle",
-			name = L.DisplayCrossRealm,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableCrossRealmsItems",
-		},
-		battlenet = {
-			order = 11,
-			type = "toggle",
-			name = L.DisplayBNET,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableBNetAccountItems",
-		},
-		itemid = {
-			order = 12,
-			type = "toggle",
-			name = L.DisplayItemID,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableTooltipItemID",
-		},
-		greencheck = {
-			order = 13,
-			type = "toggle",
-			name = string.format(L.DisplayGreenCheck, ReadyCheck),
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableTooltipGreenCheck",
-		},
-		realmidtags = {
-			order = 14,
-			type = "toggle",
-			name = L.DisplayRealmIDTags,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableRealmIDTags",
-		},
-		realmastrick = {
-			order = 15,
-			type = "toggle",
-			name = L.DisplayRealmAstrick,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableRealmAstrickName",
-		},
-		realmshortname = {
-			order = 16,
-			type = "toggle",
-			name = L.DisplayShortRealmName,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableRealmShortName",
-		},
-		factionicon = {
-			order = 17,
-			type = "toggle",
-			name = L.DisplayFactionIcons..factionString,
-			width = "full",
-			descStyle = "hide",
-			get = get,
-			set = set,
-			arg = "display.enableFactionIcons",
+			type = 'group',
+			name = L.DisplayTooltipAccountWide,
+			guiInline = true,
+			args = {
+				crossrealm = {
+					order = 0,
+					type = "toggle",
+					name = L.DisplayCrossRealm,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableCrossRealmsItems",
+				},
+				battlenet = {
+					order = 1,
+					type = "toggle",
+					name = L.DisplayBNET,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableBNetAccountItems",
+				},
+				realmnames = {
+					order = 2,
+					type = "toggle",
+					name = L.DisplayRealmNames,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableXR_BNETRealmNames",
+					disabled = function() 
+						if not BSYC.options["enableCrossRealmsItems"] and not BSYC.options["enableBNetAccountItems"] then
+							return true
+						end
+						return BSYC.options["enableRealmAstrickName"] or BSYC.options["enableRealmShortName"]
+					end,
+				},
+				realmastrick = {
+					order = 3,
+					type = "toggle",
+					name = L.DisplayRealmAstrick,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableRealmAstrickName",
+					disabled = function() 
+						if not BSYC.options["enableCrossRealmsItems"] and not BSYC.options["enableBNetAccountItems"] then
+							return true
+						end
+						return BSYC.options["enableXR_BNETRealmNames"] or BSYC.options["enableRealmShortName"]
+					end,
+				},
+				realmshortname = {
+					order = 4,
+					type = "toggle",
+					name = L.DisplayShortRealmName,
+					width = "full",
+					descStyle = "hide",
+					get = get,
+					set = set,
+					arg = "display.enableRealmShortName",
+					disabled = function() 
+						if not BSYC.options["enableCrossRealmsItems"] and not BSYC.options["enableBNetAccountItems"] then
+							return true
+						end
+						return BSYC.options["enableXR_BNETRealmNames"] or BSYC.options["enableRealmAstrickName"]
+					end,
+				},
+			}
 		},
 		showuniqueitemsgroup = {
-			order = 18,
+			order = 5,
 			name = L.DisplayShowUniqueItemsTotalsTitle,
 			type = 'group',
 			guiInline = true,
@@ -545,6 +615,34 @@ options.args.faq = {
 				  fontSize = "medium",
 				  type = "description",
 				  name = L.FAQ_Question_4_p1,
+				},
+			}
+		},
+		question_5 = {
+			order = 5,
+			name = L.FAQ_Question_5,
+			type = 'group',
+			guiInline = true,
+			args = {
+				title = {
+				  order = 0,
+				  fontSize = "medium",
+				  type = "description",
+				  name = L.FAQ_Question_5_p1,
+				},
+			}
+		},
+		question_6 = {
+			order = 6,
+			name = L.FAQ_Question_6,
+			type = 'group',
+			guiInline = true,
+			args = {
+				title = {
+				  order = 0,
+				  fontSize = "medium",
+				  type = "description",
+				  name = L.FAQ_Question_6_p1,
 				},
 			}
 		},

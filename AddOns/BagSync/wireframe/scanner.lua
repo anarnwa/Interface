@@ -142,10 +142,12 @@ function Scanner:GetXRGuild()
 end
 
 function Scanner:SaveGuildBank()
-	if not IsInGuild() then return end
+	if not Unit.atGuildBank then return end
+	if Scanner.isScanningGuild then return end
 
 	local numTabs = GetNumGuildBankTabs()
 	local slotItems = {}
+	Scanner.isScanningGuild = true
 	
 	for tab = 1, numTabs do
 		local name, icon, isViewable, canDeposit, numWithdrawals, remainingWithdrawals = GetGuildBankTabInfo(tab)
@@ -153,15 +155,20 @@ function Scanner:SaveGuildBank()
 		if isViewable then
 			for slot = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 				local link = GetGuildBankItemLink(tab, slot)
-				local speciesID, level, breedQuality, maxHealth, power, speed, name = GameTooltip:SetGuildBankItem(tab, slot)
 				if link then
+
+					local speciesID
+					local itemName, itemLink, _, _, _, itemType, itemSubType = GetItemInfo(link)
+					local _, count = GetGuildBankItemInfo(tab, slot)
+					--no itemid is returned unlike scanning for mailbox.  So I can't check for itemid 82800, pet cage
+					if itemType and itemSubType and itemType == "Battle Pets" or itemSubType == "BattlePet" then
+						speciesID = GameTooltip:SetGuildBankItem(tab, slot)
+					end
 					if speciesID then
 						link = BSYC:CreateFakeBattlePetID(nil, nil, speciesID)
 					else
 						link = BSYC:ParseItemLink(link, count)
 					end
-					
-					local _, count = GetGuildBankItemInfo(tab, slot)
 					table.insert(slotItems, link)
 				end
 			end
@@ -175,6 +182,8 @@ function Scanner:SaveGuildBank()
 		guildDB.faction = Unit:GetUnitInfo().faction
 		guildDB.realmKey = Unit:GetRealmKey()
 	end
+	
+	Scanner.isScanningGuild = false
 end
 
 function Scanner:SaveMailbox()
@@ -194,14 +203,22 @@ function Scanner:SaveMailbox()
 	--scan the inbox
 	if (numInbox > 0) then
 		for mailIndex = 1, numInbox do
-			local hasCooldown, speciesID, level, breedQuality, maxHealth, power, speed, name = GameTooltip:SetInboxItem(mailIndex)
 			for i = 1, ATTACHMENTS_MAX_RECEIVE do
 				local name, itemID, itemTexture, count, quality, canUse = GetInboxItem(mailIndex, i)
 				local link = GetInboxItemLink(mailIndex, i)
+				local byPass = false
 				if name and link then
-					if speciesID then
-						link = BSYC:CreateFakeBattlePetID(nil, nil, speciesID)
-					else
+					--check for battle pet cages
+					if itemID and itemID == 82800 then
+						local hasCooldown, speciesID, level, breedQuality, maxHealth, power, speed, name = GameTooltip:SetInboxItem(mailIndex)
+						GameTooltip:Hide()
+						
+						if speciesID then
+							link = BSYC:CreateFakeBattlePetID(nil, nil, speciesID)
+							byPass = true
+						end
+					end
+					if not byPass then
 						link = BSYC:ParseItemLink(link, count)
 					end
 					table.insert(slotItems, link)
@@ -211,7 +228,7 @@ function Scanner:SaveMailbox()
 	end
 	
 	BSYC.db.player.mailbox = slotItems
-	
+
 	self.isCheckingMail = false
 end
 
@@ -221,7 +238,7 @@ function Scanner:SaveAuctionHouse()
 
 	local slotItems = {}
 	local numActiveAuctions = C_AuctionHouse.GetNumOwnedAuctions()
-
+		
 	--scan the auction house
 	if (numActiveAuctions > 0) then
 		for ahIndex = 1, numActiveAuctions do

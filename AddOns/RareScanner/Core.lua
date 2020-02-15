@@ -29,8 +29,8 @@ local ETERNAL_COMPLETED = -1
 local DEBUG_MODE = false
 
 -- Config constants
-local CURRENT_DB_VERSION = 8
-local CURRENT_LOOT_DB_VERSION = 21
+local CURRENT_DB_VERSION = 9
+local CURRENT_LOOT_DB_VERSION = 26
 
 -- Hard reset versions
 local CURRENT_ADDON_VERSION = 600
@@ -142,6 +142,7 @@ local PROFILE_DEFAULTS = {
 local scanner_button = _G.CreateFrame("Button", "scanner_button", nil, "SecureActionButtonTemplate")
 scanner_button:Hide();
 scanner_button:SetFrameStrata("MEDIUM")
+scanner_button:SetFrameLevel(200)
 scanner_button:SetSize(200, 50)
 scanner_button:SetScale(0.85)
 scanner_button:SetAttribute("type", "macro")
@@ -310,6 +311,7 @@ scanner_button:RegisterEvent("LOOT_OPENED")
 
 -- Avoid addon on cinematics
 scanner_button:RegisterEvent("CINEMATIC_START")
+scanner_button:RegisterEvent("CINEMATIC_STOP")
 
 -- Chat messages
 scanner_button:RegisterEvent("CHAT_MSG_MONSTER_YELL")
@@ -319,6 +321,7 @@ scanner_button:RegisterEvent("CHAT_MSG_MONSTER_EMOTE")
 scanner_button:RegisterEvent("QUEST_TURNED_IN")
 
 -- Captures all events
+local isCinematicPlaying = false
 scanner_button:SetScript("OnEvent", function(self, event, ...)
 	-- Playe login
 	if (event == "PLAYER_LOGIN") then
@@ -641,9 +644,12 @@ scanner_button:SetScript("OnEvent", function(self, event, ...)
 		end		
 	-- Others
 	elseif (event == "CINEMATIC_START") then
+		isCinematicPlaying = true
 		if (self:IsVisible()) then
 			self:HideButton()
 		end
+	elseif (event == "CINEMATIC_STOP") then
+		isCinematicPlaying = false
 	else
 		return
 	end
@@ -860,10 +866,14 @@ function scanner_button:CheckNotificationCache(self, vignetteInfo, isNavigating)
 	end
 	
 	-- Options disabled/enabled
-	if (iconid) then	
-		-- disable ALL alerts in instances
+	if (iconid) then
 		local isInstance, instanceType = IsInInstance()
-		if (isInstance == true and not private.db.general.scanInstances) then
+		
+		-- disable ALL alerts while cinematic is playing
+		if (isCinematicPlaying) then
+			return
+		-- disable ALL alerts in instances
+		elseif (isInstance == true and not private.db.general.scanInstances) then
 			return
 		-- disable alerts while flying
 		elseif (UnitOnTaxi("player") and not private.db.general.scanOnTaxi) then
@@ -907,14 +917,11 @@ function scanner_button:CheckNotificationCache(self, vignetteInfo, isNavigating)
 					RareScanner:AddTomtomWaypoint(vignetteInfo)
 				end
 	
-				-- FIX Blubbery Blobule (NPCID = 160841) multipoping
-				if (already_notified[vignetteInfo.id] or (npcID == 160841 and already_notified[160841])) then
+				if (already_notified[vignetteInfo.id]) then
 					return
 				else
 					already_notified[vignetteInfo.id] = true
-					if (npcID == 160841) then
-						already_notified[160841] = true
-					end
+					
 					-- flashes the wow icon in windows bar
 					FlashClientIcon()
 					self:PlaySoundAlert(iconid)
@@ -949,10 +956,16 @@ function scanner_button:CheckNotificationCache(self, vignetteInfo, isNavigating)
 	
 	-- Check if we have found the NPC in the last 5 minutes
 	if (not isNavigating) then
-		if (already_notified[vignetteInfo.id]) then
+		-- FIX Blubbery Blobule/Unstable Glob (NPCID = 160841/161407) multipoping
+		if (already_notified[vignetteInfo.id] or (npcID == 160841 and already_notified[160841]) or (npcID == 161407 and already_notified[161407])) then
 			return
 		else
 			already_notified[vignetteInfo.id] = true
+			if (npcID == 160841) then
+				already_notified[160841] = true
+			elseif (npcID == 161407) then
+				already_notified[161407] = true
+			end
 		end
 	end
 
@@ -1047,7 +1060,13 @@ function scanner_button:CheckNotificationCache(self, vignetteInfo, isNavigating)
 
 	-- timer to reset already found NPC
 	C_Timer.After(RESCAN_TIMER, function() 
-		already_notified[vignetteInfo.id] = false 
+		already_notified[vignetteInfo.id] = false
+		-- FIX Blubbery Blobule (NPCID = 160841) multipoping
+		if (npcID == 160841) then
+			already_notified[160841] = false
+		elseif (npcID == 161407) then
+			already_notified[161407] = false
+		end
 		private.dbglobal.recentlySeen[npcID] = nil
 	end)
 end
@@ -1403,6 +1422,11 @@ function RareScanner:Test()
 	end
 	
 	RareScanner:PrintMessage("test launched")
+end
+
+function RareScanner:ResetPosition()
+	scanner_button:ClearAllPoints()
+	scanner_button:SetPoint("BOTTOM", UIParent, 0, 128)
 end
 
 ----------------------------------------------

@@ -1,17 +1,10 @@
-lightweight tag abdfb2409a681eb8a094a43baa3b384bd343c5e5 1.1.8
+lightweight tag ced13f978c11cab650511fcf67a283c04ef1a4c3 1.1.9
 Author:	Buds <mrbouyou@gmail.com>
-Date:	Tue Jul 23 12:31:30 2019 +0200
+Date:	Tue Oct 22 12:46:25 2019 +0200
 
-commit abdfb2409a681eb8a094a43baa3b384bd343c5e5
+commit ced13f978c11cab650511fcf67a283c04ef1a4c3
 Author: Buds <mrbouyou@gmail.com>
-Date:   Tue Jul 23 12:31:30 2019 +0200
+Date:   Tue Oct 22 12:46:25 2019 +0200
 
-    remove load and demand
-
-commit 06466f739c6d2d22713919211c27cb62dd37d445
-Author: Buds <mrbouyou@gmail.com>
-Date:   Mon Jul 22 20:12:46 2019 +0200
-
-    moved event listener to Init function
-    Init is automatically called on first GetUnitFrame
+    don't delay ScanFrames on init fixes #7
 
