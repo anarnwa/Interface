@@ -57,9 +57,9 @@ function setFilter:GetOptions()
           type = 'description',
           order = 10,
         }, 
-        groupBenthic = {
-          name = L['Benthic BoA Items'],
-          desc = L['Group Benthic Bind on Account gear tokens seperately.'],
+        groupBoATokens = {
+          name = L['BoA Gear Tokens'],
+          desc = L['Group Benthic and Black Empire Bind on Account gear tokens seperately.'],
           type = 'toggle',
           order = 27,
         },
@@ -115,7 +115,13 @@ function setFilter:Filter(slotData)
   bagItemID = tonumber(slotData.itemId)
   -- Check if Heart of Azeroth Essence, and grouping for them selected
   local item = Item:CreateFromBagAndSlot(slotData.bag, slotData.slot)
-  local _,_, itemRarity, _,_, itemType, itemSubType, _,_,_,_,_,_,_,_ = GetItemInfo(slotData.itemId)
+  local itemName,_, itemRarity, _,_, itemType, itemSubType, _,_,_,_,_,_,_,_ = GetItemInfo(slotData.itemId)
+      --filter black empire name/BENTHIC
+  if (self.db.profile.groupBoATokens) and ((strfind(itemName,'Benthic ',1) ~= nil or strfind(itemName,'Black Empire ',1) ~= nil)) then
+    currSubCategory = 'Current BoA'
+    return kPfx .. currSubCategory.. kSfx, kCategory
+end
+
   if (self.db.profile.groupEssences) and (itemType == 'Consumable' and itemSubType == 'Other' and itemRarity == 6) then
     return kPfx .. 'Heart Essence'.. kSfx, 'Essence'
   else
@@ -136,14 +142,11 @@ function setFilter:Filter(slotData)
       ziName = currSubset[4]
       if bagItemID == ziID then
         --check Benthic
-        if ziZone == 'BfA' and ziSubcat == 'Benthic' and  (self.db.profile.groupBenthic) then
-          currSubCategory = 'Benthic'
-          return kPfx .. currSubCategory.. kSfx, kCategory
-        elseif ziZone == 'Patch8_3' and (self.db.profile.groupPatch8_3) then
+        if ziZone == 'Patch8_3' and (self.db.profile.groupPatch8_3) then
           currSubCategory = 'Patch 8.3 Item'
           return kPfx .. currSubCategory.. kSfx, 'Patch 8.3 Item'
   
-        elseif ziZone == 'Nazjatar'  or ziZone == 'Mechagon' then
+        elseif ziZone == 'Nazjatar'  or ziZone == 'Mechagon' or ziZone == 'Uldum' or ziZone == 'Vale of Eternal Blossoms' then
           if (self.db.profile.groupRepItems) and ziSubcat=='Reputation' then
             currSubCategory = 'Reputation'
             return kPfx .. currSubCategory.. kSfx, 'Current Rep Item'

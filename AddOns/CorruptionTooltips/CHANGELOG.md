@@ -1,3 +1,15 @@
+**1.6.4**
+
+- More translations.
+- Fix some mismatching of Corruptions.
+
+**1.6.3**
+
+- Add option to not show spell icon.
+- Replaced corruption scanning with local var, no longer needs translation, thanks nekizalb0611.
+- I need translations for the config! Everything but enUS, zhCN and zhTW is missing.
+- Checked and we already supported Ineffible Truth Rank 1 - Yay raidbots.com
+
 **1.6.2**
 
 - Change script hook to prevent incompatibilities.

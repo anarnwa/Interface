@@ -1,0 +1,10 @@
+lightweight tag bf75d21eb74ad5a1e0c135a5c3ae442699fd6f6e 7.4.0
+Author:	Alex Shubert <alex.shubert@gmail.com>
+Date:	Tue Apr 2 20:49:07 2019 -0400
+
+commit bf75d21eb74ad5a1e0c135a5c3ae442699fd6f6e
+Author: Alex Shubert <alex.shubert@gmail.com>
+Date:   Tue Apr 2 20:49:07 2019 -0400
+
+    battle pet healing (en, de, ru)
+

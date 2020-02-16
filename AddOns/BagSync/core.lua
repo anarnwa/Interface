@@ -7,6 +7,8 @@ local BAGSYNC, BSYC = ... --grab the addon namespace
 LibStub("AceAddon-3.0"):NewAddon(BSYC, "BagSync", "AceEvent-3.0", "AceConsole-3.0")
 _G[BAGSYNC] = BSYC --add it to the global frame space, otherwise you won't be able to call it
 
+BSYC.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+
 local debugf = tekDebug and tekDebug:GetFrame("BagSync")
 local function Debug(...)
     if debugf then
@@ -111,6 +113,8 @@ function BSYC:ParseItemLink(link, count)
 end
 
 function BSYC:CreateFakeBattlePetID(link, count, speciesID)
+	if not BSYC.IsRetail then return nil end
+	
 	--either pass the link or speciesID
 	if link or speciesID then
 	

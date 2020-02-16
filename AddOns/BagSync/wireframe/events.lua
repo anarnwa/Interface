@@ -64,17 +64,11 @@ function Events:OnEnable()
 
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	self:RegisterEvent("BAG_UPDATE")
-	self:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 	
 	self:RegisterEvent("TRADE_SKILL_SHOW")
 	self:RegisterEvent("TRADE_SKILL_LIST_UPDATE")
 	self:RegisterEvent("TRADE_SKILL_DATA_SOURCE_CHANGED")
 
-	self:RegisterEvent("VOID_STORAGE_OPEN", function() Scanner:SaveVoidBank() end)
-	self:RegisterEvent("VOID_STORAGE_UPDATE", function() Scanner:SaveVoidBank() end)
-	self:RegisterEvent("VOID_STORAGE_CONTENTS_UPDATE", function() Scanner:SaveVoidBank() end)
-	self:RegisterEvent("VOID_TRANSFER_DONE", function() Scanner:SaveVoidBank() end)
-	
 	self:RegisterEvent("MAIL_SHOW", function() Scanner:SaveMailbox() end)
 	self:RegisterEvent("MAIL_INBOX_UPDATE", function()
 		self:DoTimer("MailBoxScan", function() Scanner:SaveMailbox() end, 0.3)
@@ -82,14 +76,6 @@ function Events:OnEnable()
 
 	self:RegisterEvent("BANKFRAME_OPENED", function() Scanner:SaveBank() end)
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED", function() Scanner:SaveBank(true) end)
-	self:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", function() Scanner:SaveReagents() end)
-	self:RegisterEvent("REAGENTBANK_PURCHASED", function() Scanner:SaveReagents() end)
-	
-	self:RegisterEvent("GUILDBANKFRAME_OPENED")
-	self:RegisterEvent("GUILDBANKFRAME_CLOSED")
-	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", function()
-		self:DoTimer("GuildBankScan", function() self:GUILDBANKBAGSLOTS_CHANGED() end, 0.2)
-	end)
 	
 	local function doAuctionUpdate(timerName)
 		--stop the timer first
@@ -132,26 +118,47 @@ function Events:OnEnable()
 	
 	local timerName = "QueryAuction"
 	
-	self:RegisterEvent("AUCTION_HOUSE_SHOW", function()
-		--query and update items being sold
-		if AuctionHouseFrame then
-			AuctionHouseFrame:QueryAll(AuctionHouseSearchContext.AllAuctions)
-			--hook the post buttons
-			if not self.auctionPostClick then
-				self.auctionPostClick = true
-				AuctionHouseFrame.CommoditiesSellFrame.PostButton:HookScript("OnClick", function()
-					doAuctionUpdate(timerName)
-				end)
-				AuctionHouseFrame.ItemSellFrame.PostButton:HookScript("OnClick", function()
-					doAuctionUpdate(timerName)
-				end)
+	if BSYC.IsRetail then
+		self:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
+		
+		self:RegisterEvent("PLAYERREAGENTBANKSLOTS_CHANGED", function() Scanner:SaveReagents() end)
+		self:RegisterEvent("REAGENTBANK_PURCHASED", function() Scanner:SaveReagents() end)
+		
+		self:RegisterEvent("VOID_STORAGE_OPEN", function() Scanner:SaveVoidBank() end)
+		self:RegisterEvent("VOID_STORAGE_UPDATE", function() Scanner:SaveVoidBank() end)
+		self:RegisterEvent("VOID_STORAGE_CONTENTS_UPDATE", function() Scanner:SaveVoidBank() end)
+		self:RegisterEvent("VOID_TRANSFER_DONE", function() Scanner:SaveVoidBank() end)
+		
+		self:RegisterEvent("GUILDBANKFRAME_OPENED")
+		self:RegisterEvent("GUILDBANKFRAME_CLOSED")
+		self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED", function()
+			self:DoTimer("GuildBankScan", function() self:GUILDBANKBAGSLOTS_CHANGED() end, 0.2)
+		end)
+		
+		self:RegisterEvent("AUCTION_HOUSE_SHOW", function()
+			--query and update items being sold
+			if AuctionHouseFrame then
+				AuctionHouseFrame:QueryAll(AuctionHouseSearchContext.AllAuctions)
+				--hook the post buttons only once
+				if not self.auctionPostClick then
+					self.auctionPostClick = true
+					AuctionHouseFrame.CommoditiesSellFrame.PostButton:HookScript("OnClick", function()
+						doAuctionUpdate(timerName)
+					end)
+					AuctionHouseFrame.ItemSellFrame.PostButton:HookScript("OnClick", function()
+						doAuctionUpdate(timerName)
+					end)
+				end
 			end
-		end
-	end)
+		end)
 
-	self:RegisterEvent("OWNED_AUCTIONS_UPDATED", function()
-		self:DoTimer("ScanAuction", function() Scanner:SaveAuctionHouse() end, 1)
-	end)
+		self:RegisterEvent("OWNED_AUCTIONS_UPDATED", function()
+			self:DoTimer("ScanAuction", function() Scanner:SaveAuctionHouse() end, 1)
+		end)
+	else
+		--classic auction house
+		self:RegisterEvent("AUCTION_OWNED_LIST_UPDATE", function() Scanner:SaveAuctionHouse() end)
+	end
 	
 	Scanner:StartupScans() --do the login player scans
 end
@@ -194,6 +201,12 @@ function Events:GUILDBANKFRAME_OPENED()
 	if not BSYC.options.enableGuild then return end
 	if not self.GuildTabQueryQueue then self.GuildTabQueryQueue = {} end
 		
+	if Events.alertTooltip then
+		Events.alertTooltip:ClearAllPoints()
+		Events.alertTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+		Events.alertTooltip:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+	end
+	
 	local numTabs = GetNumGuildBankTabs()
 	for tab = 1, numTabs do
 		local name, icon, isViewable, canDeposit, numWithdrawals, remainingWithdrawals = GetGuildBankTabInfo(tab)
@@ -229,9 +242,6 @@ function Events:GUILDBANKBAGSLOTS_CHANGED()
 		self.GuildTabQueryQueue[tab] = nil
 
 		if Events.alertTooltip then
-			Events.alertTooltip:ClearAllPoints()
-			Events.alertTooltip:SetOwner(UIParent, "ANCHOR_NONE")
-			Events.alertTooltip:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 			Events.alertTooltip:ClearLines()
 			Events.alertTooltip:AddLine("|cffff6600BagSync|r")
 			local numTab = string.format(L.ScanGuildBankScanInfo, tab or 0, GetNumGuildBankTabs() or 0)
@@ -263,7 +273,7 @@ function Events:CURRENCY_DISPLAY_UPDATE()
 end
 
 function Events:PLAYER_REGEN_ENABLED()
-	if Unit:InCombatLockdown() then return end
+	if Unit:InCombatLockdown() or not BSYC.IsRetail then return end
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 	self.doCurrencyUpdate = nil
 	Scanner:SaveCurrency()

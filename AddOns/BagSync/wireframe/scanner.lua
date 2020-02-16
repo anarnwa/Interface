@@ -97,7 +97,7 @@ function Scanner:SaveBank(rootOnly)
 end
 
 function Scanner:SaveReagents()
-	if not Unit.atBank then return end
+	if not Unit.atBank or not BSYC.IsRetail then return end
 	
 	if IsReagentBankUnlocked() then 
 		self:SaveBag("reagents", REAGENTBANK_CONTAINER)
@@ -105,7 +105,7 @@ function Scanner:SaveReagents()
 end
 
 function Scanner:SaveVoidBank()
-	if not Unit.atVoidBank then return end
+	if not Unit.atVoidBank or not BSYC.IsRetail then return end
 	if not BSYC.db.player.void then BSYC.db.player.void = {} end
 	
 	local slotItems = {}
@@ -142,7 +142,7 @@ function Scanner:GetXRGuild()
 end
 
 function Scanner:SaveGuildBank()
-	if not Unit.atGuildBank then return end
+	if not Unit.atGuildBank or not BSYC.IsRetail then return end
 	if Scanner.isScanningGuild then return end
 
 	local numTabs = GetNumGuildBankTabs()
@@ -156,12 +156,13 @@ function Scanner:SaveGuildBank()
 			for slot = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 				local link = GetGuildBankItemLink(tab, slot)
 				if link then
-
 					local speciesID
-					local itemName, itemLink, _, _, _, itemType, itemSubType = GetItemInfo(link)
+					local shortID = BSYC:GetShortItemID(link)
 					local _, count = GetGuildBankItemInfo(tab, slot)
-					--no itemid is returned unlike scanning for mailbox.  So I can't check for itemid 82800, pet cage
-					if itemType and itemSubType and itemType == "Battle Pets" or itemSubType == "BattlePet" then
+					
+					--check if it's a battle pet cage or something, pet cage is 82800.  This is the placeholder for battle pets
+					--if it's a battlepet link it will be parsed anyways in ParseItemLink
+					if shortID and tonumber(shortID) == 82800 then
 						speciesID = GameTooltip:SetGuildBankItem(tab, slot)
 					end
 					if speciesID then
@@ -209,7 +210,7 @@ function Scanner:SaveMailbox()
 				local byPass = false
 				if name and link then
 					--check for battle pet cages
-					if itemID and itemID == 82800 then
+					if BSYC.IsRetail and itemID and itemID == 82800 then
 						local hasCooldown, speciesID, level, breedQuality, maxHealth, power, speed, name = GameTooltip:SetInboxItem(mailIndex)
 						GameTooltip:Hide()
 						
@@ -237,39 +238,76 @@ function Scanner:SaveAuctionHouse()
 	if not BSYC.db.player.auction then BSYC.db.player.auction = {} end
 
 	local slotItems = {}
-	local numActiveAuctions = C_AuctionHouse.GetNumOwnedAuctions()
-		
-	--scan the auction house
-	if (numActiveAuctions > 0) then
-		for ahIndex = 1, numActiveAuctions do
-		
-			--https://wow.gamepedia.com/API_C_AuctionHouse.GetOwnedAuctionInfo
-			local itemObj = C_AuctionHouse.GetOwnedAuctionInfo(ahIndex)
+	
+	if BSYC.IsRetail then
+		local numActiveAuctions = C_AuctionHouse.GetNumOwnedAuctions()
 			
-			--we only want active auctions not sold one.  So check itemObj.status
-			if itemObj and itemObj.timeLeftSeconds and itemObj.status == 0 then
-
-				local expTime = time() + itemObj.timeLeftSeconds -- current Time + advance time in seconds to get expiration time and date
-				local itemCount = itemObj.quantity or 1
-				local parseLink = ""
+		--scan the auction house
+		if (numActiveAuctions > 0) then
+			for ahIndex = 1, numActiveAuctions do
+			
+				--https://wow.gamepedia.com/API_C_AuctionHouse.GetOwnedAuctionInfo
+				local itemObj = C_AuctionHouse.GetOwnedAuctionInfo(ahIndex)
 				
-				if itemObj.itemLink then
-					parseLink = BSYC:ParseItemLink(itemObj.itemLink, itemCount)
-				elseif itemObj.itemKey and itemObj.itemKey.itemID then
-					parseLink = BSYC:ParseItemLink(itemObj.itemKey.itemID, itemCount)
-				end
-				
-				--we are going to make the third field an identifier field, so we can know what it is for future reference
-				--for now auction house will be 1, with 4th field being expTime
-				if itemCount <= 1 then
-					parseLink = parseLink..";1;1;"..expTime
-				else
-					parseLink = parseLink..";1;"..expTime
-				end
+				--we only want active auctions not sold one.  So check itemObj.status
+				if itemObj and itemObj.timeLeftSeconds and itemObj.status == 0 then
 
-				table.insert(slotItems, parseLink)
+					local expTime = time() + itemObj.timeLeftSeconds -- current Time + advance time in seconds to get expiration time and date
+					local itemCount = itemObj.quantity or 1
+					local parseLink = ""
+					
+					if itemObj.itemLink then
+						parseLink = BSYC:ParseItemLink(itemObj.itemLink, itemCount)
+					elseif itemObj.itemKey and itemObj.itemKey.itemID then
+						parseLink = BSYC:ParseItemLink(itemObj.itemKey.itemID, itemCount)
+					end
+					
+					--we are going to make the third field an identifier field, so we can know what it is for future reference
+					--for now auction house will be 1, with 4th field being expTime
+					if itemCount <= 1 then
+						parseLink = parseLink..";1;1;"..expTime
+					else
+						parseLink = parseLink..";1;"..expTime
+					end
+
+					table.insert(slotItems, parseLink)
+				end
 			end
 		end
+		
+	else
+		--this is for WOW Classic Auction House
+		local numActiveAuctions = GetNumAuctionItems("owner")
+		local timestampChk = { 30*60, 2*60*60, 12*60*60, 48*60*60 }
+		
+		--scan the auction house
+		if (numActiveAuctions > 0) then
+			for ahIndex = 1, numActiveAuctions do
+				local name, texture, count, quality, canUse, level, minBid, minIncrement, buyoutPrice, bidAmount, highBidder, owner, saleStatus  = GetAuctionItemInfo("owner", ahIndex)
+				if name then
+					local link = GetAuctionItemLink("owner", ahIndex)
+					local timeLeft = GetAuctionItemTimeLeft("owner", ahIndex)
+					if link and timeLeft and tonumber(timeLeft) then
+						count = (count or 1)
+						--since classic doesn't return the exact time on old auction house, we got to add it manually
+						--it only does short, long and very long
+						local expireTime = time() + timestampChk[tonumber(timeLeft)]
+						local parseLink = BSYC:ParseItemLink(link, count)
+						
+						--we are going to make the third field an identifier field, so we can know what it is for future reference
+						--for now auction house will be 1, with 4th field being expTime
+						if count <= 1 then
+							parseLink = parseLink..";1;1;"..expireTime
+						else
+							parseLink = parseLink..";1;"..expireTime
+						end
+						
+						table.insert(slotItems, parseLink)
+					end
+				end
+			end
+		end
+		
 	end
 	
 	BSYC.db.player.auction.bag = slotItems
@@ -278,8 +316,9 @@ function Scanner:SaveAuctionHouse()
 end
 
 function Scanner:SaveCurrency()
+	if not BSYC.IsRetail then return end
 	if Unit:InCombatLockdown() then return end
-
+	
 	local lastHeader
 	local limit = GetCurrencyListSize()
 	local slotItems = {}
@@ -313,6 +352,8 @@ function Scanner:SaveCurrency()
 end
 	
 function Scanner:SaveProfessions()
+	if not BSYC.IsRetail then return end
+	
 	--we don't want to do linked tradeskills, guild tradeskills, or a tradeskill from an NPC
 	if _G.C_TradeSkillUI.IsTradeSkillLinked() or _G.C_TradeSkillUI.IsTradeSkillGuild() or _G.C_TradeSkillUI.IsNPCCrafting() then return end
 	
@@ -446,6 +487,8 @@ function Scanner:SaveProfessions()
 end
 
 function Scanner:CleanupProfessions()
+	if not BSYC.IsRetail then return end
+	
 	--lets remove unlearned tradeskills
 	local tmpList = {}
 
