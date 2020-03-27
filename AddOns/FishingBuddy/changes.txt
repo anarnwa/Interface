@@ -1,3 +1,7 @@
+Version 1.10.8.8
+- Better handling of per-subzone fishing skills (Thanks TheSpanishinq!)
+- Clean up off-click handling and add an option to use the middle button (ditto!)
+
 Version 1.10.8.7
 - More changes for fishing in Azshara (Thanks TheSpanishinq!)
 - Update HereBeDragons

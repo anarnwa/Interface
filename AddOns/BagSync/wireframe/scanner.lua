@@ -26,6 +26,9 @@ local VOID_STORAGE_PAGES = 2
 local FirstEquipped = INVSLOT_FIRST_EQUIPPED
 local LastEquipped = INVSLOT_LAST_EQUIPPED
 
+local scannerTooltip = CreateFrame("GameTooltip", "BagSyncScannerTooltip", UIParent, "GameTooltipTemplate")
+scannerTooltip:Hide()
+
 function Scanner:StartupScans()
 
 	self:SaveEquipment()
@@ -163,7 +166,8 @@ function Scanner:SaveGuildBank()
 					--check if it's a battle pet cage or something, pet cage is 82800.  This is the placeholder for battle pets
 					--if it's a battlepet link it will be parsed anyways in ParseItemLink
 					if shortID and tonumber(shortID) == 82800 then
-						speciesID = GameTooltip:SetGuildBankItem(tab, slot)
+						speciesID = scannerTooltip:SetGuildBankItem(tab, slot)
+						scannerTooltip:Hide()
 					end
 					if speciesID then
 						link = BSYC:CreateFakeBattlePetID(nil, nil, speciesID)
@@ -187,16 +191,19 @@ function Scanner:SaveGuildBank()
 	Scanner.isScanningGuild = false
 end
 
-function Scanner:SaveMailbox()
+function Scanner:SaveMailbox(isShow)
 	if not Unit.atMailbox or not BSYC.options.enableMailbox then return end
 	if not BSYC.db.player.mailbox then BSYC.db.player.mailbox = {} end
 	
 	if self.isCheckingMail then return end --prevent overflow from CheckInbox()
 	self.isCheckingMail = true
 
-	 --used to initiate mail check from server, for some reason GetInboxNumItems() returns zero sometimes
-	 --even though the user has mail in the mailbox.  This can be attributed to lag.
-	CheckInbox()
+	--used to initiate mail check from server, for some reason GetInboxNumItems() returns zero sometimes
+	--even though the user has mail in the mailbox.  This can be attributed to lag.
+	if isShow then
+		--only do this once it causes a continously mail spam loop in Classic and we can avoid spam as well in Retail
+		CheckInbox()
+	end
 	
 	local slotItems = {}
 	local numInbox = GetInboxNumItems()
@@ -211,8 +218,8 @@ function Scanner:SaveMailbox()
 				if name and link then
 					--check for battle pet cages
 					if BSYC.IsRetail and itemID and itemID == 82800 then
-						local hasCooldown, speciesID, level, breedQuality, maxHealth, power, speed, name = GameTooltip:SetInboxItem(mailIndex)
-						GameTooltip:Hide()
+						local hasCooldown, speciesID, level, breedQuality, maxHealth, power, speed, name = scannerTooltip:SetInboxItem(mailIndex)
+						scannerTooltip:Hide()
 						
 						if speciesID then
 							link = BSYC:CreateFakeBattlePetID(nil, nil, speciesID)
@@ -289,11 +296,12 @@ function Scanner:SaveAuctionHouse()
 					local timeLeft = GetAuctionItemTimeLeft("owner", ahIndex)
 					if link and timeLeft and tonumber(timeLeft) then
 						count = (count or 1)
+						timeLeft = tonumber(timeLeft)
+						if not timeLeft or timeLeft < 1 or timeLeft > 4 then timeLeft = 4 end --just in case				
 						--since classic doesn't return the exact time on old auction house, we got to add it manually
 						--it only does short, long and very long
-						local expireTime = time() + timestampChk[tonumber(timeLeft)]
+						local expireTime = time() + timestampChk[timeLeft]
 						local parseLink = BSYC:ParseItemLink(link, count)
-						
 						--we are going to make the third field an identifier field, so we can know what it is for future reference
 						--for now auction house will be 1, with 4th field being expTime
 						if count <= 1 then

@@ -1,19 +1,8 @@
 # BagSync
 
-## [v13.2](https://github.com/Xruptor/BagSync/tree/v13.2) (2020-02-15)
-[Full Changelog](https://github.com/Xruptor/BagSync/compare/v13.1...v13.2)
+## [v13.5](https://github.com/Xruptor/BagSync/tree/v13.5) (2020-03-07)
+[Full Changelog](https://github.com/Xruptor/BagSync/compare/v13.4...v13.5)
 
-- -Added support for Classic Uploading on Addon Websites.  
-- -Everything checks out.  Bumping up the toc version number.  
-- -Added support for the WOW Classic Auction House  
-- Merge branch 'master' into Testing  
-    -Added numerous fixes to make BagSync work with WOW Classic.  
-- -Revised plan to add indent option.  
-- -testing indent in options  
-- -Fixed an issue where one of the config options was not disabling correctly if it's parent option was disabled.  
-    -Fixed an issue where the search button on the minimap was not properly closing the Search Window when pressing the button twice.  
-    -Updated the routine that checks for guild items.  Improved the scanning process for battle pets.  
-    -Fixed the Guild Bank notification tooltip.  It should stop blinking on some users computer.  
-- Merge branch 'master' into Testing  
-- Merge branch 'master' into Testing  
-- -Slowly working on adding Classic Support.  
+- Fixed an issue where the mailbox was not allowing players to input money in the currency field on CLASSIC.  
+    Updated several libraries.  
+    Updated scanning module to use a custom tooltip for scanning rather then the standard GameTooltip.  

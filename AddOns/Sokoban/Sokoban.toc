@@ -1,0 +1,50 @@
+## Interface: 80100
+## Title: Sokoban
+## Author: Dethanyel
+## Version: 8.1.3
+## Notes: Sokoban for World of Warcraft.
+## X-DethsDBLib: SOKOBAN_ADDON_SV
+## SavedVariables: SOKOBAN_ADDON_SV
+
+Assets/Spritesheet.lua
+
+Libs\LibStub\LibStub.lua
+Libs\AceLocale-3.0\AceLocale-3.0.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
+Libs\DethsLibLoader\DethsLibLoader.lua
+Libs\DethsAddonLib\DethsAddonLib.lua
+Libs\DethsCmdLib\DethsCmdLib.lua
+Libs\DethsColorLib\DethsColorLib.lua
+Libs\DethsDBLib\DethsDBLib.xml
+Libs\DethsGameLib\DethsGameLib.xml
+
+Locales\enUS.lua
+Locales\deDE.lua
+Locales\esES.lua
+Locales\esMX.lua
+Locales\frFR.lua
+Locales\itIT.lua
+Locales\koKR.lua
+Locales\ptBR.lua
+Locales\ruRU.lua
+Locales\zhCN.lua
+Locales\zhTW.lua
+
+Modules\Modules.lua
+Modules\DB.lua
+Modules\Game.lua
+Modules\Levels.lua
+Modules\MinimapIcon.lua
+Modules\Utils.lua
+
+Modules\GameState\MainMenu.lua
+Modules\GameState\LevelSelection.lua
+Modules\GameState\Playing.lua
+Modules\GameState\Paused.lua
+
+Modules\GameObjects\Grid.lua
+Modules\GameObjects\Tile.lua
+
+Core.lua

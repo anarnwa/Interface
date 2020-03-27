@@ -139,8 +139,8 @@ local QuestExceptions = {
 
   -- BfA
   -- Island Expeditions (Moved to Progress.lua)
-  [53435] = "Regular", -- Azerite for the Horde
-  [53436] = "Regular", -- Azerite for the Alliance
+  [53435] = "Weekly", -- Azerite for the Horde
+  [53436] = "Weekly", -- Azerite for the Alliance
   -- Warfront (Moved to Warfront.lua)
   [53414] = "Regular", -- Stromgarde Alliance
   [53416] = "Regular", -- Stromgarde Horde
@@ -159,16 +159,33 @@ local QuestExceptions = {
   [52953] = "Weekly", -- Call to Arms: Vol'dun (Horde)
   [52951] = "Weekly", -- Call to Arms: Zuldazar (Alliance)
   [52952] = "Weekly", -- Call to Arms: Zuldazar (Horde)
+  [56648] = "Weekly", -- Call to Arms: Nazjatar (Alliance)
+  [56148] = "Weekly", -- Call to Arms: Nazjatar (Horde)
+  [56649] = "Weekly", -- Call to Arms: Mechagon (Alliance)
+  [56650] = "Weekly", -- Call to Arms: Mechagon (Horde)
+  [59018] = "Weekly", -- Call to Arms: Vale of Eternal Blossoms (Alliance)
+  [59017] = "Weekly", -- Call to Arms: Vale of Eternal Blossoms (Horde)
+  [59019] = "Weekly", -- Call to Arms: Uldum (Alliance)
+  [59016] = "Weekly", -- Call to Arms: Uldum (Horde)
   -- Nazjatar
   [55121] = "Weekly", -- The Laboratory of Mardivas
   [56969] = "Weekly", -- Ancient Reefwalker Bark
-  [56648] = "Weekly", -- Call to Arms: Nazjatar (Alliance)
-  [56148] = "Weekly", -- Call to Arms: Nazjatar (Horde)
   [56050] = "Weekly", -- PvP Event: Battle for Nazjatar
   -- Mechagon
   [56116] = "Regular", -- Even More Recycling
-  [56649] = "Weekly", -- Call to Arms: Mechagon (Alliance)
-  [56650] = "Weekly", -- Call to Arms: Mechagon (Horde)
+  -- Assaults
+  [57157] = "Weekly", -- Assault: The Black Empire (Uldum)
+  [56064] = "Weekly", -- Assault: The Black Empite (Vale of Eternal Blossoms)
+  [55350] = "Weekly", -- Assault: Amathet Advance (Uldum)
+  [57008] = "Weekly", -- Assault: The Warring Clans (Vale of Eternal Blossoms)
+  [57728] = "Weekly", -- Assault: The Endless Swarm (Vale of Eternal Blossoms)
+  [56308] = "Weekly", -- Assault: Aqir Unearthed (Uldum)
+  -- Lesser Visions of N'Zoth
+  [58168] = "Daily", -- A Dark, Glaring Reality
+  [58155] = "Daily", -- A Hand in the Dark
+  [58151] = "Daily", -- Minions of N'Zoth
+  [58167] = "Daily", -- Preventative Measures
+  [58156] = "Daily", -- Vanquishing the Darkness
 
   -- General
   -- Darkmoon Faire
@@ -188,6 +205,7 @@ local QuestExceptions = {
   [46292] = "AccountWeekly", -- Pet Battle Challenge: Deadmines
   [54186] = "AccountWeekly", -- Pet Battle Challenge: Gnomeregan
   [56492] = "AccountWeekly", -- Pet Battle Challenge: Stratholme
+  [58458] = "AccountWeekly", -- Pet Battle Challenge: Blackrock Depths
 
   -- Weekend Event
   [53030] = "Weekly", -- The World Awaits - World Quests

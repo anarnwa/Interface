@@ -1,5 +1,0 @@
-## Interface: 80205
-## Title: Auto Gossip
-## Notes: Auto selects the Rogue Order Hall door options and selects BFA Mission Table troop recruitment options. Also auto selects gossip options if only 1 is available.
-## Author: theoriginalmre/SunfyreBlazing. Special thanks to Cheatah on Curseforge for targetid code.
-AutoGossip.lua

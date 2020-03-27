@@ -1,0 +1,7 @@
+## Interface: 80300
+## Title: Not_Ready_Yet
+## Author: anarnwa
+## Version: 8.3.0
+## SavedVariables: SpellID,Setting
+Not_Ready_Yet.lua
+Not_Ready_Yet_UI.lua

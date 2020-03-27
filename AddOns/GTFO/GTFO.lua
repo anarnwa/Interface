@@ -23,8 +23,10 @@ GTFO = {
 		TrivialDamagePercent = 2; -- Minimum % of HP lost required for an alert to be trivial
 		SoundOverrides = { }; -- Override table for GTFO sounds
 	};
-	Version = "4.53"; -- Version number (text format)
-	VersionNumber = 45300; -- Numeric version number for checking out-of-date clients
+	Version = "4.55"; -- Version number (text format)
+	VersionNumber = 0; -- Numeric version number for checking out-of-date clients (placeholder until client is detected)
+	RetailVersionNumber = 45500; -- Numeric version number for checking out-of-date clients (retail)
+	ClassicVersionNumber = 45500; -- Numeric version number for checking out-of-date clients (classic)
 	DataLogging = nil; -- Indicate whether or not the addon needs to run the datalogging function (for hooking)
 	DataCode = "4"; -- Saved Variable versioning, change this value to force a reset to default
 	CanTank = nil; -- The active character is capable of tanking
@@ -82,6 +84,9 @@ if (select(4, GetBuildInfo()) >= 90000) then
 end
 if (select(4, GetBuildInfo()) <= 20000) then
 	GTFO.ClassicMode = true;
+	GTFO.VersionNumber = GTFO.ClassicVersionNumber;
+else
+	GTFO.VersionNumber = GTFO.RetailVersionNumber;
 end
 
 StaticPopupDialogs["GTFO_POPUP_MESSAGE"] = {
@@ -515,6 +520,11 @@ function GTFO_OnEvent(self, event, ...)
 				if (GTFO.SpellID[SpellID].ignoreApplication and (SpellType == "SPELL_AURA_APPLIED" or SpellType == "SPELL_AURA_APPLIED_DOSE" or SpellType == "SPELL_AURA_REFRESH")) then
 					--GTFO_DebugPrint("Won't alert "..SpellName.." ("..SpellID..") - Ignore application event");
 					-- Debuff application and "Ignore Application" is set
+					return;					
+				end
+				if (GTFO.SpellID[SpellID].trivialLevelApplication and GTFO.SpellID[SpellID].trivialLevelApplication <= UnitLevel("player") and (SpellType == "SPELL_AURA_APPLIED" or SpellType == "SPELL_AURA_APPLIED_DOSE" or SpellType == "SPELL_AURA_REFRESH")) then
+					--GTFO_DebugPrint("Won't alert "..SpellName.." ("..SpellID..") - Ignore trivial level application event");
+					-- Debuff application and "Ignore Application when above trivial level" is set
 					return;					
 				end
 				if (GTFO.SpellID[SpellID].ignoreSelfInflicted and SpellSourceGUID == UnitGUID("player")) then

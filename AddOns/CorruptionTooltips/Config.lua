@@ -42,6 +42,18 @@ local myOptions =
             width = "full",
             order = 30,
         },
+        itemlevel =
+        {
+            type = "toggle",
+            name = L["Show corruption amount in the character screen"],
+            desc = L["Show corruption stat on items in the character screen when displaying the corruption tooltip."],
+            set = function(info, val)
+                CorruptionTooltips.db.profile.showlevel = val
+            end,
+            get = function() return CorruptionTooltips.db.profile.showlevel end,
+            width = "full",
+            order = 40,
+        },
         english =
         {
             type = "toggle",
@@ -52,7 +64,7 @@ local myOptions =
             end,
             get = function() return CorruptionTooltips.db.profile.english end,
             width = "full",
-            order = 40,
+            order = 50,
         }
     },
 }

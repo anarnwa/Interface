@@ -13,9 +13,8 @@ core._2217.Events = CreateFrame("Frame")
 ------------------------------------------------------
 ---- Drest'agath
 ------------------------------------------------------
-local temperTantrumCounter = 0
-local timerStarted = false
-local timerDest = nil
+local initialTime = nil
+local secondTime = nil
 
 ------------------------------------------------------
 ---- N'Zoth, the Corruptor
@@ -55,6 +54,8 @@ local voidWokenBlock = false
 local playerAnnihilationStacks = {}
 local inititalVexionaSetup = false
 local playersWithThirtyStacks = 0
+local updateRequired = false
+local lockInfoFrameUpdate = false
 
 ------------------------------------------------------
 ---- Carapace of N'Zoth
@@ -68,7 +69,6 @@ local blockCounter = false
 ------------------------------------------------------
 local forbiddenManifestationSpawned = false
 
-
 function core._2217:WrathionTheBlackEmperor()
 	--Defeat Wrathion in Ny'alotha, the Waking City after defeating 10 Crackling Shards within 3 seconds of each other on Normal difficulty or higher.
 	if core:getBlizzardTrackingStatus(14019) == true then
@@ -78,11 +78,13 @@ end
 
 function core._2217:ProphetSkitra()
 	--Defeat the Prophet Skitra in Ny'alotha, the Waking City after defeating three Disciples of the Prophet on Normal difficulty or higher.
-	if core.overkill ~= nil then
-		if (core.destID == "161935" or core.destID == "161573") and core.overkill > 0 and disciplesUID[core.spawn_uid_dest] == nil then
-			disciplesUID[core.spawn_uid_dest] = core.spawn_uid_dest
-			disciplesKilled = disciplesKilled + 1
-			core:sendMessage(core:getAchievement() .. " " .. getNPCName(161573) .. " " .. L["Shared_Killed"] .. " (" .. disciplesKilled .. "/3)",true)
+	if core.destID == "161935" or core.destID == "161573" then
+		if core.type == "UNIT_DIED" or core.overkill > 0 then
+			if disciplesUID[core.spawn_uid_dest] == nil then
+				disciplesUID[core.spawn_uid_dest] = core.spawn_uid_dest
+				disciplesKilled = disciplesKilled + 1
+				core:sendMessage(core:getAchievement() .. " " .. getNPCName(161573) .. " " .. L["Shared_Killed"] .. " (" .. disciplesKilled .. "/3)",true)
+			end
 		end
 	end
 
@@ -165,7 +167,19 @@ function core._2217:DrestAgath()
 	--Defeat Drest'agath after triggering Throes of Agony twice within 60 seconds, on Normal difficulty or higher.
 	if core:getBlizzardTrackingStatus(14026) == true then
         core:getAchievementSuccess()
-    end
+	end
+	
+	if core.achievementsCompleted[1] == false then
+		--Temper Tantrum cast. Set initial timer
+		if core.type == "SPELL_CAST_SUCCESS" and core.spellId == 308941 and initialTime == nil then
+			initialTime = GetTime()
+		elseif core.type == "SPELL_CAST_SUCCESS" and core.spellId == 308941 and initialTime ~= nil then
+			secondTime = GetTime()
+			core:sendMessage(core:getAchievement() .. format(L["TimeBetweenLast"],GetSpellLink(308947),secondTime - initialTime),true)
+			initialTime = secondTime
+			secondTime = nil
+		end
+	end
 end
 
 function core._2217:ShadharTheInsatiable()
@@ -228,7 +242,7 @@ function core._2217:Vexiona()
 	--306982 (Player), 307403 (Enemy), 310224 (Buff)
 	if (core.type == "SPELL_AURA_APPLIED" or core.type == "SPELL_AURA_APPLIED_DOSE") and (core.spellId == 310224 or core.spellId == 306982) then
 		--Track individually how many times each player has been hit
-		core:sendDebugMessage("Inside Anhiliation")
+		--core:sendDebugMessage("Inside Anhiliation")
 		if core.destName ~= nil then
 			--Make sure we remove realm info from player before checking name
 			local player = core.destName
@@ -238,32 +252,39 @@ function core._2217:Vexiona()
 			end
 			if playerAnnihilationStacks[player] ~= nil then
 				playerAnnihilationStacks[player] = playerAnnihilationStacks[player] + 1
-				core:sendDebugMessage(player .. " : " .. playerAnnihilationStacks[player])
-				if playerAnnihilationStacks[player] >= 30 then
+				--core:sendDebugMessage(player .. " : " .. playerAnnihilationStacks[player])
+				if playerAnnihilationStacks[player] == 30 then
 					if InfoFrame_GetPlayerCompleteWithMessage(player) == false then
-						core:sendDebugMessage("Setting player to complete: " .. player)
+						--core:sendDebugMessage("Setting player to complete: " .. player)
 						InfoFrame_SetPlayerCompleteWithMessage(core.destName, playerAnnihilationStacks[player])
 						playersWithThirtyStacks = playersWithThirtyStacks + 1
 						core:sendMessage(core.destName .. " " .. L["Shared_HasCompleted"] .. " " .. core:getAchievement() .. " (" .. playersWithThirtyStacks .. "/" .. core.groupSize .. ")",true)
 					
 						--Update InfoFrame
-						InfoFrame_UpdatePlayersOnInfoFrameWithAdditionalInfo()
-						InfoFrame_SetHeaderCounter(L["Shared_PlayersMetCriteria"],playersWithThirtyStacks,core.groupSize)
+						updateRequired = true
 					end
-				else
+				elseif playerAnnihilationStacks[player] < 30 then
 					InfoFrame_SetPlayerNeutralWithMessage(core.destName, playerAnnihilationStacks[player])
 
 					--Update InfoFrame
-					InfoFrame_UpdatePlayersOnInfoFrameWithAdditionalInfo()
-					InfoFrame_SetHeaderCounter(L["Shared_PlayersMetCriteria"],playersWithThirtyStacks,core.groupSize)
+					updateRequired = true
 				end
 			end
 		end
 	end
 
-	--Blizzard tracking gone white so achievement completed
-	if core:getBlizzardTrackingStatus(14139) == true and playersWithThirtyStacks == core.groupSize then
-		core:getAchievementSuccess()
+	if updateRequired == true and lockInfoFrameUpdate == false then
+		lockInfoFrameUpdate = true
+		InfoFrame_UpdatePlayersOnInfoFrameWithAdditionalInfo()
+		InfoFrame_SetHeaderCounter(L["Shared_PlayersMetCriteria"],playersWithThirtyStacks,core.groupSize)
+		updateRequired = false
+		C_Timer.After(1, function() 
+			lockInfoFrameUpdate = false
+			if core:getBlizzardTrackingStatus(14139) == true and playersWithThirtyStacks == core.groupSize then
+				--Blizzard tracking gone white so achievement completed
+				core:getAchievementSuccess()
+			end
+		end)
 	end
 end
 
@@ -297,9 +318,9 @@ end
 
 function core._2217:CarapaceOfNZoth()
 	--Blizzard tracking gone white so achievement completed
-	-- if core:getBlizzardTrackingStatus(14147, 1) == true then
-	-- 	core:getAchievementSuccess()
-	-- end
+	if core:getBlizzardTrackingStatus(14147) == true then
+		core:getAchievementSuccess()
+	end
 
 	--Check for Synthesis stacks on boss. If <16 start 10 second timer.
 	--If achievement not marked as white after >10 seconds then announce fail
@@ -347,14 +368,8 @@ function core._2217:ClearVariables()
 	------------------------------------------------------
 	---- Drest'agath
 	------------------------------------------------------
-	temperTantrumCounter = 0
-	timerStarted = false
-	if timerDest ~= nil then
-		core:sendDebugMessage("Cancelled Drest Timer")
-		timerDest:Cancel()
-		timerStarted = false
-		timerDest = nil
-	end
+	initialTime = nil
+	secondTime = nil
 
 	------------------------------------------------------
 	---- N'Zoth, the Corruptor
@@ -387,6 +402,8 @@ function core._2217:ClearVariables()
 	playerAnnihilationStacks = {}
 	inititalVexionaSetup = false
 	playersWithThirtyStacks = 0
+	updateRequired = false
+	lockInfoFrameUpdate = false
 
 	------------------------------------------------------
 	---- Dark Inquisitor Xanesh

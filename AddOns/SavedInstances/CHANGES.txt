@@ -1,20 +1,62 @@
-tag 13c878a641b4211aaf2d1d0e7e51bd9eba8d4d74 8.3.0
+tag 1d44730cfc9488fb9d73ea28863e05aaf731ccf2 8.3.1
 Author:	Benjamin Staneck <staneck@gmail.com>
-Date:	Thu Jan 16 11:55:52 2020 +0100
+Date:	Wed Mar 4 22:11:51 2020 +0100
 
-Tagging as 8.3.0
-
-commit 18e75e63cc985dc1eafa78bbb9daec6d9b064fc0
+commit a6ccdc58c3c59d57e0371f092d22d6dbce9b0387
 Author: LiangYuxuan <lyx@lyx.es>
-Date:   Wed Nov 13 15:41:23 2019 +0800
+Date:   Tue Feb 25 09:42:08 2020 +0800
 
-    add 8.3 world bosses
+    track new Call to Arms quests
+    fixes #349
 
-commit ab34fb1c284f122be1f7e9bf881e05fa25e19bf0
-Author: akazamzarak <26889862+akazamzarak@users.noreply.github.com>
-Date:   Wed Dec 25 11:21:25 2019 +0900
+commit fceb49880a096993c63d7395d7a9d05e7efece2d
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Mon Feb 24 15:11:02 2020 +0800
 
-    Update Quests.lua
+    vessel not longer has Unique(5) cap
+
+commit a9290ae0668d638639f21711d350d245a7deac24
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Thu Feb 13 15:13:41 2020 +0800
+
+    add new Pet Battle Challenge quest
+
+commit 479aa5cf6502de1eb784fb1ef9d4d30d461497bb
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Wed Feb 12 15:29:19 2020 +0800
+
+    fix nil error on updating unknown currency
+
+commit 53db5e28e4694df5bf13bea8e10e15f97708120e
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Tue Feb 11 11:12:25 2020 +0800
+
+    show island weekly in Weekly Quest,
+    when island progress disabled
+
+commit 95fdc5222f9efbaccb83e2a3a0e71d8b5e199345
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Tue Feb 11 09:39:46 2020 +0800
+
+    typo
+
+commit 77d01e595e6d9f09817f307477579e34d116d3bf
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Tue Feb 11 09:29:06 2020 +0800
+
+    add related item count to specific currency
+
+commit eb7186eff97b78c9fc7e053299b91704ad3f0863
+Author: LiangYuxuan <lyx@lyx.es>
+Date:   Mon Feb 10 09:36:45 2020 +0800
+
+    update Heroic Warfront quest
+
+commit 34ee498f561546124660e0e51aae69b025e68820
+Author: Ryoame-SP <60790156+Ryoame-SP@users.noreply.github.com>
+Date:   Fri Feb 7 18:11:51 2020 +0100
+
+    Update Weekly Assaults and Daily Visions
     
-    mechagon "daily" world quests
+    Added Assaults to Weekly Quests and the Lesser Vision to dailies
 

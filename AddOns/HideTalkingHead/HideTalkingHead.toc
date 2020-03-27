@@ -1,7 +1,11 @@
-## Interface: 80000
-## Version: v1.1
+## Interface: 80300
+## Version: v1.2.0
 ## Title: HideTalkingHead
+## Notes: Hides that message dialog
+## Author: Ketho @ EU-Boulderfist
 ## LoadOnDemand: 1
 ## LoadWith: Blizzard_TalkingHeadUI
+## X-Curse-Project-ID: 101111
+## X-WoWI-ID: 23914
 
 HideTalkingHead.lua

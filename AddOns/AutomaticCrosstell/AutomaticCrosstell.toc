@@ -1,0 +1,7 @@
+## Interface: 80300
+
+## Title: AutomaticCrosstell
+## Author: anranwa
+## SavedVariables: AutoGossipNPCID
+
+AutomaticCrosstell.lua

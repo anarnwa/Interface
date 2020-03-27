@@ -1,17 +1,13 @@
 ------------------------------------------------------------------------
-r507 | Zensunim | 2020-02-12 04:47:48 +0000 (Wed, 12 Feb 2020) | 5 lines
+r511 | Zensunim | 2020-02-25 03:28:41 +0000 (Tue, 25 Feb 2020) | 3 lines
 Changed paths:
    M /trunk/GTFO.lua
    M /trunk/GTFO.toc
-   M /trunk/GTFO_Fail_BFA.lua
    M /trunk/GTFO_Spells_BFA.lua
-   M /trunk/GTFO_Spells_Special.lua
    M /trunk/ReadMe.txt
 
-4.53
-* Fixed a bug with "ignoreApplication" not respecting multiple dose and refresh events
+4.55
+* Added split update notifications between Classic & Retail
 * Added Battle for Azeroth spells (world)
-* Added BFA spells for Ny'alotha, the Waking City
-* Updated spells for Love is in the Air
 ------------------------------------------------------------------------
 
