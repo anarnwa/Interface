@@ -1,0 +1,9 @@
+## Interface: 80300
+## Title: Turn Down Invitation
+## Author: anranwa
+## Notes-zhCN:阻止被bodboy标记的玩家的邀请。
+## Dependencies: BadBoy
+
+turnDownInvitation.lua
+
+

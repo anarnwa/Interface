@@ -78,8 +78,7 @@ local CheckInteractDistance, IsItemInRange, UnitInRange = CheckInteractDistance,
 local max, sin, cos, pi, pi2 = math.max, math.sin, math.cos, math.pi, math.pi * 2
 local GetBestMapForUnit = C_Map.GetBestMapForUnit
 
--- for Phanx' Class Colors
-local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS-- for Phanx' Class Colors
 local BLIP_TEX_COORDS = {
 	["WARRIOR"]		 = { 0, 0.125, 0, 0.25 },
 	["PALADIN"]		 = { 0.125, 0.25, 0, 0.25 },
@@ -491,7 +490,12 @@ local frameBackdrop = {
 
 function createTextFrame()
 	local elapsed = 0
-	local textFrame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
+	local textFrame
+	if DBM:GetTOC() >= 90001 then
+		textFrame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "SharedTooltipTemplate")
+	else
+		textFrame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
+	end
 	dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", textFrame, "UIDropDownMenuTemplate")
 	textFrame:SetFrameStrata("DIALOG")
 	textFrame:SetBackdrop(frameBackdrop)
@@ -779,13 +783,13 @@ do
 		end
 		if rEnabled then
 			if prevNumClosePlayer ~= closePlayer or prevclosestRange ~= closestRange or prevType ~= type then
-				if closePlayer == 1 then
-					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
-				else
-					radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
-				end
 				if closePlayer >= warnThreshold then -- only show the text if the circle is red
 					circleColor = reverse and 1 or 2
+					if closePlayer == 1 then
+						radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE:format(closetName, closestRange))
+					else
+						radarFrame.inRangeText:SetText(DBM_CORE_RANGERADAR_IN_RANGE_TEXT:format(closePlayer, closestRange))
+					end
 					radarFrame.inRangeText:Show()
 				else
 					circleColor = reverse and 2 or 1

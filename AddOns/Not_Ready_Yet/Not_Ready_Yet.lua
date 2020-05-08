@@ -1,127 +1,380 @@
-reportcdplayerspecialization = nil
-reportcdplayerclass = nil
-local function isInSpellID(t)
-    for _, v in ipairs(SpellID[reportcdplayerclass][reportcdplayerspecialization]) do
-        if v == t then
-            return true
-        end
-    end
-    return false
+local ADDON, ns = ...
+local NotReadyYet = LibStub('AceAddon-3.0'):NewAddon(ADDON, 'AceConsole-3.0', 'AceEvent-3.0')
+local nexttime = {}
+local report = {}
+local GetTime1 = GetTime
+local GetSpellLink1 = GetSpellLink
+local specialization
+local options_table
+
+function NotReadyYet:ShowConfig()
+    LibStub('AceConfigDialog-3.0'):SetDefaultSize(ADDON, 550, 450)
+    LibStub('AceConfigDialog-3.0'):Open(ADDON)
 end
-local function Event(event, handler)
-    if _G.event == nil then
-        _G.event = CreateFrame('Frame')
-        _G.event.handler = {}
-        _G.event.OnEvent = function(frame, event, ...)
-            for key, handler in pairs(_G.event.handler[event]) do
-                handler(...)
-            end
-        end
-        _G.event:SetScript('OnEvent', _G.event.OnEvent)
-    end
-    if _G.event.handler[event] == nil then
-        _G.event.handler[event] = {}
-        _G.event:RegisterEvent(event)
-    end
-    table.insert(_G.event.handler[event], handler)
+
+local send_chat_message_types = {
+    SAY = '说（副本内生效）',
+    EMOTE = '表情',
+    YELL = '喊（副本内生效）',
+    PARTY = '小队',
+    RAID = '团队',
+    SMARTRAID = '副本频道>团队>小队>战斗信息>聊天栏',
+    INSTANCE_CHAT = '副本频道',
+    COMBAT = '战斗信息',
+    PRINT = '聊天栏'
+}
+
+function NotReadyYet:OnInitialize()
+    self.db = LibStub('AceDB-3.0'):New('Not_Ready_Yet_DB')
+    specialization = GetSpecialization()
+    options_table = {
+        order = 1,
+        name = 'CD通报',
+        type = 'group',
+        args = {
+            enable = {
+                order = 1,
+                name = '开启插件',
+                type = 'toggle',
+                set = function(info, val)
+                    NotReadyYet.db.global.enable = val
+                end,
+                get = function(info)
+                    return NotReadyYet.db.global.enable
+                end
+            },
+            addspellid = {
+                order = 2,
+                name = '添加法术ID',
+                type = 'input',
+                set = function(info, val)
+                    if val == nil or val == '' then
+                        return
+                    end
+                    local id = tonumber(val) or tonumber(val:match(':[0-9]+'):sub(2))
+                    if id then
+                        NotReadyYet.db.class[specialization][id] = GetSpellInfo(id)
+                    end
+                end,
+                get = function(info)
+                    return
+                end
+            },
+            removespellid = {
+                order = 3,
+                name = '移除法术',
+                type = 'select',
+                values = NotReadyYet.db.class[specialization],
+                set = function(info, val)
+                    NotReadyYet.db.class[specialization][val] = nil
+                end,
+                get = function(info)
+                    return
+                end
+            },
+            reportcd = {
+                order = 4,
+                name = '喊话间隔',
+                type = 'input',
+                set = function(info, val)
+                    local id = tonumber(val) or tonumber(val:match('[0-9]+'))
+                    if id then
+                        NotReadyYet.db.global.CD = id
+                    end
+                end,
+                get = function(info)
+                    return tostring(NotReadyYet.db.global.CD) .. '秒'
+                end,
+                width = 0.75
+            },
+            mincd = {
+                order = 5,
+                name = '施法成功后不通报的时间',
+                type = 'input',
+                set = function(info, val)
+                    local id = tonumber(val) or tonumber(val:match('[0-9]+'))
+                    if id then
+                        NotReadyYet.db.global.mincd = id
+                    end
+                end,
+                get = function(info)
+                    return tostring(NotReadyYet.db.global.mincd) .. '秒'
+                end
+            },
+            maxcd = {
+                order = 6,
+                name = '法术CD小于此项时不通报',
+                type = 'input',
+                set = function(info, val)
+                    local id = tonumber(val) or tonumber(val:match('[0-9]+'))
+                    if id then
+                        NotReadyYet.db.global.maxcd = id
+                    end
+                end,
+                get = function(info)
+                    return tostring(NotReadyYet.db.global.maxcd) .. '秒'
+                end
+            },
+            channel = {
+                order = 7,
+                name = '发送频道',
+                type = 'select',
+                values = send_chat_message_types,
+                set = function(info, val)
+                    NotReadyYet.db.global.channel = val
+                end,
+                get = function(info)
+                    return NotReadyYet.db.global.channel
+                end,
+                width = 'full'
+            },
+            SUCCEEDEDreport = {
+                order = 8,
+                name = '自定义施法成功的喊话  {SpellName}为技能名',
+                type = 'input',
+                set = function(info, val)
+                    NotReadyYet.db.global.SUCCEEDEDreport = val
+                end,
+                get = function(info)
+                    return NotReadyYet.db.global.SUCCEEDEDreport
+                end,
+                width = 'full'
+            },
+            FaILEDreport = {
+                order = 9,
+                name = '自定义施法失败的喊话  {SpellName}为技能名  {CD} 为CD',
+                type = 'input',
+                set = function(info, val)
+                    NotReadyYet.db.global.FaILEDreport = val
+                end,
+                get = function(info)
+                    return NotReadyYet.db.global.FaILEDreport
+                end,
+                width = 'full'
+            },
+            readyreport = {
+                order = 10,
+                name = '自定义施法CD结束时的喊话  {SpellName}为技能名',
+                type = 'input',
+                set = function(info, val)
+                    NotReadyYet.db.global.readyreport = val
+                end,
+                get = function(info)
+                    return NotReadyYet.db.global.readyreport
+                end,
+                width = 'full'
+            }
+        }
+    }
+    LibStub('AceConfigRegistry-3.0'):RegisterOptionsTable(ADDON, options_table)
+    self:RegisterChatCommand('nry', 'ShowConfig')
+    self:RegisterChatCommand('notreadyyet', 'ShowConfig')
 end
-local function getreport(name, cd)
-    local text = string.gsub(Setting.report, '{SpellName}', name)
+
+local function getreport(str, spelllink, cd)
+    local text = string.gsub(str, '{SpellName}', spelllink)
     text = string.gsub(text, '{CD}', string.format('%d', cd))
     return text
 end
-Event(
-    'PLAYER_ENTERING_WORLD',
-    function()
-        if not SpellID or SpellID == nil then
-            SpellID = {}
+
+function NotReadyYet:OnEnable()
+    self:RegisterEvent('PLAYER_ENTERING_WORLD')
+    self:RegisterEvent('UNIT_SPELLCAST_FAILED')
+    self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED')
+    self:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
+    self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+    self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
+end
+
+function NotReadyYet:PLAYER_SPECIALIZATION_CHANGED()
+    specialization = GetSpecialization()
+    if not self.db.class[specialization] then
+        self.db.class[specialization] = {}
+    end
+    options_table.args.removespellid.values = NotReadyYet.db.class[specialization]
+end
+
+function NotReadyYet:Print(message)
+    if not self.db.global.enable then return end
+    local message_type = self.db.global.channel
+    if (message_type == 'PRINT') then
+        print(message)
+    elseif (message_type == 'COMBAT') then
+        if (CombatText_AddMessage) then
+            CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION)
         end
-        if not Setting or Setting == nil then
-            Setting = {}
-            Setting.open = true
+    elseif (message_type == 'SMARTRAID') then
+        local isInstanceGroup = IsInGroup(LE_PARTY_CATEGORY_INSTANCE)
+        if UnitInBattleground('player') then
+            pcall(
+                function()
+                    SendChatMessage(message, 'INSTANCE_CHAT')
+                end
+            )
+        elseif UnitInRaid('player') then
+            pcall(
+                function()
+                    SendChatMessage(message, 'RAID')
+                end
+            )
+        elseif UnitInParty('player') then
+            if isInstanceGroup then
+                pcall(
+                    function()
+                        SendChatMessage(message, 'INSTANCE_CHAT')
+                    end
+                )
+            else
+                pcall(
+                    function()
+                        SendChatMessage(message, 'PARTY')
+                    end
+                )
+            end
+        elseif (CombatText_AddMessage) then
+            CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION)
+        else
+            if IsInInstance() then
+                pcall(
+                    function()
+                        SendChatMessage(message, 'SAY')
+                    end
+                )
+            else
+                print(message)
+            end
         end
-        if not Setting.mincd or Setting.mincd == nil then
-            Setting.mincd = 2
+    elseif (message_type == 'SAY' or message_type == 'YELL') then
+        if IsInInstance() then
+            pcall(
+                function()
+                    SendChatMessage(message, message_type, nil, nil)
+                end
+            )
         end
-        if not Setting.maxcd or Setting.maxcd == nil then
-            Setting.maxcd = 2
+    else  pcall(
+        function()
+            SendChatMessage(message, message_type, nil, nil)
         end
-        if not Setting.CD or Setting.CD == nil then
-            Setting.CD = 5
+    )
+    end
+end
+
+function NotReadyYet:COMBAT_LOG_EVENT_UNFILTERED()
+    local timestamp,
+        eventType,
+        hideCaster,
+        sourceGUID,
+        sourceName,
+        sourceFlags,
+        sourceRaidFlags,
+        destGUID,
+        destName,
+        destFlags,
+        destRaidFlags = CombatLogGetCurrentEventInfo()
+    if eventType == 'SPELL_INTERRUPT' then
+        local spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSchool =
+            select(12, CombatLogGetCurrentEventInfo())
+        if sourceName == UnitName('player') or sourceName == UnitName('pet') then
+            self:Print('打断-->' .. GetSpellLink1(extraSpellId))
         end
-        if not Setting.report or Setting.report == nil then
-            Setting.report = '{SpellName} 释放失败 CD {CD} 秒'
+    elseif eventType == 'SPELL_DISPEL' then
+        local spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSchool, auraType =
+            select(12, CombatLogGetCurrentEventInfo())
+        if sourceName == UnitName('player') or sourceName == UnitName('pet') then
+            self:Print('驱散-->' .. GetSpellLink1(extraSpellId))
         end
-        reportcdplayerspecialization = GetSpecialization()
-        reportcdplayerclass = select(2, UnitClass('player'))
-        if not SpellID[reportcdplayerclass] or SpellID[reportcdplayerclass] == nil then
-            SpellID[reportcdplayerclass] = {}
+    elseif eventType == 'SPELL_STOLEN' then
+        local spellId, spellName, spellSchool, extraSpellId, extraSpellName, extraSchool, auraType =
+            select(12, CombatLogGetCurrentEventInfo())
+        if sourceName == UnitName('player') then
+            self:Print('偷取-->' .. GetSpellLink1(extraSpellId))
         end
-        if
-            not SpellID[reportcdplayerclass][reportcdplayerspecialization] or
-                SpellID[reportcdplayerclass][reportcdplayerspecialization] == nil
-         then
-            SpellID[reportcdplayerclass][reportcdplayerspecialization] = {}
+    elseif eventType == 'SPELL_MISSED' then
+        local spellId, spellName, spellSchool, missType, isOffHand, amountMissed =
+            select(12, CombatLogGetCurrentEventInfo())
+        if missType == 'REFLECT' and destName == UnitName('player') then
+            self:Print('反射-->' .. GetSpellLink1(spellId))
+        elseif missType == 'ABSORB' and destName == '根基图腾' and destFlags == 8465 then
+            self:Print('吸收-->' .. GetSpellLink1(spellId))
         end
     end
-)
-local nexttime = {}
+end
 
-Event(
-    'UNIT_SPELLCAST_SUCCEEDED',
-    function(unitTarget, castGUID, spellID)
-        if unitTarget == "player" and isInSpellID(spellID) then
-            nexttime[spellID] = GetTime() +Setting.mincd
+function NotReadyYet:PLAYER_ENTERING_WORLD()
+    if not self.db.global.mincd then
+        self.db.global.mincd = 2
+    end
+    if not self.db.global.maxcd then
+        self.db.global.maxcd = 2
+    end
+    if not self.db.global.CD then
+        self.db.global.CD = 5
+    end
+    if not self.db.global.FaILEDreport then
+        self.db.global.FaILEDreport = '{SpellName} 释放失败 CD {CD} 秒'
+    end
+    if not self.db.global.SUCCEEDEDreport then
+        self.db.global.SUCCEEDEDreport = '已施放{SpellName}'
+    end
+    if self.db.global.enable == nil then
+        self.db.global.enable = true
+    end
+    if not self.db.global.readyreport then
+        self.db.global.readyreport = '{SpellName} 已就绪'
+    end
+    if not self.db.global.channel then
+        self.db.global.channel = 'SMARTRAID'
+    end
+    specialization = GetSpecialization()
+    if not self.db.class[specialization] then
+        self.db.class[specialization] = {}
+    end
+end
+
+function NotReadyYet:ACTIONBAR_UPDATE_COOLDOWN()
+    local start, dur
+    for k, v in pairs(report) do
+        start, dur = GetSpellCooldown(k)
+        if dur == 0 then
+            self:Print(getreport(self.db.global.readyreport, GetSpellLink1(k), nil))
+            report[k] = nil
         end
     end
-)
+end
 
-Event(
-    'UNIT_SPELLCAST_FAILED',
-    function(unit, castGUID, spellID)
-        if not Setting.open then
+function NotReadyYet:UNIT_SPELLCAST_SUCCEEDED(event, unitTarget, castGUID, spellID)
+    if not self.db.global.enable then
+        return
+    end
+    if unitTarget == 'player' and self.db.class[specialization][spellID] ~= nil then
+        nexttime[spellID] = GetTime1() + self.db.global.mincd
+        report[spellID] = true
+        self:Print(getreport(self.db.global.SUCCEEDEDreport, GetSpellLink1(spellID), nil))
+    end
+end
+
+function NotReadyYet:UNIT_SPELLCAST_FAILED(event, unit, castGUID, spellID)
+    if not self.db.global.enable then
+        return
+    end
+    if unit == 'player' and self.db.class[specialization][spellID] ~= nil then
+        local start, dur = GetSpellCooldown(spellID)
+        local expirationTime = start + dur
+        if expirationTime <= GetTime1() then
             return
         end
-        if unit == 'player' and isInSpellID(spellID) then
-            local start, dur = GetSpellCooldown(spellID)
-            local name = GetSpellInfo(spellID)
-            local expirationTime = start + dur
-            if expirationTime <= GetTime() then
-                return
-            end
-            if nexttime[spellID] == nil then
-                nexttime[spellID] = GetTime() - 1
-            end
-            if nexttime[spellID] > GetTime() then
-                return
-            end
-            if (expirationTime - GetTime()) < Setting.maxcd then
-                return
-            end
-            local cd = expirationTime - GetTime()
-            local stringtext = getreport(name, cd)
-            if IsInGroup() and not IsInRaid() then
-                SendChatMessage(stringtext, 'PARTY')
-                nexttime[spellID] = GetTime() + Setting.CD
-            end
-            if IsInRaid() then
-                SendChatMessage(stringtext, 'Raid')
-                nexttime[spellID] = GetTime() + Setting.CD
-            end
+        if nexttime[spellID] == nil then
+            nexttime[spellID] = GetTime1() - 1
         end
-    end
-)
-
-Event(
-    'PLAYER_SPECIALIZATION_CHANGED',
-    function()
-        reportcdplayerspecialization = GetSpecialization()
-        reportcdplayerclass = select(2, UnitClass('player'))
-        if
-            not SpellID[reportcdplayerclass][reportcdplayerspecialization] or
-                SpellID[reportcdplayerclass][reportcdplayerspecialization] == nil
-         then
-            SpellID[reportcdplayerclass][reportcdplayerspecialization] = {}
+        if nexttime[spellID] > GetTime1() then
+            return
         end
+        if (expirationTime - GetTime1()) < self.db.global.maxcd then
+            return
+        end
+        local cd = expirationTime - GetTime1()
+        self:Print(getreport(self.db.global.FaILEDreport, GetSpellLink1(spellID), cd))
+        nexttime[spellID] = GetTime1() + self.db.global.CD
     end
-)
+end

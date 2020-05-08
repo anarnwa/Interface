@@ -3,15 +3,12 @@ if GetLocale() ~= "koKR" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 local L = DBM_GUI_Translations
 
---L.MainFrame = "Deadly Boss Mods"
-
 L.TranslationByPrefix		= "번역: "
 L.TranslationBy 			= "Elnarfim"
 L.Website					= "디스코드 채널 |cFF73C2FBhttps://discord.gg/deadlybossmods|r를 방문해 보세요. 트위터 팔로우 @deadlybossmods 또는 @MysticalOS"
 L.WebsiteButton				= "웹사이트"
 
 L.OTabBosses	= "보스"
---L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options		= "일반 설정"
 L.TabCategory_OTHER			= "기타 모드"
@@ -115,9 +112,9 @@ L.DisableGuildStatus 		= "길드에 진행 상황 알림 메시지를 전송하�
 -- Tab: Barsetup
 L.BarSetup  				= "타이머 바 설정"
 L.BarTexture 				= "바 텍스쳐"
-L.BarStyle 					= "바 스타일"
-L.BarDBM					= "DBM (애니메이션)"
-L.BarSimple					= "Simple (애니메이션 없음)"
+L.BarStyle 					= "바 작동 방식"
+L.BarDBM					= "Classic (처음 생긴 바가 확대 표시될 위치로 스르륵 이동)"
+L.BarSimple					= "Simple (처음 바는 사라지고 큰 바가 새로 생성)"
 L.BarStartColor	 			= "시작 색상"
 L.BarEndColor 				= "종료 색상"
 L.Bar_Font					= "바 글꼴"
@@ -162,7 +159,8 @@ L.CVoiceThree				= "초읽기 음성 3"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "타이머 종류별 바 색상"
-L.AreaTitle_BarSetup 		= "일반 바 설정"
+L.AreaTitle_BarSetup		= "바 외형 설정"
+L.AreaTitle_Behavior		= "바 작동 방식 설정"
 L.AreaTitle_BarSetupSmall 	= "작은 바 설정"
 L.AreaTitle_BarSetupHuge 	= "커다란 바 설정"
 L.EnableHugeBar 			= "커다란 바 사용 (일명 바 2)"
@@ -178,6 +176,7 @@ L.BarSpark					= "바 끝 강조"
 L.BarFlash					= "만료 전에 바 점멸"
 L.BarSort					= "남은 시간 기준으로 정렬"
 L.BarColorByType			= "종류별 색상"
+L.NoBarFade					= "시작/종료시 색상 변화를 그라데이션 효과 대신 작은/큰 바 색을 사용"
 L.BarInlineIcons			= "바 안쪽에 아이콘 사용"
 L.ShortTimerText			= "짧은 타이머 텍스트 사용 (사용 가능할 때만)"
 L.StripTimerText			= "타이머 텍스트에 쿨타임/다음 삭제"

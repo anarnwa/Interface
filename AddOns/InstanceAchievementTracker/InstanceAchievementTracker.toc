@@ -2,7 +2,7 @@
 ## Notes: An addon for tracking the completion/faliure of instance achievements.
 ## Title:Instance Achievement Tracker
 ## Author: Whizzey
-## Version: 2.76.0
+## Version: 2.77.0
 ## OptionalDeps: LibStub, CallbackHandler-1.0, LibDBIcon-1.0, LibInspect, LibRangeCheck-2.0
 ## SavedVariables: AchievementTrackerOptions, AchievementTrackerDebug
 ## X-Curse-Project-ID: 286675
@@ -28,6 +28,17 @@ Localization.ruRU.lua
 Localization.zhCN.lua
 Localization.zhTW.lua
 Localization.koKR.lua
+
+ShadowlandsRaids\CastleNathria.lua
+
+ShadowlandsDungeons\DeOtherSide.lua
+ShadowlandsDungeons\HallsofAtonement.lua
+ShadowlandsDungeons\MistsofTirnaScithe.lua
+ShadowlandsDungeons\Plaguefall.lua
+ShadowlandsDungeons\SanguineDepths.lua
+ShadowlandsDungeons\SpiresofAscension.lua
+ShadowlandsDungeons\TheaterofPain.lua
+ShadowlandsDungeons\TheNecroticWake.lua
 
 BattleForAzerothRaids\Uldir.lua
 BattleForAzerothRaids\BattleOfDazaralor.lua

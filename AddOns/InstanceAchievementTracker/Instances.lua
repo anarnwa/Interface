@@ -1,34 +1,49 @@
--- local i = 1
--- while EJ_GetInstanceByIndex(i, true) do --True for raid, false for dungeons. i = 1 for raids i = 2 for dungeons
---     local instanceId, name = EJ_GetInstanceByIndex(i, true)
---     print("---" .. instanceId, name)
---     EJ_SelectInstance(instanceId)
---     i = i+1
-    
---     local j = 1
---     while EJ_GetEncounterInfoByIndex(j, instanceId) do
---         local name, _, encounterId = EJ_GetEncounterInfoByIndex(j, instanceId)
---         print(encounterId, name)
---         j = j+1
---     end
--- end
-
---NOTES for updating this file for new raids/dungeons
---EncounterID - Get this from boss mods
---
-
 --------------------------------------
--- Namespaces
+-- Namespace
 --------------------------------------
 local _, core = ...
-
 local L = core.L
-
 local instances = {}
 
 core.Instances = {
-    --Battle for Azeroth
+    --Shadowlands
     [2] = {
+        Raids = {
+            [2296] = { --Castle Nathria
+                name = 1190,
+            },
+        },
+
+        Dungeons = {
+            [2291] = { --De Other Side
+                name = 1188,
+            },
+            [2287] = { --Halls of Atonement
+                name = 1185,
+            },
+            [2290] = { --Mists of Tirna Scithe
+                name = 1184,
+            },
+            [2289] = { --Plaguefall
+                name = 1183,
+            },
+            [2284] = { --Sanguine Depths
+                name = 1189,
+            },
+            [2285] = { --Spires of Ascension
+                name = 1186,
+            },
+            [2293] = { --Theater of Pain
+                name = 1187,
+            },
+            [2286] = { --The Necrotic Wake
+                name = 1182,
+            },
+        },
+    },
+
+    --Battle for Azeroth
+    [3] = {
         Raids = {
             [1861] = { --Uldir
                 name = 1031,
@@ -558,8 +573,8 @@ core.Instances = {
                     achievement = 12998,
                     players = {},
                     tactics = format(L["Freehold_HarlanSweete"], "IAT_129440", GetSpellLink(257305)),
-                    enabled = false,
-                    track = nil,
+                    enabled = true,
+                    track = function() core._1754:HarlanSweete() end,
                     partial = false,
                     encounterID = 2096,
                 },
@@ -906,7 +921,7 @@ core.Instances = {
     },
 
     --Legion
-    [3] = {
+    [4] = {
         Raids = {
             [1520] = { --The Emerald Nightmare
                 name = 768,
@@ -1023,6 +1038,7 @@ core.Instances = {
                     enabled = true,
                     track = function() core._1648:Helya() end,
                     partial = false,
+                    displayInfoFrame = true,
                 },
             },
 
@@ -1342,11 +1358,10 @@ core.Instances = {
                     achievement = 12046,
                     players = {},
                     tactics = format(L["AntorusTheBurningThrone_CovenOfShivarra"], GetSpellLink(250095), GetSpellLink(245910), GetSpellLink(710), GetSpellLink(187650), GetSpellLink(339), GetSpellLink(246763), GetSpellLink(245671)),
-                    enabled = true,
-                    track = function() core._1712:CovenOfShivarra() end,
+                    enabled = false,
+                    track = nil,
                     partial = false,
                     encounterID = 2073,
-                    displayInfoFrame = true,
                 },
                 boss10 = {
                     name = 1984, --Aggramar
@@ -1838,7 +1853,7 @@ core.Instances = {
     },
 
     --Warlords of Dranor
-    [4] = {
+    [5] = {
         Raids = {
             [1228] = { --Highmaul
                 name = 477,
@@ -2494,7 +2509,7 @@ core.Instances = {
     },
 
     --Mists of Pandaria
-    [5] = {
+    [6] = {
         Raids = {
             [996] = { --Terrace of Endless Spring
                 name = 320,
@@ -3771,7 +3786,7 @@ core.Instances = {
     },
 
     --Cataclysm
-    [6] = {
+    [7] = {
         Raids = {
             [967] = { --Dragon Soul
                 name = 187,
@@ -4598,7 +4613,7 @@ core.Instances = {
     },
 
     --Wrath of the Lich King
-    [7] = {
+    [8] = {
         Raids = {
             ["615-10"] = { --Obsidian Sanctum 10 Man
                 name = 755,
@@ -4933,6 +4948,7 @@ core.Instances = {
                     track = function() core._649:Anubarak() end,
                     partial = false,
                     encounterID = 1085,
+                    displayInfoFrame = true,
                 },                     
             },
 

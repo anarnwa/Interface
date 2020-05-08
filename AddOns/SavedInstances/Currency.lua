@@ -5,11 +5,12 @@ local thisToon = UnitName("player") .. " - " .. GetRealmName()
 local seasonTotalPatten = gsub(CURRENCY_SEASON_TOTAL, "%%s%%s", "(.+)")
 
 -- Lua functions
-local wipe, ipairs, pairs = wipe, ipairs, pairs
+local ipairs, pairs, strfind, wipe = ipairs, pairs, strfind, wipe
 local _G = _G
 
 -- WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
+local GetItemCount = GetItemCount
 local GetMoney = GetMoney
 local IsQuestFlaggedCompleted = C_QuestLog and C_QuestLog.IsQuestFlaggedCompleted or IsQuestFlaggedCompleted
 
@@ -61,8 +62,20 @@ local currency = {
   1721, -- Prismatic Manapearl
   1719, -- Corrupted Memento
   1755, -- Coalescing Visions
+  1803, -- Echoes of Ny'alotha
 }
 addon.currency = currency
+
+local currencySorted = {}
+for _, idx in ipairs(currency) do
+  table.insert(currencySorted, idx)
+end
+table.sort(currencySorted, function (c1, c2)
+  local c1_name = GetCurrencyInfo(c1)
+  local c2_name = GetCurrencyInfo(c2)
+  return c1_name < c2_name
+end)
+addon.currencySorted = currencySorted
 
 local specialCurrency = {
   [1129] = { -- WoD - Seal of Tempered Fate

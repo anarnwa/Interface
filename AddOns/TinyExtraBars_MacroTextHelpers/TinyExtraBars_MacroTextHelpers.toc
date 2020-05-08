@@ -1,7 +1,0 @@
-## Interface: 80000
-## Title: TinyExtraBars MacroText helpers
-## Author: Another
-## Version: 1.00
-
-IconSelection.xml
-MacroText_Customize.xml

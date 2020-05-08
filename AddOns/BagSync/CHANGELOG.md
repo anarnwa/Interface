@@ -1,8 +1,11 @@
 # BagSync
 
-## [v13.5](https://github.com/Xruptor/BagSync/tree/v13.5) (2020-03-07)
-[Full Changelog](https://github.com/Xruptor/BagSync/compare/v13.4...v13.5)
+## [v13.6](https://github.com/Xruptor/BagSync/tree/v13.6) (2020-04-14)
+[Full Changelog](https://github.com/Xruptor/BagSync/compare/v13.5...v13.6)
 
-- Fixed an issue where the mailbox was not allowing players to input money in the currency field on CLASSIC.  
-    Updated several libraries.  
-    Updated scanning module to use a custom tooltip for scanning rather then the standard GameTooltip.  
+- Added a final fix for certain tokens not displaying tooltips at merchant vendors.  
+    Updated the toc for Classic WOW.  
+    Finalized all changes for additional checks to prevent crashes at the AH scan.  (Fixes #101)  
+- -Final cleanup on token currency bugfix on vendors.  
+- -Attempting to add more checks for the Auction House scan.  To prevent crashes and breaking the Auction House.  
+    -Fixing an issue where sometimes the currency on the merchants do not show the properly BagSync currency info.  

@@ -2,6 +2,16 @@
 ## Title: Not_Ready_Yet
 ## Author: anarnwa
 ## Version: 8.3.0
-## SavedVariables: SpellID,Setting
+## SavedVariables: Not_Ready_Yet_DB
+
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+#@end-no-lib-strip@
 Not_Ready_Yet.lua
-Not_Ready_Yet_UI.lua

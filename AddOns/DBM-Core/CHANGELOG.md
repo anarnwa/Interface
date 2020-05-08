@@ -1,15 +1,31 @@
 # Deadly Boss Mods Core
 
-## [8.3.18](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/8.3.18) (2020-03-17)
-[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/8.3.17...8.3.18)
+## [8.3.21](https://github.com/DeadlyBossMods/DeadlyBossMods/tree/8.3.21) (2020-05-02)
+[Full Changelog](https://github.com/DeadlyBossMods/DeadlyBossMods/compare/8.3.20...8.3.21)
 
-- Bump version and prepare tag  
-- Complete the normal mode growth tentacles to complete different timers for all 4 difficulties. Removed debug for them.  
-- Update LFR Berserk  
-- Fixed guild combat messaging system throwing lua errors on niche bosses that exist in a raid but not in journal. This error only happened when Boss was in a raid, not in the journal, is current content (or rather current content relative to players level, IE doing algalon herald of titans run).  
-- Added LFR timer for Growth Covered tentacle and disabled timer for Gaze of Madness (doesn't seem to happen in LFR?)  
-- Pruned Enlarge bar percent option, it's simply not really compatible with the "Simple" bar behavior plus it contradicts the enlarge bar time option, which is all DBM really needs.  
-    Combined the general bar options and limited bar options back together since there are no longer limitaitons on said bar options.  
-- Simple bar behavior option should now work with all bar animation/movement options.  
-- Updated LFR trashing tentacles in stage 3 Carapace from videos.  
-    Also updated normal thrashing tentacles through mathmatical calculations based on heroic and lfr timers.  
+- Ok, now prep a retail release, should fix the WowI problem too  
+- Revert "Prep new classic tag"  
+- Prep new classic tag  
+- Only set close player text when it's actually shown, to avoid nil errors and also to not waste cpu  
+- Updated Shreikwing mod with two new abilities added in build 34199  
+- Renamed Dredger Giant to Sludgefist  
+    Added Stoneborne Generals and The Council of Blood now that they have journal entries.  
+- When wrong version of DBM is installed, don't just display message once at login. display message every 15 seconds, indefinitely, until incorrect version of DBM is uninstalled.  
+- missed a couple  
+- Fixed a bug that caused radar not to display first decimal place when more than 1 person was in range  
+    Changed measurement indicator from d back to y in english and m in all other languages. TODO, check region instead. if region US then y else m, regardless of language.  
+- Updated Lord Chamberlain from logs, removing infoframe for stacking debuff they appear to have deleted, added very preliminary timers (pull too short) and fixed a missing spellId  
+- KR Update (#178)  
+    * KR Update  
+- Updated first 3 bosses of Halls of Atonement from logs. few events/spellIds fixed. some timers added, others disabled do to insufficient data to substanciate they even have timers.  
+- The rest of Sanguine Depths drycoded  
+- Drycoded first two bosses of Sanguine Depths dungeon  
+    Drycoded Shriekwing (first boss) of Castle Nathria raid  
+- Added Mordretha drycode to Theater of Pain  
+- DBM Timer Update  
+     - Improved the DBM-GUI bar setup UI with better organizing of options  
+     - Improved labeling each dummy bar with an appropriate bar label for each instead of all of them saying "dummy"  
+     - Added a large bar example right next to small bar example in the part of timer GUI for configuring appearance options, so you can more visibly see how appearance options affect the two bar types.  
+     - Added a user requested new option to change Start/End color to apply those colors to small/large bar types instead of being used as an animated color fade. This will allow users to setup bars in more ways (such as making small bars red and large bars blue if they wish)  
+- Sync boss names/order to current journal build  
+- Kul'tharok Drycode added to Theater of Pain  

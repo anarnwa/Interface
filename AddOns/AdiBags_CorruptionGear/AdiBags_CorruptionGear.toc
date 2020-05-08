@@ -1,0 +1,7 @@
+## Interface: 80300
+## Title: AdiBags - Corruption Gear
+## Notes: Adds an Corruption Gear filter to AdiBags.
+## Author: Saxayone
+## Version: 0.2
+## Dependencies: AdiBags
+AdiBags_CorruptionGear.lua

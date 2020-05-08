@@ -1,8 +1,8 @@
 DBM_DEADLY_BOSS_MODS				= "Deadly Boss Mods"
 DBM_DBM								= "DBM"
 if C_DateAndTime and C_DateAndTime.GetCurrentCalendarTime then
-	local day, _, month = C_DateAndTime.GetCurrentCalendarTime()
-	if day and month and day == 1 and month == 4 then
+	local dateTable = C_DateAndTime.GetCurrentCalendarTime()
+	if dateTable.monthDay and dateTable.month and dateTable.monthDay == 1 and dateTable.month == 4 then
 		DBM_DEADLY_BOSS_MODS				= "Harmless Boss Mods"
 		DBM_DBM								= "HBM"
 	end
@@ -163,7 +163,7 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Boss Mod - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (%s) %s"--One Boss mod
 DBM_CORE_VERSIONCHECK_ENTRY_TWO		= "%s: %s (%s) & %s (%s)"--Two Boss mods
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: No boss mod installed"
-DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d player(s) with DBM & %d player(s) with Bigwigs"
+DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d player(s) with "..DBM_DBM.." & %d player(s) with Bigwigs"
 DBM_CORE_VERSIONCHECK_OUTDATED		= "Following %d player(s) have outdated boss mod version: %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Your version of "..DBM_DEADLY_BOSS_MODS.." is out-of-date. Please visit http://www.deadlybossmods.com to get the latest version."
 DBM_CORE_VOICE_PACK_OUTDATED		= "Your selected DBM voice pack is missing some sounds supported by DBM. Some warning sounds will still play default sounds. Please download a newer version of voice pack or pack contact author for an update that contains missing audio"
@@ -202,10 +202,10 @@ DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>. <time> 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= DBM_DEADLY_BOSS_MODS--Technically redundant
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Hold shift and drag to move"
 
-DBM_CORE_RANGECHECK_HEADER			= "Range Check (%dD)"
-DBM_CORE_RANGECHECK_HEADERT			= "Range Check (%dD-%dP)"
-DBM_CORE_RANGECHECK_RHEADER			= "R-Range Check (%dD)"
-DBM_CORE_RANGECHECK_RHEADERT		= "R-Range Check (%dD-%dP)"
+DBM_CORE_RANGECHECK_HEADER			= "Range Check (%dy)"
+DBM_CORE_RANGECHECK_HEADERT			= "Range Check (%dy-%dP)"
+DBM_CORE_RANGECHECK_RHEADER			= "R-Range Check (%dy)"
+DBM_CORE_RANGECHECK_RHEADERT		= "R-Range Check (%dy-%dP)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Set range"
 DBM_CORE_RANGECHECK_SETTHRESHOLD	= "Set player threshold"
 DBM_CORE_RANGECHECK_SOUNDS			= "Sounds"
@@ -214,16 +214,16 @@ DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sound when more than one player is in rang
 DBM_CORE_RANGECHECK_SOUND_0			= "No sound"
 DBM_CORE_RANGECHECK_SOUND_1			= "Default sound"
 DBM_CORE_RANGECHECK_SOUND_2			= "Annoying beep"
-DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d D"
+DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d y"
 DBM_CORE_RANGECHECK_OPTION_FRAMES	= "Frames"
 DBM_CORE_RANGECHECK_OPTION_RADAR	= "Show radar frame"
 DBM_CORE_RANGECHECK_OPTION_TEXT		= "Show text frame"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "Show both frames"
 DBM_CORE_RANGERADAR_HEADER			= "Range:%d Players:%d"
 DBM_CORE_RANGERADAR_RHEADER			= "R-Rng:%d Players:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in range (%dD)"--Multi
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "%d in range (%0.1fy)"--Multi
 DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "%d in range"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
-DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fD)"--One target
+DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE= "%s (%0.1fy)"--One target
 
 DBM_CORE_INFOFRAME_SHOW_SELF		= "Always show your power"		-- Always show your own power value even if you are below the threshold
 DBM_CORE_INFOFRAME_SETLINES			= "Set max lines"
@@ -664,6 +664,7 @@ DBM_LDB_TOOLTIP_HELP1	= "Click to open "..DBM_DBM
 
 DBM_LDB_LOAD_MODS		= "Load boss mods"
 
+DBM_LDB_CAT_SL			= EXPANSION_NAME8 or "Shadowlands"
 DBM_LDB_CAT_BFA			= EXPANSION_NAME7
 DBM_LDB_CAT_LEG			= EXPANSION_NAME6
 DBM_LDB_CAT_WOD			= EXPANSION_NAME5

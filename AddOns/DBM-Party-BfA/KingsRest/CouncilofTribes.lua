@@ -1,18 +1,18 @@
 local mod	= DBM:NewMod(2170, "DBM-Party-BfA", 3, 1041)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision("20200224184452")
+mod:SetRevision("20200425190512")
 mod:SetCreatureID(135475, 135470, 135472)
 mod:SetEncounterID(2140)
 mod:SetZone()
-mod:SetUsedIcons(1)
+mod:SetUsedIcons(1, 2)
 mod:SetBossHPInfoToHighest()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEventsInCombat(
 	"SPELL_AURA_APPLIED 267256 266231",
-	"SPELL_AURA_REMOVED 267256",
+	"SPELL_AURA_REMOVED 267256 266231",
 	"SPELL_CAST_START 266206 266951 266237 267273 267060",
 	"SPELL_CAST_SUCCESS 266231",
 	"UNIT_DIED",
@@ -30,15 +30,15 @@ mod:RegisterEventsInCombat(
 local warnSeveringAxe				= mod:NewTargetNoFilterAnnounce(266231, 3, nil, "Healer")
 
 --Kula the Butcher
-local specWarnWhirlingAxes			= mod:NewSpecialWarningDodge(266206, nil, nil, nil, 2, 1)
-local specWarnSeveringAxe			= mod:NewSpecialWarningDefensive(266231, nil, nil, nil, 1, 1)
+local specWarnWhirlingAxes			= mod:NewSpecialWarningDodge(266206, nil, nil, nil, 2, 2)
+local specWarnSeveringAxe			= mod:NewSpecialWarningDefensive(266231, nil, nil, nil, 1, 2)
 --local specWarnGTFO				= mod:NewSpecialWarningGTFO(238028, nil, nil, nil, 1, 8)
 --Aka'ali the Conqueror
-local specWarnBarrelThrough			= mod:NewSpecialWarningYou(266951, nil, nil, nil, 1, 1)
+local specWarnBarrelThrough			= mod:NewSpecialWarningYou(266951, nil, nil, nil, 1, 2)
 local yellBarrelThrough				= mod:NewYell(266951)
 local yellBarrelThroughFades		= mod:NewShortFadesYell(266951)
-local specWarnBarrelThroughSoak		= mod:NewSpecialWarningMoveTo(266951, nil, nil, nil, 1, 1)
-local specWarnDebilitatingBackhand	= mod:NewSpecialWarningRun(266237, nil, nil, nil, 4, 1)
+local specWarnBarrelThroughSoak		= mod:NewSpecialWarningMoveTo(266951, nil, nil, nil, 1, 2)
+local specWarnDebilitatingBackhand	= mod:NewSpecialWarningRun(266237, nil, nil, nil, 4, 2)
 --Zanazal the Wise
 local specWarnPoisonNova			= mod:NewSpecialWarningInterrupt(267273, "HasInterrupt", nil, nil, 1, 2)
 local specWarnTotems				= mod:NewSpecialWarningSwitch(267060, nil, nil, nil, 1, 2)
@@ -55,6 +55,7 @@ local timerPoisonNovaCD				= mod:NewCDTimer(26.7, 267273, nil, nil, nil, 4, nil,
 local timerTotemsCD					= mod:NewCDTimer(53.5, 267060, nil, nil, nil, 1, nil, DBM_CORE_DAMAGE_ICON)--Actual timer needs doing
 
 mod:AddSetIconOption("SetIconOnBarrel", 266951, true, false, {1})
+mod:AddSetIconOption("SetIconOnAxe", 266231, false, false, {2})
 
 mod.vb.phase = 1
 mod.vb.bossOne = 0
@@ -97,12 +98,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnEarthwall:Show(args.destName)
 		specWarnEarthwall:Play("dispelboss")
 		self.vb.bossName = args.destName
-	elseif spellId == specWarnSeveringAxe then
+	elseif spellId == 266231 then
 		if args:IsPlayer() then
 			specWarnSeveringAxe:Show()
 			specWarnSeveringAxe:Play("defensive")
 		else
 			warnSeveringAxe:Show(args.destName)
+		end
+		if self.Options.SetIconOnAxe then
+			self:SetIcon(args.destName, 2)
 		end
 	end
 end
@@ -111,6 +115,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	local spellId = args.spellId
 	if spellId == 267256  then
 		self.vb.bossName = "nil"
+	elseif spellId == 266231 then
+		if self.Options.SetIconOnAxe then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 

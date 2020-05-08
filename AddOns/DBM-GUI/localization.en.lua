@@ -13,7 +13,8 @@ L.OTabBosses	= "Bosses"
 L.OTabOptions	= GAMEOPTIONS_MENU
 
 L.TabCategory_Options	 	= "General Options"
-L.TabCategory_BFA	 		= EXPANSION_NAME7 or "Battle for Azeroth"
+L.TabCategory_SHADOWLANDS	= EXPANSION_NAME8 or "Shadowlands"
+L.TabCategory_BFA	 		= EXPANSION_NAME7
 L.TabCategory_LEG	 		= EXPANSION_NAME6
 L.TabCategory_WOD	 		= EXPANSION_NAME5
 L.TabCategory_MOP	 		= EXPANSION_NAME4
@@ -169,7 +170,8 @@ L.CVoiceThree				= "Count Voice 3"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Bar Colors by timer type"
-L.AreaTitle_BarSetup		= "General Bar Options"
+L.AreaTitle_BarSetup		= "Bar Appearance Options"
+L.AreaTitle_Behavior		= "Bar Behavior Options"
 L.AreaTitle_BarSetupSmall 	= "Small Bar Options"
 L.AreaTitle_BarSetupHuge	= "Huge Bar Options"
 L.EnableHugeBar 			= "Enable huge bar (aka Bar 2)"
@@ -185,6 +187,7 @@ L.BarSpark					= "Bar spark"
 L.BarFlash					= "Flash bar about to expire"
 L.BarSort					= "Sort by remaining time"
 L.BarColorByType			= "Color by type"
+L.NoBarFade					= "Use Start/End colors as Small/Large colors instead of gradual color change"
 L.BarInlineIcons			= "Show inline icons"
 L.ShortTimerText			= "Use short timer text (when available)"
 L.StripTimerText			= "Strip CD/Next out of timers"

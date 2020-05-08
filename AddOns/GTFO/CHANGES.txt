@@ -1,13 +1,11 @@
 ------------------------------------------------------------------------
-r511 | Zensunim | 2020-02-25 03:28:41 +0000 (Tue, 25 Feb 2020) | 3 lines
+r517 | Zensunim | 2020-04-01 03:05:57 +0000 (Wed, 01 Apr 2020) | 2 lines
 Changed paths:
    M /trunk/GTFO.lua
    M /trunk/GTFO.toc
-   M /trunk/GTFO_Spells_BFA.lua
    M /trunk/ReadMe.txt
 
-4.55
-* Added split update notifications between Classic & Retail
-* Added Battle for Azeroth spells (world)
+4.55.2
+* Trying to fix Twitch/Curse from perpetually marking this out-of-date
 ------------------------------------------------------------------------
 

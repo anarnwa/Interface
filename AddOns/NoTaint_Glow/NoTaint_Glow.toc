@@ -1,7 +1,0 @@
-## Interface: 80000
-## Title: NoTaint Glow
-## Notes: Changed glow for action buttons without taint
-## Author: Another
-## Version: 1.02
-
-Glow.xml

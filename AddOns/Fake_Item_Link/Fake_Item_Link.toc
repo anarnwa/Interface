@@ -1,0 +1,16 @@
+## Interface: 80300
+## Title: Fake Item Link
+## Notes:伪造物品链接
+## Author: anranwa
+## SavedVariables: Fake_Item_Link_DB
+
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+#@end-no-lib-strip@
+
+Fake_Item_Link.lua

@@ -1,0 +1,46 @@
+lightweight tag d9142d296bedaeccddd0b2a44a53984b05522b46 Plater-v8.3.0.293-Retail
+Author:	Continuity <continuity@gmx.net>
+Date:	Sun Apr 26 01:46:49 2020 +0200
+
+commit d9142d296bedaeccddd0b2a44a53984b05522b46
+Author: Continuity <continuity@gmx.net>
+Date:   Sun Apr 26 01:46:49 2020 +0200
+
+    - updating changelog
+
+commit 5950258e5d5bd19dc7cbd11b3890826111933b69
+Author: Continuity <continuity@gmx.net>
+Date:   Fri Apr 24 16:53:07 2020 +0200
+
+    - fixing "copy wago url" not updating URL
+
+commit 9e29f3aa6b0c88ab4aa757bee0c453740a29aedc
+Author: Continuity <continuity@gmx.net>
+Date:   Wed Apr 22 10:01:34 2020 +0200
+
+    - another regression fix for cast bar fading animations
+
+commit cd4f7b4e7b9e4fb9afbd05a18bc7913b104420ae
+Author: Continuity <continuity@gmx.net>
+Date:   Tue Apr 21 11:52:26 2020 +0200
+
+    - only update threat for enemy npc
+
+commit 5a8b60d4f6e1ec039d4c24f9e2689ea442fa55dd
+Author: Continuity <continuity@gmx.net>
+Date:   Tue Apr 21 11:51:52 2020 +0200
+
+    - fix nameplate alpha reset regression.
+
+commit 7cbf5efec84f6d58af574a58d8dc9eeee23c16c7
+Author: Continuity <continuity@gmx.net>
+Date:   Sun Apr 19 21:00:44 2020 +0200
+
+    - removing npc title cleanup
+
+commit 11a71b0857e1c1a33d6ba72bf82010fc456a9c0e
+Author: Continuity <continuity@gmx.net>
+Date:   Fri Apr 17 21:51:34 2020 +0200
+
+    - do not reset alpha every time
+

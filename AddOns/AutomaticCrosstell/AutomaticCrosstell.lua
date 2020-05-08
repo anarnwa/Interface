@@ -24,6 +24,70 @@ Event(
         end
     end
 )
+Event(
+    'SHIPMENT_CRAFTER_INFO',
+    function()
+        C_Garrison.RequestShipmentCreation()
+    end
+)
+Event(
+    'SHIPMENT_CRAFTER_OPENED',
+    function()
+        C_Garrison.RequestShipmentCreation()
+    end
+)
+
+local function crosstell(targetid)
+    --如果在AutoGossipNPCID表里 就根据表数据选择
+    if (AutoGossipNPCID[targetid] ~= nil) then
+        if AutoGossipNPCID[targetid] ~= 0 then
+            SelectGossipOption(AutoGossipNPCID[targetid])
+        else
+            return
+        end
+    end
+    -- 如果只有一个选项，就自动对话
+    if (GetNumGossipOptions() == 1) then
+        SelectGossipOption(1)
+    end
+
+    C_Timer.After(
+        0.3,
+        function()
+            if StaticPopup1Button1 and StaticPopup1Button1:IsVisible() then
+                pcall(
+                    function()
+                        StaticPopup1Button1:Click()
+                    end
+                )
+            end
+        end
+    )
+
+    local ticker =
+        C_Timer.NewTicker(
+        0.5,
+        function(ticker)
+            if (GetNumGossipOptions() == 1) then
+                SelectGossipOption(1)
+                C_Timer.After(
+                    0.3,
+                    function()
+                        if StaticPopup1Button1 and StaticPopup1Button1:IsVisible() then
+                            pcall(
+                                function()
+                                    StaticPopup1Button1:Click()
+                                end
+                            )
+                        end
+                    end
+                )
+            else
+                ticker:Cancel()
+            end
+        end
+    )
+end
 
 GossipFrame:HookScript(
     'OnShow',
@@ -34,61 +98,20 @@ GossipFrame:HookScript(
         if (IsModifierKeyDown()) then
             return
         end
-
-        -- 如果这个NPC有任务，就不自动对话
-        if (GetNumGossipActiveQuests() > 0 or GetNumGossipAvailableQuests() > 0) then
+        if (GetNumGossipOptions() == 0) then
             return
         end
-        --如果在AutoGossipNPCID表里 就根据表数据选择
-        if (AutoGossipNPCID[targetid] ~= nil) then
-            if AutoGossipNPCID[targetid] ~= 0 then
-                SelectGossipOption(AutoGossipNPCID[targetid])
-            else
-                return
-            end
-        end
-
-        -- 如果只有一个选项，就自动对话
-        if (GetNumGossipOptions() == 1) then
-            SelectGossipOption(1)
-        end
-
-        C_Timer.After(
-            0.1,
-            function()
-                if (StaticPopup1:IsVisible()) then
-                    pcall(
-                        function()
-                            StaticPopup_OnClick(StaticPopup_FindVisible('GOSSIP_CONFIRM'), 1)
-                        end
-                    )
+        -- 如果这个NPC有任务，就延迟对话
+        if (GetNumGossipActiveQuests() > 0 or GetNumGossipAvailableQuests() > 0) then
+            C_Timer.After(
+                1,
+                function()
+                    crosstell(targetid)
                 end
-            end
-        )
-
-        local ticker =
-            C_Timer.NewTicker(
-            0.3,
-            function(ticker)
-                if (GetNumGossipOptions() == 1) then
-                    SelectGossipOption(1)
-                    C_Timer.After(
-                        0.1,
-                        function()
-                            if (StaticPopup1:IsVisible()) then
-                                pcall(
-                                    function()
-                                        StaticPopup_OnClick(StaticPopup_FindVisible('GOSSIP_CONFIRM'), 1)
-                                    end
-                                )
-                            end
-                        end
-                    )
-                else
-                    ticker:Cancel()
-                end
-            end
-        )
+            )
+            return
+        end
+        crosstell(targetid)
     end
 )
 
@@ -130,6 +153,30 @@ SlashCmdList['AutoGossip'] = function(cmd, editbox)
         end
         AutoGossipNPCID[tonumber(cmd2)] = nil
         print('已将NPC ' .. cmd2 .. ' 从自动对话列表移除 将默认选择唯一选择项')
+        return
     end
     print('格式输入错误')
 end
+
+GameTooltip:HookScript(
+    'OnTooltipSetUnit',
+    function(self)
+        if C_PetBattles.IsInBattle() then
+            return
+        end
+        local unit = select(2, self:GetUnit())
+        if unit then
+            local guid = UnitGUID(unit) or ''
+            local id = tonumber(guid:match('-(%d+)-%x+$'), 10)
+            if id and guid:match('%a+') ~= 'Player' then
+                if AutoGossipNPCID[id] ~= nil then
+                    if AutoGossipNPCID[id] == 0 then
+                        GameTooltip:AddDoubleLine('此NPC已关闭自动对话')
+                    else
+                        GameTooltip:AddDoubleLine('此NPC将选择第 ' .. AutoGossipNPCID[id] .. ' 项')
+                    end
+                end
+            end
+        end
+    end
+)

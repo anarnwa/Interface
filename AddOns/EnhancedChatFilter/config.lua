@@ -1,6 +1,6 @@
 -- ECF
 local addonName, ecf = ...
-local C, L, G = unpack(ecf)
+local B, L, C = unpack(ecf)
 
 local _G = _G
 -- Lua
@@ -15,6 +15,7 @@ local defaults = {
 	enableMSF = false, -- Monster Say Filter
 	enableAggressive = false, -- Aggressive Filter
 	enableRepeat = true, -- repeatFilter
+	enableInvite = false, -- block invite from strangers
 	repeatFilterGroup = true, -- repeatFilter enabled in group and raid
 	addonRAF = false, -- RaidAlert Filter
 	addonQRF = false, -- Quest/Group Report Filter
@@ -26,6 +27,7 @@ local defaults = {
 	lootCurrencyFilterList = {}, -- Currency list, [id] = true
 	lootQualityMin = 0, -- loot quality filter, 0..4 = poor..epic
 	advancedConfig = false, -- show advancedConfig
+	blockedPlayers = {}, -- blocked players list, [serverName] = {[guid] = times}
 }
 
 --http://www.wowwiki.com/USERAPI_StringHash
@@ -43,9 +45,7 @@ end
 --------------- ECF functions ---------------
 -- GetItemInfo Cache
 local ItemInfoRequested = {} -- [Id] = value. 0: want to add; 1: old config, true -> link
-local ItemCacheFrame = CreateFrame("Frame")
-ItemCacheFrame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
-ItemCacheFrame:SetScript("OnEvent",function(self,_,Id)
+B:AddEventScript("GET_ITEM_INFO_RECEIVED",function(self,_,Id)
 	local v = ItemInfoRequested[Id]
 	if not v then return end
 	local _, link = GetItemInfo(Id)
@@ -63,13 +63,13 @@ end)
 
 --Make sure that blackWord won't be filtered by filterCharList and utf-8 list
 local function checkBlacklist(blackWord, r)
-	local newWord = G.utf8replace(blackWord)
-	if not r then newWord=newWord:gsub(G.RegexCharList, "") end
+	local newWord = B.utf8replace(blackWord)
+	if not r then newWord=newWord:gsub(B.RegexCharList, "") end
 	if newWord ~= blackWord or blackWord == "" then return true end -- Also report "" as invalid
 end
 
 --Initialize and convert old config to new one
-ecf.init[#ecf.init+1] = function()
+B:AddInitScript(function()
 	if type(ecfDB) ~= "table" or next(ecfDB) == nil then ecfDB = defaults end
 	C.db = ecfDB
 	for k in pairs(C.db) do if defaults[k] == nil then C.db[k] = nil end end -- remove old keys
@@ -82,7 +82,7 @@ ecf.init[#ecf.init+1] = function()
 	if C.db.totalBlackWordsFiltered then
 		--Enable cleanup record only when total keywords > 50
 		local sum = 0
-		for _ in pairs(C.db.blackWordList) do sum = sum + 1 end
+		for _,v in pairs(C.db.blackWordList) do if not v.lesser then sum = sum + 1 end end
 		C.shouldEnableKeywordCleanup = sum > 50
 		--Cleanup blackwordsList: Remove rarely used keywords
 		if C.shouldEnableKeywordCleanup and C.db.totalBlackWordsFiltered > 1000 then
@@ -93,7 +93,7 @@ ecf.init[#ecf.init+1] = function()
 		end
 	end
 	C:SetupEvent()
-end
+end)
 
 --------------- Options ---------------
 --These settings won't be saved
@@ -175,6 +175,12 @@ options.args.General = {
 			name = L["Aggressive"],
 			desc = L["AggressiveTooltip"],
 			order = 14,
+		},
+		enableInvite = {
+			type = "toggle",
+			name = L["BlockStrangersInvite"],
+			desc = L["BlockStrangersInviteTooltip"],
+			order = 15,
 		},
 		line2 = {
 			type = "header",

@@ -590,6 +590,30 @@ function Tooltip:HookTooltip(objTooltip)
 				Tooltip:CurrencyTooltip(self, name, icon, currencyID)
 			end
 		end)
+		hooksecurefunc(objTooltip, "SetMerchantCostItem", function(self, index, currencyIndex)
+			--see MerchantFrame_UpdateAltCurrency
+			if self.__tooltipUpdated then return end
+			
+			local currencyID = select(currencyIndex, GetMerchantCurrencies())
+			if currencyID then
+				local name, currentAmount, icon, earnedThisWeek, weeklyMax, totalMax, isDiscovered, rarity = GetCurrencyInfo(currencyID)
+				if name and icon then
+					Tooltip:CurrencyTooltip(objTooltip, name, icon, currencyID)
+				end
+			end
+			
+			-- local itemTexture, itemValue, itemLink = GetMerchantItemCostItem(index, currencyIndex)
+			-- if itemTexture and itemLink then
+				-- local currencyID = BSYC:GetCurrencyID(itemLink)
+				-- if currencyID then
+					-- local name, currentAmount, icon, earnedThisWeek, weeklyMax, totalMax, isDiscovered, rarity = GetCurrencyInfo(currencyID)
+					-- if name and icon then
+						-- Tooltip:CurrencyTooltip(objTooltip, name, icon, currencyID)
+					-- end
+				-- end
+			-- end
+		end)
+		
 	end
 
 end

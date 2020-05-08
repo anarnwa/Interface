@@ -1,4 +1,4 @@
-if (GetLocale() == "koKR") then
+if GetLocale() ~= "koKR" then return end
 
 DBM_HOW_TO_USE_MOD					= DBM_DBM.."을 사용해 주셔서 감사합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 목록을 볼 수 있습니다. 설정을 하시려면 /dbm을 입력하세요. 보스 알림 설정을 기호에 맞게 변경하려면 원하는 던전을 직접 선택해서 로딩을 클릭하세요. DBM이 당신의 현재 전문화에 맞는 기본값을 설정하지만 일부 옵션은 자신에게 맞게 조정해야 할 수도 있습니다."
 DBM_SILENT_REMINDER					= "알림: "..DBM_DBM.."이 아직 조용함 모드입니다."
@@ -153,7 +153,7 @@ DBM_CORE_WHISPER_SCENARIO_END_WIPE_STATS	= "%s님이 %s 시나리오를 완료�
 
 DBM_CORE_VERSIONCHECK_HEADER		= "보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 설치된 보스 모드 없음"
-DBM_CORE_VERSIONCHECK_FOOTER		= "DBM을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
+DBM_CORE_VERSIONCHECK_FOOTER		= DBM_DBM.."을 설치한 플레이어 %d명과 Bigwigs를 설치한 플레이어 %d명을 발견했습니다."
 DBM_CORE_VERSIONCHECK_OUTDATED		= "다음 %d명의 플레이어가 구버전 보스 모드를 사용중: %s"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "사용중인 "..DBM_DEADLY_BOSS_MODS.." 버전이 사용 기한을 지났습니다. http://www.deadlybossmods.com에서 최신 버전을 받으세요."
 DBM_CORE_VOICE_PACK_OUTDATED		= "선택한 DBM 음성팩에 일부 음성이 들어있지 않습니다. 몇가지 경고 음성이 기본 효과음으로 재생됩니다. 최신 음성팩을 다운로드 받거나 제작자에게 누락된 음성 파일 업데이트를 요청하시기 바랍니다"
@@ -208,7 +208,7 @@ DBM_CORE_RANGECHECK_OPTION_TEXT		= "텍스트 창 표시"
 DBM_CORE_RANGECHECK_OPTION_BOTH		= "모두 표시"
 DBM_CORE_RANGERADAR_HEADER			= "거리:%d, 플레이어:%d"
 DBM_CORE_RANGERADAR_RHEADER			= "반전-거리:%d 플레이어:%d"
-DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "거리 내 %d명 (%dm)"
+DBM_CORE_RANGERADAR_IN_RANGE_TEXT	= "거리 내 %d명 (%0.1fm)"
 DBM_CORE_RANGECHECK_IN_RANGE_TEXT	= "거리 내 %d명"--Text based doesn't need (%dyd), especially since it's not very accurate to the specific yard anyways
 DBM_CORE_RANGERADAR_IN_RANGE_TEXTONE	= "%s (%0.1fm)"--One target
 
@@ -587,5 +587,3 @@ DBM_LDB_CAT_OTHER		= "그 외 보스 모드"
 
 DBM_LDB_CAT_GENERAL		= "일반"
 DBM_LDB_ENABLE_BOSS_MOD	= "보스 모드 사용"
-
-end
