@@ -1,46 +1,79 @@
-lightweight tag d9142d296bedaeccddd0b2a44a53984b05522b46 Plater-v8.3.0.293-Retail
+lightweight tag a408dae22f5f6dacdea76d429dd73321504df3c3 Plater-v8.3.0.294-Retail
 Author:	Continuity <continuity@gmx.net>
-Date:	Sun Apr 26 01:46:49 2020 +0200
+Date:	Fri May 8 17:12:01 2020 +0200
 
-commit d9142d296bedaeccddd0b2a44a53984b05522b46
+commit a408dae22f5f6dacdea76d429dd73321504df3c3
 Author: Continuity <continuity@gmx.net>
-Date:   Sun Apr 26 01:46:49 2020 +0200
+Date:   Fri May 8 17:12:01 2020 +0200
 
-    - updating changelog
+    - removing double entry
 
-commit 5950258e5d5bd19dc7cbd11b3890826111933b69
+commit 8fa9da5a9f2b4644ccec86403c49f261327db266
 Author: Continuity <continuity@gmx.net>
-Date:   Fri Apr 24 16:53:07 2020 +0200
+Date:   Fri May 8 17:04:16 2020 +0200
 
-    - fixing "copy wago url" not updating URL
+    - updating change-log
 
-commit 9e29f3aa6b0c88ab4aa757bee0c453740a29aedc
+commit a4fe3d5c994ed87b2a80fd0acf25a58ef6f08c29
 Author: Continuity <continuity@gmx.net>
-Date:   Wed Apr 22 10:01:34 2020 +0200
+Date:   Fri May 8 16:58:42 2020 +0200
 
-    - another regression fix for cast bar fading animations
+    - moving HOOK_LOAD_SCREEN to the end.
 
-commit cd4f7b4e7b9e4fb9afbd05a18bc7913b104420ae
+commit 86b3450fa21ba9e1157fa9dc4936e0c0bb071fcd
 Author: Continuity <continuity@gmx.net>
-Date:   Tue Apr 21 11:52:26 2020 +0200
+Date:   Thu May 7 14:18:25 2020 +0200
 
-    - only update threat for enemy npc
+    - adding version info for Plater (debugging purposes)
 
-commit 5a8b60d4f6e1ec039d4c24f9e2689ea442fa55dd
+commit 7970d72b99f11bbeb4f607aabef8f5a33fcbdc4e
 Author: Continuity <continuity@gmx.net>
-Date:   Tue Apr 21 11:51:52 2020 +0200
+Date:   Thu May 7 13:16:45 2020 +0200
 
-    - fix nameplate alpha reset regression.
+    - testing project-version
 
-commit 7cbf5efec84f6d58af574a58d8dc9eeee23c16c7
+commit 57385c7ce30390c9de5162d4143513c1816b4a0a
 Author: Continuity <continuity@gmx.net>
-Date:   Sun Apr 19 21:00:44 2020 +0200
+Date:   Thu May 7 00:01:48 2020 +0200
 
-    - removing npc title cleanup
+    - fixing spell name size not being truncated accordingly per unit settings
 
-commit 11a71b0857e1c1a33d6ba72bf82010fc456a9c0e
+commit 5efbafb21dfe98158bcc4dc8f5c8f47d2bb8046c
 Author: Continuity <continuity@gmx.net>
-Date:   Fri Apr 17 21:51:34 2020 +0200
+Date:   Wed Apr 29 23:48:33 2020 +0200
 
-    - do not reset alpha every time
+    - style changes to Profile Wago updates
+
+commit dc4b366231cb3dcbf835a01e0aac014798a2a3c5
+Author: Continuity <continuity@gmx.net>
+Date:   Wed Apr 29 23:47:55 2020 +0200
+
+    - updating shield/absorb indicators when changing size
+
+commit dda1f2259e3805b20daa0817018ed7c82139ab0a
+Author: Continuity <continuity@gmx.net>
+Date:   Tue Apr 28 21:47:26 2020 +0200
+
+    - ensure showQuestTrackingTooltips is active if needed
+
+commit 6786a2b953cb725cf2cb6e256cdd35981723c48b
+Author: Continuity <continuity@gmx.net>
+Date:   Tue Apr 28 19:10:28 2020 +0200
+
+    - adding wago profile info if update is available
+
+commit 9b4cc708ae8f75e9007fc5924192ed1f0b8fac6d
+Author: Continuity <continuity@gmx.net>
+Date:   Tue Apr 28 13:51:26 2020 +0200
+
+    - DF lib update
+
+commit f0a050e2eb325034af08cd74d70dab72561c7882
+Author: Continuity <continuity@gmx.net>
+Date:   Tue Apr 28 13:24:24 2020 +0200
+
+    - update to wago integration
+    
+    - supporting profile information and updates
+    - adding small wago-update indicators to script, mod and profile tab if updates are available
 

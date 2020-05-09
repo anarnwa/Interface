@@ -330,6 +330,7 @@ function NotReadyYet:PLAYER_ENTERING_WORLD()
     if not self.db.class[specialization] then
         self.db.class[specialization] = {}
     end
+    options_table.args.removespellid.values = NotReadyYet.db.class[specialization]
 end
 
 function NotReadyYet:ACTIONBAR_UPDATE_COOLDOWN()

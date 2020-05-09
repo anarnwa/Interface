@@ -1,0 +1,3 @@
+local AddonName, Addon = ...
+
+Addon:StartAddon()
