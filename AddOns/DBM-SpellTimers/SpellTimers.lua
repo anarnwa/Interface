@@ -1,4 +1,4 @@
--- **********************************************************
+﻿-- **********************************************************
 -- **             Deadly Boss Mods - SpellsUsed            **
 -- **             http://www.deadlybossmods.com            **
 -- **********************************************************
@@ -6,7 +6,7 @@
 -- This addon is written and copyrighted by:
 --    * Martin Verges (Nitram @ EU-Azshara)
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn)
---
+-- 
 -- The localizations are written by:
 --    * enGB/enUS: Nitram/Tandanu        http://www.deadlybossmods.com
 --    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
@@ -48,9 +48,7 @@ local default_settings = {
 		{ spell = 73325, bartext = default_bartext, cooldown = 90 },	-- Priest: Leap of Faith (Life Grip)
 		{ spell = 62618, bartext = default_bartext, cooldown = 180 },	-- Priest: Power Word: Barrier
 		{ spell = 98008, bartext = default_bartext, cooldown = 180 },	-- Shaman: Spirit Link Totem
-		{ spell = 108280, bartext = default_bartext, cooldown = 180 },	-- Shaman: Healing Tide Totem
 		{ spell = 20608, bartext = default_bartext, cooldown = 1800 },	-- Shaman: Reincarnation
-		{ spell = 8143, bartext = default_bartext, cooldown = 60 },
 		{ spell = 97462, bartext = default_bartext, cooldown = 180 },	-- Warrior: Rallying Cry CD (for Healers/Tanks to see how long cooldown runs)
 		{ spell = 22700, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 74A
 		{ spell = 44389, bartext = default_bartext, cooldown = 600 }, 	-- Field Repair Bot 110G
@@ -104,7 +102,7 @@ end
 
 -- functions
 local addDefaultOptions
-do
+do 
 	local function creategui()
 		local createnewentry
 		local CurCount = 0
@@ -132,7 +130,7 @@ do
 			end
 		end
 
-
+		
 		do
 			local area = generalarea
 			local enabled = area:CreateCheckButton(L.Enable, true)
@@ -200,12 +198,12 @@ do
 							self:SetText( string.gsub(text, "%%spell", spellinfo) )
 						end
 					elseif field == "enabled" then
-						self:SetChecked( settings.spells[self.guikey].enabled )
+						self:SetChecked( settings.spells[self.guikey].enabled ) 
 					else
 						self:SetText( settings.spells[self.guikey][field] or "" )
 					end
 				end
-			end
+			end	
 
 			local area = auraarea
 
@@ -247,7 +245,7 @@ do
 				getadditionalid:SetPoint("RIGHT", spellid, "LEFT", -15, 0)
 				area.frame:SetHeight( area.frame:GetHeight() + 35 )
 				area.frame:GetParent():SetHeight( area.frame:GetParent():GetHeight() + 35 )
-
+			
 				panel:SetMyOwnHeight()
 				if DBM_GUI_OptionsFramePanelContainer.displayedFrame and CurCount > 1 then
 					DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
@@ -261,7 +259,7 @@ do
 					end
 				end)
 			end
-
+			
 			if #settings.spells == 0 then
 				createnewentry()
 			else
@@ -275,6 +273,7 @@ do
 	DBM:RegisterOnGuiLoadCallback(creategui, 19)
 end
 
+
 do
 	function addDefaultOptions(t1, t2)
 		for i, v in pairs(t2) do
@@ -285,16 +284,17 @@ do
 			end
 		end
 	end
-
-	function clearAllSpellBars()
+	
+	function clearAllSpellBars() 
 		for k,v in pairs(SpellBarIndex) do
 		   SpellBars:CancelBar(k)
 		   SpellBarIndex[k] = nil
-		end
+		end	
 	end
 
 	local myportals = {}
 	local lastmsg = "";
+	local encounterStarted = false
 	local mainframe = CreateFrame("frame", "DBM_SpellTimers", UIParent)
 	local spellEvents = {
 	  ["SPELL_CAST_SUCCESS"] = true,
@@ -308,7 +308,7 @@ do
 			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 			self:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND")
 			self:RegisterEvent("ENCOUNTER_START")
-			-- self:RegisterEvent("ENCOUNTER_END")
+			self:RegisterEvent("ENCOUNTER_END")
 
 			-- Update settings of this Addon
 			settings = DBM_SpellTimers_Settings
@@ -342,14 +342,13 @@ do
 			end
 
 			rebuildSpellIDIndex()
-			mainframe:UnregisterEvent("ADDON_LOADED")
 		elseif settings.enabled and event == "ENCOUNTER_START" then--Encounter Started
-			clearAllSpellBars()
+			clearAllSpellBars() 
 			--Reset all CDs that are >= 3 minutes EXCEPT shaman reincarnate (20608)
-			-- self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-		-- elseif settings.enabled and event == "ENCOUNTER_END" then--Encounter Ended
+			self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+		elseif settings.enabled and event == "ENCOUNTER_END" then--Encounter Ended
 			--Reset all CDs that are > 3 minutes EXCEPT shaman reincarnate (20608)
-			-- self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+			self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 		elseif settings.enabled and event == "PLAYER_ENTERING_BATTLEGROUND" then
 		  -- spell cooldowns all reset on entering an arena or bg
 		  clearAllSpellBars()
@@ -395,7 +394,7 @@ do
 				local fromplayer = sourceName
 				local toplayer = destName		-- Added by Florin Patan
 				local spellid = extraArg1
-
+			
 				if settings.only_from_raid and DBM:GetRaidUnitId(fromplayer) == "none" then return end
 
 				for k,v in pairs(myportals) do

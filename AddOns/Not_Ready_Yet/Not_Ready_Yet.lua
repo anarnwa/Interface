@@ -322,7 +322,6 @@ function NotReadyYet:OnEnable()
     self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
 end
-
 function NotReadyYet:PLAYER_SPECIALIZATION_CHANGED()
     specialization = GetSpecialization()
     if not self.db.class[specialization] then

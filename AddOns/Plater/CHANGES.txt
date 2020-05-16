@@ -1,79 +1,16 @@
-lightweight tag a408dae22f5f6dacdea76d429dd73321504df3c3 Plater-v8.3.0.294-Retail
+lightweight tag 30ed4c1a6e87a68ba8444d7426ff2af0314273c6 Plater-v8.3.0.295-Retail
 Author:	Continuity <continuity@gmx.net>
-Date:	Fri May 8 17:12:01 2020 +0200
+Date:	Mon May 11 10:06:02 2020 +0200
 
-commit a408dae22f5f6dacdea76d429dd73321504df3c3
+commit 30ed4c1a6e87a68ba8444d7426ff2af0314273c6
 Author: Continuity <continuity@gmx.net>
-Date:   Fri May 8 17:12:01 2020 +0200
+Date:   Mon May 11 10:06:02 2020 +0200
 
-    - removing double entry
+    - only show widget bar on your units
 
-commit 8fa9da5a9f2b4644ccec86403c49f261327db266
+commit ffc9b14128915a6c1b50ba30c408f4fffa4cdaa9
 Author: Continuity <continuity@gmx.net>
-Date:   Fri May 8 17:04:16 2020 +0200
+Date:   Sat May 9 12:29:58 2020 +0200
 
-    - updating change-log
-
-commit a4fe3d5c994ed87b2a80fd0acf25a58ef6f08c29
-Author: Continuity <continuity@gmx.net>
-Date:   Fri May 8 16:58:42 2020 +0200
-
-    - moving HOOK_LOAD_SCREEN to the end.
-
-commit 86b3450fa21ba9e1157fa9dc4936e0c0bb071fcd
-Author: Continuity <continuity@gmx.net>
-Date:   Thu May 7 14:18:25 2020 +0200
-
-    - adding version info for Plater (debugging purposes)
-
-commit 7970d72b99f11bbeb4f607aabef8f5a33fcbdc4e
-Author: Continuity <continuity@gmx.net>
-Date:   Thu May 7 13:16:45 2020 +0200
-
-    - testing project-version
-
-commit 57385c7ce30390c9de5162d4143513c1816b4a0a
-Author: Continuity <continuity@gmx.net>
-Date:   Thu May 7 00:01:48 2020 +0200
-
-    - fixing spell name size not being truncated accordingly per unit settings
-
-commit 5efbafb21dfe98158bcc4dc8f5c8f47d2bb8046c
-Author: Continuity <continuity@gmx.net>
-Date:   Wed Apr 29 23:48:33 2020 +0200
-
-    - style changes to Profile Wago updates
-
-commit dc4b366231cb3dcbf835a01e0aac014798a2a3c5
-Author: Continuity <continuity@gmx.net>
-Date:   Wed Apr 29 23:47:55 2020 +0200
-
-    - updating shield/absorb indicators when changing size
-
-commit dda1f2259e3805b20daa0817018ed7c82139ab0a
-Author: Continuity <continuity@gmx.net>
-Date:   Tue Apr 28 21:47:26 2020 +0200
-
-    - ensure showQuestTrackingTooltips is active if needed
-
-commit 6786a2b953cb725cf2cb6e256cdd35981723c48b
-Author: Continuity <continuity@gmx.net>
-Date:   Tue Apr 28 19:10:28 2020 +0200
-
-    - adding wago profile info if update is available
-
-commit 9b4cc708ae8f75e9007fc5924192ed1f0b8fac6d
-Author: Continuity <continuity@gmx.net>
-Date:   Tue Apr 28 13:51:26 2020 +0200
-
-    - DF lib update
-
-commit f0a050e2eb325034af08cd74d70dab72561c7882
-Author: Continuity <continuity@gmx.net>
-Date:   Tue Apr 28 13:24:24 2020 +0200
-
-    - update to wago integration
-    
-    - supporting profile information and updates
-    - adding small wago-update indicators to script, mod and profile tab if updates are available
+    - fixing absorb/health not being updated properly sometimes
 

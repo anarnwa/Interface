@@ -119,12 +119,24 @@ SLASH_AutoGossip1 = '/ac'
 SlashCmdList['AutoGossip'] = function(cmd, editbox)
     cmd = string.lower(cmd)
     if cmd == '' or cmd == 'help' then
+        print('/ac 选项  （仅在目标为NPC时）')
         print('/ac add/+ NPCID  选项')
         print('/ac remove/- NPCID')
         return
     end
     local a, b = string.find(cmd, ' ')
     if not a or not b then
+        local npcid = tonumber(string.match(tostring(UnitGUID('target')), '-([^-]+)-[^-]+$'))
+        if npcid then
+            if tonumber(cmd) then
+                AutoGossipNPCID[npcid] = tonumber(cmd)
+                print('已将NPC ' .. npcid .. ' 添加至自动对话列表 将自动选择第 ' .. cmd .. ' 项')
+                crosstell(npcid)
+            else
+                print('格式输入错误')
+            end
+            return
+        end
         print('格式输入错误')
         return
     end

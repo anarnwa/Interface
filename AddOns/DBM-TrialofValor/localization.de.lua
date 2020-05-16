@@ -1,10 +1,5 @@
-if GetLocale() ~= "deDE" then return end
+﻿if GetLocale() ~= "deDE" then return end
 local L
-
----------------
--- Odyn --
----------------
-L= DBM:GetModLocalization(1819)
 
 ---------------------------
 -- Guarm --

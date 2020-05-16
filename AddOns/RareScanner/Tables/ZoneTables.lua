@@ -18,7 +18,7 @@ private.CONTINENT_ZONE_IDS = {
 	[1355] = { zonefilter = true, id = 12, zones = {1355}, current = { "all" } }; --Nazjatar
 	[9999] = { zonefilter = true, zones = {628,672,276,734,702,695,747,378,739} }; --Class Halls
 	[9998] = { zonefilter = true, zones = {407}, current = { "all" } }; --Darkmoon Island
-	[9997] = { zonefilter = true, zones = {11,35,219,229,237,243,251,274,280,306,316,317,318,477,616,703,677,731,733,706,749,897,903} }; --Dungeons or scenarios
+	[9997] = { zonefilter = true, zones = {11,35,219,229,237,243,251,274,280,306,316,317,318,616,703,677,731,733,706,749,897,903} }; --Dungeons or scenarios
 	[9996] = { zonefilter = true, zones = {366,508,772,856,909} }; --Raids
 	[9995] = { zonefilter = false, zones = {0} }; --Unknown
 }
@@ -56,8 +56,6 @@ private.SUBZONES_IDS = {
 	[504] = {505,555}; --Isle of Thunder
 	[390] = {395}; --Valley of Eternal Blossom minimaps
 	[32] = {33,35}; --Searing Gorge minimaps
-	[508] = {509,510,511,512,513,514}; --Throne of Thunder
-	[477] = {479}; --Scholomance
 }
 
 private.ZONES_WITHOUT_VIGNETTE = {

@@ -3037,7 +3037,7 @@ Plater.DefaultSpellRangeList = {
 			plateFrame.unitFrame.WidgetContainer:SetScale(Plater.db.profile.widget_bar_scale)
 			unitFrame.WidgetContainer:UnregisterForWidgetSet()
 			local widgetSetId = UnitWidgetSet(unitID)
-		    if widgetSetId then
+		    if widgetSetId and UnitPlayerControlled(unitID) and not UnitIsOwnerOrControllerOfUnit('player', unitID) then
 				unitFrame.WidgetContainer:RegisterForWidgetSet(widgetSetId)
 				unitFrame.WidgetContainer:ProcessAllWidgets()
 			end
@@ -5578,7 +5578,7 @@ end
 			buffFrame2:ClearAllPoints()
 			PixelUtil.SetPoint (buffFrame2, "bottom", unitFrame, "top", Plater.db.profile.aura2_x_offset,  plateConfigs.buff_frame_y_offset + Plater.db.profile.aura2_y_offset)
 			
-		if Plater.db.profile.show_health_prediction or Plater.db.profile.show_shield_prediction then
+		if (Plater.db.profile.show_health_prediction or Plater.db.profile.show_shield_prediction) and healthBar.displayedUnit then
 			healthBar:UpdateHealPrediction() -- ensure health prediction is updated properly
 		end
 	end
@@ -6231,7 +6231,7 @@ end
 			Plater.UpdateResourceFrame()
 			
 			local widgetSetId = UnitWidgetSet(plateFrame.unitFrame [MEMBER_UNITID])
-		    if widgetSetId then
+		    if widgetSetId and UnitPlayerControlled(unitID) and not UnitIsOwnerOrControllerOfUnit('player', unitID) then
 				plateFrame.unitFrame.WidgetContainer:RegisterForWidgetSet(widgetSetId)
 				plateFrame.unitFrame.WidgetContainer:ProcessAllWidgets()
 			end

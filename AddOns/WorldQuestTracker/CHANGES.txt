@@ -1,14 +1,12 @@
-lightweight tag 404ab852b45c52e73dd45d5be216f5427f1022e0 v8.3.0.390
+lightweight tag bc3d4746c1b95272fbffa8a492c85223891c448c v8.3.0.394
 Author:	Tercio Jose <terciob19@hotmail.com>
-Date:	Thu Feb 13 17:23:49 2020 -0300
+Date:	Tue Apr 28 10:13:00 2020 -0300
 
-commit 404ab852b45c52e73dd45d5be216f5427f1022e0
+commit bc3d4746c1b95272fbffa8a492c85223891c448c
 Author: Tercio Jose <terciob19@hotmail.com>
-Date:   Thu Feb 13 17:23:49 2020 -0300
+Date:   Tue Apr 28 10:13:00 2020 -0300
 
-    Fixed world bosses not poping up the group finder window
+    Added support for factions in Legion and paragon quests
     
-    - Framework update to latest version v170.
-    - Some comment translation to english.
-    - Fixed errors where the 8.3 invasions was trigering before the Player_Entering_World event.
+    Also framework and localization updates
 

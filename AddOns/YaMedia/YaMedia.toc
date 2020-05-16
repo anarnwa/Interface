@@ -1,0 +1,5 @@
+﻿## Interface: 70200
+## Title: |Cff81d8cfYaMedia |r材质
+## Notes: 需要|CFFFF6461LibSharedMedia-3.0
+## Dependencies: LibSharedMedia-3.0
+YaMedia.lua
