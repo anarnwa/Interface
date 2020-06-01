@@ -1,70 +1,22 @@
-tag 621ceee130d255af0846d09451ad45d664ecd347 8.3.2
+tag 849d420231e22cdbdee5cc3e8e7ecae274e34a85 8.3.3
 Author:	Benjamin Staneck <staneck@gmail.com>
-Date:	Fri Apr 3 00:20:00 2020 +0200
+Date:	Tue May 19 18:19:13 2020 +0200
 
-Tag as 8.3.2
+Tagging as 8.3.3
 
-commit bb68a62b39a3e1bef68d8792089feb324ad1260d
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Mon Mar 30 21:33:29 2020 +0800
+commit 3958649e2be23b59f93deecd7e280bc064464e57
+Author: Tom Knaepen <t.knaepen@ccvlab.eu>
+Date:   Fri May 8 11:21:12 2020 +0200
 
-    Progress: fix N'Zoth Assaults hover tooltip
-
-commit 78bb3b7b8350bf5389ae2556d65b8cccf1f62c43
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Mon Mar 30 21:29:51 2020 +0800
-
-    Progress: fix resets
-
-commit 5acc9ba04db30ee3338388d6986eb488352e132c
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Mon Mar 30 21:08:37 2020 +0800
-
-    misc: fix luacheck warnings
-
-commit 593c14ac1ce9d4c8578f3bb5d65112dddc14722d
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Mon Mar 30 18:32:52 2020 +0800
-
-    Progress: fix Lesser Visions of N'Zoth loading
-
-commit 3ab831dcf8341cfe0754ff25a0265d0d890f079f
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Mon Mar 30 17:54:56 2020 +0800
-
-    Currency: fix function cache
-
-commit 414b8e956b12cf6ef0465b826daf8f097429ed01
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Mon Mar 30 17:53:56 2020 +0800
-
-    Progress: track Weekly Horrific Vision  Rewards,
-    N'Zoth Assaults, Lesser Visions of N'Zoth
-    closes #352, closes #342, closes #338
-
-commit 7690d42e63c07beb0297f40477e0075fe70ad25e
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Thu Mar 19 10:31:24 2020 +0800
-
-    fix wrong sorted table
-
-commit c35ece80399851b6037b3f9b947a91cfd5cf2fd3
-Author: LiangYuxuan <lyx@lyx.es>
-Date:   Wed Mar 18 10:07:32 2020 +0800
-
-    add Echoes of Ny'alotha
-    and update default currency list
-
-commit fecbb2848dcc39987b389c114bab8ee565b87b2d
-Author: Luke Mewburn <luke@mewburn.net>
-Date:   Mon Mar 16 19:26:38 2020 +1100
-
-    optional currency sort by name
+    Use locale global strings
     
-    Add Currency option "Sort by currency name" (CurrencySortName)
-    to toggle the currency sort order between
-    currency ID (default) and currency name.
+    Thanks to LiangYuxuan
+
+commit ebefb253c50a5e2b0091e02c911c5e92a1b4de1b
+Author: Tom <tom.knaepen@telenet.be>
+Date:   Tue May 5 10:07:54 2020 +0200
+
+    Add equipped cloak rank + resist to character tooltip
     
-    Simplify addition of new Currency options to always order
-    specific currencies after the header.
+    Closes #344
 

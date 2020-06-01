@@ -1,6 +1,6 @@
 if GetLocale() ~= "deDE" then return end
-if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
-local L = DBM_GUI_Translations
+if not DBM_GUI_L then DBM_GUI_L = {} end
+local L = DBM_GUI_L
 
 L.MainFrame = "Deadly Boss Mods"
 
@@ -145,7 +145,6 @@ L.BarEndColorUI				= "Endfarbe (Nutzer)"
 L.Bar7Header				= "Einstellungen für Nutzerbalken"
 L.Bar7ForceLarge			= "Nutze immer großen Balken"
 L.Bar7CustomInline			= "Zeichen '!' einbetten"
-L.Bar7Footer				= "(keine Live-Aktual. der Dummy-Balken)"
 
 -- Tab: Timers
 L.AreaTitle_BarColors		= "Balkenfarben nach Timertyp"
@@ -168,7 +167,7 @@ L.BarInlineIcons			= "Zeichen einbetten"
 L.ShortTimerText			= "Nutze kurzen Timertext (falls verfügbar)"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Spezialwarnungen"
+L.Panel_SpecWarnFrame		= "Spezial Schlachtzug Warnungen"
 L.Area_SpecWarn				= "Einstellungen für Spezialwarnungen"
 L.SpecWarn_ClassColor		= "Benutze Klassenfarben für Spezialwarnungen"
 L.ShowSWarningsInChat 		= "Zeige Spezialwarnungen im Chatfenster"

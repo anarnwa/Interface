@@ -12,6 +12,11 @@ local L
 --})
 
 ---------------------------
+--  Hungering Destroyer --
+---------------------------
+--L= DBM:GetModLocalization(2428)
+
+---------------------------
 --  Artificer Xy'Mox --
 ---------------------------
 --L= DBM:GetModLocalization(2418)
@@ -34,7 +39,11 @@ local L
 ---------------------------
 --  Sludgefist --
 ---------------------------
---L= DBM:GetModLocalization(2394)
+L= DBM:GetModLocalization(2394)
+
+L:SetMiscLocalization({
+	Pillar	= "Pillar"
+})
 
 ---------------------------
 --  Stoneborne Generals --

@@ -1,11 +1,27 @@
-lightweight tag 33fd99afba2ab7a2e56ebc44e3e135c261af9cf8 1.5.0
+lightweight tag 82ec9b3c751a635226be6f4950bd57c2d930a738 1.5.1
 Author:	Buds <mrbouyou@gmail.com>
-Date:	Thu Apr 30 20:02:02 2020 +0200
+Date:	Sat May 23 00:00:44 2020 +0200
 
-commit 33fd99afba2ab7a2e56ebc44e3e135c261af9cf8
+commit 82ec9b3c751a635226be6f4950bd57c2d930a738
 Author: Buds <mrbouyou@gmail.com>
-Date:   Thu Apr 30 20:02:02 2020 +0200
+Date:   Sat May 23 00:00:44 2020 +0200
 
-    new callback FRAME_UNIT_REMOVED
-    trigger when a frame does't mach a unit anymore
+    bump minor
+
+commit 639c4ca5b682de946bfd26baec35d6ca0a6026a4
+Author: Matthias Y <myzb@users.noreply.github.com>
+Date:   Tue May 19 23:24:39 2020 +0200
+
+    filter pattern to find oUF based frames
+    
+    unless overridden by the layout creator all oUF frames follow the
+    naming convention: oUF_<style><Unit> i.e: oUF_TukuiTargetTarget
+    
+    See: https://github.com/oUF-wow/oUF/blob/master/ouf.lua#L732
+
+commit a1637100ce8043c31eaba0b49ff8adc5421db059
+Author: Buds <mrbouyou@gmail.com>
+Date:   Thu May 14 02:49:49 2020 +0200
+
+    ignore raven buttons
 

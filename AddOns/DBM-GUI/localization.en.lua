@@ -1,6 +1,6 @@
-DBM_GUI_Translations = {}
+DBM_GUI_L = {}
 
-local L = DBM_GUI_Translations
+local L = DBM_GUI_L
 
 L.MainFrame = "Deadly Boss Mods"
 
@@ -64,16 +64,19 @@ L.UseDialogChannel			= "Dialog audio channel."
 L.UseSFXChannel				= "Sound Effects (SFX) audio channel."
 L.Latency_Text				= "Set max latency sync threshold: %d"
 
+L.Button_RangeFrame			= "Show/hide range frame"
+L.Button_InfoFrame			= "Show/hide info frame"
+L.Button_TestBars			= "Start test bars"
+L.Button_ResetInfoRange		= "Reset Info/Range frames"
+
 L.ModelOptions				= "3D Model Viewer Options"
 L.EnableModels				= "Enable 3D models in boss options"
 L.ModelSoundOptions			= "Set sound option for model viewer"
 L.ModelSoundShort			= SHORT
 L.ModelSoundLong			= TOAST_DURATION_LONG
 
-L.Button_RangeFrame			= "Show/hide range frame"
-L.Button_InfoFrame			= "Show/hide info frame"
-L.Button_TestBars			= "Start test bars"
-L.Button_ResetInfoRange		= "Reset Info/Range frames"
+L.ResizeOptions			 	= "Resize Options"
+L.Button_ResetWindowSize	= "Reset GUI window size"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Raid Warnings"
@@ -154,7 +157,6 @@ L.BarEndColorUI				= "End color (User)"
 L.Bar7Header				= "User Bar Options"
 L.Bar7ForceLarge			= "Always use large bar"
 L.Bar7CustomInline			= "Use custom '!' inline icon"
-L.Bar7Footer				= "(Dummy Bar won't live update)"
 --Dropdown Options
 L.CBTGeneric				= "Generic"
 L.CBTAdd					= "Add"
@@ -196,7 +198,7 @@ L.KeepBar2					= "(when supported by mod)"
 L.FadeBar					= "Fade timers for out of range abilities"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Special Warnings"
+L.Panel_SpecWarnFrame		= "Special Raid Warnings"
 L.Area_SpecWarn				= "Special Warning Options"
 L.SpecWarn_ClassColor		= "Use class coloring for special warnings"
 L.ShowSWarningsInChat 		= "Show special warnings in chat frame"
